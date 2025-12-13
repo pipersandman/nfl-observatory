@@ -381,7 +381,8 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
             'title': 'Penalty Surge Since 2022',
             'value': f"{'+' if change > 0 else ''}{change:.0f}%",
             'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
-    
+        })
+        
     # 2. Home field bias
     home_away = trends.get('homeVsAway', {})
     bias = home_away.get('bias_pct', 0)

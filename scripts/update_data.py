@@ -368,7 +368,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     """Generate insight cards with explanations."""
     insights = []
     
-  # 1. Season trend (since 2022)
+    # 1. Season trend (since 2022)
     seasons = trends.get('bySeason', [])
     if len(seasons) >= 2:
         latest = seasons[-1]
@@ -381,6 +381,8 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
             'title': 'Penalty Surge Since 2022',
             'value': f"{'+' if change > 0 else ''}{change:.0f}%",
             'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
+            'explanation': "This compares the current season's penalty rate to 2022, showing the multi-year trend in officiating. The NFL has seen a significant increase in accepted penalties over recent seasons.",
+            'isPositive': change < 0
         })
         
     # 2. Home field bias

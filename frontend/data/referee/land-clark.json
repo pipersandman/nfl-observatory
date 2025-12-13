@@ -1,48 +1,20 @@
 {
   "name": "Land Clark",
   "slug": "land-clark",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 92,
-    "totalPenalties": 1099,
-    "avgPerGame": 11.9,
-    "minGame": 4,
+    "games": 29,
+    "totalPenalties": 320,
+    "avgPerGame": 11.0,
+    "minGame": 5,
     "maxGame": 22,
-    "stdDev": 3.83,
-    "homeBiasPct": -1.4,
+    "stdDev": 3.92,
+    "homeBiasPct": -8.8,
     "consistency": "Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 15,
-      "penalties": 189,
-      "avg": 12.6,
-      "homeBias": -2.6
-    },
-    {
-      "season": 2021,
-      "games": 16,
-      "penalties": 219,
-      "avg": 13.7,
-      "homeBias": -1.4
-    },
-    {
-      "season": 2022,
-      "games": 16,
-      "penalties": 175,
-      "avg": 10.9,
-      "homeBias": 0.6
-    },
-    {
-      "season": 2023,
-      "games": 16,
-      "penalties": 196,
-      "avg": 12.2,
-      "homeBias": 10.2
-    },
     {
       "season": 2024,
       "games": 17,
@@ -61,75 +33,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 214,
-      "pct": 19.5
+      "count": 61,
+      "pct": 19.1
     },
     {
       "type": "False Start",
-      "count": 208,
-      "pct": 18.9
+      "count": 58,
+      "pct": 18.1
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 80,
-      "pct": 7.3
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 59,
-      "pct": 5.4
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 53,
-      "pct": 4.8
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 47,
-      "pct": 4.3
-    },
-    {
-      "type": "Delay of Game",
-      "count": 44,
-      "pct": 4.0
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 41,
-      "pct": 3.7
+      "count": 26,
+      "pct": 8.1
     },
     {
       "type": "Illegal Formation",
-      "count": 38,
-      "pct": 3.5
+      "count": 19,
+      "pct": 5.9
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 17,
+      "pct": 5.3
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 15,
+      "pct": 4.7
+    },
+    {
+      "type": "Delay of Game",
+      "count": 13,
+      "pct": 4.1
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 12,
+      "pct": 3.8
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 11,
+      "pct": 3.4
     },
     {
       "type": "Offensive Pass Interference",
-      "count": 31,
+      "count": 9,
       "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 198,
-      "pct": 18.2
+      "count": 56,
+      "pct": 17.6
     },
     {
       "quarter": 2,
-      "count": 343,
-      "pct": 31.6
+      "count": 105,
+      "pct": 33.0
     },
     {
       "quarter": 3,
-      "count": 271,
-      "pct": 24.9
+      "count": 76,
+      "pct": 23.9
     },
     {
       "quarter": 4,
-      "count": 275,
-      "pct": 25.3
+      "count": 81,
+      "pct": 25.5
     }
   ],
   "recentGames": [
@@ -615,9 +587,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.0,
-    "avgVsLeaguePct": -0.1,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -2.0,
+    "avgVsLeaguePct": -15.6,
+    "description": "Let-them-play style \u2014 fewer flags than average. Land Clark's games average 2.0 fewer penalties per game."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:23:22.105600Z"
+  "generatedAt": "2025-12-13T06:26:49.587027Z"
 }

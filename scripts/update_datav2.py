@@ -114,40 +114,28 @@ def load_all_data(seasons: list[int]) -> dict:
     
     data = {}
     
-    # Load schedules FIRST - we need it to map game IDs
-    print("   Loading schedules...")
-    try:
-        schedules = nfl.load_schedules(seasons).to_pandas()
-        data['schedules'] = schedules
-        print(f"   ✓ {len(schedules)} games")
-        
-        # Create game ID mapping (old_game_id -> game_id)
-        # Officials use old_game_id format, PBP uses game_id format
-        id_map = schedules[['game_id', 'old_game_id']].drop_duplicates()
-    except Exception as e:
-        print(f"   ✗ Schedules error: {e}")
-        data['schedules'] = pd.DataFrame()
-        id_map = pd.DataFrame()
-    
     # Officials assignments
     print("   Loading officials...")
     try:
         officials = nfl.load_officials(seasons).to_pandas()
-        
-        # Officials use old_game_id format - rename and merge to get new game_id
-        officials = officials.rename(columns={'game_id': 'old_game_id', 'official_name': 'name'})
-        
-        # Merge with id_map to get the PBP-compatible game_id
-        if not id_map.empty:
-            officials = officials.merge(id_map, on='old_game_id', how='left')
-        
-        # Apply name fixes
+        # Rename column for compatibility and apply name fixes
+        officials = officials.rename(columns={'official_name': 'name'})
         officials['name'] = officials['name'].replace(NAME_FIXES)
         data['officials'] = officials
         print(f"   ✓ {len(officials)} official assignments")
     except Exception as e:
         print(f"   ✗ Officials error: {e}")
         data['officials'] = pd.DataFrame()
+    
+    # Schedules (includes scores, weather, etc.)
+    print("   Loading schedules...")
+    try:
+        schedules = nfl.load_schedules(seasons).to_pandas()
+        data['schedules'] = schedules
+        print(f"   ✓ {len(schedules)} games")
+    except Exception as e:
+        print(f"   ✗ Schedules error: {e}")
+        data['schedules'] = pd.DataFrame()
     
     # Play-by-play for penalties — load season by season to handle errors gracefully
     print("   Loading play-by-play (this takes a minute)...")

@@ -6,12 +6,12 @@
   "experience": "3 seasons",
   "stats": {
     "games": 50,
-    "totalPenalties": 552,
-    "avgPerGame": 11.0,
-    "minGame": 6,
+    "totalPenalties": 543,
+    "avgPerGame": 10.9,
+    "minGame": 5,
     "maxGame": 22,
-    "stdDev": 3.72,
-    "homeBiasPct": 6.5,
+    "stdDev": 3.78,
+    "homeBiasPct": 6.4,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -25,90 +25,90 @@
     {
       "season": 2021,
       "games": 17,
-      "penalties": 195,
+      "penalties": 196,
       "avg": 11.5,
-      "homeBias": -0.5
+      "homeBias": 0.0
     },
     {
       "season": 2022,
       "games": 16,
-      "penalties": 177,
-      "avg": 11.1,
-      "homeBias": 9.6
+      "penalties": 167,
+      "avg": 10.4,
+      "homeBias": 9.0
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 114,
-      "pct": 20.7
+      "count": 112,
+      "pct": 20.6
     },
     {
       "type": "Offensive Holding",
-      "count": 78,
-      "pct": 14.1
+      "count": 73,
+      "pct": 13.4
     },
     {
       "type": "Defensive Pass Interference",
       "count": 53,
-      "pct": 9.6
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 36,
-      "pct": 6.5
+      "pct": 9.8
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 35,
-      "pct": 6.3
+      "count": 36,
+      "pct": 6.6
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 33,
+      "pct": 6.1
     },
     {
       "type": "Defensive Offside",
       "count": 32,
-      "pct": 5.8
+      "pct": 5.9
     },
     {
       "type": "Delay of Game",
       "count": 31,
-      "pct": 5.6
+      "pct": 5.7
     },
     {
       "type": "Roughing the Passer",
-      "count": 25,
-      "pct": 4.5
+      "count": 28,
+      "pct": 5.2
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 23,
-      "pct": 4.2
+      "count": 22,
+      "pct": 4.1
     },
     {
       "type": "Face Mask",
       "count": 20,
-      "pct": 3.6
+      "pct": 3.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 107,
-      "pct": 19.5
+      "count": 106,
+      "pct": 19.6
     },
     {
       "quarter": 2,
-      "count": 154,
-      "pct": 28.0
+      "count": 159,
+      "pct": 29.4
     },
     {
       "quarter": 3,
-      "count": 144,
-      "pct": 26.2
+      "count": 137,
+      "pct": 25.3
     },
     {
       "quarter": 4,
-      "count": 145,
-      "pct": 26.4
+      "count": 139,
+      "pct": 25.7
     }
   ],
   "recentGames": [
@@ -473,26 +473,26 @@
       "temp": null
     },
     {
-      "gameId": "2022_01_NYG_TEN",
+      "gameId": "2022_01_GB_MIN",
       "season": 2022,
       "week": 1,
       "date": "2022-09-11",
       "homeTeam": {
-        "abbr": "TEN",
-        "name": "Tennessee Titans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
+        "abbr": "MIN",
+        "name": "Minnesota Vikings",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
       },
       "awayTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
+        "abbr": "GB",
+        "name": "Green Bay Packers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
       },
-      "homeScore": 20,
-      "awayScore": 21,
-      "penalties": 15,
-      "homePenalties": 7,
-      "awayPenalties": 8,
-      "stadium": "Nissan Stadium",
+      "homeScore": 23,
+      "awayScore": 7,
+      "penalties": 5,
+      "homePenalties": 3,
+      "awayPenalties": 2,
+      "stadium": "U.S. Bank Stadium",
       "weather": null,
       "temp": null
     },
@@ -594,9 +594,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.5,
-    "avgVsLeaguePct": -4.7,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -1.0,
+    "avgVsLeaguePct": -8.5,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -605,5 +605,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T04:32:09.222122Z"
+  "generatedAt": "2025-12-13T06:10:20.245597Z"
 }

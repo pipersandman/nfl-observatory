@@ -2,7 +2,7 @@
 """
 NFL Officiating Observatory - Complete Data Pipeline
 =====================================================
-Pulls real data from nflreadpy and generates accurate JSON files.
+Pulls real data from nfl_data_py and generates accurate JSON files.
 Includes game details, scores, weather, and team information.
 
 Usage:
@@ -10,7 +10,7 @@ Usage:
     python update_data.py --full   # Full rebuild (2020-present)
     
 Requirements:
-    pip install nflreadpy pandas numpy pyarrow
+    pip install nfl_data_py pandas numpy
 """
 
 import json
@@ -21,12 +21,12 @@ import re
 import sys
 
 try:
-    import nflreadpy as nfl
+    import nfl_data_py as nfl
     import pandas as pd
     import numpy as np
 except ImportError:
     print("❌ Missing dependencies. Run:")
-    print("   pip install nflreadpy pandas numpy pyarrow")
+    print("   pip install nfl_data_py pandas numpy")
     sys.exit(1)
 
 # =============================================================================
@@ -108,46 +108,32 @@ def get_team_info(abbr: str) -> dict:
 # =============================================================================
 
 def load_all_data(seasons: list[int]) -> dict:
-    """Load all required data from nflreadpy."""
+    """Load all required data from nfl_data_py."""
     print(f"\n📥 Loading data for seasons: {seasons}")
     print("=" * 60)
     
     data = {}
     
-    # Load schedules FIRST - we need it to map game IDs
-    print("   Loading schedules...")
-    try:
-        schedules = nfl.load_schedules(seasons).to_pandas()
-        data['schedules'] = schedules
-        print(f"   ✓ {len(schedules)} games")
-        
-        # Create game ID mapping (old_game_id -> game_id)
-        # Officials use old_game_id format, PBP uses game_id format
-        id_map = schedules[['game_id', 'old_game_id']].drop_duplicates()
-    except Exception as e:
-        print(f"   ✗ Schedules error: {e}")
-        data['schedules'] = pd.DataFrame()
-        id_map = pd.DataFrame()
-    
     # Officials assignments
     print("   Loading officials...")
     try:
-        officials = nfl.load_officials(seasons).to_pandas()
-        
-        # Officials use old_game_id format - rename and merge to get new game_id
-        officials = officials.rename(columns={'game_id': 'old_game_id', 'official_name': 'name'})
-        
-        # Merge with id_map to get the PBP-compatible game_id
-        if not id_map.empty:
-            officials = officials.merge(id_map, on='old_game_id', how='left')
-        
-        # Apply name fixes
+        officials = nfl.import_officials(seasons)
         officials['name'] = officials['name'].replace(NAME_FIXES)
         data['officials'] = officials
         print(f"   ✓ {len(officials)} official assignments")
     except Exception as e:
         print(f"   ✗ Officials error: {e}")
         data['officials'] = pd.DataFrame()
+    
+    # Schedules (includes scores, weather, etc.)
+    print("   Loading schedules...")
+    try:
+        schedules = nfl.import_schedules(seasons)
+        data['schedules'] = schedules
+        print(f"   ✓ {len(schedules)} games")
+    except Exception as e:
+        print(f"   ✗ Schedules error: {e}")
+        data['schedules'] = pd.DataFrame()
     
     # Play-by-play for penalties — load season by season to handle errors gracefully
     print("   Loading play-by-play (this takes a minute)...")
@@ -162,15 +148,11 @@ def load_all_data(seasons: list[int]) -> dict:
     all_pbp = []
     for season in seasons:
         try:
-            # Load full PBP then select columns (nflreadpy doesn't support column filtering on load)
-            season_pbp = nfl.load_pbp(season).to_pandas()
-            # Select only the columns we need (that exist in the data)
-            available_cols = [c for c in cols if c in season_pbp.columns]
-            season_pbp = season_pbp[available_cols]
+            season_pbp = nfl.import_pbp_data([season], columns=cols)
             all_pbp.append(season_pbp)
             print(f"      {season}: ✓ {len(season_pbp)} plays")
         except Exception as e:
-            print(f"      {season}: ✗ Skipped ({type(e).__name__}: {e})")
+            print(f"      {season}: ✗ Skipped ({type(e).__name__})")
             continue
     
     if all_pbp:
@@ -200,8 +182,8 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
         print("   ✗ Missing required data")
         return pd.DataFrame(), pd.DataFrame()
     
-    # Filter to crew chiefs only (position 'Referee')
-    crew_chiefs = officials[officials['position'] == 'Referee'].copy()
+    # Filter to crew chiefs only (position 'R')
+    crew_chiefs = officials[officials['off_pos'] == 'R'].copy()
     crew_chiefs = crew_chiefs.rename(columns={'name': 'referee'})
     
     # Get game-level penalty counts
@@ -487,7 +469,7 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
     referee_dir.mkdir(parents=True, exist_ok=True)
     
     # Get crew chief assignments to link penalties to referees
-    crew_chiefs = officials_df[officials_df['position'] == 'Referee'][['game_id', 'name']].copy()
+    crew_chiefs = officials_df[officials_df['off_pos'] == 'R'][['game_id', 'name']].copy()
     crew_chiefs = crew_chiefs.rename(columns={'name': 'referee'})
     
     # Merge penalties with crew chief assignments

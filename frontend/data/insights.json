@@ -2,9 +2,9 @@
   {
     "id": "season_trend",
     "icon": "\ud83d\udcc8",
-    "title": "2024 Penalty Trend",
-    "value": "+13%",
-    "description": "Penalties per game jumped from 11.3 to 12.8",
+    "title": "2025 Penalty Trend",
+    "value": "+3%",
+    "description": "Penalties per game jumped from 12.8 to 13.2",
     "explanation": "This measures the average number of accepted penalties per game compared to the previous season. A positive number means refs are throwing more flags.",
     "isPositive": false
   },
@@ -12,17 +12,17 @@
     "id": "home_bias",
     "icon": "\ud83c\udfe0",
     "title": "Home Field Bias",
-    "value": "+3.0%",
-    "description": "Away teams are penalized 3.0% more than home teams",
+    "value": "+2.6%",
+    "description": "Away teams are penalized 2.6% more than home teams",
     "explanation": "Home Field Bias measures how much more (or less) the away team gets penalized compared to the home team. Positive = away team penalized more. This likely reflects crowd influence on officials, not intentional favoritism.",
-    "isPositive": false
+    "isPositive": true
   },
   {
     "id": "ref_variance",
     "icon": "\ud83c\udfaf",
     "title": "Referee Variance",
-    "value": "6%",
-    "description": "Crew chiefs range from 10.2 to 12.6 penalties/game",
+    "value": "9%",
+    "description": "Crew chiefs range from 10.6 to 15.7 penalties/game",
     "explanation": "Referee Variance shows how much penalty rates differ between crews. Higher variance means the referee assignment significantly impacts expected penalty count. The spread tells you the difference between the most lenient and strictest crews.",
     "isPositive": "True"
   },
@@ -30,8 +30,8 @@
     "id": "let_them_play",
     "icon": "\ud83c\udfc8",
     "title": "\"Let Them Play\" Effect",
-    "value": "+28%",
-    "description": "Q4 has 28% more penalties than Q1",
+    "value": "+26%",
+    "description": "Q4 has 26% more penalties than Q1",
     "explanation": "The 'Let Them Play' effect measures whether refs call fewer penalties in crucial moments. A negative Q4 value suggests refs are reluctant to 'decide' games with late flags. Compare Q4 to Q1 to see if refs ease up as games progress.",
     "isPositive": false
   },
@@ -39,17 +39,17 @@
     "id": "top_penalty",
     "icon": "\ud83d\udea9",
     "title": "Most Common Call",
-    "value": "False Start",
-    "description": "3,066 total calls (25% of all penalties)",
-    "explanation": "False Start is the most frequently called penalty. Understanding which penalties dominate helps identify where teams lose yards and drives.",
+    "value": "Holding",
+    "description": "3,598 total calls (25% of all penalties)",
+    "explanation": "Offensive Holding is the most frequently called penalty. Understanding which penalties dominate helps identify where teams lose yards and drives.",
     "isPositive": null
   },
   {
     "id": "crew_spread",
     "icon": "\ud83d\udc68\u200d\u2696\ufe0f",
     "title": "Crew Chief Spread",
-    "value": "10.2 - 12.6",
-    "description": "Vinovich (10.2/g) vs Kemp (12.6/g)",
+    "value": "10.6 - 15.7",
+    "description": "Corrente (10.6/g) vs Moore (15.7/g)",
     "explanation": "This shows the range between the most lenient and strictest crews. When you see who's calling your game, check where they fall in this range.",
     "isPositive": null
   }

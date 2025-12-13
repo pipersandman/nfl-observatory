@@ -2,16 +2,16 @@
   "name": "Craig Wrolstad",
   "slug": "craig-wrolstad",
   "firstSeason": 2020,
-  "lastSeason": 2024,
-  "experience": "5 seasons",
+  "lastSeason": 2025,
+  "experience": "6 seasons",
   "stats": {
-    "games": 85,
-    "totalPenalties": 968,
+    "games": 97,
+    "totalPenalties": 1108,
     "avgPerGame": 11.4,
-    "minGame": 5,
+    "minGame": 4,
     "maxGame": 26,
-    "stdDev": 4.14,
-    "homeBiasPct": 2.1,
+    "stdDev": 4.2,
+    "homeBiasPct": 2.3,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -45,87 +45,406 @@
     },
     {
       "season": 2024,
-      "games": 18,
-      "penalties": 268,
-      "avg": 14.9,
-      "homeBias": 5.2
+      "games": 17,
+      "penalties": 252,
+      "avg": 14.8,
+      "homeBias": 4.8
+    },
+    {
+      "season": 2025,
+      "games": 13,
+      "penalties": 156,
+      "avg": 12.0,
+      "homeBias": 5.1
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 194,
-      "pct": 20.0
+      "count": 216,
+      "pct": 19.5
     },
     {
       "type": "False Start",
-      "count": 186,
-      "pct": 19.2
+      "count": 206,
+      "pct": 18.6
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 83,
+      "count": 95,
       "pct": 8.6
     },
     {
       "type": "Delay of Game",
-      "count": 58,
+      "count": 66,
       "pct": 6.0
     },
     {
       "type": "Defensive Holding",
-      "count": 56,
-      "pct": 5.8
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 47,
-      "pct": 4.9
+      "count": 62,
+      "pct": 5.6
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 45,
-      "pct": 4.6
+      "count": 53,
+      "pct": 4.8
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 49,
+      "pct": 4.4
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 39,
-      "pct": 4.0
+      "count": 43,
+      "pct": 3.9
     },
     {
       "type": "Roughing the Passer",
-      "count": 31,
-      "pct": 3.2
+      "count": 37,
+      "pct": 3.3
     },
     {
       "type": "Face Mask",
-      "count": 26,
-      "pct": 2.7
+      "count": 31,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 206,
-      "pct": 21.4
+      "count": 233,
+      "pct": 21.2
     },
     {
       "quarter": 2,
-      "count": 281,
-      "pct": 29.2
+      "count": 327,
+      "pct": 29.7
     },
     {
       "quarter": 3,
-      "count": 207,
+      "count": 237,
       "pct": 21.5
     },
     {
       "quarter": 4,
-      "count": 267,
-      "pct": 27.8
+      "count": 304,
+      "pct": 27.6
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_14_CHI_GB",
+      "season": 2025,
+      "week": 14,
+      "date": "2025-12-07",
+      "homeTeam": {
+        "abbr": "GB",
+        "name": "Green Bay Packers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
+      },
+      "awayTeam": {
+        "abbr": "CHI",
+        "name": "Chicago Bears",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
+      },
+      "homeScore": 28,
+      "awayScore": 21,
+      "penalties": 10,
+      "homePenalties": 6,
+      "awayPenalties": 4,
+      "stadium": "Lambeau Field",
+      "weather": null,
+      "temp": 16
+    },
+    {
+      "gameId": "2025_13_CIN_BAL",
+      "season": 2025,
+      "week": 13,
+      "date": "2025-11-27",
+      "homeTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "awayTeam": {
+        "abbr": "CIN",
+        "name": "Cincinnati Bengals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
+      },
+      "homeScore": 14,
+      "awayScore": 32,
+      "penalties": 13,
+      "homePenalties": 7,
+      "awayPenalties": 6,
+      "stadium": "M&T Bank Stadium",
+      "weather": null,
+      "temp": 38
+    },
+    {
+      "gameId": "2025_12_NYG_DET",
+      "season": 2025,
+      "week": 12,
+      "date": "2025-11-23",
+      "homeTeam": {
+        "abbr": "DET",
+        "name": "Detroit Lions",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
+      },
+      "awayTeam": {
+        "abbr": "NYG",
+        "name": "New York Giants",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
+      },
+      "homeScore": 34,
+      "awayScore": 27,
+      "penalties": 16,
+      "homePenalties": 9,
+      "awayPenalties": 7,
+      "stadium": "Ford Field",
+      "weather": null,
+      "temp": null
+    },
+    {
+      "gameId": "2025_11_LAC_JAX",
+      "season": 2025,
+      "week": 11,
+      "date": "2025-11-16",
+      "homeTeam": {
+        "abbr": "JAX",
+        "name": "Jacksonville Jaguars",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"
+      },
+      "awayTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "homeScore": 35,
+      "awayScore": 6,
+      "penalties": 6,
+      "homePenalties": 1,
+      "awayPenalties": 5,
+      "stadium": "TIAA Bank Stadium",
+      "weather": null,
+      "temp": 74
+    },
+    {
+      "gameId": "2025_09_IND_PIT",
+      "season": 2025,
+      "week": 9,
+      "date": "2025-11-02",
+      "homeTeam": {
+        "abbr": "PIT",
+        "name": "Pittsburgh Steelers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
+      },
+      "awayTeam": {
+        "abbr": "IND",
+        "name": "Indianapolis Colts",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
+      },
+      "homeScore": 27,
+      "awayScore": 20,
+      "penalties": 13,
+      "homePenalties": 8,
+      "awayPenalties": 5,
+      "stadium": "Acrisure Stadium",
+      "weather": null,
+      "temp": 56
+    },
+    {
+      "gameId": "2025_08_BUF_CAR",
+      "season": 2025,
+      "week": 8,
+      "date": "2025-10-26",
+      "homeTeam": {
+        "abbr": "CAR",
+        "name": "Carolina Panthers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
+      },
+      "awayTeam": {
+        "abbr": "BUF",
+        "name": "Buffalo Bills",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
+      },
+      "homeScore": 9,
+      "awayScore": 40,
+      "penalties": 11,
+      "homePenalties": 4,
+      "awayPenalties": 7,
+      "stadium": "Bank of America Stadium",
+      "weather": null,
+      "temp": 63
+    },
+    {
+      "gameId": "2025_07_NE_TEN",
+      "season": 2025,
+      "week": 7,
+      "date": "2025-10-19",
+      "homeTeam": {
+        "abbr": "TEN",
+        "name": "Tennessee Titans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
+      },
+      "awayTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "homeScore": 13,
+      "awayScore": 31,
+      "penalties": 8,
+      "homePenalties": 3,
+      "awayPenalties": 5,
+      "stadium": "Nissan Stadium",
+      "weather": null,
+      "temp": 60
+    },
+    {
+      "gameId": "2025_06_DET_KC",
+      "season": 2025,
+      "week": 6,
+      "date": "2025-10-12",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "DET",
+        "name": "Detroit Lions",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
+      },
+      "homeScore": 30,
+      "awayScore": 17,
+      "penalties": 4,
+      "homePenalties": 0,
+      "awayPenalties": 4,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "weather": null,
+      "temp": 85
+    },
+    {
+      "gameId": "2025_05_TB_SEA",
+      "season": 2025,
+      "week": 5,
+      "date": "2025-10-05",
+      "homeTeam": {
+        "abbr": "SEA",
+        "name": "Seattle Seahawks",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
+      },
+      "awayTeam": {
+        "abbr": "TB",
+        "name": "Tampa Bay Buccaneers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png"
+      },
+      "homeScore": 35,
+      "awayScore": 38,
+      "penalties": 11,
+      "homePenalties": 7,
+      "awayPenalties": 4,
+      "stadium": "Lumen Field",
+      "weather": null,
+      "temp": 61
+    },
+    {
+      "gameId": "2025_04_NYJ_MIA",
+      "season": 2025,
+      "week": 4,
+      "date": "2025-09-29",
+      "homeTeam": {
+        "abbr": "MIA",
+        "name": "Miami Dolphins",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
+      },
+      "awayTeam": {
+        "abbr": "NYJ",
+        "name": "New York Jets",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
+      },
+      "homeScore": 27,
+      "awayScore": 21,
+      "penalties": 19,
+      "homePenalties": 6,
+      "awayPenalties": 13,
+      "stadium": "Hard Rock Stadium",
+      "weather": null,
+      "temp": 88
+    },
+    {
+      "gameId": "2025_03_ATL_CAR",
+      "season": 2025,
+      "week": 3,
+      "date": "2025-09-21",
+      "homeTeam": {
+        "abbr": "CAR",
+        "name": "Carolina Panthers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
+      },
+      "awayTeam": {
+        "abbr": "ATL",
+        "name": "Atlanta Falcons",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
+      },
+      "homeScore": 30,
+      "awayScore": 0,
+      "penalties": 9,
+      "homePenalties": 6,
+      "awayPenalties": 3,
+      "stadium": "Bank of America Stadium",
+      "weather": null,
+      "temp": 83
+    },
+    {
+      "gameId": "2025_02_DEN_IND",
+      "season": 2025,
+      "week": 2,
+      "date": "2025-09-14",
+      "homeTeam": {
+        "abbr": "IND",
+        "name": "Indianapolis Colts",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
+      },
+      "awayTeam": {
+        "abbr": "DEN",
+        "name": "Denver Broncos",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
+      },
+      "homeScore": 29,
+      "awayScore": 28,
+      "penalties": 18,
+      "homePenalties": 10,
+      "awayPenalties": 8,
+      "stadium": "Lucas Oil Stadium",
+      "weather": null,
+      "temp": null
+    },
+    {
+      "gameId": "2025_01_HOU_LA",
+      "season": 2025,
+      "week": 1,
+      "date": "2025-09-07",
+      "homeTeam": {
+        "abbr": "LA",
+        "name": "Los Angeles Rams",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
+      },
+      "awayTeam": {
+        "abbr": "HOU",
+        "name": "Houston Texans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
+      },
+      "homeScore": 14,
+      "awayScore": 9,
+      "penalties": 18,
+      "homePenalties": 7,
+      "awayPenalties": 11,
+      "stadium": "SoFi Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2024_19_WAS_TB",
       "season": 2024,
@@ -271,30 +590,6 @@
       "temp": 41
     },
     {
-      "gameId": "2024_12_BAL_LAC",
-      "season": 2024,
-      "week": 12,
-      "date": "2024-11-25",
-      "homeTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "awayTeam": {
-        "abbr": "BAL",
-        "name": "Baltimore Ravens",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
-      },
-      "homeScore": 23,
-      "awayScore": 30,
-      "penalties": 16,
-      "homePenalties": 7,
-      "awayPenalties": 9,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
       "gameId": "2024_12_SF_GB",
       "season": 2024,
       "week": 12,
@@ -317,299 +612,11 @@
       "stadium": "Lambeau Field",
       "weather": null,
       "temp": 43
-    },
-    {
-      "gameId": "2024_11_HOU_DAL",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-18",
-      "homeTeam": {
-        "abbr": "DAL",
-        "name": "Dallas Cowboys",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
-      },
-      "awayTeam": {
-        "abbr": "HOU",
-        "name": "Houston Texans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
-      },
-      "homeScore": 10,
-      "awayScore": 34,
-      "penalties": 18,
-      "homePenalties": 9,
-      "awayPenalties": 9,
-      "stadium": "AT&T Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_10_TEN_LAC",
-      "season": 2024,
-      "week": 10,
-      "date": "2024-11-10",
-      "homeTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "awayTeam": {
-        "abbr": "TEN",
-        "name": "Tennessee Titans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
-      },
-      "homeScore": 27,
-      "awayScore": 17,
-      "penalties": 14,
-      "homePenalties": 5,
-      "awayPenalties": 9,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_08_NYJ_NE",
-      "season": 2024,
-      "week": 8,
-      "date": "2024-10-27",
-      "homeTeam": {
-        "abbr": "NE",
-        "name": "New England Patriots",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
-      },
-      "awayTeam": {
-        "abbr": "NYJ",
-        "name": "New York Jets",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
-      },
-      "homeScore": 25,
-      "awayScore": 22,
-      "penalties": 13,
-      "homePenalties": 5,
-      "awayPenalties": 8,
-      "stadium": "Gillette Stadium",
-      "weather": null,
-      "temp": 53
-    },
-    {
-      "gameId": "2024_07_MIA_IND",
-      "season": 2024,
-      "week": 7,
-      "date": "2024-10-20",
-      "homeTeam": {
-        "abbr": "IND",
-        "name": "Indianapolis Colts",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
-      },
-      "awayTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "homeScore": 16,
-      "awayScore": 10,
-      "penalties": 10,
-      "homePenalties": 4,
-      "awayPenalties": 6,
-      "stadium": "Lucas Oil Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_06_SF_SEA",
-      "season": 2024,
-      "week": 6,
-      "date": "2024-10-10",
-      "homeTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "awayTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "homeScore": 24,
-      "awayScore": 36,
-      "penalties": 14,
-      "homePenalties": 9,
-      "awayPenalties": 5,
-      "stadium": "Lumen Field",
-      "weather": null,
-      "temp": 59
-    },
-    {
-      "gameId": "2024_05_LV_DEN",
-      "season": 2024,
-      "week": 5,
-      "date": "2024-10-06",
-      "homeTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "awayTeam": {
-        "abbr": "LV",
-        "name": "Las Vegas Raiders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
-      },
-      "homeScore": 34,
-      "awayScore": 18,
-      "penalties": 20,
-      "homePenalties": 9,
-      "awayPenalties": 11,
-      "stadium": "Empower Field at Mile High",
-      "weather": null,
-      "temp": 73
-    },
-    {
-      "gameId": "2024_04_WAS_ARI",
-      "season": 2024,
-      "week": 4,
-      "date": "2024-09-29",
-      "homeTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "awayTeam": {
-        "abbr": "WAS",
-        "name": "Washington Commanders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
-      },
-      "homeScore": 14,
-      "awayScore": 42,
-      "penalties": 9,
-      "homePenalties": 4,
-      "awayPenalties": 5,
-      "stadium": "State Farm Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_03_NYG_CLE",
-      "season": 2024,
-      "week": 3,
-      "date": "2024-09-22",
-      "homeTeam": {
-        "abbr": "CLE",
-        "name": "Cleveland Browns",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png"
-      },
-      "awayTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
-      },
-      "homeScore": 15,
-      "awayScore": 21,
-      "penalties": 14,
-      "homePenalties": 5,
-      "awayPenalties": 9,
-      "stadium": "FirstEnergy Stadium",
-      "weather": null,
-      "temp": 76
-    },
-    {
-      "gameId": "2024_02_ATL_PHI",
-      "season": 2024,
-      "week": 2,
-      "date": "2024-09-16",
-      "homeTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "awayTeam": {
-        "abbr": "ATL",
-        "name": "Atlanta Falcons",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
-      },
-      "homeScore": 21,
-      "awayScore": 22,
-      "penalties": 12,
-      "homePenalties": 9,
-      "awayPenalties": 3,
-      "stadium": "Lincoln Financial Field",
-      "weather": null,
-      "temp": 71
-    },
-    {
-      "gameId": "2024_01_JAX_MIA",
-      "season": 2024,
-      "week": 1,
-      "date": "2024-09-08",
-      "homeTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "awayTeam": {
-        "abbr": "JAX",
-        "name": "Jacksonville Jaguars",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"
-      },
-      "homeScore": 20,
-      "awayScore": 17,
-      "penalties": 17,
-      "homePenalties": 9,
-      "awayPenalties": 8,
-      "stadium": "Hard Rock Stadium",
-      "weather": null,
-      "temp": 91
-    },
-    {
-      "gameId": "2023_19_LA_DET",
-      "season": 2023,
-      "week": 19,
-      "date": "2024-01-14",
-      "homeTeam": {
-        "abbr": "DET",
-        "name": "Detroit Lions",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
-      },
-      "awayTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "homeScore": 24,
-      "awayScore": 23,
-      "penalties": 9,
-      "homePenalties": 5,
-      "awayPenalties": 4,
-      "stadium": "Ford Field",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2023_18_PHI_NYG",
-      "season": 2023,
-      "week": 18,
-      "date": "2024-01-07",
-      "homeTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
-      },
-      "awayTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "homeScore": 27,
-      "awayScore": 10,
-      "penalties": 5,
-      "homePenalties": 3,
-      "awayPenalties": 2,
-      "stadium": "MetLife Stadium",
-      "weather": null,
-      "temp": 36
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.1,
-    "avgVsLeaguePct": -1.2,
+    "avgVsLeague": -0.5,
+    "avgVsLeaguePct": -4.3,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -619,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T04:32:09.111670Z"
+  "generatedAt": "2025-12-13T06:10:20.058410Z"
 }

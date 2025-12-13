@@ -368,21 +368,19 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     """Generate insight cards with explanations."""
     insights = []
     
-    # 1. Season trend
+  # 1. Season trend (since 2022)
     seasons = trends.get('bySeason', [])
     if len(seasons) >= 2:
         latest = seasons[-1]
-        previous = seasons[-2]
-        change = ((latest['avg_per_game'] - previous['avg_per_game']) / previous['avg_per_game'] * 100)
+        # Use 2022 as baseline to show multi-year trend
+        baseline = next((s for s in seasons if s['season'] == 2022), seasons[0])
+        change = ((latest['avg_per_game'] - baseline['avg_per_game']) / baseline['avg_per_game'] * 100)
         insights.append({
             'id': 'season_trend',
             'icon': '📈',
-            'title': f"{latest['season']} Penalty Trend",
+            'title': 'Penalty Surge Since 2022',
             'value': f"{'+' if change > 0 else ''}{change:.0f}%",
-            'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {previous['avg_per_game']} to {latest['avg_per_game']}",
-            'explanation': "This measures the average number of accepted penalties per game compared to the previous season. A positive number means refs are throwing more flags.",
-            'isPositive': change < 0  # Fewer penalties = positive for game flow
-        })
+            'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
     
     # 2. Home field bias
     home_away = trends.get('homeVsAway', {})

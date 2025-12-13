@@ -1,20 +1,48 @@
 {
   "name": "Shawn Hochuli",
   "slug": "shawn-hochuli",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 30,
-    "totalPenalties": 432,
-    "avgPerGame": 14.4,
-    "minGame": 8,
-    "maxGame": 22,
-    "stdDev": 3.56,
-    "homeBiasPct": -0.5,
+    "games": 96,
+    "totalPenalties": 1217,
+    "avgPerGame": 12.7,
+    "minGame": 4,
+    "maxGame": 28,
+    "stdDev": 3.79,
+    "homeBiasPct": 2.7,
     "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 15,
+      "penalties": 181,
+      "avg": 12.1,
+      "homeBias": 7.2
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 222,
+      "avg": 13.1,
+      "homeBias": 4.5
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 199,
+      "avg": 11.7,
+      "homeBias": -0.5
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 183,
+      "avg": 10.8,
+      "homeBias": 7.1
+    },
     {
       "season": 2024,
       "games": 17,
@@ -32,76 +60,76 @@
   ],
   "penaltyTypes": [
     {
-      "type": "False Start",
-      "count": 97,
-      "pct": 22.5
+      "type": "Offensive Holding",
+      "count": 251,
+      "pct": 20.6
     },
     {
-      "type": "Offensive Holding",
-      "count": 84,
-      "pct": 19.4
+      "type": "False Start",
+      "count": 234,
+      "pct": 19.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 35,
-      "pct": 8.1
+      "count": 97,
+      "pct": 8.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 27,
-      "pct": 6.2
+      "count": 66,
+      "pct": 5.4
     },
     {
-      "type": "Delay of Game",
-      "count": 19,
-      "pct": 4.4
-    },
-    {
-      "type": "Illegal Formation",
-      "count": 17,
-      "pct": 3.9
+      "type": "Defensive Holding",
+      "count": 65,
+      "pct": 5.3
     },
     {
       "type": "Roughing the Passer",
-      "count": 17,
-      "pct": 3.9
+      "count": 57,
+      "pct": 4.7
     },
     {
       "type": "Defensive Offside",
-      "count": 17,
+      "count": 51,
+      "pct": 4.2
+    },
+    {
+      "type": "Delay of Game",
+      "count": 48,
       "pct": 3.9
     },
     {
       "type": "Face Mask",
-      "count": 15,
-      "pct": 3.5
+      "count": 34,
+      "pct": 2.8
     },
     {
-      "type": "Defensive Holding",
-      "count": 14,
-      "pct": 3.2
+      "type": "Neutral Zone Infraction",
+      "count": 33,
+      "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 98,
-      "pct": 22.7
+      "count": 277,
+      "pct": 22.9
     },
     {
       "quarter": 2,
-      "count": 131,
-      "pct": 30.3
+      "count": 342,
+      "pct": 28.3
     },
     {
       "quarter": 3,
-      "count": 83,
-      "pct": 19.2
+      "count": 263,
+      "pct": 21.8
     },
     {
       "quarter": 4,
-      "count": 120,
-      "pct": 27.8
+      "count": 327,
+      "pct": 27.0
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 1.4,
-    "avgVsLeaguePct": 10.5,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Shawn Hochuli's games average 1.4 more penalties per game than league average."
+    "avgVsLeague": 0.8,
+    "avgVsLeaguePct": 6.6,
+    "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:36:28.432794Z"
+  "generatedAt": "2025-12-13T06:39:11.842822Z"
 }

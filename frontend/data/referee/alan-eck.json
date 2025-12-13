@@ -1,20 +1,27 @@
 {
   "name": "Alan Eck",
   "slug": "alan-eck",
-  "firstSeason": 2024,
+  "firstSeason": 2023,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "3 seasons",
   "stats": {
-    "games": 28,
-    "totalPenalties": 327,
-    "avgPerGame": 11.7,
-    "minGame": 8,
+    "games": 44,
+    "totalPenalties": 489,
+    "avgPerGame": 11.1,
+    "minGame": 6,
     "maxGame": 20,
-    "stdDev": 2.89,
-    "homeBiasPct": 4.6,
+    "stdDev": 2.94,
+    "homeBiasPct": 4.3,
     "consistency": "Consistent"
   },
   "seasonStats": [
+    {
+      "season": 2023,
+      "games": 16,
+      "penalties": 162,
+      "avg": 10.1,
+      "homeBias": 3.7
+    },
     {
       "season": 2024,
       "games": 16,
@@ -33,75 +40,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 67,
-      "pct": 20.5
+      "count": 93,
+      "pct": 19.0
     },
     {
       "type": "False Start",
-      "count": 58,
-      "pct": 17.7
+      "count": 85,
+      "pct": 17.4
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 27,
-      "pct": 8.3
+      "count": 39,
+      "pct": 8.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 23,
-      "pct": 7.0
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 14,
-      "pct": 4.3
+      "count": 39,
+      "pct": 8.0
     },
     {
       "type": "Defensive Offside",
-      "count": 14,
-      "pct": 4.3
+      "count": 26,
+      "pct": 5.3
     },
     {
       "type": "Delay of Game",
-      "count": 14,
+      "count": 25,
+      "pct": 5.1
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 21,
       "pct": 4.3
     },
     {
       "type": "Defensive Holding",
-      "count": 11,
-      "pct": 3.4
-    },
-    {
-      "type": "Ineligible Downfield Pass",
-      "count": 10,
+      "count": 15,
       "pct": 3.1
     },
     {
-      "type": "Face Mask",
-      "count": 8,
-      "pct": 2.4
+      "type": "Ineligible Downfield Pass",
+      "count": 14,
+      "pct": 2.9
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 13,
+      "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 67,
-      "pct": 20.6
+      "count": 103,
+      "pct": 21.1
     },
     {
       "quarter": 2,
-      "count": 112,
-      "pct": 34.4
+      "count": 162,
+      "pct": 33.2
     },
     {
       "quarter": 3,
-      "count": 80,
-      "pct": 24.5
+      "count": 116,
+      "pct": 23.8
     },
     {
       "quarter": 4,
-      "count": 67,
-      "pct": 20.6
+      "count": 107,
+      "pct": 21.9
     }
   ],
   "recentGames": [
@@ -587,9 +594,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.3,
-    "avgVsLeaguePct": -10.2,
-    "description": "Let-them-play style \u2014 fewer flags than average. Alan Eck's games average 1.3 fewer penalties per game."
+    "avgVsLeague": -0.8,
+    "avgVsLeaguePct": -6.8,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +605,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:36:28.510334Z"
+  "generatedAt": "2025-12-13T06:39:11.959307Z"
 }

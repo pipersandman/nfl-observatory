@@ -1,20 +1,48 @@
 {
   "name": "Adrian Hill",
   "slug": "adrian-hill",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 27,
-    "totalPenalties": 388,
-    "avgPerGame": 14.4,
-    "minGame": 8,
+    "games": 93,
+    "totalPenalties": 1163,
+    "avgPerGame": 12.5,
+    "minGame": 5,
     "maxGame": 22,
-    "stdDev": 4.61,
-    "homeBiasPct": -0.5,
+    "stdDev": 4.05,
+    "homeBiasPct": 5.4,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 192,
+      "avg": 12.0,
+      "homeBias": 2.1
+    },
+    {
+      "season": 2021,
+      "games": 16,
+      "penalties": 197,
+      "avg": 12.3,
+      "homeBias": 11.7
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 193,
+      "avg": 11.4,
+      "homeBias": 8.8
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 193,
+      "avg": 11.4,
+      "homeBias": 10.9
+    },
     {
       "season": 2024,
       "games": 16,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 89,
-      "pct": 22.9
+      "count": 244,
+      "pct": 21.0
     },
     {
       "type": "False Start",
-      "count": 69,
-      "pct": 17.8
+      "count": 198,
+      "pct": 17.0
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 38,
-      "pct": 9.8
-    },
-    {
-      "type": "Delay of Game",
-      "count": 18,
-      "pct": 4.6
-    },
-    {
-      "type": "Illegal Contact",
-      "count": 17,
-      "pct": 4.4
+      "count": 117,
+      "pct": 10.1
     },
     {
       "type": "Defensive Holding",
-      "count": 17,
-      "pct": 4.4
+      "count": 66,
+      "pct": 5.7
+    },
+    {
+      "type": "Delay of Game",
+      "count": 63,
+      "pct": 5.4
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 52,
+      "pct": 4.5
     },
     {
       "type": "Roughing the Passer",
-      "count": 15,
-      "pct": 3.9
+      "count": 48,
+      "pct": 4.1
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 47,
+      "pct": 4.0
     },
     {
       "type": "Illegal Formation",
-      "count": 12,
+      "count": 36,
       "pct": 3.1
     },
     {
-      "type": "Face Mask",
-      "count": 12,
-      "pct": 3.1
-    },
-    {
-      "type": "Offensive Pass Interference",
-      "count": 10,
-      "pct": 2.6
+      "type": "Neutral Zone Infraction",
+      "count": 34,
+      "pct": 2.9
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 86,
-      "pct": 22.4
+      "count": 240,
+      "pct": 20.9
     },
     {
       "quarter": 2,
-      "count": 85,
-      "pct": 22.1
+      "count": 317,
+      "pct": 27.5
     },
     {
       "quarter": 3,
-      "count": 100,
-      "pct": 26.0
+      "count": 280,
+      "pct": 24.3
     },
     {
       "quarter": 4,
-      "count": 113,
-      "pct": 29.4
+      "count": 314,
+      "pct": 27.3
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 1.4,
-    "avgVsLeaguePct": 10.5,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Adrian Hill's games average 1.4 more penalties per game than league average."
+    "avgVsLeague": 0.6,
+    "avgVsLeaguePct": 4.9,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:36:28.544977Z"
+  "generatedAt": "2025-12-13T06:39:11.900902Z"
 }

@@ -1,20 +1,48 @@
 {
   "name": "Ron Torbert",
   "slug": "ron-torbert",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 30,
-    "totalPenalties": 418,
-    "avgPerGame": 13.9,
-    "minGame": 7,
+    "games": 99,
+    "totalPenalties": 1193,
+    "avgPerGame": 12.1,
+    "minGame": 6,
     "maxGame": 24,
-    "stdDev": 4.72,
-    "homeBiasPct": -7.7,
+    "stdDev": 4.14,
+    "homeBiasPct": -1.9,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 177,
+      "avg": 11.1,
+      "homeBias": 1.7
+    },
+    {
+      "season": 2021,
+      "games": 19,
+      "penalties": 195,
+      "avg": 10.3,
+      "homeBias": 7.7
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 185,
+      "avg": 10.9,
+      "homeBias": -0.5
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 218,
+      "avg": 12.8,
+      "homeBias": -3.7
+    },
     {
       "season": 2024,
       "games": 18,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 87,
-      "pct": 20.8
+      "count": 245,
+      "pct": 20.5
     },
     {
       "type": "False Start",
-      "count": 74,
-      "pct": 17.7
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 30,
-      "pct": 7.2
+      "count": 238,
+      "pct": 19.9
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 26,
-      "pct": 6.2
+      "count": 95,
+      "pct": 8.0
     },
     {
-      "type": "Delay of Game",
-      "count": 24,
-      "pct": 5.7
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 18,
-      "pct": 4.3
+      "type": "Unnecessary Roughness",
+      "count": 69,
+      "pct": 5.8
     },
     {
       "type": "Defensive Holding",
-      "count": 16,
-      "pct": 3.8
+      "count": 59,
+      "pct": 4.9
     },
     {
-      "type": "Illegal Formation",
-      "count": 13,
-      "pct": 3.1
+      "type": "Delay of Game",
+      "count": 59,
+      "pct": 4.9
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 50,
+      "pct": 4.2
     },
     {
       "type": "Face Mask",
-      "count": 12,
-      "pct": 2.9
+      "count": 37,
+      "pct": 3.1
     },
     {
-      "type": "Ineligible Downfield Pass",
-      "count": 11,
-      "pct": 2.6
+      "type": "Roughing the Passer",
+      "count": 37,
+      "pct": 3.1
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 33,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 93,
-      "pct": 22.3
+      "count": 245,
+      "pct": 20.6
     },
     {
       "quarter": 2,
-      "count": 118,
-      "pct": 28.3
+      "count": 335,
+      "pct": 28.2
     },
     {
       "quarter": 3,
-      "count": 106,
-      "pct": 25.4
+      "count": 286,
+      "pct": 24.1
     },
     {
       "quarter": 4,
-      "count": 100,
-      "pct": 24.0
+      "count": 323,
+      "pct": 27.2
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.9,
-    "avgVsLeaguePct": 6.7,
-    "description": "Above-average penalty rate. Slightly more flags than typical."
+    "avgVsLeague": 0.2,
+    "avgVsLeaguePct": 1.6,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:36:28.465127Z"
+  "generatedAt": "2025-12-13T06:39:11.794207Z"
 }

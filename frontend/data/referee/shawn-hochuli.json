@@ -1,48 +1,20 @@
 {
   "name": "Shawn Hochuli",
   "slug": "shawn-hochuli",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 96,
-    "totalPenalties": 1217,
-    "avgPerGame": 12.7,
-    "minGame": 4,
-    "maxGame": 28,
-    "stdDev": 3.79,
-    "homeBiasPct": 2.7,
+    "games": 31,
+    "totalPenalties": 446,
+    "avgPerGame": 14.4,
+    "minGame": 8,
+    "maxGame": 22,
+    "stdDev": 3.5,
+    "homeBiasPct": -1.3,
     "consistency": "Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 15,
-      "penalties": 181,
-      "avg": 12.1,
-      "homeBias": 7.2
-    },
-    {
-      "season": 2021,
-      "games": 17,
-      "penalties": 222,
-      "avg": 13.1,
-      "homeBias": 4.5
-    },
-    {
-      "season": 2022,
-      "games": 17,
-      "penalties": 199,
-      "avg": 11.7,
-      "homeBias": -0.5
-    },
-    {
-      "season": 2023,
-      "games": 17,
-      "penalties": 183,
-      "avg": 10.8,
-      "homeBias": 7.1
-    },
     {
       "season": 2024,
       "games": 17,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 197,
-      "avg": 15.2,
-      "homeBias": -5.6
+      "games": 14,
+      "penalties": 211,
+      "avg": 15.1,
+      "homeBias": -7.1
     }
   ],
   "penaltyTypes": [
     {
-      "type": "Offensive Holding",
-      "count": 251,
-      "pct": 20.6
+      "type": "False Start",
+      "count": 98,
+      "pct": 22.0
     },
     {
-      "type": "False Start",
-      "count": 234,
-      "pct": 19.2
+      "type": "Offensive Holding",
+      "count": 88,
+      "pct": 19.7
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 97,
-      "pct": 8.0
+      "count": 35,
+      "pct": 7.8
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 66,
-      "pct": 5.4
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 65,
-      "pct": 5.3
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 57,
-      "pct": 4.7
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 51,
-      "pct": 4.2
+      "count": 27,
+      "pct": 6.1
     },
     {
       "type": "Delay of Game",
-      "count": 48,
-      "pct": 3.9
+      "count": 20,
+      "pct": 4.5
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 19,
+      "pct": 4.3
+    },
+    {
+      "type": "Illegal Formation",
+      "count": 17,
+      "pct": 3.8
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 17,
+      "pct": 3.8
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 15,
+      "pct": 3.4
     },
     {
       "type": "Face Mask",
-      "count": 34,
-      "pct": 2.8
-    },
-    {
-      "type": "Neutral Zone Infraction",
-      "count": 33,
-      "pct": 2.7
+      "count": 15,
+      "pct": 3.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 277,
-      "pct": 22.9
+      "count": 101,
+      "pct": 22.6
     },
     {
       "quarter": 2,
-      "count": 342,
-      "pct": 28.3
+      "count": 134,
+      "pct": 30.0
     },
     {
       "quarter": 3,
-      "count": 263,
-      "pct": 21.8
+      "count": 86,
+      "pct": 19.3
     },
     {
       "quarter": 4,
-      "count": 327,
-      "pct": 27.0
+      "count": 125,
+      "pct": 28.0
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_LAC_KC",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "homeScore": 13,
+      "awayScore": 16,
+      "penalties": 14,
+      "homePenalties": 9,
+      "awayPenalties": 5,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_14_DAL_DET",
       "season": 2025,
@@ -588,36 +584,12 @@
       "stadium": "Hard Rock Stadium",
       "weather": null,
       "temp": 77
-    },
-    {
-      "gameId": "2024_13_PIT_CIN",
-      "season": 2024,
-      "week": 13,
-      "date": "2024-12-01",
-      "homeTeam": {
-        "abbr": "CIN",
-        "name": "Cincinnati Bengals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
-      },
-      "awayTeam": {
-        "abbr": "PIT",
-        "name": "Pittsburgh Steelers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
-      },
-      "homeScore": 38,
-      "awayScore": 44,
-      "penalties": 20,
-      "homePenalties": 11,
-      "awayPenalties": 9,
-      "stadium": "Paycor Stadium",
-      "weather": null,
-      "temp": 32
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.8,
-    "avgVsLeaguePct": 6.6,
-    "description": "Above-average penalty rate. Slightly more flags than typical."
+    "avgVsLeague": 1.4,
+    "avgVsLeaguePct": 11.0,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Shawn Hochuli's games average 1.4 more penalties per game than league average."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.842822Z"
+  "generatedAt": "2025-12-16T06:13:19.317660Z"
 }

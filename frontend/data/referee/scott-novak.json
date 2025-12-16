@@ -1,48 +1,20 @@
 {
   "name": "Scott Novak",
   "slug": "scott-novak",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 94,
-    "totalPenalties": 1098,
-    "avgPerGame": 11.7,
-    "minGame": 2,
-    "maxGame": 26,
-    "stdDev": 4.74,
-    "homeBiasPct": -0.2,
+    "games": 31,
+    "totalPenalties": 372,
+    "avgPerGame": 12.0,
+    "minGame": 4,
+    "maxGame": 22,
+    "stdDev": 4.02,
+    "homeBiasPct": -5.9,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 16,
-      "penalties": 164,
-      "avg": 10.2,
-      "homeBias": 8.5
-    },
-    {
-      "season": 2021,
-      "games": 16,
-      "penalties": 213,
-      "avg": 13.3,
-      "homeBias": 2.3
-    },
-    {
-      "season": 2022,
-      "games": 16,
-      "penalties": 204,
-      "avg": 12.8,
-      "homeBias": -1.0
-    },
-    {
-      "season": 2023,
-      "games": 16,
-      "penalties": 155,
-      "avg": 9.7,
-      "homeBias": -0.6
-    },
     {
       "season": 2024,
       "games": 17,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 154,
-      "avg": 11.8,
-      "homeBias": -16.9
+      "games": 14,
+      "penalties": 164,
+      "avg": 11.7,
+      "homeBias": -18.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 206,
-      "pct": 18.8
+      "count": 80,
+      "pct": 21.5
     },
     {
       "type": "False Start",
-      "count": 205,
-      "pct": 18.7
+      "count": 66,
+      "pct": 17.7
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 93,
-      "pct": 8.5
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 68,
-      "pct": 6.2
+      "count": 25,
+      "pct": 6.7
     },
     {
       "type": "Delay of Game",
-      "count": 65,
-      "pct": 5.9
+      "count": 19,
+      "pct": 5.1
     },
     {
-      "type": "Defensive Holding",
-      "count": 64,
-      "pct": 5.8
+      "type": "Defensive Offside",
+      "count": 19,
+      "pct": 5.1
+    },
+    {
+      "type": "Illegal Formation",
+      "count": 18,
+      "pct": 4.8
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 44,
-      "pct": 4.0
+      "count": 17,
+      "pct": 4.6
     },
     {
-      "type": "Illegal Contact",
-      "count": 33,
-      "pct": 3.0
+      "type": "Defensive Holding",
+      "count": 16,
+      "pct": 4.3
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 30,
+      "type": "Illegal Shift",
+      "count": 10,
       "pct": 2.7
     },
     {
-      "type": "Illegal Block Above the Waist",
-      "count": 27,
-      "pct": 2.5
+      "type": "Illegal Contact",
+      "count": 10,
+      "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 209,
-      "pct": 19.1
+      "count": 75,
+      "pct": 20.3
     },
     {
       "quarter": 2,
-      "count": 334,
-      "pct": 30.6
+      "count": 117,
+      "pct": 31.6
     },
     {
       "quarter": 3,
-      "count": 267,
-      "pct": 24.4
+      "count": 83,
+      "pct": 22.4
     },
     {
       "quarter": 4,
-      "count": 283,
-      "pct": 25.9
+      "count": 95,
+      "pct": 25.7
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_MIN_DAL",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "DAL",
+        "name": "Dallas Cowboys",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
+      },
+      "awayTeam": {
+        "abbr": "MIN",
+        "name": "Minnesota Vikings",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
+      },
+      "homeScore": 26,
+      "awayScore": 34,
+      "penalties": 10,
+      "homePenalties": 7,
+      "awayPenalties": 3,
+      "stadium": "AT&T Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_14_PHI_LAC",
       "season": 2025,
@@ -588,36 +584,12 @@
       "stadium": "Lumen Field",
       "weather": null,
       "temp": 45
-    },
-    {
-      "gameId": "2024_11_JAX_DET",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-17",
-      "homeTeam": {
-        "abbr": "DET",
-        "name": "Detroit Lions",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
-      },
-      "awayTeam": {
-        "abbr": "JAX",
-        "name": "Jacksonville Jaguars",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"
-      },
-      "homeScore": 52,
-      "awayScore": 6,
-      "penalties": 10,
-      "homePenalties": 4,
-      "awayPenalties": 6,
-      "stadium": "Ford Field",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.2,
-    "avgVsLeaguePct": -1.8,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -1.0,
+    "avgVsLeaguePct": -7.5,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.881302Z"
+  "generatedAt": "2025-12-16T06:13:19.404210Z"
 }

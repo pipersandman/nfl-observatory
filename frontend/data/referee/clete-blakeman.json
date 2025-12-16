@@ -1,48 +1,20 @@
 {
   "name": "Clete Blakeman",
   "slug": "clete-blakeman",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 96,
-    "totalPenalties": 1185,
-    "avgPerGame": 12.3,
-    "minGame": 5,
+    "games": 30,
+    "totalPenalties": 427,
+    "avgPerGame": 14.2,
+    "minGame": 7,
     "maxGame": 23,
-    "stdDev": 4.3,
-    "homeBiasPct": 2.6,
-    "consistency": "Highly Variable"
+    "stdDev": 3.98,
+    "homeBiasPct": 0.2,
+    "consistency": "Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 16,
-      "penalties": 174,
-      "avg": 10.9,
-      "homeBias": 4.6
-    },
-    {
-      "season": 2021,
-      "games": 17,
-      "penalties": 208,
-      "avg": 12.2,
-      "homeBias": 3.8
-    },
-    {
-      "season": 2022,
-      "games": 17,
-      "penalties": 203,
-      "avg": 11.9,
-      "homeBias": 2.5
-    },
-    {
-      "season": 2023,
-      "games": 17,
-      "penalties": 180,
-      "avg": 10.6,
-      "homeBias": 3.3
-    },
     {
       "season": 2024,
       "games": 17,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 12,
-      "penalties": 159,
-      "avg": 13.2,
-      "homeBias": 11.9
+      "games": 13,
+      "penalties": 166,
+      "avg": 12.8,
+      "homeBias": 9.6
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 218,
-      "pct": 18.4
+      "count": 75,
+      "pct": 17.6
     },
     {
       "type": "False Start",
-      "count": 206,
-      "pct": 17.4
-    },
-    {
-      "type": "Defensive Pass Interference",
-      "count": 97,
-      "pct": 8.2
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 82,
-      "pct": 6.9
+      "count": 71,
+      "pct": 16.6
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 68,
-      "pct": 5.7
+      "count": 34,
+      "pct": 8.0
     },
     {
-      "type": "Delay of Game",
-      "count": 64,
-      "pct": 5.4
+      "type": "Defensive Pass Interference",
+      "count": 34,
+      "pct": 8.0
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 27,
+      "pct": 6.3
     },
     {
       "type": "Defensive Offside",
-      "count": 54,
-      "pct": 4.6
+      "count": 22,
+      "pct": 5.2
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 39,
-      "pct": 3.3
+      "type": "Delay of Game",
+      "count": 19,
+      "pct": 4.4
+    },
+    {
+      "type": "Illegal Formation",
+      "count": 17,
+      "pct": 4.0
     },
     {
       "type": "Illegal Contact",
-      "count": 35,
-      "pct": 3.0
+      "count": 17,
+      "pct": 4.0
     },
     {
-      "type": "Roughing the Passer",
-      "count": 35,
-      "pct": 3.0
+      "type": "Ineligible Downfield Pass",
+      "count": 12,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 277,
-      "pct": 23.5
+      "count": 105,
+      "pct": 24.6
     },
     {
       "quarter": 2,
-      "count": 325,
-      "pct": 27.6
+      "count": 115,
+      "pct": 27.0
     },
     {
       "quarter": 3,
-      "count": 305,
-      "pct": 25.9
+      "count": 111,
+      "pct": 26.1
     },
     {
       "quarter": 4,
-      "count": 272,
-      "pct": 23.1
+      "count": 95,
+      "pct": 22.3
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_ARI_HOU",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "HOU",
+        "name": "Houston Texans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
+      },
+      "awayTeam": {
+        "abbr": "ARI",
+        "name": "Arizona Cardinals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
+      },
+      "homeScore": 40,
+      "awayScore": 20,
+      "penalties": 7,
+      "homePenalties": 5,
+      "awayPenalties": 2,
+      "stadium": "NRG Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_14_NO_TB",
       "season": 2025,
@@ -588,36 +584,12 @@
       "stadium": "Mercedes-Benz Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_11_MIN_TEN",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-17",
-      "homeTeam": {
-        "abbr": "TEN",
-        "name": "Tennessee Titans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
-      },
-      "awayTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "homeScore": 13,
-      "awayScore": 23,
-      "penalties": 15,
-      "homePenalties": 12,
-      "awayPenalties": 3,
-      "stadium": "Nissan Stadium",
-      "weather": null,
-      "temp": 66
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.4,
-    "avgVsLeaguePct": 3.2,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": 1.2,
+    "avgVsLeaguePct": 9.5,
+    "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.852508Z"
+  "generatedAt": "2025-12-16T06:13:19.809787Z"
 }

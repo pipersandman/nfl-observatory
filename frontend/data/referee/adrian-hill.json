@@ -1,48 +1,20 @@
 {
   "name": "Adrian Hill",
   "slug": "adrian-hill",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 93,
-    "totalPenalties": 1163,
-    "avgPerGame": 12.5,
-    "minGame": 5,
+    "games": 28,
+    "totalPenalties": 396,
+    "avgPerGame": 14.1,
+    "minGame": 8,
     "maxGame": 22,
-    "stdDev": 4.05,
-    "homeBiasPct": 5.4,
+    "stdDev": 4.68,
+    "homeBiasPct": -1.0,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 16,
-      "penalties": 192,
-      "avg": 12.0,
-      "homeBias": 2.1
-    },
-    {
-      "season": 2021,
-      "games": 16,
-      "penalties": 197,
-      "avg": 12.3,
-      "homeBias": 11.7
-    },
-    {
-      "season": 2022,
-      "games": 17,
-      "penalties": 193,
-      "avg": 11.4,
-      "homeBias": 8.8
-    },
-    {
-      "season": 2023,
-      "games": 17,
-      "penalties": 193,
-      "avg": 11.4,
-      "homeBias": 10.9
-    },
     {
       "season": 2024,
       "games": 16,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 11,
-      "penalties": 170,
-      "avg": 15.5,
-      "homeBias": -2.4
+      "games": 12,
+      "penalties": 178,
+      "avg": 14.8,
+      "homeBias": -3.4
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 244,
-      "pct": 21.0
+      "count": 89,
+      "pct": 22.5
     },
     {
       "type": "False Start",
-      "count": 198,
-      "pct": 17.0
+      "count": 72,
+      "pct": 18.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 117,
-      "pct": 10.1
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 66,
-      "pct": 5.7
+      "count": 39,
+      "pct": 9.8
     },
     {
       "type": "Delay of Game",
-      "count": 63,
-      "pct": 5.4
+      "count": 19,
+      "pct": 4.8
     },
     {
-      "type": "Unnecessary Roughness",
-      "count": 52,
-      "pct": 4.5
+      "type": "Illegal Contact",
+      "count": 17,
+      "pct": 4.3
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 17,
+      "pct": 4.3
     },
     {
       "type": "Roughing the Passer",
-      "count": 48,
-      "pct": 4.1
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 47,
-      "pct": 4.0
+      "count": 15,
+      "pct": 3.8
     },
     {
       "type": "Illegal Formation",
-      "count": 36,
-      "pct": 3.1
+      "count": 12,
+      "pct": 3.0
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 34,
-      "pct": 2.9
+      "type": "Face Mask",
+      "count": 12,
+      "pct": 3.0
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 11,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 240,
-      "pct": 20.9
+      "count": 86,
+      "pct": 21.9
     },
     {
       "quarter": 2,
-      "count": 317,
-      "pct": 27.5
+      "count": 91,
+      "pct": 23.2
     },
     {
       "quarter": 3,
-      "count": 280,
-      "pct": 24.3
+      "count": 101,
+      "pct": 25.8
     },
     {
       "quarter": 4,
-      "count": 314,
-      "pct": 27.3
+      "count": 114,
+      "pct": 29.1
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_IND_SEA",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "SEA",
+        "name": "Seattle Seahawks",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
+      },
+      "awayTeam": {
+        "abbr": "IND",
+        "name": "Indianapolis Colts",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
+      },
+      "homeScore": 18,
+      "awayScore": 16,
+      "penalties": 8,
+      "homePenalties": 5,
+      "awayPenalties": 3,
+      "stadium": "Lumen Field",
+      "weather": null,
+      "temp": 51
+    },
     {
       "gameId": "2025_12_BUF_HOU",
       "season": 2025,
@@ -588,36 +584,12 @@
       "stadium": "TIAA Bank Stadium",
       "weather": null,
       "temp": 79
-    },
-    {
-      "gameId": "2024_09_DEN_BAL",
-      "season": 2024,
-      "week": 9,
-      "date": "2024-11-03",
-      "homeTeam": {
-        "abbr": "BAL",
-        "name": "Baltimore Ravens",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
-      },
-      "awayTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "homeScore": 41,
-      "awayScore": 10,
-      "penalties": 15,
-      "homePenalties": 6,
-      "awayPenalties": 9,
-      "stadium": "M&T Bank Stadium",
-      "weather": null,
-      "temp": 57
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.6,
-    "avgVsLeaguePct": 4.9,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": 1.1,
+    "avgVsLeaguePct": 8.7,
+    "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.900902Z"
+  "generatedAt": "2025-12-16T06:13:19.882646Z"
 }

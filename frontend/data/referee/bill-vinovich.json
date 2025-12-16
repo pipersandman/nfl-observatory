@@ -1,48 +1,20 @@
 {
   "name": "Bill Vinovich",
   "slug": "bill-vinovich",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 98,
-    "totalPenalties": 1054,
-    "avgPerGame": 10.8,
-    "minGame": 3,
+    "games": 31,
+    "totalPenalties": 401,
+    "avgPerGame": 12.9,
+    "minGame": 5,
     "maxGame": 26,
-    "stdDev": 4.07,
-    "homeBiasPct": 2.3,
+    "stdDev": 4.82,
+    "homeBiasPct": 2.7,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 16,
-      "penalties": 160,
-      "avg": 10.0,
-      "homeBias": -3.8
-    },
-    {
-      "season": 2021,
-      "games": 17,
-      "penalties": 154,
-      "avg": 9.1,
-      "homeBias": 6.5
-    },
-    {
-      "season": 2022,
-      "games": 17,
-      "penalties": 147,
-      "avg": 8.6,
-      "homeBias": 10.2
-    },
-    {
-      "season": 2023,
-      "games": 18,
-      "penalties": 209,
-      "avg": 11.6,
-      "homeBias": -0.5
-    },
     {
       "season": 2024,
       "games": 17,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 188,
-      "avg": 14.5,
-      "homeBias": 7.4
+      "games": 14,
+      "penalties": 205,
+      "avg": 14.6,
+      "homeBias": 9.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 230,
-      "pct": 21.8
+      "count": 97,
+      "pct": 24.2
     },
     {
       "type": "Offensive Holding",
-      "count": 162,
-      "pct": 15.4
+      "count": 64,
+      "pct": 16.0
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 90,
-      "pct": 8.5
+      "count": 40,
+      "pct": 10.0
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 21,
+      "pct": 5.2
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 55,
-      "pct": 5.2
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 55,
-      "pct": 5.2
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 50,
+      "count": 19,
       "pct": 4.7
     },
     {
       "type": "Delay of Game",
-      "count": 44,
-      "pct": 4.2
+      "count": 15,
+      "pct": 3.7
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 43,
-      "pct": 4.1
+      "type": "Defensive Holding",
+      "count": 14,
+      "pct": 3.5
     },
     {
-      "type": "Face Mask",
-      "count": 26,
-      "pct": 2.5
+      "type": "Defensive Offside",
+      "count": 11,
+      "pct": 2.7
     },
     {
-      "type": "Illegal Use of Hands",
-      "count": 26,
+      "type": "Offensive Pass Interference",
+      "count": 11,
+      "pct": 2.7
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 10,
       "pct": 2.5
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 251,
-      "pct": 24.0
+      "count": 94,
+      "pct": 23.7
     },
     {
       "quarter": 2,
-      "count": 314,
-      "pct": 30.0
+      "count": 127,
+      "pct": 32.0
     },
     {
       "quarter": 3,
-      "count": 240,
-      "pct": 22.9
+      "count": 90,
+      "pct": 22.7
     },
     {
       "quarter": 4,
-      "count": 242,
-      "pct": 23.1
+      "count": 86,
+      "pct": 21.7
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_WAS_NYG",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "NYG",
+        "name": "New York Giants",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
+      },
+      "awayTeam": {
+        "abbr": "WAS",
+        "name": "Washington Commanders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
+      },
+      "homeScore": 21,
+      "awayScore": 29,
+      "penalties": 17,
+      "homePenalties": 6,
+      "awayPenalties": 11,
+      "stadium": "MetLife Stadium",
+      "weather": null,
+      "temp": 27
+    },
     {
       "gameId": "2025_14_MIA_NYJ",
       "season": 2025,
@@ -588,36 +584,12 @@
       "stadium": "GEHA Field at Arrowhead Stadium",
       "weather": null,
       "temp": 50
-    },
-    {
-      "gameId": "2024_13_ARI_MIN",
-      "season": 2024,
-      "week": 13,
-      "date": "2024-12-01",
-      "homeTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "awayTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "homeScore": 23,
-      "awayScore": 22,
-      "penalties": 13,
-      "homePenalties": 3,
-      "awayPenalties": 10,
-      "stadium": "U.S. Bank Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.1,
-    "avgVsLeaguePct": -9.4,
-    "description": "Below-average penalty rate. Tends to let minor infractions go."
+    "avgVsLeague": -0.1,
+    "avgVsLeaguePct": -0.6,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.813764Z"
+  "generatedAt": "2025-12-16T06:13:19.360467Z"
 }

@@ -1,48 +1,20 @@
 {
   "name": "Clay Martin",
   "slug": "clay-martin",
-  "firstSeason": 2020,
+  "firstSeason": 2024,
   "lastSeason": 2025,
-  "experience": "6 seasons",
+  "experience": "2 seasons",
   "stats": {
-    "games": 94,
-    "totalPenalties": 1104,
-    "avgPerGame": 11.7,
-    "minGame": 4,
-    "maxGame": 22,
-    "stdDev": 3.84,
-    "homeBiasPct": 4.0,
+    "games": 30,
+    "totalPenalties": 378,
+    "avgPerGame": 12.6,
+    "minGame": 6,
+    "maxGame": 20,
+    "stdDev": 3.93,
+    "homeBiasPct": 5.8,
     "consistency": "Variable"
   },
   "seasonStats": [
-    {
-      "season": 2020,
-      "games": 14,
-      "penalties": 156,
-      "avg": 11.1,
-      "homeBias": 7.7
-    },
-    {
-      "season": 2021,
-      "games": 17,
-      "penalties": 195,
-      "avg": 11.5,
-      "homeBias": -1.5
-    },
-    {
-      "season": 2022,
-      "games": 17,
-      "penalties": 198,
-      "avg": 11.6,
-      "homeBias": 18.2
-    },
-    {
-      "season": 2023,
-      "games": 17,
-      "penalties": 183,
-      "avg": 10.8,
-      "homeBias": -12.6
-    },
     {
       "season": 2024,
       "games": 17,
@@ -52,87 +24,111 @@
     },
     {
       "season": 2025,
-      "games": 12,
-      "penalties": 157,
-      "avg": 13.1,
+      "games": 13,
+      "penalties": 163,
+      "avg": 12.5,
       "homeBias": -0.6
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 248,
-      "pct": 22.5
+      "count": 99,
+      "pct": 26.2
     },
     {
       "type": "False Start",
-      "count": 199,
-      "pct": 18.0
-    },
-    {
-      "type": "Defensive Pass Interference",
-      "count": 88,
-      "pct": 8.0
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 73,
-      "pct": 6.6
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 43,
-      "pct": 3.9
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 43,
-      "pct": 3.9
-    },
-    {
-      "type": "Delay of Game",
-      "count": 39,
-      "pct": 3.5
+      "count": 65,
+      "pct": 17.2
     },
     {
       "type": "Illegal Formation",
-      "count": 39,
-      "pct": 3.5
+      "count": 24,
+      "pct": 6.3
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 38,
+      "type": "Defensive Pass Interference",
+      "count": 22,
+      "pct": 5.8
+    },
+    {
+      "type": "Defensive Holding",
+      "count": 22,
+      "pct": 5.8
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 20,
+      "pct": 5.3
+    },
+    {
+      "type": "Delay of Game",
+      "count": 13,
       "pct": 3.4
     },
     {
-      "type": "Illegal Use of Hands",
-      "count": 34,
-      "pct": 3.1
+      "type": "Roughing the Passer",
+      "count": 12,
+      "pct": 3.2
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 9,
+      "pct": 2.4
+    },
+    {
+      "type": "Ineligible Downfield Pass",
+      "count": 9,
+      "pct": 2.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 230,
-      "pct": 20.9
+      "count": 89,
+      "pct": 23.8
     },
     {
       "quarter": 2,
-      "count": 342,
-      "pct": 31.1
+      "count": 114,
+      "pct": 30.5
     },
     {
       "quarter": 3,
-      "count": 251,
-      "pct": 22.9
+      "count": 80,
+      "pct": 21.4
     },
     {
       "quarter": 4,
-      "count": 275,
-      "pct": 25.0
+      "count": 91,
+      "pct": 24.3
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_LV_PHI",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "awayTeam": {
+        "abbr": "LV",
+        "name": "Las Vegas Raiders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
+      },
+      "homeScore": 31,
+      "awayScore": 0,
+      "penalties": 6,
+      "homePenalties": 3,
+      "awayPenalties": 3,
+      "stadium": "Lincoln Financial Field",
+      "weather": null,
+      "temp": 30
+    },
     {
       "gameId": "2025_13_HOU_IND",
       "season": 2025,
@@ -588,35 +584,11 @@
       "stadium": "GEHA Field at Arrowhead Stadium",
       "weather": null,
       "temp": 37
-    },
-    {
-      "gameId": "2024_12_MIN_CHI",
-      "season": 2024,
-      "week": 12,
-      "date": "2024-11-24",
-      "homeTeam": {
-        "abbr": "CHI",
-        "name": "Chicago Bears",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
-      },
-      "awayTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "homeScore": 27,
-      "awayScore": 30,
-      "penalties": 12,
-      "homePenalties": 7,
-      "awayPenalties": 5,
-      "stadium": "Soldier Field",
-      "weather": null,
-      "temp": 47
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.2,
-    "avgVsLeaguePct": -1.8,
+    "avgVsLeague": -0.4,
+    "avgVsLeaguePct": -2.9,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +598,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.890898Z"
+  "generatedAt": "2025-12-16T06:13:19.708716Z"
 }

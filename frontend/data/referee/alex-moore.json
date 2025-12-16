@@ -5,99 +5,123 @@
   "lastSeason": 2025,
   "experience": "1 seasons",
   "stats": {
-    "games": 13,
-    "totalPenalties": 204,
-    "avgPerGame": 15.7,
+    "games": 14,
+    "totalPenalties": 224,
+    "avgPerGame": 16.0,
     "minGame": 8,
     "maxGame": 22,
-    "stdDev": 4.5,
-    "homeBiasPct": 3.9,
+    "stdDev": 4.47,
+    "homeBiasPct": 4.5,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 204,
-      "avg": 15.7,
-      "homeBias": 3.9
+      "games": 14,
+      "penalties": 224,
+      "avg": 16.0,
+      "homeBias": 4.5
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 40,
+      "count": 44,
       "pct": 19.6
     },
     {
       "type": "Offensive Holding",
-      "count": 37,
-      "pct": 18.1
+      "count": 41,
+      "pct": 18.3
     },
     {
       "type": "Roughing the Passer",
-      "count": 12,
-      "pct": 5.9
+      "count": 13,
+      "pct": 5.8
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 11,
+      "count": 12,
       "pct": 5.4
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 11,
+      "pct": 4.9
     },
     {
       "type": "Delay of Game",
       "count": 10,
-      "pct": 4.9
+      "pct": 4.5
     },
     {
       "type": "Face Mask",
       "count": 10,
-      "pct": 4.9
+      "pct": 4.5
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 10,
+      "pct": 4.5
     },
     {
       "type": "Illegal Contact",
       "count": 9,
-      "pct": 4.4
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 9,
-      "pct": 4.4
+      "pct": 4.0
     },
     {
       "type": "Defensive Holding",
       "count": 9,
-      "pct": 4.4
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 8,
-      "pct": 3.9
+      "pct": 4.0
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 36,
-      "pct": 17.6
+      "count": 39,
+      "pct": 17.4
     },
     {
       "quarter": 2,
-      "count": 69,
-      "pct": 33.8
+      "count": 74,
+      "pct": 33.0
     },
     {
       "quarter": 3,
-      "count": 50,
-      "pct": 24.5
+      "count": 56,
+      "pct": 25.0
     },
     {
       "quarter": 4,
-      "count": 49,
-      "pct": 24.0
+      "count": 55,
+      "pct": 24.6
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_15_CAR_NO",
+      "season": 2025,
+      "week": 15,
+      "date": "2025-12-14",
+      "homeTeam": {
+        "abbr": "NO",
+        "name": "New Orleans Saints",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"
+      },
+      "awayTeam": {
+        "abbr": "CAR",
+        "name": "Carolina Panthers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
+      },
+      "homeScore": 20,
+      "awayScore": 17,
+      "penalties": 20,
+      "homePenalties": 9,
+      "awayPenalties": 11,
+      "stadium": "Mercedes-Benz Superdome",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_14_PIT_BAL",
       "season": 2025,
@@ -412,9 +436,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 3.8,
-    "avgVsLeaguePct": 31.8,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Alex Moore's games average 3.8 more penalties per game than league average."
+    "avgVsLeague": 3.0,
+    "avgVsLeaguePct": 23.3,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Alex Moore's games average 3.0 more penalties per game than league average."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -423,5 +447,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-13T06:39:11.976917Z"
+  "generatedAt": "2025-12-16T06:13:19.898889Z"
 }

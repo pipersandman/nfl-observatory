@@ -6,7 +6,7 @@ Pulls real data from nflreadpy and generates accurate JSON files.
 Includes game details, scores, weather, and team information.
 
 Usage:
-    python update_data.py          # Update current season only
+    python update_data.py          # Incremental update (recent seasons)
     python update_data.py --full   # Full rebuild (2020-present)
     
 Requirements:
@@ -114,6 +114,16 @@ def load_all_data(seasons: list[int]) -> dict:
     
     data = {}
     
+    # Schedules first (most reliable)
+    print("   Loading schedules...")
+    try:
+        schedules = nfl.load_schedules(seasons).to_pandas()
+        data['schedules'] = schedules
+        print(f"   ✓ {len(schedules)} games")
+    except Exception as e:
+        print(f"   ✗ Schedules error: {e}")
+        data['schedules'] = pd.DataFrame()
+    
     # Officials assignments
     print("   Loading officials...")
     try:
@@ -126,16 +136,6 @@ def load_all_data(seasons: list[int]) -> dict:
     except Exception as e:
         print(f"   ✗ Officials error: {e}")
         data['officials'] = pd.DataFrame()
-    
-    # Schedules (includes scores, weather, etc.)
-    print("   Loading schedules...")
-    try:
-        schedules = nfl.load_schedules(seasons).to_pandas()
-        data['schedules'] = schedules
-        print(f"   ✓ {len(schedules)} games")
-    except Exception as e:
-        print(f"   ✗ Schedules error: {e}")
-        data['schedules'] = pd.DataFrame()
     
     # Play-by-play for penalties — load season by season to handle errors gracefully
     print("   Loading play-by-play (this takes a minute)...")
@@ -170,6 +170,86 @@ def load_all_data(seasons: list[int]) -> dict:
         data['penalties'] = pd.DataFrame()
     
     return data
+
+
+# =============================================================================
+# CONSISTENCY CALCULATION (Based on Penalty Type Distribution)
+# =============================================================================
+
+def calculate_style_consistency(ref_penalties: pd.DataFrame, ref_name: str) -> tuple[str, float]:
+    """
+    Calculate consistency based on penalty TYPE distribution stability across seasons.
+    
+    A "consistent" referee calls the same types of penalties in similar proportions
+    year after year. A "variable" referee's penalty mix changes significantly.
+    
+    Returns: (consistency_label, consistency_score)
+    """
+    if ref_penalties.empty or 'penalty_type' not in ref_penalties.columns:
+        return 'Unknown', 0.0
+    
+    if 'season' not in ref_penalties.columns:
+        return 'Unknown', 0.0
+    
+    # Get seasons this ref has worked
+    seasons = ref_penalties['season'].unique()
+    
+    if len(seasons) < 2:
+        # Not enough seasons to measure consistency - use single season distribution vs league
+        return 'New', 0.0
+    
+    # Get top 6 penalty types for this ref (to focus on meaningful patterns)
+    top_types = ref_penalties['penalty_type'].value_counts().head(6).index.tolist()
+    
+    # Calculate percentage distribution for each season
+    season_distributions = []
+    
+    for season in sorted(seasons):
+        season_data = ref_penalties[ref_penalties['season'] == season]
+        total = len(season_data)
+        
+        if total < 10:  # Skip seasons with very few penalties
+            continue
+        
+        dist = {}
+        for ptype in top_types:
+            count = len(season_data[season_data['penalty_type'] == ptype])
+            dist[ptype] = (count / total) * 100
+        
+        season_distributions.append(dist)
+    
+    if len(season_distributions) < 2:
+        return 'New', 0.0
+    
+    # Calculate variance in each penalty type's percentage across seasons
+    type_variances = []
+    
+    for ptype in top_types:
+        percentages = [dist.get(ptype, 0) for dist in season_distributions]
+        if len(percentages) >= 2:
+            variance = np.std(percentages)
+            type_variances.append(variance)
+    
+    if not type_variances:
+        return 'Unknown', 0.0
+    
+    # Average variance across all penalty types
+    # Lower variance = more consistent style
+    avg_variance = np.mean(type_variances)
+    
+    # Convert to consistency label
+    # These thresholds are based on: typical penalty type % ranges from 5-25%
+    # A variance of 2 means the ref's % for a penalty type varies by ~2% year to year (very stable)
+    # A variance of 5+ means it swings by 5%+ (e.g., 15% one year, 20% the next)
+    
+    if avg_variance < 2.0:
+        return 'Very Consistent', avg_variance
+    elif avg_variance < 3.5:
+        return 'Consistent', avg_variance
+    elif avg_variance < 5.0:
+        return 'Variable', avg_variance
+    else:
+        return 'Highly Variable', avg_variance
 
 
 # =============================================================================
@@ -248,21 +328,31 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     
     ref_stats['slug'] = ref_stats['name'].apply(slugify)
     
-    def get_consistency(std):
-        if pd.isna(std) or std < 2:
-            return 'Very Consistent'
-        elif std < 3:
-            return 'Consistent'
-        elif std < 4:
-            return 'Variable'
-        else:
-            return 'Highly Variable'
+    # === NEW: Calculate style consistency based on penalty type distribution ===
+    # Link penalties to referees
+    penalties_with_ref = penalties.merge(
+        crew_chiefs[['game_id', 'referee']], 
+        on='game_id', 
+        how='inner'
+    )
     
-    ref_stats['consistency'] = ref_stats['std_dev'].apply(get_consistency)
+    consistency_results = []
+    for name in ref_stats['name']:
+        ref_penalties = penalties_with_ref[penalties_with_ref['referee'] == name]
+        consistency, score = calculate_style_consistency(ref_penalties, name)
+        consistency_results.append({
+            'name': name,
+            'consistency': consistency,
+            'consistency_score': score
+        })
+    
+    consistency_df = pd.DataFrame(consistency_results)
+    ref_stats = ref_stats.merge(consistency_df, on='name', how='left')
     
     # Round numeric columns
     ref_stats['avg_per_game'] = ref_stats['avg_per_game'].round(1)
     ref_stats['std_dev'] = ref_stats['std_dev'].round(2)
+    ref_stats['consistency_score'] = ref_stats['consistency_score'].round(2)
     ref_stats['total_penalties'] = ref_stats['total_penalties'].astype(int)
     ref_stats['min_penalties'] = ref_stats['min_penalties'].astype(int)
     ref_stats['max_penalties'] = ref_stats['max_penalties'].astype(int)
@@ -356,21 +446,34 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     """Generate insight cards with explanations."""
     insights = []
     
-    # 1. Season trend
+    # 1. Penalty increase since 2022 baseline
     seasons = trends.get('bySeason', [])
     if len(seasons) >= 2:
-        latest = seasons[-1]
-        previous = seasons[-2]
-        change = ((latest['avg_per_game'] - previous['avg_per_game']) / previous['avg_per_game'] * 100)
-        insights.append({
-            'id': 'season_trend',
-            'icon': '📈',
-            'title': f"{latest['season']} Penalty Trend",
-            'value': f"{'+' if change > 0 else ''}{change:.0f}%",
-            'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {previous['avg_per_game']} to {latest['avg_per_game']}",
-            'explanation': "This measures the average number of accepted penalties per game compared to the previous season. A positive number means refs are throwing more flags.",
-            'isPositive': change < 0  # Fewer penalties = positive for game flow
-        })
+        # Find 2022 as baseline (or earliest available)
+        baseline_season = None
+        latest_season = None
+        
+        for s in seasons:
+            if s['season'] == 2022:
+                baseline_season = s
+            if latest_season is None or s['season'] > latest_season['season']:
+                latest_season = s
+        
+        # Fall back to earliest season if 2022 not available
+        if baseline_season is None:
+            baseline_season = seasons[0]
+        
+        if baseline_season and latest_season and baseline_season['season'] != latest_season['season']:
+            change = ((latest_season['avg_per_game'] - baseline_season['avg_per_game']) / baseline_season['avg_per_game'] * 100)
+            insights.append({
+                'id': 'season_trend',
+                'icon': '📈',
+                'title': f"Penalties Since {baseline_season['season']}",
+                'value': f"{'+' if change > 0 else ''}{change:.0f}%",
+                'description': f"Avg per game {'up' if change > 0 else 'down'} from {baseline_season['avg_per_game']} to {latest_season['avg_per_game']}",
+                'explanation': f"This measures how penalty rates have changed since the {baseline_season['season']} season baseline. A positive number means refs are throwing more flags on average.",
+                'isPositive': change < 0  # Fewer penalties = positive for game flow
+            })
     
     # 2. Home field bias
     home_away = trends.get('homeVsAway', {})
@@ -596,7 +699,8 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
                 'maxGame': int(ref['max_penalties']),
                 'stdDev': float(ref['std_dev']) if pd.notna(ref['std_dev']) else 0,
                 'homeBiasPct': float(ref['home_bias_pct']),
-                'consistency': ref['consistency']
+                'consistency': ref['consistency'],
+                'consistencyScore': float(ref['consistency_score']) if pd.notna(ref.get('consistency_score')) else 0
             },
             'seasonStats': season_stats[['season', 'games', 'penalties', 'avg', 'homeBias']].to_dict('records'),
             'penaltyTypes': penalty_types,
@@ -610,7 +714,7 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             'explanations': {
                 'avgPerGame': 'Average number of accepted penalties per game this referee has worked.',
                 'homeBiasPct': 'How much more the away team is penalized vs home team. Positive = away penalized more.',
-                'consistency': 'Based on standard deviation of penalties per game. Lower variance = more predictable.',
+                'consistency': 'Based on how stable this crew\'s penalty TYPE distribution is across seasons. A "Consistent" crew calls the same types of penalties in similar proportions year after year.',
                 'penaltyTypes': 'Breakdown of the most common penalty types called in games this referee works.',
                 'quarterDistribution': 'When penalties occur during games — shows if ref is more active early or late.'
             },

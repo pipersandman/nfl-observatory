@@ -1,20 +1,48 @@
 {
   "name": "Bill Vinovich",
   "slug": "bill-vinovich",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 31,
-    "totalPenalties": 401,
-    "avgPerGame": 12.9,
-    "minGame": 5,
+    "games": 99,
+    "totalPenalties": 1071,
+    "avgPerGame": 10.8,
+    "minGame": 3,
     "maxGame": 26,
-    "stdDev": 4.82,
+    "stdDev": 4.1,
     "homeBiasPct": 2.7,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 160,
+      "avg": 10.0,
+      "homeBias": -3.8
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 154,
+      "avg": 9.1,
+      "homeBias": 6.5
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 147,
+      "avg": 8.6,
+      "homeBias": 10.2
+    },
+    {
+      "season": 2023,
+      "games": 18,
+      "penalties": 209,
+      "avg": 11.6,
+      "homeBias": -0.5
+    },
     {
       "season": 2024,
       "games": 17,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 97,
-      "pct": 24.2
+      "count": 235,
+      "pct": 21.9
     },
     {
       "type": "Offensive Holding",
-      "count": 64,
-      "pct": 16.0
+      "count": 166,
+      "pct": 15.5
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 40,
-      "pct": 10.0
-    },
-    {
-      "type": "Neutral Zone Infraction",
-      "count": 21,
-      "pct": 5.2
+      "count": 92,
+      "pct": 8.6
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 19,
-      "pct": 4.7
-    },
-    {
-      "type": "Delay of Game",
-      "count": 15,
-      "pct": 3.7
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 14,
-      "pct": 3.5
+      "count": 56,
+      "pct": 5.2
     },
     {
       "type": "Defensive Offside",
-      "count": 11,
-      "pct": 2.7
+      "count": 55,
+      "pct": 5.1
     },
     {
-      "type": "Offensive Pass Interference",
-      "count": 11,
-      "pct": 2.7
+      "type": "Defensive Holding",
+      "count": 51,
+      "pct": 4.8
     },
     {
-      "type": "Roughing the Passer",
-      "count": 10,
-      "pct": 2.5
+      "type": "Delay of Game",
+      "count": 44,
+      "pct": 4.1
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 44,
+      "pct": 4.1
+    },
+    {
+      "type": "Face Mask",
+      "count": 26,
+      "pct": 2.4
+    },
+    {
+      "type": "Illegal Use of Hands",
+      "count": 26,
+      "pct": 2.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 94,
-      "pct": 23.7
+      "count": 254,
+      "pct": 23.9
     },
     {
       "quarter": 2,
-      "count": 127,
-      "pct": 32.0
+      "count": 319,
+      "pct": 30.0
     },
     {
       "quarter": 3,
-      "count": 90,
-      "pct": 22.7
+      "count": 245,
+      "pct": 23.0
     },
     {
       "quarter": 4,
-      "count": 86,
-      "pct": 21.7
+      "count": 246,
+      "pct": 23.1
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.1,
-    "avgVsLeaguePct": -0.6,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -1.1,
+    "avgVsLeaguePct": -9.4,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.360467Z"
+  "generatedAt": "2025-12-20T03:25:12.612809Z"
 }

@@ -1,20 +1,48 @@
 {
   "name": "Clay Martin",
   "slug": "clay-martin",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 30,
-    "totalPenalties": 378,
-    "avgPerGame": 12.6,
-    "minGame": 6,
-    "maxGame": 20,
-    "stdDev": 3.93,
-    "homeBiasPct": 5.8,
+    "games": 95,
+    "totalPenalties": 1110,
+    "avgPerGame": 11.7,
+    "minGame": 4,
+    "maxGame": 22,
+    "stdDev": 3.86,
+    "homeBiasPct": 4.0,
     "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 14,
+      "penalties": 156,
+      "avg": 11.1,
+      "homeBias": 7.7
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 195,
+      "avg": 11.5,
+      "homeBias": -1.5
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 198,
+      "avg": 11.6,
+      "homeBias": 18.2
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 183,
+      "avg": 10.8,
+      "homeBias": -12.6
+    },
     {
       "season": 2024,
       "games": 17,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 99,
-      "pct": 26.2
+      "count": 249,
+      "pct": 22.4
     },
     {
       "type": "False Start",
-      "count": 65,
-      "pct": 17.2
-    },
-    {
-      "type": "Illegal Formation",
-      "count": 24,
-      "pct": 6.3
+      "count": 199,
+      "pct": 17.9
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 22,
-      "pct": 5.8
+      "count": 90,
+      "pct": 8.1
     },
     {
       "type": "Defensive Holding",
-      "count": 22,
-      "pct": 5.8
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 20,
-      "pct": 5.3
-    },
-    {
-      "type": "Delay of Game",
-      "count": 13,
-      "pct": 3.4
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 12,
-      "pct": 3.2
+      "count": 74,
+      "pct": 6.7
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 9,
-      "pct": 2.4
+      "count": 44,
+      "pct": 4.0
     },
     {
-      "type": "Ineligible Downfield Pass",
-      "count": 9,
-      "pct": 2.4
+      "type": "Defensive Offside",
+      "count": 43,
+      "pct": 3.9
+    },
+    {
+      "type": "Delay of Game",
+      "count": 39,
+      "pct": 3.5
+    },
+    {
+      "type": "Illegal Formation",
+      "count": 39,
+      "pct": 3.5
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 38,
+      "pct": 3.4
+    },
+    {
+      "type": "Illegal Use of Hands",
+      "count": 34,
+      "pct": 3.1
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 89,
-      "pct": 23.8
+      "count": 232,
+      "pct": 21.0
     },
     {
       "quarter": 2,
-      "count": 114,
-      "pct": 30.5
+      "count": 344,
+      "pct": 31.2
     },
     {
       "quarter": 3,
-      "count": 80,
-      "pct": 21.4
+      "count": 252,
+      "pct": 22.8
     },
     {
       "quarter": 4,
-      "count": 91,
-      "pct": 24.3
+      "count": 276,
+      "pct": 25.0
     }
   ],
   "recentGames": [
@@ -587,8 +615,8 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.4,
-    "avgVsLeaguePct": -2.9,
+    "avgVsLeague": -0.2,
+    "avgVsLeaguePct": -1.8,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.708716Z"
+  "generatedAt": "2025-12-20T03:25:12.686544Z"
 }

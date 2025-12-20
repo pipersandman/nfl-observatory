@@ -1,6 +1,30 @@
 {
   "bySeason": [
     {
+      "season": 2020,
+      "penalties": 2986,
+      "games": 269,
+      "avg_per_game": 11.1
+    },
+    {
+      "season": 2021,
+      "penalties": 3336,
+      "games": 285,
+      "avg_per_game": 11.7
+    },
+    {
+      "season": 2022,
+      "penalties": 3153,
+      "games": 284,
+      "avg_per_game": 11.1
+    },
+    {
+      "season": 2023,
+      "penalties": 3229,
+      "games": 285,
+      "avg_per_game": 11.3
+    },
+    {
       "season": 2024,
       "penalties": 3642,
       "games": 285,
@@ -8,69 +32,69 @@
     },
     {
       "season": 2025,
-      "penalties": 2932,
-      "games": 224,
+      "penalties": 2945,
+      "games": 225,
       "avg_per_game": 13.1
     }
   ],
   "byQuarter": [
     {
       "quarter": 1.0,
-      "count": 1375
+      "count": 3958
     },
     {
       "quarter": 2.0,
-      "count": 1962
+      "count": 5634
     },
     {
       "quarter": 3.0,
-      "count": 1537
+      "count": 4579
     },
     {
       "quarter": 4.0,
-      "count": 1678
+      "count": 5004
     }
   ],
   "byType": [
     {
       "type": "Offensive Holding",
-      "count": 1286
+      "count": 3633
     },
     {
       "type": "False Start",
-      "count": 1250
+      "count": 3612
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 556
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 336
+      "count": 1690
     },
     {
       "type": "Defensive Holding",
-      "count": 335
+      "count": 1082
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 1006
     },
     {
       "type": "Delay of Game",
-      "count": 318
+      "count": 947
     },
     {
       "type": "Defensive Offside",
-      "count": 284
-    },
-    {
-      "type": "Illegal Formation",
-      "count": 228
+      "count": 887
     },
     {
       "type": "Roughing the Passer",
-      "count": 179
+      "count": 652
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 619
     },
     {
       "type": "Face Mask",
-      "count": 169
+      "count": 480
     }
   ],
   "byQuarterAndType": {
@@ -84,52 +108,52 @@
       "Offensive Holding",
       "False Start",
       "Defensive Pass Interference",
-      "Unnecessary Roughness",
       "Defensive Holding",
+      "Unnecessary Roughness",
       "Delay of Game"
     ],
     "data": {
       "Defensive Holding": [
-        8.0,
-        8.8,
-        8.8,
-        7.3
+        8.4,
+        9.7,
+        9.2,
+        8.8
       ],
       "Defensive Pass Interference": [
-        9.7,
+        11.7,
         13.7,
-        13.9,
-        16.5
+        14.2,
+        16.3
       ],
       "Delay of Game": [
-        5.8,
-        6.7,
+        6.4,
+        7.4,
         7.3,
-        10.9
+        10.2
       ],
       "False Start": [
-        34.9,
-        33.6,
-        25.1,
-        29.0
+        34.8,
+        32.1,
+        26.5,
+        27.8
       ],
       "Offensive Holding": [
-        32.6,
-        29.3,
-        36.8,
-        28.2
+        30.5,
+        28.9,
+        34.9,
+        27.4
       ],
       "Unnecessary Roughness": [
-        9.0,
-        8.0,
-        8.1,
-        8.1
+        8.2,
+        8.2,
+        7.9,
+        9.5
       ]
     }
   },
   "homeVsAway": {
-    "home": 3253,
-    "away": 3321,
-    "bias_pct": 1.0
+    "home": 9392,
+    "away": 9899,
+    "bias_pct": 2.6
   }
 }

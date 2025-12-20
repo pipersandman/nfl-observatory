@@ -1,20 +1,48 @@
 {
   "name": "Brad Allen",
   "slug": "brad-allen",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 29,
-    "totalPenalties": 325,
-    "avgPerGame": 11.2,
-    "minGame": 6,
-    "maxGame": 19,
-    "stdDev": 3.63,
-    "homeBiasPct": 3.4,
+    "games": 96,
+    "totalPenalties": 1064,
+    "avgPerGame": 11.1,
+    "minGame": 3,
+    "maxGame": 20,
+    "stdDev": 3.59,
+    "homeBiasPct": 6.6,
     "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 163,
+      "avg": 10.2,
+      "homeBias": -1.8
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 191,
+      "avg": 11.2,
+      "homeBias": 12.0
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 203,
+      "avg": 11.9,
+      "homeBias": 16.3
+    },
+    {
+      "season": 2023,
+      "games": 16,
+      "penalties": 169,
+      "avg": 10.6,
+      "homeBias": 1.8
+    },
     {
       "season": 2024,
       "games": 17,
@@ -24,87 +52,111 @@
     },
     {
       "season": 2025,
-      "games": 12,
-      "penalties": 117,
-      "avg": 9.8,
-      "homeBias": -2.6
+      "games": 13,
+      "penalties": 130,
+      "avg": 10.0,
+      "homeBias": 0.0
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 68,
-      "pct": 20.9
+      "count": 210,
+      "pct": 19.7
     },
     {
       "type": "Offensive Holding",
-      "count": 56,
-      "pct": 17.2
+      "count": 168,
+      "pct": 15.8
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 32,
-      "pct": 9.8
-    },
-    {
-      "type": "Delay of Game",
-      "count": 16,
-      "pct": 4.9
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 16,
-      "pct": 4.9
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 15,
-      "pct": 4.6
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 15,
-      "pct": 4.6
+      "count": 102,
+      "pct": 9.6
     },
     {
       "type": "Defensive Holding",
-      "count": 15,
-      "pct": 4.6
+      "count": 67,
+      "pct": 6.3
+    },
+    {
+      "type": "Delay of Game",
+      "count": 63,
+      "pct": 5.9
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 57,
+      "pct": 5.4
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 47,
+      "pct": 4.4
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 37,
+      "pct": 3.5
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 10,
-      "pct": 3.1
+      "count": 34,
+      "pct": 3.2
     },
     {
-      "type": "Illegal Formation",
-      "count": 9,
-      "pct": 2.8
+      "type": "Offensive Pass Interference",
+      "count": 22,
+      "pct": 2.1
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 65,
-      "pct": 20.0
+      "count": 220,
+      "pct": 20.8
     },
     {
       "quarter": 2,
-      "count": 88,
-      "pct": 27.1
+      "count": 293,
+      "pct": 27.7
     },
     {
       "quarter": 3,
-      "count": 66,
-      "pct": 20.3
+      "count": 247,
+      "pct": 23.4
     },
     {
       "quarter": 4,
-      "count": 106,
-      "pct": 32.6
+      "count": 297,
+      "pct": 28.1
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_LA_SEA",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-18",
+      "homeTeam": {
+        "abbr": "SEA",
+        "name": "Seattle Seahawks",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
+      },
+      "awayTeam": {
+        "abbr": "LA",
+        "name": "Los Angeles Rams",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
+      },
+      "homeScore": 38,
+      "awayScore": 37,
+      "penalties": 13,
+      "homePenalties": 5,
+      "awayPenalties": 8,
+      "stadium": "Lumen Field",
+      "weather": null,
+      "temp": 51
+    },
     {
       "gameId": "2025_15_BAL_CIN",
       "season": 2025,
@@ -560,36 +612,12 @@
       "stadium": "FirstEnergy Stadium",
       "weather": null,
       "temp": 36
-    },
-    {
-      "gameId": "2024_11_CIN_LAC",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-17",
-      "homeTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "awayTeam": {
-        "abbr": "CIN",
-        "name": "Cincinnati Bengals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
-      },
-      "homeScore": 34,
-      "awayScore": 27,
-      "penalties": 13,
-      "homePenalties": 5,
-      "awayPenalties": 8,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.8,
-    "avgVsLeaguePct": -13.7,
-    "description": "Let-them-play style \u2014 fewer flags than average. Brad Allen's games average 1.8 fewer penalties per game."
+    "avgVsLeague": -0.8,
+    "avgVsLeaguePct": -6.9,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.865121Z"
+  "generatedAt": "2025-12-20T03:25:12.677499Z"
 }

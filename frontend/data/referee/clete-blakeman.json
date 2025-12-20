@@ -1,20 +1,48 @@
 {
   "name": "Clete Blakeman",
   "slug": "clete-blakeman",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 30,
-    "totalPenalties": 427,
-    "avgPerGame": 14.2,
-    "minGame": 7,
+    "games": 97,
+    "totalPenalties": 1192,
+    "avgPerGame": 12.3,
+    "minGame": 5,
     "maxGame": 23,
-    "stdDev": 3.98,
-    "homeBiasPct": 0.2,
-    "consistency": "Variable"
+    "stdDev": 4.32,
+    "homeBiasPct": 2.3,
+    "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 174,
+      "avg": 10.9,
+      "homeBias": 4.6
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 208,
+      "avg": 12.2,
+      "homeBias": 3.8
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 203,
+      "avg": 11.9,
+      "homeBias": 2.5
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 180,
+      "avg": 10.6,
+      "homeBias": 3.3
+    },
     {
       "season": 2024,
       "games": 17,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 75,
-      "pct": 17.6
+      "count": 220,
+      "pct": 18.5
     },
     {
       "type": "False Start",
-      "count": 71,
-      "pct": 16.6
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 34,
-      "pct": 8.0
+      "count": 206,
+      "pct": 17.3
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 34,
-      "pct": 8.0
+      "count": 98,
+      "pct": 8.2
     },
     {
       "type": "Defensive Holding",
-      "count": 27,
-      "pct": 6.3
+      "count": 82,
+      "pct": 6.9
     },
     {
-      "type": "Defensive Offside",
-      "count": 22,
-      "pct": 5.2
+      "type": "Unnecessary Roughness",
+      "count": 69,
+      "pct": 5.8
     },
     {
       "type": "Delay of Game",
-      "count": 19,
-      "pct": 4.4
+      "count": 64,
+      "pct": 5.4
     },
     {
-      "type": "Illegal Formation",
-      "count": 17,
-      "pct": 4.0
+      "type": "Defensive Offside",
+      "count": 54,
+      "pct": 4.5
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 39,
+      "pct": 3.3
     },
     {
       "type": "Illegal Contact",
-      "count": 17,
-      "pct": 4.0
+      "count": 36,
+      "pct": 3.0
     },
     {
-      "type": "Ineligible Downfield Pass",
-      "count": 12,
-      "pct": 2.8
+      "type": "Illegal Formation",
+      "count": 35,
+      "pct": 2.9
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 105,
-      "pct": 24.6
+      "count": 278,
+      "pct": 23.4
     },
     {
       "quarter": 2,
-      "count": 115,
-      "pct": 27.0
+      "count": 327,
+      "pct": 27.6
     },
     {
       "quarter": 3,
-      "count": 111,
-      "pct": 26.1
+      "count": 307,
+      "pct": 25.9
     },
     {
       "quarter": 4,
-      "count": 95,
-      "pct": 22.3
+      "count": 274,
+      "pct": 23.1
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 1.2,
-    "avgVsLeaguePct": 9.5,
-    "description": "Above-average penalty rate. Slightly more flags than typical."
+    "avgVsLeague": 0.4,
+    "avgVsLeaguePct": 3.2,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.809787Z"
+  "generatedAt": "2025-12-20T03:25:12.659451Z"
 }

@@ -1,20 +1,48 @@
 {
   "name": "Shawn Smith",
   "slug": "shawn-smith",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 30,
-    "totalPenalties": 372,
-    "avgPerGame": 12.4,
-    "minGame": 6,
+    "games": 97,
+    "totalPenalties": 1107,
+    "avgPerGame": 11.4,
+    "minGame": 4,
     "maxGame": 19,
-    "stdDev": 3.15,
-    "homeBiasPct": 10.2,
+    "stdDev": 3.44,
+    "homeBiasPct": 4.4,
     "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 17,
+      "penalties": 171,
+      "avg": 10.1,
+      "homeBias": 12.3
+    },
+    {
+      "season": 2021,
+      "games": 17,
+      "penalties": 184,
+      "avg": 10.8,
+      "homeBias": -6.5
+    },
+    {
+      "season": 2022,
+      "games": 16,
+      "penalties": 174,
+      "avg": 10.9,
+      "homeBias": 11.5
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 206,
+      "avg": 12.1,
+      "homeBias": -8.7
+    },
     {
       "season": 2024,
       "games": 17,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 80,
-      "pct": 21.5
+      "count": 213,
+      "pct": 19.2
     },
     {
       "type": "Offensive Holding",
-      "count": 56,
-      "pct": 15.1
+      "count": 166,
+      "pct": 15.0
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 32,
-      "pct": 8.6
+      "count": 115,
+      "pct": 10.4
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 27,
+      "count": 81,
       "pct": 7.3
     },
     {
       "type": "Defensive Holding",
-      "count": 26,
-      "pct": 7.0
+      "count": 59,
+      "pct": 5.3
     },
     {
       "type": "Delay of Game",
-      "count": 19,
-      "pct": 5.1
+      "count": 54,
+      "pct": 4.9
     },
     {
       "type": "Defensive Offside",
-      "count": 18,
-      "pct": 4.8
+      "count": 48,
+      "pct": 4.3
     },
     {
-      "type": "Illegal Formation",
-      "count": 13,
+      "type": "Roughing the Passer",
+      "count": 39,
       "pct": 3.5
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 35,
+      "pct": 3.2
     },
     {
       "type": "Face Mask",
-      "count": 13,
-      "pct": 3.5
-    },
-    {
-      "type": "Illegal Contact",
-      "count": 9,
-      "pct": 2.4
+      "count": 31,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 82,
-      "pct": 22.0
+      "count": 213,
+      "pct": 19.3
     },
     {
       "quarter": 2,
-      "count": 113,
-      "pct": 30.4
+      "count": 336,
+      "pct": 30.5
     },
     {
       "quarter": 3,
-      "count": 86,
-      "pct": 23.1
+      "count": 272,
+      "pct": 24.7
     },
     {
       "quarter": 4,
-      "count": 91,
-      "pct": 24.5
+      "count": 281,
+      "pct": 25.5
     }
   ],
   "recentGames": [
@@ -587,7 +615,7 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.6,
+    "avgVsLeague": -0.5,
     "avgVsLeaguePct": -4.4,
     "description": "League-average officiating style. Penalty rates are typical."
   },
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.629809Z"
+  "generatedAt": "2025-12-20T03:25:12.649985Z"
 }

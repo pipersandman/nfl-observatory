@@ -1,20 +1,48 @@
 {
   "name": "Scott Novak",
   "slug": "scott-novak",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 31,
-    "totalPenalties": 372,
-    "avgPerGame": 12.0,
-    "minGame": 4,
-    "maxGame": 22,
-    "stdDev": 4.02,
-    "homeBiasPct": -5.9,
+    "games": 95,
+    "totalPenalties": 1108,
+    "avgPerGame": 11.7,
+    "minGame": 2,
+    "maxGame": 26,
+    "stdDev": 4.72,
+    "homeBiasPct": -0.5,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 164,
+      "avg": 10.2,
+      "homeBias": 8.5
+    },
+    {
+      "season": 2021,
+      "games": 16,
+      "penalties": 213,
+      "avg": 13.3,
+      "homeBias": 2.3
+    },
+    {
+      "season": 2022,
+      "games": 16,
+      "penalties": 204,
+      "avg": 12.8,
+      "homeBias": -1.0
+    },
+    {
+      "season": 2023,
+      "games": 16,
+      "penalties": 155,
+      "avg": 9.7,
+      "homeBias": -0.6
+    },
     {
       "season": 2024,
       "games": 17,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 80,
-      "pct": 21.5
+      "count": 208,
+      "pct": 18.8
     },
     {
       "type": "False Start",
-      "count": 66,
-      "pct": 17.7
+      "count": 206,
+      "pct": 18.6
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 25,
-      "pct": 6.7
-    },
-    {
-      "type": "Delay of Game",
-      "count": 19,
-      "pct": 5.1
+      "count": 93,
+      "pct": 8.4
     },
     {
       "type": "Defensive Offside",
-      "count": 19,
-      "pct": 5.1
+      "count": 68,
+      "pct": 6.1
     },
     {
-      "type": "Illegal Formation",
-      "count": 18,
-      "pct": 4.8
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 17,
-      "pct": 4.6
+      "type": "Delay of Game",
+      "count": 66,
+      "pct": 6.0
     },
     {
       "type": "Defensive Holding",
-      "count": 16,
-      "pct": 4.3
+      "count": 64,
+      "pct": 5.8
     },
     {
-      "type": "Illegal Shift",
-      "count": 10,
-      "pct": 2.7
+      "type": "Unnecessary Roughness",
+      "count": 45,
+      "pct": 4.1
     },
     {
       "type": "Illegal Contact",
-      "count": 10,
+      "count": 34,
+      "pct": 3.1
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 30,
       "pct": 2.7
+    },
+    {
+      "type": "Illegal Block Above the Waist",
+      "count": 27,
+      "pct": 2.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 75,
-      "pct": 20.3
+      "count": 211,
+      "pct": 19.1
     },
     {
       "quarter": 2,
-      "count": 117,
-      "pct": 31.6
+      "count": 337,
+      "pct": 30.6
     },
     {
       "quarter": 3,
-      "count": 83,
-      "pct": 22.4
+      "count": 270,
+      "pct": 24.5
     },
     {
       "quarter": 4,
-      "count": 95,
-      "pct": 25.7
+      "count": 285,
+      "pct": 25.8
     }
   ],
   "recentGames": [
@@ -587,9 +615,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.0,
-    "avgVsLeaguePct": -7.5,
-    "description": "Below-average penalty rate. Tends to let minor infractions go."
+    "avgVsLeague": -0.2,
+    "avgVsLeaguePct": -1.8,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.404210Z"
+  "generatedAt": "2025-12-20T03:25:12.695731Z"
 }

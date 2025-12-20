@@ -1,20 +1,48 @@
 {
   "name": "John Hussey",
   "slug": "john-hussey",
-  "firstSeason": 2024,
+  "firstSeason": 2020,
   "lastSeason": 2025,
-  "experience": "2 seasons",
+  "experience": "6 seasons",
   "stats": {
-    "games": 29,
-    "totalPenalties": 347,
-    "avgPerGame": 12.0,
-    "minGame": 7,
-    "maxGame": 19,
-    "stdDev": 2.78,
-    "homeBiasPct": -6.1,
-    "consistency": "Consistent"
+    "games": 94,
+    "totalPenalties": 1041,
+    "avgPerGame": 11.1,
+    "minGame": 2,
+    "maxGame": 25,
+    "stdDev": 3.6,
+    "homeBiasPct": 3.0,
+    "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2020,
+      "games": 16,
+      "penalties": 174,
+      "avg": 10.9,
+      "homeBias": 4.6
+    },
+    {
+      "season": 2021,
+      "games": 15,
+      "penalties": 151,
+      "avg": 10.1,
+      "homeBias": -0.7
+    },
+    {
+      "season": 2022,
+      "games": 17,
+      "penalties": 160,
+      "avg": 9.4,
+      "homeBias": 10.0
+    },
+    {
+      "season": 2023,
+      "games": 17,
+      "penalties": 209,
+      "avg": 12.3,
+      "homeBias": 13.9
+    },
     {
       "season": 2024,
       "games": 16,
@@ -33,75 +61,75 @@
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 69,
-      "pct": 19.9
+      "count": 215,
+      "pct": 20.7
     },
     {
       "type": "Offensive Holding",
-      "count": 65,
-      "pct": 18.7
+      "count": 186,
+      "pct": 17.9
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 44,
-      "pct": 12.7
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 22,
-      "pct": 6.3
+      "count": 104,
+      "pct": 10.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 20,
+      "count": 60,
       "pct": 5.8
     },
     {
-      "type": "Delay of Game",
-      "count": 16,
-      "pct": 4.6
+      "type": "Defensive Holding",
+      "count": 52,
+      "pct": 5.0
     },
     {
       "type": "Defensive Offside",
-      "count": 15,
-      "pct": 4.3
+      "count": 51,
+      "pct": 4.9
     },
     {
-      "type": "Illegal Formation",
-      "count": 11,
-      "pct": 3.2
+      "type": "Delay of Game",
+      "count": 43,
+      "pct": 4.1
     },
     {
-      "type": "Offensive Pass Interference",
-      "count": 9,
-      "pct": 2.6
+      "type": "Neutral Zone Infraction",
+      "count": 31,
+      "pct": 3.0
     },
     {
       "type": "Face Mask",
-      "count": 8,
+      "count": 27,
+      "pct": 2.6
+    },
+    {
+      "type": "Illegal Use of Hands",
+      "count": 24,
       "pct": 2.3
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 72,
-      "pct": 20.7
+      "count": 223,
+      "pct": 21.6
     },
     {
       "quarter": 2,
-      "count": 89,
-      "pct": 25.6
+      "count": 272,
+      "pct": 26.3
     },
     {
       "quarter": 3,
-      "count": 100,
-      "pct": 28.8
+      "count": 275,
+      "pct": 26.6
     },
     {
       "quarter": 4,
-      "count": 86,
-      "pct": 24.8
+      "count": 264,
+      "pct": 25.5
     }
   ],
   "recentGames": [
@@ -587,8 +615,8 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.0,
-    "avgVsLeaguePct": -7.5,
+    "avgVsLeague": -0.8,
+    "avgVsLeaguePct": -6.9,
     "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
@@ -598,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-16T06:13:19.855091Z"
+  "generatedAt": "2025-12-20T03:25:12.714264Z"
 }

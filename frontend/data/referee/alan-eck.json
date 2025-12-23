@@ -5,14 +5,14 @@
   "lastSeason": 2025,
   "experience": "3 seasons",
   "stats": {
-    "games": 45,
-    "totalPenalties": 495,
+    "games": 46,
+    "totalPenalties": 504,
     "avgPerGame": 11.0,
     "minGame": 6,
     "maxGame": 20,
-    "stdDev": 3.01,
-    "homeBiasPct": 4.6,
-    "consistency": "Variable"
+    "stdDev": 2.99,
+    "homeBiasPct": 4.4,
+    "consistency": "Consistent"
   },
   "seasonStats": [
     {
@@ -31,42 +31,42 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 148,
-      "avg": 11.4,
-      "homeBias": 10.8
+      "games": 14,
+      "penalties": 157,
+      "avg": 11.2,
+      "homeBias": 9.6
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 95,
-      "pct": 19.2
+      "count": 99,
+      "pct": 19.6
     },
     {
       "type": "False Start",
-      "count": 85,
-      "pct": 17.2
+      "count": 89,
+      "pct": 17.7
     },
     {
       "type": "Defensive Pass Interference",
       "count": 40,
-      "pct": 8.1
+      "pct": 7.9
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 39,
+      "count": 40,
       "pct": 7.9
     },
     {
       "type": "Defensive Offside",
       "count": 26,
-      "pct": 5.3
+      "pct": 5.2
     },
     {
       "type": "Delay of Game",
       "count": 26,
-      "pct": 5.3
+      "pct": 5.2
     },
     {
       "type": "Roughing the Passer",
@@ -93,25 +93,49 @@
     {
       "quarter": 1,
       "count": 105,
-      "pct": 21.3
+      "pct": 20.9
     },
     {
       "quarter": 2,
-      "count": 163,
+      "count": 166,
       "pct": 33.0
     },
     {
       "quarter": 3,
-      "count": 117,
-      "pct": 23.7
+      "count": 120,
+      "pct": 23.9
     },
     {
       "quarter": 4,
-      "count": 109,
-      "pct": 22.1
+      "count": 112,
+      "pct": 22.3
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_LAC_DAL",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-21",
+      "homeTeam": {
+        "abbr": "DAL",
+        "name": "Dallas Cowboys",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
+      },
+      "awayTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "homeScore": 17,
+      "awayScore": 34,
+      "penalties": 9,
+      "homePenalties": 5,
+      "awayPenalties": 4,
+      "stadium": "AT&T Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_15_DET_LA",
       "season": 2025,
@@ -567,35 +591,11 @@
       "stadium": "Hard Rock Stadium",
       "weather": null,
       "temp": 77
-    },
-    {
-      "gameId": "2024_11_ATL_DEN",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-17",
-      "homeTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "awayTeam": {
-        "abbr": "ATL",
-        "name": "Atlanta Falcons",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
-      },
-      "homeScore": 38,
-      "awayScore": 6,
-      "penalties": 10,
-      "homePenalties": 4,
-      "awayPenalties": 6,
-      "stadium": "Empower Field at Mile High",
-      "weather": null,
-      "temp": 55
     }
   ],
   "tendencies": {
     "avgVsLeague": -0.9,
-    "avgVsLeaguePct": -7.7,
+    "avgVsLeaguePct": -7.8,
     "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
@@ -605,5 +605,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-20T03:42:51.262101Z"
+  "generatedAt": "2025-12-23T06:13:23.578607Z"
 }

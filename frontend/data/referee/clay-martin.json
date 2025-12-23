@@ -5,13 +5,13 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 95,
-    "totalPenalties": 1110,
+    "games": 96,
+    "totalPenalties": 1120,
     "avgPerGame": 11.7,
     "minGame": 4,
     "maxGame": 22,
-    "stdDev": 3.86,
-    "homeBiasPct": 4.0,
+    "stdDev": 3.84,
+    "homeBiasPct": 4.3,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -52,42 +52,42 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 163,
-      "avg": 12.5,
-      "homeBias": -0.6
+      "games": 14,
+      "penalties": 173,
+      "avg": 12.4,
+      "homeBias": 1.7
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 249,
-      "pct": 22.4
+      "count": 253,
+      "pct": 22.6
     },
     {
       "type": "False Start",
-      "count": 199,
+      "count": 200,
       "pct": 17.9
     },
     {
       "type": "Defensive Pass Interference",
       "count": 90,
-      "pct": 8.1
+      "pct": 8.0
     },
     {
       "type": "Defensive Holding",
       "count": 74,
-      "pct": 6.7
+      "pct": 6.6
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 44,
+      "count": 45,
       "pct": 4.0
     },
     {
       "type": "Defensive Offside",
       "count": 43,
-      "pct": 3.9
+      "pct": 3.8
     },
     {
       "type": "Delay of Game",
@@ -106,33 +106,57 @@
     },
     {
       "type": "Illegal Use of Hands",
-      "count": 34,
+      "count": 35,
       "pct": 3.1
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 232,
-      "pct": 21.0
+      "count": 235,
+      "pct": 21.1
     },
     {
       "quarter": 2,
-      "count": 344,
-      "pct": 31.2
+      "count": 346,
+      "pct": 31.1
     },
     {
       "quarter": 3,
-      "count": 252,
-      "pct": 22.8
+      "count": 255,
+      "pct": 22.9
     },
     {
       "quarter": 4,
-      "count": 276,
+      "count": 278,
       "pct": 25.0
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_NYJ_NO",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-21",
+      "homeTeam": {
+        "abbr": "NO",
+        "name": "New Orleans Saints",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"
+      },
+      "awayTeam": {
+        "abbr": "NYJ",
+        "name": "New York Jets",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
+      },
+      "homeScore": 29,
+      "awayScore": 6,
+      "penalties": 10,
+      "homePenalties": 3,
+      "awayPenalties": 7,
+      "stadium": "Mercedes-Benz Superdome",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_15_LV_PHI",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "State Farm Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_13_LV_KC",
-      "season": 2024,
-      "week": 13,
-      "date": "2024-11-29",
-      "homeTeam": {
-        "abbr": "KC",
-        "name": "Kansas City Chiefs",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
-      },
-      "awayTeam": {
-        "abbr": "LV",
-        "name": "Las Vegas Raiders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
-      },
-      "homeScore": 19,
-      "awayScore": 17,
-      "penalties": 16,
-      "homePenalties": 7,
-      "awayPenalties": 9,
-      "stadium": "GEHA Field at Arrowhead Stadium",
-      "weather": null,
-      "temp": 37
     }
   ],
   "tendencies": {
     "avgVsLeague": -0.2,
-    "avgVsLeaguePct": -1.8,
+    "avgVsLeaguePct": -2.0,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-20T03:42:51.186428Z"
+  "generatedAt": "2025-12-23T06:13:23.508051Z"
 }

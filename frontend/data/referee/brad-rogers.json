@@ -5,13 +5,13 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 91,
-    "totalPenalties": 1102,
+    "games": 92,
+    "totalPenalties": 1114,
     "avgPerGame": 12.1,
     "minGame": 3,
     "maxGame": 23,
-    "stdDev": 3.49,
-    "homeBiasPct": 0.2,
+    "stdDev": 3.47,
+    "homeBiasPct": 0.0,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -52,36 +52,36 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 170,
-      "avg": 13.1,
-      "homeBias": 10.6
+      "games": 14,
+      "penalties": 182,
+      "avg": 13.0,
+      "homeBias": 8.8
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
       "count": 227,
-      "pct": 20.6
+      "pct": 20.4
     },
     {
       "type": "False Start",
-      "count": 179,
-      "pct": 16.2
+      "count": 183,
+      "pct": 16.4
     },
     {
       "type": "Defensive Pass Interference",
       "count": 100,
-      "pct": 9.1
+      "pct": 9.0
     },
     {
       "type": "Defensive Holding",
-      "count": 63,
-      "pct": 5.7
+      "count": 65,
+      "pct": 5.8
     },
     {
       "type": "Delay of Game",
-      "count": 58,
+      "count": 59,
       "pct": 5.3
     },
     {
@@ -92,12 +92,12 @@
     {
       "type": "Defensive Offside",
       "count": 47,
-      "pct": 4.3
+      "pct": 4.2
     },
     {
       "type": "Offensive Pass Interference",
-      "count": 41,
-      "pct": 3.7
+      "count": 42,
+      "pct": 3.8
     },
     {
       "type": "Roughing the Passer",
@@ -113,26 +113,50 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 219,
-      "pct": 19.9
+      "count": 220,
+      "pct": 19.8
     },
     {
       "quarter": 2,
-      "count": 336,
-      "pct": 30.5
+      "count": 337,
+      "pct": 30.3
     },
     {
       "quarter": 3,
-      "count": 250,
-      "pct": 22.7
+      "count": 258,
+      "pct": 23.2
     },
     {
       "quarter": 4,
-      "count": 296,
-      "pct": 26.9
+      "count": 298,
+      "pct": 26.8
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_NE_BAL",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-21",
+      "homeTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "awayTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "homeScore": 24,
+      "awayScore": 28,
+      "penalties": 12,
+      "homePenalties": 7,
+      "awayPenalties": 5,
+      "stadium": "M&T Bank Stadium",
+      "weather": null,
+      "temp": 40
+    },
     {
       "gameId": "2025_15_GB_DEN",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "NRG Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_11_SEA_SF",
-      "season": 2024,
-      "week": 11,
-      "date": "2024-11-17",
-      "homeTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "awayTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "homeScore": 17,
-      "awayScore": 20,
-      "penalties": 13,
-      "homePenalties": 9,
-      "awayPenalties": 4,
-      "stadium": "Levi's Stadium",
-      "weather": null,
-      "temp": 59
     }
   ],
   "tendencies": {
     "avgVsLeague": 0.2,
-    "avgVsLeaguePct": 1.5,
+    "avgVsLeaguePct": 1.4,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-20T03:42:51.234390Z"
+  "generatedAt": "2025-12-23T06:13:23.548036Z"
 }

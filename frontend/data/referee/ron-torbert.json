@@ -5,13 +5,13 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 100,
-    "totalPenalties": 1203,
+    "games": 101,
+    "totalPenalties": 1211,
     "avgPerGame": 12.0,
     "minGame": 6,
     "maxGame": 24,
     "stdDev": 4.13,
-    "homeBiasPct": -1.7,
+    "homeBiasPct": -2.1,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -52,32 +52,32 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 178,
-      "avg": 13.7,
-      "homeBias": -12.4
+      "games": 14,
+      "penalties": 186,
+      "avg": 13.3,
+      "homeBias": -14.0
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 246,
-      "pct": 20.4
+      "count": 249,
+      "pct": 20.6
     },
     {
       "type": "False Start",
-      "count": 243,
+      "count": 245,
       "pct": 20.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 95,
+      "count": 96,
       "pct": 7.9
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 69,
-      "pct": 5.7
+      "count": 70,
+      "pct": 5.8
     },
     {
       "type": "Defensive Holding",
@@ -92,7 +92,7 @@
     {
       "type": "Defensive Offside",
       "count": 50,
-      "pct": 4.2
+      "pct": 4.1
     },
     {
       "type": "Face Mask",
@@ -113,26 +113,50 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 250,
-      "pct": 20.9
+      "count": 253,
+      "pct": 21.0
     },
     {
       "quarter": 2,
-      "count": 337,
-      "pct": 28.1
+      "count": 340,
+      "pct": 28.2
     },
     {
       "quarter": 3,
-      "count": 288,
-      "pct": 24.0
+      "count": 289,
+      "pct": 23.9
     },
     {
       "quarter": 4,
-      "count": 324,
-      "pct": 27.0
+      "count": 325,
+      "pct": 26.9
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_SF_IND",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-22",
+      "homeTeam": {
+        "abbr": "IND",
+        "name": "Indianapolis Colts",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
+      },
+      "awayTeam": {
+        "abbr": "SF",
+        "name": "San Francisco 49ers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
+      },
+      "homeScore": 27,
+      "awayScore": 48,
+      "penalties": 8,
+      "homePenalties": 6,
+      "awayPenalties": 2,
+      "stadium": "Lucas Oil Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_15_CLE_CHI",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "State Farm Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_14_CHI_SF",
-      "season": 2024,
-      "week": 14,
-      "date": "2024-12-08",
-      "homeTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "awayTeam": {
-        "abbr": "CHI",
-        "name": "Chicago Bears",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
-      },
-      "homeScore": 38,
-      "awayScore": 13,
-      "penalties": 9,
-      "homePenalties": 7,
-      "awayPenalties": 2,
-      "stadium": "Levi's Stadium",
-      "weather": null,
-      "temp": 65
     }
   ],
   "tendencies": {
     "avgVsLeague": 0.1,
-    "avgVsLeaguePct": 0.7,
+    "avgVsLeaguePct": 0.5,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-20T03:42:51.099982Z"
+  "generatedAt": "2025-12-23T06:13:23.406909Z"
 }

@@ -5,13 +5,13 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 93,
-    "totalPenalties": 1109,
+    "games": 94,
+    "totalPenalties": 1118,
     "avgPerGame": 11.9,
     "minGame": 4,
     "maxGame": 22,
     "stdDev": 3.81,
-    "homeBiasPct": -1.2,
+    "homeBiasPct": -1.3,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -52,22 +52,22 @@
     },
     {
       "season": 2025,
-      "games": 13,
-      "penalties": 139,
-      "avg": 10.7,
+      "games": 14,
+      "penalties": 148,
+      "avg": 10.6,
       "homeBias": -10.8
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 215,
-      "pct": 19.4
+      "count": 216,
+      "pct": 19.3
     },
     {
       "type": "False Start",
-      "count": 208,
-      "pct": 18.8
+      "count": 209,
+      "pct": 18.7
     },
     {
       "type": "Defensive Pass Interference",
@@ -82,12 +82,12 @@
     {
       "type": "Roughing the Passer",
       "count": 53,
-      "pct": 4.8
+      "pct": 4.7
     },
     {
       "type": "Defensive Holding",
-      "count": 47,
-      "pct": 4.2
+      "count": 50,
+      "pct": 4.5
     },
     {
       "type": "Delay of Game",
@@ -96,13 +96,13 @@
     },
     {
       "type": "Defensive Offside",
-      "count": 41,
-      "pct": 3.7
+      "count": 42,
+      "pct": 3.8
     },
     {
       "type": "Illegal Formation",
-      "count": 38,
-      "pct": 3.4
+      "count": 39,
+      "pct": 3.5
     },
     {
       "type": "Offensive Pass Interference",
@@ -113,26 +113,50 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 198,
-      "pct": 18.0
+      "count": 200,
+      "pct": 18.1
     },
     {
       "quarter": 2,
-      "count": 347,
-      "pct": 31.6
+      "count": 348,
+      "pct": 31.5
     },
     {
       "quarter": 3,
-      "count": 276,
-      "pct": 25.2
+      "count": 278,
+      "pct": 25.1
     },
     {
       "quarter": 4,
-      "count": 276,
-      "pct": 25.2
+      "count": 280,
+      "pct": 25.3
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_16_ATL_ARI",
+      "season": 2025,
+      "week": 16,
+      "date": "2025-12-21",
+      "homeTeam": {
+        "abbr": "ARI",
+        "name": "Arizona Cardinals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
+      },
+      "awayTeam": {
+        "abbr": "ATL",
+        "name": "Atlanta Falcons",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
+      },
+      "homeScore": 19,
+      "awayScore": 26,
+      "penalties": 9,
+      "homePenalties": 5,
+      "awayPenalties": 4,
+      "stadium": "State Farm Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_15_MIA_PIT",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "TIAA Bank Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_12_PHI_LA",
-      "season": 2024,
-      "week": 12,
-      "date": "2024-11-24",
-      "homeTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "awayTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "homeScore": 20,
-      "awayScore": 37,
-      "penalties": 8,
-      "homePenalties": 4,
-      "awayPenalties": 4,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
     "avgVsLeague": -0.0,
-    "avgVsLeaguePct": -0.2,
+    "avgVsLeaguePct": -0.3,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-20T03:42:51.224799Z"
+  "generatedAt": "2025-12-23T06:13:23.537977Z"
 }

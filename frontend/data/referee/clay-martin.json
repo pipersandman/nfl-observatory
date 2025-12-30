@@ -5,12 +5,12 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 96,
-    "totalPenalties": 1120,
+    "games": 97,
+    "totalPenalties": 1131,
     "avgPerGame": 11.7,
     "minGame": 4,
     "maxGame": 22,
-    "stdDev": 3.84,
+    "stdDev": 3.82,
     "homeBiasPct": 4.3,
     "consistency": "Variable"
   },
@@ -52,32 +52,32 @@
     },
     {
       "season": 2025,
-      "games": 14,
-      "penalties": 173,
-      "avg": 12.4,
-      "homeBias": 1.7
+      "games": 15,
+      "penalties": 184,
+      "avg": 12.3,
+      "homeBias": 2.2
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 253,
-      "pct": 22.6
+      "count": 258,
+      "pct": 22.8
     },
     {
       "type": "False Start",
-      "count": 200,
-      "pct": 17.9
+      "count": 201,
+      "pct": 17.8
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 90,
+      "count": 91,
       "pct": 8.0
     },
     {
       "type": "Defensive Holding",
       "count": 74,
-      "pct": 6.6
+      "pct": 6.5
     },
     {
       "type": "Unnecessary Roughness",
@@ -86,22 +86,22 @@
     },
     {
       "type": "Defensive Offside",
-      "count": 43,
-      "pct": 3.8
+      "count": 45,
+      "pct": 4.0
     },
     {
       "type": "Delay of Game",
       "count": 39,
-      "pct": 3.5
+      "pct": 3.4
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 39,
+      "pct": 3.4
     },
     {
       "type": "Illegal Formation",
       "count": 39,
-      "pct": 3.5
-    },
-    {
-      "type": "Neutral Zone Infraction",
-      "count": 38,
       "pct": 3.4
     },
     {
@@ -113,26 +113,50 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 235,
-      "pct": 21.1
+      "count": 238,
+      "pct": 21.2
     },
     {
       "quarter": 2,
-      "count": 346,
+      "count": 350,
       "pct": 31.1
     },
     {
       "quarter": 3,
-      "count": 255,
-      "pct": 22.9
+      "count": 259,
+      "pct": 23.0
     },
     {
       "quarter": 4,
       "count": 278,
-      "pct": 25.0
+      "pct": 24.7
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_17_ARI_CIN",
+      "season": 2025,
+      "week": 17,
+      "date": "2025-12-28",
+      "homeTeam": {
+        "abbr": "CIN",
+        "name": "Cincinnati Bengals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
+      },
+      "awayTeam": {
+        "abbr": "ARI",
+        "name": "Arizona Cardinals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
+      },
+      "homeScore": 37,
+      "awayScore": 14,
+      "penalties": 11,
+      "homePenalties": 5,
+      "awayPenalties": 6,
+      "stadium": "Paycor Stadium",
+      "weather": null,
+      "temp": 65
+    },
     {
       "gameId": "2025_16_NYJ_NO",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "Levi's Stadium",
       "weather": null,
       "temp": 53
-    },
-    {
-      "gameId": "2024_14_SEA_ARI",
-      "season": 2024,
-      "week": 14,
-      "date": "2024-12-08",
-      "homeTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "awayTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "homeScore": 18,
-      "awayScore": 30,
-      "penalties": 15,
-      "homePenalties": 6,
-      "awayPenalties": 9,
-      "stadium": "State Farm Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
     "avgVsLeague": -0.2,
-    "avgVsLeaguePct": -2.0,
+    "avgVsLeaguePct": -1.8,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-23T06:13:23.508051Z"
+  "generatedAt": "2025-12-30T06:13:05.205571Z"
 }

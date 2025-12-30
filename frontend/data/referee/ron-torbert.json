@@ -5,12 +5,12 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 101,
-    "totalPenalties": 1211,
-    "avgPerGame": 12.0,
+    "games": 102,
+    "totalPenalties": 1218,
+    "avgPerGame": 11.9,
     "minGame": 6,
     "maxGame": 24,
-    "stdDev": 4.13,
+    "stdDev": 4.14,
     "homeBiasPct": -2.1,
     "consistency": "Highly Variable"
   },
@@ -52,42 +52,42 @@
     },
     {
       "season": 2025,
-      "games": 14,
-      "penalties": 186,
-      "avg": 13.3,
+      "games": 15,
+      "penalties": 193,
+      "avg": 12.9,
       "homeBias": -14.0
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 249,
+      "count": 251,
       "pct": 20.6
     },
     {
       "type": "False Start",
       "count": 245,
-      "pct": 20.2
+      "pct": 20.1
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 96,
-      "pct": 7.9
+      "count": 97,
+      "pct": 8.0
     },
     {
       "type": "Unnecessary Roughness",
       "count": 70,
-      "pct": 5.8
+      "pct": 5.7
     },
     {
       "type": "Defensive Holding",
-      "count": 60,
-      "pct": 5.0
+      "count": 62,
+      "pct": 5.1
     },
     {
       "type": "Delay of Game",
       "count": 60,
-      "pct": 5.0
+      "pct": 4.9
     },
     {
       "type": "Defensive Offside",
@@ -97,12 +97,12 @@
     {
       "type": "Face Mask",
       "count": 37,
-      "pct": 3.1
+      "pct": 3.0
     },
     {
       "type": "Roughing the Passer",
       "count": 37,
-      "pct": 3.1
+      "pct": 3.0
     },
     {
       "type": "Neutral Zone Infraction",
@@ -113,26 +113,50 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 253,
+      "count": 255,
       "pct": 21.0
     },
     {
       "quarter": 2,
-      "count": 340,
-      "pct": 28.2
+      "count": 343,
+      "pct": 28.3
     },
     {
       "quarter": 3,
-      "count": 289,
-      "pct": 23.9
+      "count": 291,
+      "pct": 24.0
     },
     {
       "quarter": 4,
       "count": 325,
-      "pct": 26.9
+      "pct": 26.8
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_17_PHI_BUF",
+      "season": 2025,
+      "week": 17,
+      "date": "2025-12-28",
+      "homeTeam": {
+        "abbr": "BUF",
+        "name": "Buffalo Bills",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
+      },
+      "awayTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "homeScore": 12,
+      "awayScore": 13,
+      "penalties": 7,
+      "homePenalties": 4,
+      "awayPenalties": 3,
+      "stadium": "New Era Field",
+      "weather": null,
+      "temp": 38
+    },
     {
       "gameId": "2025_16_SF_IND",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "MetLife Stadium",
       "weather": null,
       "temp": 23
-    },
-    {
-      "gameId": "2024_15_NE_ARI",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-15",
-      "homeTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "awayTeam": {
-        "abbr": "NE",
-        "name": "New England Patriots",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
-      },
-      "homeScore": 30,
-      "awayScore": 17,
-      "penalties": 8,
-      "homePenalties": 4,
-      "awayPenalties": 4,
-      "stadium": "State Farm Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.1,
-    "avgVsLeaguePct": 0.5,
+    "avgVsLeague": -0.0,
+    "avgVsLeaguePct": -0.1,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-23T06:13:23.406909Z"
+  "generatedAt": "2025-12-30T06:13:05.107813Z"
 }

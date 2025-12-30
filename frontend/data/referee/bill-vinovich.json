@@ -5,13 +5,13 @@
   "lastSeason": 2025,
   "experience": "6 seasons",
   "stats": {
-    "games": 100,
-    "totalPenalties": 1081,
+    "games": 101,
+    "totalPenalties": 1088,
     "avgPerGame": 10.8,
     "minGame": 3,
     "maxGame": 26,
     "stdDev": 4.08,
-    "homeBiasPct": 2.7,
+    "homeBiasPct": 2.9,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -52,32 +52,32 @@
     },
     {
       "season": 2025,
-      "games": 15,
-      "penalties": 215,
-      "avg": 14.3,
-      "homeBias": 8.8
+      "games": 16,
+      "penalties": 222,
+      "avg": 13.9,
+      "homeBias": 9.9
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 238,
+      "count": 239,
       "pct": 22.0
     },
     {
       "type": "Offensive Holding",
-      "count": 168,
+      "count": 169,
       "pct": 15.5
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 92,
+      "count": 93,
       "pct": 8.5
     },
     {
       "type": "Unnecessary Roughness",
       "count": 56,
-      "pct": 5.2
+      "pct": 5.1
     },
     {
       "type": "Defensive Offside",
@@ -90,13 +90,13 @@
       "pct": 4.8
     },
     {
-      "type": "Delay of Game",
-      "count": 44,
-      "pct": 4.1
+      "type": "Neutral Zone Infraction",
+      "count": 46,
+      "pct": 4.2
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 44,
+      "type": "Delay of Game",
+      "count": 45,
       "pct": 4.1
     },
     {
@@ -105,34 +105,58 @@
       "pct": 2.5
     },
     {
-      "type": "Illegal Use of Hands",
-      "count": 26,
-      "pct": 2.4
+      "type": "Offensive Pass Interference",
+      "count": 27,
+      "pct": 2.5
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
       "count": 257,
-      "pct": 23.9
+      "pct": 23.8
     },
     {
       "quarter": 2,
-      "count": 322,
+      "count": 324,
       "pct": 30.0
     },
     {
       "quarter": 3,
-      "count": 248,
-      "pct": 23.1
+      "count": 251,
+      "pct": 23.2
     },
     {
       "quarter": 4,
-      "count": 247,
+      "count": 249,
       "pct": 23.0
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2025_17_DEN_KC",
+      "season": 2025,
+      "week": 17,
+      "date": "2025-12-25",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "DEN",
+        "name": "Denver Broncos",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
+      },
+      "homeScore": 13,
+      "awayScore": 20,
+      "penalties": 7,
+      "homePenalties": 2,
+      "awayPenalties": 5,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_16_BUF_CLE",
       "season": 2025,
@@ -588,35 +612,11 @@
       "stadium": "M&T Bank Stadium",
       "weather": null,
       "temp": 35
-    },
-    {
-      "gameId": "2024_15_DAL_CAR",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-15",
-      "homeTeam": {
-        "abbr": "CAR",
-        "name": "Carolina Panthers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
-      },
-      "awayTeam": {
-        "abbr": "DAL",
-        "name": "Dallas Cowboys",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
-      },
-      "homeScore": 14,
-      "awayScore": 30,
-      "penalties": 22,
-      "homePenalties": 8,
-      "awayPenalties": 14,
-      "stadium": "Bank of America Stadium",
-      "weather": null,
-      "temp": 45
     }
   ],
   "tendencies": {
     "avgVsLeague": -1.1,
-    "avgVsLeaguePct": -9.5,
+    "avgVsLeaguePct": -9.4,
     "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
@@ -626,5 +626,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-23T06:13:23.416927Z"
+  "generatedAt": "2025-12-30T06:13:05.117517Z"
 }

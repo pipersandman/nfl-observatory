@@ -2,16 +2,16 @@
   "name": "Alex Kemp",
   "slug": "alex-kemp",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 99,
-    "totalPenalties": 1254,
-    "avgPerGame": 12.7,
-    "minGame": 4,
+    "games": 102,
+    "totalPenalties": 1272,
+    "avgPerGame": 12.5,
+    "minGame": 3,
     "maxGame": 23,
-    "stdDev": 3.85,
-    "homeBiasPct": 4.1,
+    "stdDev": 3.96,
+    "homeBiasPct": 3.6,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -46,43 +46,50 @@
     {
       "season": 2024,
       "games": 17,
-      "penalties": 231,
-      "avg": 13.6,
-      "homeBias": 6.5
+      "penalties": 230,
+      "avg": 13.5,
+      "homeBias": 6.1
     },
     {
       "season": 2025,
-      "games": 15,
-      "penalties": 196,
-      "avg": 13.1,
-      "homeBias": -7.1
+      "games": 17,
+      "penalties": 209,
+      "avg": 12.3,
+      "homeBias": -8.1
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 6,
+      "avg": 6.0,
+      "homeBias": -33.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 248,
-      "pct": 19.8
+      "count": 249,
+      "pct": 19.6
     },
     {
       "type": "False Start",
-      "count": 203,
-      "pct": 16.2
+      "count": 209,
+      "pct": 16.4
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 107,
+      "count": 108,
       "pct": 8.5
     },
     {
       "type": "Defensive Holding",
       "count": 78,
-      "pct": 6.2
+      "pct": 6.1
     },
     {
       "type": "Delay of Game",
-      "count": 73,
-      "pct": 5.8
+      "count": 75,
+      "pct": 5.9
     },
     {
       "type": "Unnecessary Roughness",
@@ -91,48 +98,120 @@
     },
     {
       "type": "Defensive Offside",
-      "count": 56,
+      "count": 57,
       "pct": 4.5
     },
     {
       "type": "Neutral Zone Infraction",
       "count": 50,
-      "pct": 4.0
+      "pct": 3.9
     },
     {
       "type": "Roughing the Passer",
-      "count": 46,
-      "pct": 3.7
+      "count": 48,
+      "pct": 3.8
     },
     {
       "type": "Face Mask",
-      "count": 45,
-      "pct": 3.6
+      "count": 44,
+      "pct": 3.5
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 263,
-      "pct": 21.0
+      "count": 268,
+      "pct": 21.1
     },
     {
       "quarter": 2,
-      "count": 369,
-      "pct": 29.4
+      "count": 375,
+      "pct": 29.5
     },
     {
       "quarter": 3,
-      "count": 291,
+      "count": 295,
       "pct": 23.2
     },
     {
       "quarter": 4,
-      "count": 330,
-      "pct": 26.3
+      "count": 333,
+      "pct": 26.2
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_SF_LA",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-10",
+      "homeTeam": {
+        "abbr": "LA",
+        "name": "Los Angeles Rams",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
+      },
+      "awayTeam": {
+        "abbr": "SF",
+        "name": "San Francisco 49ers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
+      },
+      "homeScore": 7,
+      "awayScore": 27,
+      "penalties": 6,
+      "homePenalties": 4,
+      "awayPenalties": 2,
+      "stadium": "Melbourne Cricket Ground",
+      "weather": null,
+      "temp": 57
+    },
+    {
+      "gameId": "2025_21_NE_DEN",
+      "season": 2025,
+      "week": 21,
+      "date": "2026-01-25",
+      "homeTeam": {
+        "abbr": "DEN",
+        "name": "Denver Broncos",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
+      },
+      "awayTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "homeScore": 7,
+      "awayScore": 10,
+      "penalties": 3,
+      "homePenalties": 2,
+      "awayPenalties": 1,
+      "stadium": "Empower Field at Mile High",
+      "weather": null,
+      "temp": 26
+    },
+    {
+      "gameId": "2025_18_CLE_CIN",
+      "season": 2025,
+      "week": 18,
+      "date": "2026-01-04",
+      "homeTeam": {
+        "abbr": "CIN",
+        "name": "Cincinnati Bengals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
+      },
+      "awayTeam": {
+        "abbr": "CLE",
+        "name": "Cleveland Browns",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png"
+      },
+      "homeScore": 18,
+      "awayScore": 20,
+      "penalties": 10,
+      "homePenalties": 6,
+      "awayPenalties": 4,
+      "stadium": "Paycor Stadium",
+      "weather": null,
+      "temp": 37
+    },
     {
       "gameId": "2025_17_NE_NYJ",
       "season": 2025,
@@ -540,83 +619,11 @@
       "stadium": "Lucas Oil Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_17_ATL_WAS",
-      "season": 2024,
-      "week": 17,
-      "date": "2024-12-29",
-      "homeTeam": {
-        "abbr": "WAS",
-        "name": "Washington Commanders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
-      },
-      "awayTeam": {
-        "abbr": "ATL",
-        "name": "Atlanta Falcons",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
-      },
-      "homeScore": 30,
-      "awayScore": 24,
-      "penalties": 17,
-      "homePenalties": 13,
-      "awayPenalties": 4,
-      "stadium": "FedExField",
-      "weather": null,
-      "temp": 58
-    },
-    {
-      "gameId": "2024_16_NO_GB",
-      "season": 2024,
-      "week": 16,
-      "date": "2024-12-23",
-      "homeTeam": {
-        "abbr": "GB",
-        "name": "Green Bay Packers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
-      },
-      "awayTeam": {
-        "abbr": "NO",
-        "name": "New Orleans Saints",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"
-      },
-      "homeScore": 34,
-      "awayScore": 0,
-      "penalties": 13,
-      "homePenalties": 6,
-      "awayPenalties": 7,
-      "stadium": "Lambeau Field",
-      "weather": null,
-      "temp": 34
-    },
-    {
-      "gameId": "2024_15_MIA_HOU",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-15",
-      "homeTeam": {
-        "abbr": "HOU",
-        "name": "Houston Texans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
-      },
-      "awayTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "homeScore": 20,
-      "awayScore": 12,
-      "penalties": 15,
-      "homePenalties": 7,
-      "awayPenalties": 8,
-      "stadium": "NRG Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.8,
-    "avgVsLeaguePct": 6.6,
+    "avgVsLeague": 0.6,
+    "avgVsLeaguePct": 5.1,
     "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.165840Z"
+  "generatedAt": "2026-09-15T06:32:02.955901Z"
 }

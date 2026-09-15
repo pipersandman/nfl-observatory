@@ -2,16 +2,16 @@
   "name": "Scott Novak",
   "slug": "scott-novak",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 97,
-    "totalPenalties": 1136,
+    "games": 99,
+    "totalPenalties": 1158,
     "avgPerGame": 11.7,
     "minGame": 2,
     "maxGame": 26,
-    "stdDev": 4.69,
-    "homeBiasPct": -0.5,
+    "stdDev": 4.66,
+    "homeBiasPct": 0.2,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -52,52 +52,59 @@
     },
     {
       "season": 2025,
-      "games": 16,
-      "penalties": 192,
-      "avg": 12.0,
-      "homeBias": -15.6
+      "games": 17,
+      "penalties": 200,
+      "avg": 11.8,
+      "homeBias": -14.0
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 14,
+      "avg": 14.0,
+      "homeBias": 42.9
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 214,
-      "pct": 18.8
+      "count": 222,
+      "pct": 19.2
     },
     {
       "type": "False Start",
-      "count": 211,
-      "pct": 18.6
+      "count": 217,
+      "pct": 18.7
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 97,
+      "count": 99,
       "pct": 8.5
     },
     {
       "type": "Delay of Game",
-      "count": 70,
-      "pct": 6.2
+      "count": 71,
+      "pct": 6.1
     },
     {
       "type": "Defensive Offside",
-      "count": 68,
+      "count": 69,
       "pct": 6.0
     },
     {
       "type": "Defensive Holding",
       "count": 64,
-      "pct": 5.6
+      "pct": 5.5
     },
     {
       "type": "Unnecessary Roughness",
       "count": 45,
-      "pct": 4.0
+      "pct": 3.9
     },
     {
       "type": "Illegal Contact",
       "count": 35,
-      "pct": 3.1
+      "pct": 3.0
     },
     {
       "type": "Neutral Zone Infraction",
@@ -106,33 +113,81 @@
     },
     {
       "type": "Illegal Block Above the Waist",
-      "count": 29,
+      "count": 30,
       "pct": 2.6
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 220,
-      "pct": 19.5
+      "count": 227,
+      "pct": 19.7
     },
     {
       "quarter": 2,
-      "count": 344,
+      "count": 350,
       "pct": 30.4
     },
     {
       "quarter": 3,
-      "count": 274,
-      "pct": 24.2
+      "count": 280,
+      "pct": 24.3
     },
     {
       "quarter": 4,
-      "count": 293,
-      "pct": 25.9
+      "count": 296,
+      "pct": 25.7
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_BAL_IND",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-13",
+      "homeTeam": {
+        "abbr": "IND",
+        "name": "Indianapolis Colts",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
+      },
+      "awayTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "homeScore": 23,
+      "awayScore": 41,
+      "penalties": 14,
+      "homePenalties": 4,
+      "awayPenalties": 10,
+      "stadium": "Lucas Oil Stadium",
+      "weather": null,
+      "temp": null
+    },
+    {
+      "gameId": "2025_18_TEN_JAX",
+      "season": 2025,
+      "week": 18,
+      "date": "2026-01-04",
+      "homeTeam": {
+        "abbr": "JAX",
+        "name": "Jacksonville Jaguars",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"
+      },
+      "awayTeam": {
+        "abbr": "TEN",
+        "name": "Tennessee Titans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
+      },
+      "homeScore": 41,
+      "awayScore": 7,
+      "penalties": 8,
+      "homePenalties": 3,
+      "awayPenalties": 5,
+      "stadium": "TIAA Bank Stadium",
+      "weather": null,
+      "temp": 55
+    },
     {
       "gameId": "2025_17_TB_MIA",
       "season": 2025,
@@ -564,59 +619,11 @@
       "stadium": "Soldier Field",
       "weather": null,
       "temp": 47
-    },
-    {
-      "gameId": "2024_16_SF_MIA",
-      "season": 2024,
-      "week": 16,
-      "date": "2024-12-22",
-      "homeTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "awayTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "homeScore": 29,
-      "awayScore": 17,
-      "penalties": 17,
-      "homePenalties": 6,
-      "awayPenalties": 11,
-      "stadium": "Hard Rock Stadium",
-      "weather": null,
-      "temp": 73
-    },
-    {
-      "gameId": "2024_15_TB_LAC",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-15",
-      "homeTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "awayTeam": {
-        "abbr": "TB",
-        "name": "Tampa Bay Buccaneers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png"
-      },
-      "homeScore": 17,
-      "awayScore": 40,
-      "penalties": 15,
-      "homePenalties": 7,
-      "awayPenalties": 8,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
     "avgVsLeague": -0.2,
-    "avgVsLeaguePct": -1.8,
+    "avgVsLeaguePct": -1.6,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.195914Z"
+  "generatedAt": "2026-09-15T06:32:03.256219Z"
 }

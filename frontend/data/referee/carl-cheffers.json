@@ -2,16 +2,16 @@
   "name": "Carl Cheffers",
   "slug": "carl-cheffers",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 101,
-    "totalPenalties": 1248,
+    "games": 104,
+    "totalPenalties": 1285,
     "avgPerGame": 12.4,
     "minGame": 2,
     "maxGame": 23,
-    "stdDev": 4.35,
-    "homeBiasPct": 6.7,
+    "stdDev": 4.36,
+    "homeBiasPct": 6.8,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -52,56 +52,63 @@
     },
     {
       "season": 2025,
-      "games": 15,
-      "penalties": 224,
-      "avg": 14.9,
-      "homeBias": 8.0
+      "games": 17,
+      "penalties": 242,
+      "avg": 14.2,
+      "homeBias": 9.1
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 19,
+      "avg": 19.0,
+      "homeBias": -5.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 238,
-      "pct": 19.1
+      "count": 242,
+      "pct": 18.8
     },
     {
       "type": "False Start",
-      "count": 228,
+      "count": 235,
       "pct": 18.3
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 120,
-      "pct": 9.6
+      "count": 126,
+      "pct": 9.8
     },
     {
       "type": "Defensive Holding",
       "count": 76,
-      "pct": 6.1
+      "pct": 5.9
     },
     {
       "type": "Defensive Offside",
-      "count": 67,
+      "count": 70,
       "pct": 5.4
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 62,
+      "count": 64,
       "pct": 5.0
     },
     {
       "type": "Delay of Game",
-      "count": 58,
-      "pct": 4.6
-    },
-    {
-      "type": "Offensive Pass Interference",
-      "count": 39,
-      "pct": 3.1
+      "count": 61,
+      "pct": 4.7
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 39,
+      "count": 42,
+      "pct": 3.3
+    },
+    {
+      "type": "Offensive Pass Interference",
+      "count": 40,
       "pct": 3.1
     },
     {
@@ -113,26 +120,98 @@
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 235,
-      "pct": 19.0
+      "count": 243,
+      "pct": 19.1
     },
     {
       "quarter": 2,
-      "count": 349,
-      "pct": 28.3
+      "count": 361,
+      "pct": 28.4
     },
     {
       "quarter": 3,
-      "count": 301,
-      "pct": 24.4
+      "count": 308,
+      "pct": 24.3
     },
     {
       "quarter": 4,
-      "count": 350,
-      "pct": 28.3
+      "count": 357,
+      "pct": 28.1
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_DAL_NYG",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-13",
+      "homeTeam": {
+        "abbr": "NYG",
+        "name": "New York Giants",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
+      },
+      "awayTeam": {
+        "abbr": "DAL",
+        "name": "Dallas Cowboys",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
+      },
+      "homeScore": 28,
+      "awayScore": 20,
+      "penalties": 19,
+      "homePenalties": 10,
+      "awayPenalties": 9,
+      "stadium": "MetLife Stadium",
+      "weather": null,
+      "temp": 80
+    },
+    {
+      "gameId": "2025_20_BUF_DEN",
+      "season": 2025,
+      "week": 20,
+      "date": "2026-01-17",
+      "homeTeam": {
+        "abbr": "DEN",
+        "name": "Denver Broncos",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
+      },
+      "awayTeam": {
+        "abbr": "BUF",
+        "name": "Buffalo Bills",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
+      },
+      "homeScore": 33,
+      "awayScore": 30,
+      "penalties": 8,
+      "homePenalties": 3,
+      "awayPenalties": 5,
+      "stadium": "Empower Field at Mile High",
+      "weather": null,
+      "temp": 36
+    },
+    {
+      "gameId": "2025_18_ARI_LA",
+      "season": 2025,
+      "week": 18,
+      "date": "2026-01-04",
+      "homeTeam": {
+        "abbr": "LA",
+        "name": "Los Angeles Rams",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
+      },
+      "awayTeam": {
+        "abbr": "ARI",
+        "name": "Arizona Cardinals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
+      },
+      "homeScore": 37,
+      "awayScore": 20,
+      "penalties": 10,
+      "homePenalties": 4,
+      "awayPenalties": 6,
+      "stadium": "SoFi Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_17_SEA_CAR",
       "season": 2025,
@@ -540,83 +619,11 @@
       "stadium": "Allegiant Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_17_GB_MIN",
-      "season": 2024,
-      "week": 17,
-      "date": "2024-12-29",
-      "homeTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "awayTeam": {
-        "abbr": "GB",
-        "name": "Green Bay Packers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
-      },
-      "homeScore": 27,
-      "awayScore": 25,
-      "penalties": 14,
-      "homePenalties": 7,
-      "awayPenalties": 7,
-      "stadium": "U.S. Bank Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_16_HOU_KC",
-      "season": 2024,
-      "week": 16,
-      "date": "2024-12-21",
-      "homeTeam": {
-        "abbr": "KC",
-        "name": "Kansas City Chiefs",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
-      },
-      "awayTeam": {
-        "abbr": "HOU",
-        "name": "Houston Texans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
-      },
-      "homeScore": 27,
-      "awayScore": 19,
-      "penalties": 8,
-      "homePenalties": 2,
-      "awayPenalties": 6,
-      "stadium": "GEHA Field at Arrowhead Stadium",
-      "weather": null,
-      "temp": 30
-    },
-    {
-      "gameId": "2024_15_IND_DEN",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-15",
-      "homeTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "awayTeam": {
-        "abbr": "IND",
-        "name": "Indianapolis Colts",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
-      },
-      "homeScore": 31,
-      "awayScore": 13,
-      "penalties": 14,
-      "homePenalties": 6,
-      "awayPenalties": 8,
-      "stadium": "Empower Field at Mile High",
-      "weather": null,
-      "temp": 55
     }
   ],
   "tendencies": {
     "avgVsLeague": 0.5,
-    "avgVsLeaguePct": 4.1,
+    "avgVsLeaguePct": 4.2,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.127167Z"
+  "generatedAt": "2026-09-15T06:32:02.747731Z"
 }

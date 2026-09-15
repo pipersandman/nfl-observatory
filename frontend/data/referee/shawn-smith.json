@@ -2,16 +2,16 @@
   "name": "Shawn Smith",
   "slug": "shawn-smith",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 99,
-    "totalPenalties": 1128,
-    "avgPerGame": 11.4,
+    "games": 103,
+    "totalPenalties": 1167,
+    "avgPerGame": 11.3,
     "minGame": 4,
     "maxGame": 19,
-    "stdDev": 3.43,
-    "homeBiasPct": 4.8,
+    "stdDev": 3.42,
+    "homeBiasPct": 5.2,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -52,87 +52,190 @@
     },
     {
       "season": 2025,
-      "games": 15,
-      "penalties": 180,
-      "avg": 12.0,
-      "homeBias": 13.3
+      "games": 18,
+      "penalties": 208,
+      "avg": 11.6,
+      "homeBias": 14.4
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 11,
+      "avg": 11.0,
+      "homeBias": 9.1
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 222,
+      "count": 230,
       "pct": 19.7
     },
     {
       "type": "Offensive Holding",
-      "count": 169,
-      "pct": 15.0
+      "count": 179,
+      "pct": 15.3
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 116,
+      "count": 120,
       "pct": 10.3
     },
     {
       "type": "Unnecessary Roughness",
       "count": 83,
-      "pct": 7.4
+      "pct": 7.1
     },
     {
       "type": "Defensive Holding",
-      "count": 61,
-      "pct": 5.4
+      "count": 62,
+      "pct": 5.3
     },
     {
       "type": "Delay of Game",
-      "count": 55,
+      "count": 57,
       "pct": 4.9
     },
     {
       "type": "Defensive Offside",
-      "count": 48,
-      "pct": 4.3
+      "count": 49,
+      "pct": 4.2
     },
     {
       "type": "Roughing the Passer",
-      "count": 39,
-      "pct": 3.5
+      "count": 40,
+      "pct": 3.4
     },
     {
       "type": "Neutral Zone Infraction",
       "count": 35,
-      "pct": 3.1
+      "pct": 3.0
     },
     {
       "type": "Face Mask",
-      "count": 31,
-      "pct": 2.7
+      "count": 33,
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 216,
-      "pct": 19.2
+      "count": 225,
+      "pct": 19.4
     },
     {
       "quarter": 2,
-      "count": 343,
-      "pct": 30.5
+      "count": 353,
+      "pct": 30.4
     },
     {
       "quarter": 3,
-      "count": 276,
-      "pct": 24.6
+      "count": 284,
+      "pct": 24.4
     },
     {
       "quarter": 4,
-      "count": 288,
-      "pct": 25.6
+      "count": 300,
+      "pct": 25.8
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_WAS_PHI",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-13",
+      "homeTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "awayTeam": {
+        "abbr": "WAS",
+        "name": "Washington Commanders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
+      },
+      "homeScore": 24,
+      "awayScore": 22,
+      "penalties": 11,
+      "homePenalties": 5,
+      "awayPenalties": 6,
+      "stadium": "Lincoln Financial Field",
+      "weather": null,
+      "temp": 82
+    },
+    {
+      "gameId": "2025_22_SEA_NE",
+      "season": 2025,
+      "week": 22,
+      "date": "2026-02-08",
+      "homeTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "awayTeam": {
+        "abbr": "SEA",
+        "name": "Seattle Seahawks",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
+      },
+      "homeScore": 13,
+      "awayScore": 29,
+      "penalties": 7,
+      "homePenalties": 3,
+      "awayPenalties": 4,
+      "stadium": "Levi's Stadium",
+      "weather": null,
+      "temp": 67
+    },
+    {
+      "gameId": "2025_20_HOU_NE",
+      "season": 2025,
+      "week": 20,
+      "date": "2026-01-18",
+      "homeTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "awayTeam": {
+        "abbr": "HOU",
+        "name": "Houston Texans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
+      },
+      "homeScore": 28,
+      "awayScore": 16,
+      "penalties": 7,
+      "homePenalties": 3,
+      "awayPenalties": 4,
+      "stadium": "Gillette Stadium",
+      "weather": null,
+      "temp": 35
+    },
+    {
+      "gameId": "2025_18_BAL_PIT",
+      "season": 2025,
+      "week": 18,
+      "date": "2026-01-04",
+      "homeTeam": {
+        "abbr": "PIT",
+        "name": "Pittsburgh Steelers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
+      },
+      "awayTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "homeScore": 26,
+      "awayScore": 24,
+      "penalties": 14,
+      "homePenalties": 5,
+      "awayPenalties": 9,
+      "stadium": "Acrisure Stadium",
+      "weather": null,
+      "temp": 25
+    },
     {
       "gameId": "2025_17_DET_MIN",
       "season": 2025,
@@ -516,108 +619,12 @@
       "stadium": "Lincoln Financial Field",
       "weather": null,
       "temp": 34
-    },
-    {
-      "gameId": "2024_18_SF_ARI",
-      "season": 2024,
-      "week": 18,
-      "date": "2025-01-05",
-      "homeTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "awayTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "homeScore": 47,
-      "awayScore": 24,
-      "penalties": 14,
-      "homePenalties": 1,
-      "awayPenalties": 13,
-      "stadium": "State Farm Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_17_TEN_JAX",
-      "season": 2024,
-      "week": 17,
-      "date": "2024-12-29",
-      "homeTeam": {
-        "abbr": "JAX",
-        "name": "Jacksonville Jaguars",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png"
-      },
-      "awayTeam": {
-        "abbr": "TEN",
-        "name": "Tennessee Titans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
-      },
-      "homeScore": 20,
-      "awayScore": 13,
-      "penalties": 12,
-      "homePenalties": 7,
-      "awayPenalties": 5,
-      "stadium": "TIAA Bank Stadium",
-      "weather": null,
-      "temp": 72
-    },
-    {
-      "gameId": "2024_16_PHI_WAS",
-      "season": 2024,
-      "week": 16,
-      "date": "2024-12-22",
-      "homeTeam": {
-        "abbr": "WAS",
-        "name": "Washington Commanders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
-      },
-      "awayTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "homeScore": 36,
-      "awayScore": 33,
-      "penalties": 15,
-      "homePenalties": 5,
-      "awayPenalties": 10,
-      "stadium": "FedExField",
-      "weather": null,
-      "temp": 32
-    },
-    {
-      "gameId": "2024_15_ATL_LV",
-      "season": 2024,
-      "week": 15,
-      "date": "2024-12-16",
-      "homeTeam": {
-        "abbr": "LV",
-        "name": "Las Vegas Raiders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
-      },
-      "awayTeam": {
-        "abbr": "ATL",
-        "name": "Atlanta Falcons",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
-      },
-      "homeScore": 9,
-      "awayScore": 15,
-      "penalties": 13,
-      "homePenalties": 7,
-      "awayPenalties": 6,
-      "stadium": "Allegiant Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.5,
-    "avgVsLeaguePct": -4.3,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -0.6,
+    "avgVsLeaguePct": -5.0,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.146733Z"
+  "generatedAt": "2026-09-15T06:32:02.878128Z"
 }

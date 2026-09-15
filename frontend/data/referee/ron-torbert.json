@@ -2,16 +2,16 @@
   "name": "Ron Torbert",
   "slug": "ron-torbert",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 102,
-    "totalPenalties": 1218,
+    "games": 105,
+    "totalPenalties": 1250,
     "avgPerGame": 11.9,
     "minGame": 6,
     "maxGame": 24,
-    "stdDev": 4.14,
-    "homeBiasPct": -2.1,
+    "stdDev": 4.13,
+    "homeBiasPct": -1.8,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -52,52 +52,59 @@
     },
     {
       "season": 2025,
-      "games": 15,
-      "penalties": 193,
-      "avg": 12.9,
-      "homeBias": -14.0
+      "games": 17,
+      "penalties": 210,
+      "avg": 12.4,
+      "homeBias": -11.4
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 15,
+      "avg": 15.0,
+      "homeBias": 6.7
     }
   ],
   "penaltyTypes": [
     {
-      "type": "Offensive Holding",
-      "count": 251,
+      "type": "False Start",
+      "count": 258,
       "pct": 20.6
     },
     {
-      "type": "False Start",
-      "count": 245,
-      "pct": 20.1
+      "type": "Offensive Holding",
+      "count": 255,
+      "pct": 20.4
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 97,
-      "pct": 8.0
+      "count": 102,
+      "pct": 8.2
     },
     {
       "type": "Unnecessary Roughness",
       "count": 70,
-      "pct": 5.7
+      "pct": 5.6
     },
     {
       "type": "Defensive Holding",
-      "count": 62,
-      "pct": 5.1
+      "count": 63,
+      "pct": 5.0
     },
     {
       "type": "Delay of Game",
-      "count": 60,
-      "pct": 4.9
+      "count": 62,
+      "pct": 5.0
     },
     {
       "type": "Defensive Offside",
       "count": 50,
-      "pct": 4.1
+      "pct": 4.0
     },
     {
       "type": "Face Mask",
-      "count": 37,
-      "pct": 3.0
+      "count": 39,
+      "pct": 3.1
     },
     {
       "type": "Roughing the Passer",
@@ -107,32 +114,104 @@
     {
       "type": "Neutral Zone Infraction",
       "count": 34,
-      "pct": 2.8
+      "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 255,
-      "pct": 21.0
+      "count": 260,
+      "pct": 20.9
     },
     {
       "quarter": 2,
-      "count": 343,
-      "pct": 28.3
+      "count": 356,
+      "pct": 28.6
     },
     {
       "quarter": 3,
-      "count": 291,
-      "pct": 24.0
+      "count": 300,
+      "pct": 24.1
     },
     {
       "quarter": 4,
-      "count": 325,
-      "pct": 26.8
+      "count": 330,
+      "pct": 26.5
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_ARI_LAC",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-13",
+      "homeTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "awayTeam": {
+        "abbr": "ARI",
+        "name": "Arizona Cardinals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
+      },
+      "homeScore": 14,
+      "awayScore": 26,
+      "penalties": 15,
+      "homePenalties": 7,
+      "awayPenalties": 8,
+      "stadium": "SoFi Stadium",
+      "weather": null,
+      "temp": null
+    },
+    {
+      "gameId": "2025_19_LAC_NE",
+      "season": 2025,
+      "week": 19,
+      "date": "2026-01-11",
+      "homeTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "awayTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "homeScore": 16,
+      "awayScore": 3,
+      "penalties": 6,
+      "homePenalties": 2,
+      "awayPenalties": 4,
+      "stadium": "Gillette Stadium",
+      "weather": null,
+      "temp": 35
+    },
+    {
+      "gameId": "2025_18_NO_ATL",
+      "season": 2025,
+      "week": 18,
+      "date": "2026-01-04",
+      "homeTeam": {
+        "abbr": "ATL",
+        "name": "Atlanta Falcons",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
+      },
+      "awayTeam": {
+        "abbr": "NO",
+        "name": "New Orleans Saints",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"
+      },
+      "homeScore": 19,
+      "awayScore": 17,
+      "penalties": 11,
+      "homePenalties": 5,
+      "awayPenalties": 6,
+      "stadium": "Mercedes-Benz Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_17_PHI_BUF",
       "season": 2025,
@@ -540,83 +619,11 @@
       "stadium": "Ford Field",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2024_18_NYG_PHI",
-      "season": 2024,
-      "week": 18,
-      "date": "2025-01-05",
-      "homeTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "awayTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
-      },
-      "homeScore": 20,
-      "awayScore": 13,
-      "penalties": 7,
-      "homePenalties": 1,
-      "awayPenalties": 6,
-      "stadium": "Lincoln Financial Field",
-      "weather": null,
-      "temp": 31
-    },
-    {
-      "gameId": "2024_17_MIA_CLE",
-      "season": 2024,
-      "week": 17,
-      "date": "2024-12-29",
-      "homeTeam": {
-        "abbr": "CLE",
-        "name": "Cleveland Browns",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png"
-      },
-      "awayTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "homeScore": 3,
-      "awayScore": 20,
-      "penalties": 20,
-      "homePenalties": 9,
-      "awayPenalties": 11,
-      "stadium": "FirstEnergy Stadium",
-      "weather": null,
-      "temp": 54
-    },
-    {
-      "gameId": "2024_16_LA_NYJ",
-      "season": 2024,
-      "week": 16,
-      "date": "2024-12-22",
-      "homeTeam": {
-        "abbr": "NYJ",
-        "name": "New York Jets",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
-      },
-      "awayTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "homeScore": 9,
-      "awayScore": 19,
-      "penalties": 13,
-      "homePenalties": 8,
-      "awayPenalties": 5,
-      "stadium": "MetLife Stadium",
-      "weather": null,
-      "temp": 23
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.0,
-    "avgVsLeaguePct": -0.1,
+    "avgVsLeague": 0.0,
+    "avgVsLeaguePct": 0.0,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.107813Z"
+  "generatedAt": "2026-09-15T06:32:02.533585Z"
 }

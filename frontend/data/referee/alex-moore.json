@@ -2,16 +2,16 @@
   "name": "Alex Moore",
   "slug": "alex-moore",
   "firstSeason": 2025,
-  "lastSeason": 2025,
-  "experience": "1 seasons",
+  "lastSeason": 2026,
+  "experience": "2 seasons",
   "stats": {
-    "games": 16,
-    "totalPenalties": 258,
-    "avgPerGame": 16.1,
+    "games": 17,
+    "totalPenalties": 275,
+    "avgPerGame": 16.2,
     "minGame": 8,
     "maxGame": 22,
-    "stdDev": 4.56,
-    "homeBiasPct": 4.7,
+    "stdDev": 4.42,
+    "homeBiasPct": 5.5,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -21,83 +21,114 @@
       "penalties": 258,
       "avg": 16.1,
       "homeBias": 4.7
+    },
+    {
+      "season": 2026,
+      "games": 1,
+      "penalties": 17,
+      "avg": 17.0,
+      "homeBias": 17.6
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 50,
-      "pct": 19.4
+      "count": 54,
+      "pct": 19.6
     },
     {
       "type": "False Start",
-      "count": 47,
-      "pct": 18.2
+      "count": 49,
+      "pct": 17.8
     },
     {
-      "type": "Roughing the Passer",
-      "count": 15,
+      "type": "Defensive Holding",
+      "count": 16,
       "pct": 5.8
     },
     {
-      "type": "Unnecessary Roughness",
-      "count": 13,
-      "pct": 5.0
+      "type": "Roughing the Passer",
+      "count": 16,
+      "pct": 5.8
+    },
+    {
+      "type": "Defensive Pass Interference",
+      "count": 14,
+      "pct": 5.1
     },
     {
       "type": "Delay of Game",
       "count": 13,
-      "pct": 5.0
-    },
-    {
-      "type": "Defensive Pass Interference",
-      "count": 12,
       "pct": 4.7
     },
     {
-      "type": "Defensive Holding",
-      "count": 12,
+      "type": "Unnecessary Roughness",
+      "count": 13,
       "pct": 4.7
     },
     {
       "type": "Defensive Offside",
       "count": 12,
-      "pct": 4.7
+      "pct": 4.4
     },
     {
       "type": "Illegal Contact",
       "count": 10,
-      "pct": 3.9
+      "pct": 3.6
     },
     {
       "type": "Face Mask",
       "count": 10,
-      "pct": 3.9
+      "pct": 3.6
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 44,
-      "pct": 17.1
+      "count": 46,
+      "pct": 16.7
     },
     {
       "quarter": 2,
-      "count": 83,
-      "pct": 32.2
+      "count": 91,
+      "pct": 33.1
     },
     {
       "quarter": 3,
-      "count": 66,
-      "pct": 25.6
+      "count": 70,
+      "pct": 25.5
     },
     {
       "quarter": 4,
-      "count": 65,
-      "pct": 25.2
+      "count": 68,
+      "pct": 24.7
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_01_BUF_HOU",
+      "season": 2026,
+      "week": 1,
+      "date": "2026-09-13",
+      "homeTeam": {
+        "abbr": "HOU",
+        "name": "Houston Texans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
+      },
+      "awayTeam": {
+        "abbr": "BUF",
+        "name": "Buffalo Bills",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
+      },
+      "homeScore": 31,
+      "awayScore": 36,
+      "penalties": 17,
+      "homePenalties": 7,
+      "awayPenalties": 10,
+      "stadium": "Reliant Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_17_CHI_SF",
       "season": 2025,
@@ -484,9 +515,9 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 4.2,
-    "avgVsLeaguePct": 35.1,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Alex Moore's games average 4.2 more penalties per game than league average."
+    "avgVsLeague": 4.3,
+    "avgVsLeaguePct": 36.2,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Alex Moore's games average 4.3 more penalties per game than league average."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -495,5 +526,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2025-12-30T06:13:05.290393Z"
+  "generatedAt": "2026-09-15T06:32:03.586157Z"
 }

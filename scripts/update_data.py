@@ -143,6 +143,25 @@ def load_all_data(seasons: list[int]) -> dict:
         
         # Apply name fixes
         officials['name'] = officials['name'].replace(NAME_FIXES)
+
+        # The officials feed lags during the season (in 2026 it only had Week 1),
+        # but the schedule's `referee` column is filled in weekly. Use the schedule
+        # as a fallback for any game that has no crew chief in the officials feed.
+        sched = data['schedules']
+        if not sched.empty and 'referee' in sched.columns:
+            covered = set(officials.loc[officials['position'] == 'Referee', 'game_id'].dropna())
+            fill = sched[sched['referee'].notna() & ~sched['game_id'].isin(covered)]
+            if not fill.empty:
+                fill = pd.DataFrame({
+                    'game_id': fill['game_id'],
+                    'name': fill['referee'].replace(NAME_FIXES),
+                    'position': 'Referee',
+                    'season': fill['season'],
+                    'week': fill['week'],
+                })
+                officials = pd.concat([officials, fill], ignore_index=True)
+                print(f"   ✓ Filled {len(fill)} crew chief assignments from schedule data")
+
         data['officials'] = officials
         print(f"   ✓ {len(officials)} official assignments")
     except Exception as e:
@@ -156,7 +175,7 @@ def load_all_data(seasons: list[int]) -> dict:
         'quarter_seconds_remaining', 'penalty', 'penalty_team',
         'penalty_type', 'penalty_yards', 'penalty_player_name',
         'home_team', 'away_team', 'posteam', 'score_differential',
-        'down', 'ydstogo', 'play_type'
+        'down', 'ydstogo', 'play_type', 'season_type'
     ]
     
     all_pbp = []
@@ -176,10 +195,14 @@ def load_all_data(seasons: list[int]) -> dict:
     if all_pbp:
         pbp = pd.concat(all_pbp, ignore_index=True)
         data['penalties'] = pbp[pbp['penalty'] == 1].copy()
+        # Every game with play-by-play (including any with zero accepted penalties)
+        game_cols = [c for c in ['game_id', 'season', 'week', 'season_type'] if c in pbp.columns]
+        data['games_played'] = pbp[game_cols].drop_duplicates('game_id')
         print(f"   ✓ {len(data['penalties'])} total penalties")
     else:
         print(f"   ✗ No play-by-play data loaded")
         data['penalties'] = pd.DataFrame()
+        data['games_played'] = pd.DataFrame()
     
     return data
 
@@ -464,6 +487,138 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     return insights
 
 
+def _season_block(games: int, penalties: float, yards: float):
+    """Summary numbers for one crew chief (or the league) in one season."""
+    if games == 0:
+        return None
+    return {
+        'games': int(games),
+        'penalties': int(penalties),
+        'yards': int(round(yards)),
+        'perGame': round(float(penalties) / games, 2),
+        'yardsPerGame': round(float(yards) / games, 1),
+        'yardsPerPenalty': round(float(yards) / penalties, 1) if penalties else 0.0,
+    }
+
+
+def calculate_season_comparison(data: dict) -> dict:
+    """Current season vs several baselines, league-wide and per crew chief, with yardage.
+
+    Baselines (the frontend toggles between them):
+      sameWeeks  - previous season, through the same week as the current season
+      lastSeason - all of the previous season
+      last3      - the three seasons before the current one (games-weighted average)
+      all        - every prior season in the data (games-weighted average)
+
+    Regular season only: playoff games are worked by all-star crews and would
+    skew crew-vs-crew comparisons.
+    """
+    print("\n📊 Calculating current season vs baselines...")
+
+    penalties = data['penalties'].copy()
+    games = data.get('games_played', pd.DataFrame()).copy()
+    officials = data['officials']
+
+    if penalties.empty or games.empty or officials.empty:
+        print("   ✗ Missing required data")
+        return {}
+
+    if 'season_type' in games.columns:
+        games = games[games['season_type'] == 'REG']
+        penalties = penalties[penalties['season_type'] == 'REG']
+
+    current = int(games['season'].max())
+    previous = current - 1
+    prior_seasons = sorted(int(x) for x in games['season'].unique() if x < current)
+    penalties = penalties[penalties['game_id'].isin(games['game_id'])].copy()
+    penalties['penalty_yards'] = pd.to_numeric(penalties['penalty_yards'], errors='coerce').fillna(0).abs()
+
+    # Auto-adjusts every week: the latest regular-season week with play-by-play
+    through_week = int(games.loc[games['season'] == current, 'week'].max())
+
+    per_game = penalties.groupby('game_id').agg(
+        penalties=('game_id', 'size'),
+        yards=('penalty_yards', 'sum'),
+    ).reset_index()
+
+    g = games[['game_id', 'season', 'week']].merge(per_game, on='game_id', how='left')
+    g[['penalties', 'yards']] = g[['penalties', 'yards']].fillna(0)
+
+    chiefs = (officials[officials['position'] == 'Referee'][['game_id', 'name']]
+              .dropna(subset=['game_id'])
+              .drop_duplicates('game_id'))
+    g = g.merge(chiefs, on='game_id', how='left')
+
+    def summarize(frame):
+        return _season_block(len(frame), frame['penalties'].sum(), frame['yards'].sum())
+
+    def span(seasons):
+        return f"{seasons[0]}" if len(seasons) == 1 else f"{seasons[0]}–{seasons[-1]}"
+
+    # Baseline definitions: key -> (row filter, labels). Only include ones the loaded data supports.
+    baselines = []
+    if previous in prior_seasons:
+        baselines.append({
+            'key': 'sameWeeks', 'seasons': [previous],
+            'label': f"{previous} through Week {through_week}",
+            'short': f"{previous} Wk 1–{through_week}",
+            'mask': lambda f: (f['season'] == previous) & (f['week'] <= through_week),
+        })
+        baselines.append({
+            'key': 'lastSeason', 'seasons': [previous],
+            'label': f"All of {previous}", 'short': f"{previous}",
+            'mask': lambda f: f['season'] == previous,
+        })
+    last3 = prior_seasons[-3:]
+    if len(last3) == 3:
+        baselines.append({
+            'key': 'last3', 'seasons': last3,
+            'label': f"Last 3 seasons ({span(last3)})", 'short': f"{span(last3)} avg",
+            'mask': lambda f, s=last3: f['season'].isin(s),
+        })
+    if len(prior_seasons) > 3:
+        baselines.append({
+            'key': 'all', 'seasons': prior_seasons,
+            'label': f"All seasons ({span(prior_seasons)})", 'short': f"{span(prior_seasons)} avg",
+            'mask': lambda f, s=prior_seasons: f['season'].isin(s),
+        })
+
+    league = {
+        'current': summarize(g[g['season'] == current]),
+        'baselines': {b['key']: summarize(g[b['mask'](g)]) for b in baselines},
+    }
+
+    crews = []
+    for name, s in g.dropna(subset=['name']).groupby('name'):
+        cur = summarize(s[s['season'] == current])
+        if cur is None:  # hasn't worked a game this season
+            continue
+        crews.append({
+            'name': name,
+            'slug': slugify(name),
+            'current': cur,
+            'baselines': {b['key']: summarize(s[b['mask'](s)]) for b in baselines},
+        })
+
+    # Most penalties per game first
+    crews.sort(key=lambda c: (c['current']['perGame'], c['current']['yardsPerGame']), reverse=True)
+
+    print(f"   ✓ {current} through week {through_week}: {len(crews)} crew chiefs, "
+          f"baselines: {', '.join(b['key'] for b in baselines)}")
+
+    return {
+        'currentSeason': current,
+        'previousSeason': previous,
+        'throughWeek': through_week,
+        'regularSeasonOnly': True,
+        'baselines': [{k: b[k] for k in ('key', 'label', 'short', 'seasons')} for b in baselines],
+        'defaultBaseline': 'sameWeeks' if previous in prior_seasons else (baselines[0]['key'] if baselines else None),
+        'league': league,
+        'crewChiefs': crews,
+        'generatedAt': datetime.utcnow().isoformat() + 'Z',
+    }
+
+
 # =============================================================================
 # OUTPUT GENERATION
 # =============================================================================
@@ -670,12 +825,15 @@ def main():
     trends = calculate_league_trends(data)
     hero_stats = generate_hero_stats(data, ref_stats)
     insights = generate_insights(data, ref_stats, trends)
+    season_comparison = calculate_season_comparison(data)
     
     # Save JSON files
     print("\n💾 Saving JSON files...")
     save_json(hero_stats, 'stats.json')
     save_json(trends, 'trends.json')
     save_json(insights, 'insights.json')
+    if season_comparison:
+        save_json(season_comparison, 'season_comparison.json')
     
     # Referees summary
     ref_summary = ref_stats[[

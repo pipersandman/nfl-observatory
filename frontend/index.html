@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A data-driven investigation into NFL officiating patterns, referee behavior, and what 16,000+ penalty flags reveal about human decision-making.">
+    <meta name="description" content="A data-driven investigation into NFL officiating patterns, referee behavior, and current-season crew chief penalty and yardage trends.">
     
     <title>NFL Officiating Observatory | Crew Chief Analysis</title>
     
@@ -23,93 +23,75 @@
     <nav>
         <div class="logo">NFL Officiating Observatory</div>
         <div class="nav-links">
-            <a href="#insights">Insights</a>
-            <a href="#referees">Crew Chiefs</a>
+            <a href="#season">This Season</a>
             <a href="#trends">Trends</a>
+            <a href="#referees">Crew Chiefs</a>
             <a href="#data">Data</a>
+            <a href="#insights">Findings</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-badge">LIVE DATA - 2020-2025 SEASONS</div>
-        <h1>What 19,000+ <span>Penalty Flags</span> Reveal</h1>
-        <p class="hero-subtitle">
-            A data-driven investigation into NFL officiating patterns, crew chief behavior, 
-            and the psychology of split-second decisions.
-        </p>
-        
-        <div class="stats-grid" id="heroStats">
-            <div class="loading"><div class="spinner"></div></div>
-        </div>
-        
-        <!-- Data disclaimer -->
-        <div class="hero-disclaimer">
-            <button class="info-trigger" onclick="openExplainer('data-methodology')">
-                How is this data collected?
-            </button>
-        </div>
-    </section>
-
-    <!-- Crew Chief Explainer Banner -->
-    <section class="explainer-banner" id="crewChiefBanner">
+    <!-- This Season Section -->
+    <section id="season">
         <div class="container">
-            <div class="explainer-content">
-                <div class="explainer-icon">INFO</div>
-                <div class="explainer-text">
-                    <h3>Why "Crew Chiefs" instead of individual referees?</h3>
-                    <p>
-                        Each NFL game has 7 officials, but penalty data only tells us <em>that</em> a flag was thrown - 
-                        not <em>who</em> threw it. We track <strong>Crew Chiefs</strong> (head referees) because they 
-                        set the standard for their crew and are publicly accountable. This is the same method used by 
-                        Vegas oddsmakers and professional analysts.
-                    </p>
-                </div>
-                <button class="explainer-close" onclick="this.parentElement.parentElement.parentElement.classList.add('hidden')">X</button>
+            <div class="section-header">
+                <div class="section-number">01 / THIS SEASON</div>
+                <h2 class="section-title" id="seasonTitle">This Season vs Last</h2>
+                <p class="section-subtitle" id="seasonSubtitle">Loading…</p>
+                <div class="baseline-toggle" id="baselineToggle" role="group" aria-label="Compare against"></div>
             </div>
-        </div>
-    </section>
 
-    <!-- Key Insights Carousel -->
-    <section id="insights">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">01 / KEY FINDINGS</div>
-                <h2 class="section-title">What The Data Shows</h2>
-                <p class="section-subtitle">Swipe through headline discoveries from five seasons of penalty data</p>
-            </div>
-            
-            <!-- Carousel -->
-            <div class="carousel-container fade-in">
-                <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">&lt;</button>
-                
-                <div class="carousel-track" id="insightsCarousel">
-                    <!-- Populated by JS -->
+            <div id="seasonBody">
+                <div class="season-league" id="seasonLeague">
                     <div class="loading"><div class="spinner"></div></div>
                 </div>
-                
-                <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">&gt;</button>
-            </div>
-            
-            <!-- Carousel dots -->
-            <div class="carousel-dots" id="carouselDots"></div>
-        </div>
-    </section>
 
-    <!-- Referees Section -->
-    <section id="referees">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">02 / CREW CHIEF PROFILES</div>
-                <h2 class="section-title">Meet The Officials</h2>
-                <p class="section-subtitle">
-                    Click any crew chief to see their detailed profile, recent games, and tendencies
-                    <button class="info-trigger-inline" onclick="openExplainer('crew-chief')">What's a crew chief?</button>
-                </p>
-            </div>
-            
-            <div class="referee-grid fade-in" id="refereeGrid">
-                <div class="loading"><div class="spinner"></div></div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">Penalties Per Game By Crew Chief</div>
+                            <button class="info-trigger-small" onclick="openExplainer('season-penalties')">?</button>
+                        </div>
+                        <div class="chart-wrapper season-chart-wrapper">
+                            <canvas id="seasonPenaltiesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">Penalty Yards Per Game By Crew Chief</div>
+                            <button class="info-trigger-small" onclick="openExplainer('season-yards')">?</button>
+                        </div>
+                        <div class="chart-wrapper season-chart-wrapper">
+                            <canvas id="seasonYardsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container season-table">
+                    <div class="table-header">
+                        <div class="table-title" id="seasonTableTitle">Crew Chiefs This Season</div>
+                        <div class="table-legend">
+                            <span class="legend-item"><span class="pct-up">▲</span> More than comparison</span>
+                            <span class="legend-item"><span class="pct-down">▼</span> Fewer than comparison</span>
+                        </div>
+                    </div>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Crew Chief</th>
+                                    <th>Games</th>
+                                    <th>Penalties / Yards</th>
+                                    <th>Pen / Game</th>
+                                    <th>Yds / Game</th>
+                                    <th id="seasonPrevHeader">Comparison</th>
+                                </tr>
+                            </thead>
+                            <tbody id="seasonTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -118,7 +100,7 @@
     <section id="trends">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">03 / LEAGUE TRENDS</div>
+                <div class="section-number">02 / LEAGUE TRENDS</div>
                 <h2 class="section-title">The Big Picture</h2>
                 <p class="section-subtitle">How officiating patterns have evolved across seasons</p>
             </div>
@@ -167,6 +149,24 @@
         </div>
     </section>
 
+    <!-- Referees Section -->
+    <section id="referees">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">03 / CREW CHIEF PROFILES</div>
+                <h2 class="section-title">Meet The Officials</h2>
+                <p class="section-subtitle">
+                    Click any crew chief to see their detailed profile, recent games, and tendencies
+                    <button class="info-trigger-inline" onclick="openExplainer('crew-chief')">What's a crew chief?</button>
+                </p>
+            </div>
+            
+            <div class="referee-grid fade-in" id="refereeGrid">
+                <div class="loading"><div class="spinner"></div></div>
+            </div>
+        </div>
+    </section>
+
     <!-- Data Table Section -->
     <section id="data">
         <div class="container">
@@ -178,7 +178,7 @@
             
             <div class="table-container fade-in" id="dataTable">
                 <div class="table-header">
-                    <div class="table-title">Crew Chief Statistics (2020-2024)</div>
+                    <div class="table-title">Crew Chief Statistics (All Seasons)</div>
                     <div class="table-legend">
                         <span class="legend-item"><span class="legend-dot high"></span> Above average</span>
                         <span class="legend-item"><span class="legend-dot low"></span> Below average</span>
@@ -203,6 +203,32 @@
         </div>
     </section>
 
+    <!-- Key Insights Carousel -->
+    <section id="insights">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">05 / KEY FINDINGS</div>
+                <h2 class="section-title">What The Data Shows</h2>
+                <p class="section-subtitle">Swipe through headline discoveries from five seasons of penalty data</p>
+            </div>
+            
+            <!-- Carousel -->
+            <div class="carousel-container fade-in">
+                <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">&lt;</button>
+                
+                <div class="carousel-track" id="insightsCarousel">
+                    <!-- Populated by JS -->
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                
+                <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">&gt;</button>
+            </div>
+            
+            <!-- Carousel dots -->
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -217,7 +243,7 @@
                 </div>
             </div>
             <p class="footer-copyright">
-                2024 NFL Officiating Observatory. For educational purposes only.
+                NFL Officiating Observatory. For educational purposes only.
             </p>
         </div>
     </footer>

@@ -1034,61 +1034,181 @@ async function openRefereeModal(slug) {
     }
     
     state.currentReferee = profile;
-    
+
+    const d = state.season;
+    const cs = profile.currentSeason ?? d?.currentSeason;
+    const cmp = [...(d?.crewChiefs || []), ...(d?.inactiveCrewChiefs || [])].find(c => c.slug === slug) || null;
+    const cur = cmp?.current || null;
+    const last = cmp?.baselines?.lastSeason || null;
+    const all = cmp?.baselines?.all || null;
+    const allBase = d?.baselines?.find(b => b.key === 'all');
+    const allLabel = allBase
+        ? `${allBase.seasons[0]}–${String(allBase.seasons[allBase.seasons.length - 1]).slice(2)}`
+        : 'Prior years';
+    const lastLabel = d?.baselines?.find(b => b.key === 'lastSeason')?.seasons[0] ?? 'Last season';
+    const active = !!cur;
+    const small = active && cur.games < MIN_GAMES_FOR_PCT;
+
     document.getElementById('modalTitle').textContent = profile.name;
-    document.getElementById('modalSubtitle').textContent = `${profile.experience} • ${profile.stats.games} games`;
-    
-    // Build penalty types HTML
-    const penaltyTypesHtml = renderPenaltyTypesBreakdown(profile.penaltyTypes);
-    
-    // Build quarter distribution HTML
-    const quarterDistHtml = renderQuarterDistribution(profile.quarterDistribution);
-    
+    document.getElementById('modalSubtitle').textContent = active
+        ? `Active ${cs} • ${cur.games} games this season • ${profile.stats.games} career games`
+        : `Not active in ${cs} • ${profile.experience} • ${profile.stats.games} career games`;
+
+    // --- This season vs history (same rows as the card, bigger) ---
+    const maxRate = Math.max(...[cur, last, all].filter(Boolean).map(b => b.perGame), 1);
+    const row = (cls, label, block) => block ? `
+        <div class="cc-row ${cls}">
+            <div class="cc-label">${label}<span>${block.games} g</span></div>
+            <div class="cc-bar-track"><div class="cc-bar" style="width:${Math.max(2, block.perGame / maxRate * 100)}%"></div></div>
+            <div class="cc-value">${fmtNum(block.perGame, 1)}</div>
+            <div class="cc-yards">${fmtNum(block.yardsPerGame)} yds</div>
+            <div class="cc-yards">${fmtNum(block.yardsPerPenalty, 1)}</div>
+        </div>` : `
+        <div class="cc-row ${cls} cc-empty">
+            <div class="cc-label">${label}</div>
+            <div class="cc-bar-track"></div>
+            <div class="cc-value">—</div><div class="cc-yards">—</div><div class="cc-yards">—</div>
+        </div>`;
+
+    const leagueCur = d?.league?.current;
+    const vsLeaguePct = active && leagueCur ? pctChange(cur.perGame, leagueCur.perGame) : null;
+    const seasonTendency = active && leagueCur ? `
+        In ${cs}, ${profile.name.split(' ').pop()}'s crew is calling <strong>${fmtNum(cur.perGame, 1)}</strong> penalties per game
+        vs a league average of <strong>${fmtNum(leagueCur.perGame, 1)}</strong>
+        ${pctBadge(cur.perGame, leagueCur.perGame, { small })}
+        ${vsLeaguePct === null ? '' : Math.abs(vsLeaguePct) < 5 ? '— right at league pace.'
+            : vsLeaguePct > 0 ? '— one of the more flag-heavy crews this season.' : '— letting them play more than most this season.'}
+        ${small ? `<br><span class="cc-note">Only ${cur.games} games so far, so this can still move a lot.</span>` : ''}` : '';
+
+    const comparisonHtml = cmp ? `
+        <div class="modal-section">
+            <h4>📊 ${active ? `${cs} vs history` : 'Regular-season history'}</h4>
+            <div class="cc-rows cc-rows-lg">
+                <div class="cc-row-head"><span></span><span></span><span>Pen/g</span><span>Yds/g</span><span>Yds/pen</span></div>
+                ${row('cc-current', cs, cur)}
+                ${row('cc-last', lastLabel, last)}
+                ${row('cc-all', allLabel, all)}
+            </div>
+            ${active ? `
+            <div class="cc-changes">
+                <span>Pen/g vs ${lastLabel} ${pctBadge(cur.perGame, last?.perGame, { small })}</span>
+                <span>vs ${allLabel} ${pctBadge(cur.perGame, all?.perGame, { small })}</span>
+                <span>Yds/g vs ${lastLabel} ${pctBadge(cur.yardsPerGame, last?.yardsPerGame, { small })}</span>
+                <span>vs ${allLabel} ${pctBadge(cur.yardsPerGame, all?.yardsPerGame, { small })}</span>
+            </div>` : ''}
+        </div>` : '';
+
+    // --- Penalty types & quarters: this season vs prior years, per game ---
+    const typesHtml = active && profile.penaltyTypeComparison?.length
+        ? renderTypeComparison(profile.penaltyTypeComparison, cs, allLabel, small)
+        : renderPenaltyTypesBreakdown(profile.penaltyTypes);
+    const quartersHtml = active && profile.quarterComparison?.length
+        ? renderQuarterComparison(profile.quarterComparison, cs, allLabel, small)
+        : renderQuarterDistribution(profile.quarterDistribution);
+
     modalBody.innerHTML = `
-        <div class="modal-stats-grid">
-            <div class="modal-stat">
-                <div class="modal-stat-value">${profile.stats.avgPerGame}</div>
-                <div class="modal-stat-label">Avg/Game</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${profile.stats.minGame}-${profile.stats.maxGame}</div>
-                <div class="modal-stat-label">Range</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct}%</div>
-                <div class="modal-stat-label">Home Bias</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${profile.stats.consistency}</div>
-                <div class="modal-stat-label">Style</div>
-            </div>
-        </div>
-        
-        <div class="chart-container" style="margin-bottom: 1.5rem;">
-            <div class="chart-title">📈 Season Trend</div>
-            <div class="chart-wrapper" style="height: 180px;">
+        ${comparisonHtml}
+
+        ${active ? `
+        <div class="modal-tendency">
+            <h4>🎯 ${cs} so far</h4>
+            <p>${seasonTendency}</p>
+            <p class="modal-tendency-career"><strong>Career:</strong> ${profile.tendencies?.description || 'League-average officiating style'}</p>
+        </div>` : `
+        <div class="modal-tendency">
+            <h4>🎯 Tendencies</h4>
+            <p>${profile.tendencies?.description || 'League-average officiating style'}</p>
+        </div>`}
+
+        <div class="chart-container modal-section">
+            <div class="chart-title">📈 Penalties per game by season <span class="modal-muted">(regular season)</span></div>
+            <div class="chart-wrapper" style="height: 200px;">
                 <canvas id="modalSeasonChart"></canvas>
             </div>
         </div>
-        
-        <div style="margin-bottom: 1.5rem; background: var(--bg-glass); border-radius: 12px; padding: 1rem; border-left: 3px solid var(--accent-purple);">
-            <h4 style="margin-bottom: 0.5rem; color: var(--accent-cyan);">🎯 Tendencies</h4>
-            <p style="color: var(--text-secondary); margin: 0;">${profile.tendencies?.description || 'League-average officiating style'}</p>
+
+        ${typesHtml}
+
+        ${quartersHtml}
+
+        <div class="modal-section">
+            <h4>🗂️ Career (all games incl. playoffs, ${profile.firstSeason}–${profile.lastSeason})</h4>
+            <div class="modal-stats-grid">
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${profile.stats.avgPerGame}</div>
+                    <div class="modal-stat-label">Avg/Game</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${profile.stats.minGame}-${profile.stats.maxGame}</div>
+                    <div class="modal-stat-label">Range</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct}%</div>
+                    <div class="modal-stat-label">Home Bias</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${profile.stats.consistency}</div>
+                    <div class="modal-stat-label">Style</div>
+                </div>
+            </div>
         </div>
-        
-        ${penaltyTypesHtml}
-        
-        ${quarterDistHtml}
-        
+
         <div>
             <h4 style="margin-bottom: 0.75rem;">📋 Recent Games</h4>
             <div class="game-list">
-                ${renderRecentGames(profile.recentGames)}
+                ${renderRecentGames(profile.recentGames, cs)}
             </div>
         </div>
     `;
     
-    setTimeout(() => renderModalChart(profile), 100);
+    setTimeout(() => renderModalChart(profile, all), 100);
+}
+
+// Paired bars: this season (cyan) vs prior years (gray), per game, shared scale
+function renderPairedRows(rows, cs, allLabel, small, labelFn) {
+    const max = Math.max(...rows.flatMap(r => [r.currentPerGame || 0, r.priorPerGame || 0]), 0.1);
+    return rows.map(r => `
+        <div class="pair-row">
+            <div class="pair-label">${labelFn(r)}</div>
+            <div class="pair-bars">
+                <div class="pair-bar-track"><div class="pair-bar pair-current" style="width:${(r.currentPerGame || 0) / max * 100}%"></div></div>
+                <div class="pair-bar-track"><div class="pair-bar pair-prior" style="width:${(r.priorPerGame || 0) / max * 100}%"></div></div>
+            </div>
+            <div class="pair-values">
+                <span class="pair-cur">${fmtNum(r.currentPerGame, 1)}</span>
+                <span class="pair-prior-val">${fmtNum(r.priorPerGame, 1)}</span>
+            </div>
+            <div class="pair-pct">${pctBadge(r.currentPerGame, r.priorPerGame, { small })}</div>
+        </div>
+    `).join('');
+}
+
+function pairLegend(cs, allLabel) {
+    return `<div class="pair-legend">
+        <span><i class="pair-swatch pair-current"></i>${cs}</span>
+        <span><i class="pair-swatch pair-prior"></i>${allLabel} avg</span>
+        <span class="modal-muted">per game</span>
+    </div>`;
+}
+
+function renderTypeComparison(types, cs, allLabel, small) {
+    const rows = types.slice(0, 10);
+    return `
+        <div class="modal-section">
+            <h4>🚩 What's being called: ${cs} vs ${allLabel}</h4>
+            ${pairLegend(cs, allLabel)}
+            ${renderPairedRows(rows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
+            <p class="modal-footnote">Penalties per game of each type in this crew's regular-season games. Sorted by ${cs} rate, most first.</p>
+        </div>`;
+}
+
+function renderQuarterComparison(quarters, cs, allLabel, small) {
+    return `
+        <div class="modal-section">
+            <h4>⏱️ When flags fly: ${cs} vs ${allLabel}</h4>
+            ${pairLegend(cs, allLabel)}
+            ${renderPairedRows(quarters, cs, allLabel, small, q => `Q${q.quarter}`)}
+        </div>`;
 }
 
 function renderPenaltyTypesBreakdown(penaltyTypes) {
@@ -1146,13 +1266,13 @@ function renderQuarterDistribution(quarterDist) {
     `;
 }
 
-function renderRecentGames(games) {
+function renderRecentGames(games, currentSeason) {
     if (!games || !games.length) {
         return '<p style="color: var(--text-muted);">No recent games available.</p>';
     }
     
     return games.slice(0, 10).map(g => `
-        <div class="game-item">
+        <div class="game-item ${g.season === currentSeason ? 'game-item-current' : ''}">
             <div class="game-teams">
                 ${g.awayTeam?.logo ? `<img src="${g.awayTeam.logo}" alt="${g.awayTeam.abbr}" class="team-logo" onerror="this.style.display='none'">` : ''}
                 <span>${g.awayTeam?.abbr || g.away || '?'}</span>
@@ -1163,11 +1283,11 @@ function renderRecentGames(games) {
             <div class="game-info">
                 ${g.awayScore !== null && g.homeScore !== null ? 
                     `<div class="game-score">${g.awayScore} - ${g.homeScore}</div>` : ''}
-                <div class="game-date">${g.date ? formatDate(g.date) : `Week ${g.week || '?'}, ${g.season}`}</div>
+                <div class="game-date">${g.season === currentSeason ? `<span class="game-season-tag">${g.season} Wk ${g.week ?? '?'}</span> ` : ''}${g.date ? formatDate(g.date) : `Week ${g.week || '?'}, ${g.season}`}</div>
             </div>
             <div class="game-penalties">
                 <div class="game-penalties-value">${g.penalties}</div>
-                <div class="game-penalties-label">flags</div>
+                <div class="game-penalties-label">flags${g.yards != null ? ` · ${g.yards} yds` : ''}</div>
             </div>
         </div>
     `).join('');
@@ -1182,32 +1302,61 @@ function formatDate(dateStr) {
     }
 }
 
-function renderModalChart(profile) {
+function renderModalChart(profile, priorAll) {
     const ctx = document.getElementById('modalSeasonChart')?.getContext('2d');
-    if (!ctx || !profile.seasonStats?.length) return;
+    if (!ctx) return;
     
     if (state.charts.modal) state.charts.modal.destroy();
+
+    const reg = profile.regularSeasonStats?.length ? profile.regularSeasonStats : null;
+    const seasons = reg || (profile.seasonStats || []).map(s => ({ season: s.season, perGame: s.avg, games: s.games }));
+    if (!seasons.length) return;
+
+    const cs = profile.currentSeason;
+    const datasets = [{
+        type: 'bar',
+        label: 'Penalties/game',
+        data: seasons.map(s => s.perGame),
+        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.cyan : 'rgba(255,255,255,0.22)'),
+        borderRadius: 4,
+        order: 2
+    }];
+    if (priorAll) {
+        datasets.push({
+            type: 'line',
+            label: 'Prior-years avg',
+            data: seasons.map(() => priorAll.perGame),
+            borderColor: 'rgba(255,255,255,0.45)',
+            borderDash: [5, 5],
+            borderWidth: 1.5,
+            pointRadius: 0,
+            order: 1
+        });
+    }
     
     state.charts.modal = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: profile.seasonStats.map(s => s.season),
-            datasets: [{
-                label: 'Avg Penalties',
-                data: profile.seasonStats.map(s => s.avg),
-                borderColor: CONFIG.chartColors.cyan,
-                backgroundColor: 'rgba(0, 240, 255, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
+        data: { labels: seasons.map(s => s.season), datasets },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: {
+                legend: { display: !!priorAll, position: 'top', align: 'end',
+                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 } } },
+                tooltip: {
+                    callbacks: {
+                        label: (c) => {
+                            if (c.dataset.type === 'line') return `Prior-years avg: ${fmtNum(c.raw, 1)}/g`;
+                            const s = seasons[c.dataIndex];
+                            return `${fmtNum(s.perGame, 1)}/g` +
+                                   (s.yardsPerGame != null ? ` · ${fmtNum(s.yardsPerGame)} yds/g` : '') +
+                                   ` · ${s.games} games`;
+                        }
+                    }
+                }
+            },
             scales: {
-                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } },
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } }
+                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.6)' } },
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } }
             }
         }
     });

@@ -234,10 +234,11 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
         'away_team': 'first',
         'penalty_team': lambda x: list(x),
         'penalty_type': lambda x: list(x),
-        'qtr': lambda x: list(x)
+        'qtr': lambda x: list(x),
+        'penalty_yards': lambda x: pd.to_numeric(x, errors='coerce').fillna(0).abs().sum()
     }).reset_index()
     game_penalties.columns = ['game_id', 'total_penalties', 'home_team', 'away_team', 
-                               'penalty_teams', 'penalty_types', 'quarters']
+                               'penalty_teams', 'penalty_types', 'quarters', 'penalty_yards']
     
     # Calculate home/away breakdown
     def count_home(row):
@@ -253,7 +254,7 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     
     # Merge with schedule for game details
     if not schedules.empty:
-        schedule_cols = ['game_id', 'gameday', 'gametime', 'home_score', 'away_score',
+        schedule_cols = ['game_id', 'game_type', 'gameday', 'gametime', 'home_score', 'away_score',
                          'stadium', 'roof', 'surface', 'temp', 'wind', 'weather', 'week']
         available_cols = [c for c in schedule_cols if c in schedules.columns]
         ref_games = ref_games.merge(
@@ -656,6 +657,12 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
     
     # Merge penalties with crew chief assignments
     penalties_with_ref = penalties_df.merge(crew_chiefs, on='game_id', how='inner')
+
+    # Regular-season-only views for this-season vs prior-years comparisons
+    current_season = int(ref_games['season'].max())
+    reg_games_all = ref_games[ref_games['game_type'] == 'REG'] if 'game_type' in ref_games.columns else ref_games
+    reg_pen_all = (penalties_with_ref[penalties_with_ref['season_type'] == 'REG']
+                   if 'season_type' in penalties_with_ref.columns else penalties_with_ref)
     
     for _, ref in ref_stats.iterrows():
         name = ref['name']
@@ -713,6 +720,54 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
                     'pct': round(count / total_qtr * 100, 1) if total_qtr > 0 else 0
                 })
         
+        # === THIS SEASON vs PRIOR YEARS (regular season, per game) ===
+        reg_games = reg_games_all[reg_games_all['referee'] == name]
+        reg_pen = reg_pen_all[reg_pen_all['referee'] == name]
+        cur_g = int((reg_games['season'] == current_season).sum())
+        prior_g = int((reg_games['season'] < current_season).sum())
+
+        regular_season_stats = []
+        for season, sg in reg_games.groupby('season'):
+            n = len(sg)
+            pens = int(sg['total_penalties'].sum())
+            yds = float(sg['penalty_yards'].sum()) if 'penalty_yards' in sg.columns else 0.0
+            regular_season_stats.append({
+                'season': int(season), 'games': n, 'penalties': pens, 'yards': int(round(yds)),
+                'perGame': round(pens / n, 2), 'yardsPerGame': round(yds / n, 1),
+            })
+
+        def per_game(count, games):
+            return round(count / games, 2) if games else None
+
+        cur_pen = reg_pen[reg_pen['season'] == current_season]
+        prior_pen = reg_pen[reg_pen['season'] < current_season]
+        cur_types = cur_pen['penalty_type'].value_counts()
+        prior_types = prior_pen['penalty_type'].value_counts()
+        # Top types this season plus top types historically, so new spikes and usual staples both show
+        type_keys = list(dict.fromkeys(list(cur_types.head(8).index) + list(prior_types.head(6).index)))
+        type_comparison = []
+        for t in type_keys:
+            if pd.isna(t):
+                continue
+            type_comparison.append({
+                'type': str(t),
+                'currentCount': int(cur_types.get(t, 0)),
+                'currentPerGame': per_game(int(cur_types.get(t, 0)), cur_g),
+                'priorCount': int(prior_types.get(t, 0)),
+                'priorPerGame': per_game(int(prior_types.get(t, 0)), prior_g),
+            })
+        type_comparison.sort(key=lambda x: (x['currentPerGame'] or 0, x['priorPerGame'] or 0), reverse=True)
+
+        quarter_comparison = []
+        for q in [1, 2, 3, 4]:
+            cq = int((cur_pen['qtr'] == q).sum())
+            pq = int((prior_pen['qtr'] == q).sum())
+            quarter_comparison.append({
+                'quarter': q,
+                'currentPerGame': per_game(cq, cur_g),
+                'priorPerGame': per_game(pq, prior_g),
+            })
+
         # Recent games with full details
         recent_games = []
         for _, g in games.head(20).iterrows():
@@ -732,6 +787,8 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
                 'homeScore': int(g['home_score']) if 'home_score' in g and pd.notna(g.get('home_score')) else None,
                 'awayScore': int(g['away_score']) if 'away_score' in g and pd.notna(g.get('away_score')) else None,
                 'penalties': int(g['total_penalties']),
+                'yards': int(round(g['penalty_yards'])) if 'penalty_yards' in g and pd.notna(g.get('penalty_yards')) else None,
+                'gameType': str(g.get('game_type')) if pd.notna(g.get('game_type')) else None,
                 'homePenalties': int(g['home_penalties']),
                 'awayPenalties': int(g['away_penalties']),
                 'stadium': str(g.get('stadium')) if pd.notna(g.get('stadium')) else None,
@@ -778,6 +835,12 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             'penaltyTypes': penalty_types,
             'quarterDistribution': quarter_dist,
             'recentGames': recent_games,
+            'currentSeason': current_season,
+            'currentSeasonGames': cur_g,
+            'priorSeasonGames': prior_g,
+            'regularSeasonStats': regular_season_stats,
+            'penaltyTypeComparison': type_comparison,
+            'quarterComparison': quarter_comparison,
             'tendencies': {
                 'avgVsLeague': round(diff, 1),
                 'avgVsLeaguePct': round(diff_pct, 1),

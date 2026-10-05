@@ -1731,3 +1731,16 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 
 @media (max-width: 900px) { .division-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 400px) { .division-logos img { width: 22px; height: 22px; } }
+
+/* -----------------------------------------------------------------------------
+   Chart contrast: this season = flag yellow, comparison = solid gray
+   (one consistent encoding everywhere: yellow bar = now, gray bar = before)
+   ----------------------------------------------------------------------------- */
+:root { --bar-current: #ffc400; --bar-hist: #5c616a; --bar-hist-dark: #3e434a; }
+.cc-current .cc-bar { background: var(--bar-current); }
+.cc-last .cc-bar { background: var(--bar-hist); }
+.cc-all .cc-bar { background: var(--bar-hist-dark); }
+.pair-current { background: var(--bar-current); }
+.pair-prior { background: var(--bar-hist); }
+.pair-cur { color: var(--text-primary); }
+.cc-bar-track, .pair-bar-track { background: rgba(255, 255, 255, 0.05); }

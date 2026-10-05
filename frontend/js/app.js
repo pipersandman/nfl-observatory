@@ -13,13 +13,19 @@ const CONFIG = {
         flag: '#ffc400',      // accent: "look here"
         data: '#f5f4f0',      // this season's numbers and bars
         neutral: '#9a9ea4',   // average / neither high nor low
-        hist: 'rgba(255, 255, 255, 0.2)',
+        slate: '#7b8794',     // neutral bars in the crew chief chart
+        current: '#ffc400',   // this season's bars: flag yellow
+        hist: '#5c616a',      // comparison / history bars: solid mid-gray
+        histDark: '#3e434a',  // older history (all prior years)
         green: '#3fb98a',     // fewer flags
         red: '#f0605d',       // more flags
         // Muted categorical palette for penalty-type charts (no strong red/green,
         // so it never reads as "more/fewer"); yellow marks the biggest category
-        categorical: ['#ffc400', '#ecebe7', '#8fa3b8', '#c9a27e', '#9a9ea4',
-                      '#6f8f86', '#b38fa9', '#5d6268', '#d9cfa8', '#7b8794']
+        // High-contrast categorical palette for penalty-type charts. Every pair is
+        // clearly different (perceptual distance >= 29), and none is a pure red or
+        // green, so categories never read as "more/fewer flags". Biggest category first.
+        categorical: ['#FFC400', '#4DA3FF', '#FF8F3F', '#E5E7EB', '#2EC4D6',
+                      '#F472B6', '#B07CFF', '#D2B48C', '#8B95A7', '#7C3AED']
     }
 };
 
@@ -457,7 +463,7 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 {
                     label: currentLabel,
                     data: rows.map(r => r.current[field]),
-                    backgroundColor: CONFIG.chartColors.data,
+                    backgroundColor: CONFIG.chartColors.current,
                     borderRadius: 4,
                     barPercentage: 0.9,
                     categoryPercentage: 0.75
@@ -465,7 +471,7 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 {
                     label: baseLabel,
                     data: rows.map(r => (baseOf(r) ? baseOf(r)[field] : null)),
-                    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+                    backgroundColor: CONFIG.chartColors.hist,
                     borderRadius: 4,
                     barPercentage: 0.9,
                     categoryPercentage: 0.75
@@ -1270,7 +1276,7 @@ function renderTeamChart(t, priorAll) {
     const h = t.history;
     const datasets = [{
         type: 'bar', label: 'Penalties/game', data: h.map(s => s.perGame),
-        backgroundColor: h.map(s => s.season === t.season ? CONFIG.chartColors.data : 'rgba(255,255,255,0.22)'),
+        backgroundColor: h.map(s => s.season === t.season ? CONFIG.chartColors.current : CONFIG.chartColors.hist),
         borderRadius: 4, order: 2
     }];
     if (priorAll) datasets.push({
@@ -1283,7 +1289,7 @@ function renderTeamChart(t, priorAll) {
             responsive: true, maintainAspectRatio: false,
             plugins: {
                 legend: { display: !!priorAll, position: 'top', align: 'end',
-                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 } } },
+                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 }, filter: (item) => item.text !== 'Penalties/game' } },
                 tooltip: { callbacks: { label: (c) => {
                     if (c.dataset.type === 'line') return `Prior-years avg: ${fmtNum(c.raw, 1)}/g`;
                     const s = h[c.dataIndex];
@@ -1524,7 +1530,7 @@ function renderPenaltiesByRefChart() {
                 backgroundColor: topRefs.map(r => 
                     r.avg_per_game > leagueAvg + 1 ? CONFIG.chartColors.red :
                     r.avg_per_game < leagueAvg - 1 ? CONFIG.chartColors.green :
-                    CONFIG.chartColors.neutral
+                    CONFIG.chartColors.slate
                 ),
                 borderRadius: 4
             }]
@@ -1977,7 +1983,7 @@ function renderModalChart(profile, priorAll) {
         type: 'bar',
         label: 'Penalties/game',
         data: seasons.map(s => s.perGame),
-        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.data : 'rgba(255,255,255,0.22)'),
+        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.current : CONFIG.chartColors.hist),
         borderRadius: 4,
         order: 2
     }];
@@ -2001,7 +2007,7 @@ function renderModalChart(profile, priorAll) {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: !!priorAll, position: 'top', align: 'end',
-                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 } } },
+                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 }, filter: (item) => item.text !== 'Penalties/game' } },
                 tooltip: {
                     callbacks: {
                         label: (c) => {

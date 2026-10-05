@@ -113,6 +113,27 @@ const EXPLAINERS = {
             fewer overall calls in Q4 (refs "letting them play" in crunch time).</p>
         `
     },
+    'season-penalties': {
+        title: 'Penalties Per Game: This Season vs Last',
+        content: `
+            <p>Each crew chief's <strong>average accepted penalties per game</strong> this season (colored bar) 
+            next to the comparison you pick above (gray bar). Ranked from most flags to fewest.</p>
+            <p><strong>Same weeks</strong> compares against last season through the same week we're in now (updates 
+            automatically each week). <strong>Last 3 seasons</strong> and <strong>All seasons</strong> are 
+            games-weighted averages across those years.</p>
+            <p>Regular season only — playoff games are worked by all-star crews, which would skew the comparison. 
+            Early in the season each crew has only a handful of games, so one wild game can move the average a lot.</p>
+        `
+    },
+    'season-yards': {
+        title: 'Penalty Yards Per Game',
+        content: `
+            <p>Total <strong>yards assessed on accepted penalties</strong> per game, this season vs the comparison 
+            you pick above. Each crew chief's yardage is listed next to their name. Ranked from most yards to fewest.</p>
+            <p>Two crews can throw the same number of flags but cost teams very different yardage — a crew that calls 
+            more pass interference and personal fouls will rank higher here than one that mostly calls false starts.</p>
+        `
+    },
     'penalties-by-ref': {
         title: 'Penalties By Crew Chief',
         content: `
@@ -128,6 +149,8 @@ const EXPLAINERS = {
 
 let state = {
     stats: null,
+    season: null,
+    seasonBaseline: null,
     referees: [],
     trends: null,
     insights: [],
@@ -155,14 +178,14 @@ async function fetchJSON(filename) {
 async function loadAllData() {
     console.log('📥 Loading data...');
     
-    const [stats, referees, trends, insights] = await Promise.all([
-        fetchJSON('stats.json'),
+    const [season, referees, trends, insights] = await Promise.all([
+        fetchJSON('season_comparison.json'),
         fetchJSON('referees.json'),
         fetchJSON('trends.json'),
         fetchJSON('insights.json')
     ]);
     
-    state.stats = stats;
+    state.season = season;
     state.referees = referees || [];
     state.trends = trends;
     state.insights = insights || [];
@@ -171,7 +194,7 @@ async function loadAllData() {
     await preloadRefereeProfiles();
     
     console.log('✓ Data loaded');
-    return { stats, referees, trends, insights };
+    return { season, referees, trends, insights };
 }
 
 async function preloadRefereeProfiles() {
@@ -199,50 +222,201 @@ async function loadRefereeProfile(slug) {
 }
 
 // =============================================================================
-// RENDERING - HERO STATS
+// RENDERING - THIS SEASON VS LAST
 // =============================================================================
 
-function renderHeroStats() {
-    if (!state.stats) return;
-    
-    const container = document.getElementById('heroStats');
-    if (!container) return;
-    
-    container.innerHTML = `
-        <div class="stat-card">
-            <div class="stat-value" data-count="${state.stats.totalPenalties}">0</div>
-            <div class="stat-label">Total Penalties</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" data-count="${state.stats.totalGames}">0</div>
-            <div class="stat-label">Games Analyzed</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" data-count="${state.stats.totalReferees}">0</div>
-            <div class="stat-label">Crew Chiefs</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">${state.stats.refereeVariance || '24%'}</div>
-            <div class="stat-label">Ref Variance</div>
-        </div>
-    `;
-    
-    animateCounters();
+function fmtNum(n, digits = 0) {
+    if (n === null || n === undefined) return '—';
+    return Number(n).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 }
 
-function animateCounters() {
-    document.querySelectorAll('[data-count]').forEach(el => {
-        const target = parseInt(el.dataset.count);
-        const duration = 2000;
-        const start = performance.now();
-        
-        function update(now) {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.floor(target * eased).toLocaleString();
-            if (progress < 1) requestAnimationFrame(update);
+function fmtDelta(v, digits = 1) {
+    if (v === null || v === undefined) return '<span class="season-delta">new</span>';
+    const cls = v > 0 ? 'cell-high' : v < 0 ? 'cell-low' : '';
+    return `<span class="season-delta ${cls}">${v > 0 ? '+' : ''}${fmtNum(v, digits)}</span>`;
+}
+
+function renderSeasonComparison() {
+    const d = state.season;
+    const body = document.getElementById('seasonBody');
+    if (!body) return;
+
+    if (!d || !d.crewChiefs?.length || !d.baselines?.length) {
+        document.getElementById('seasonSubtitle').textContent = '';
+        body.innerHTML = '<p class="season-error">Current-season data isn\'t available yet. Check back after this week\'s update.</p>';
+        return;
+    }
+
+    if (!state.seasonBaseline || !d.baselines.some(b => b.key === state.seasonBaseline)) {
+        state.seasonBaseline = d.defaultBaseline || d.baselines[0].key;
+    }
+
+    document.getElementById('seasonTitle').textContent = `${d.currentSeason} Season`;
+    document.getElementById('seasonTableTitle').textContent = `Crew Chiefs in ${d.currentSeason}`;
+
+    // Toggle buttons (built from whatever baselines the pipeline produced)
+    document.getElementById('baselineToggle').innerHTML = d.baselines.map(b => `
+        <button class="baseline-btn ${b.key === state.seasonBaseline ? 'active' : ''}"
+                data-key="${b.key}" aria-pressed="${b.key === state.seasonBaseline}">
+            ${b.key === 'sameWeeks' ? `${b.seasons[0]} thru Wk ${d.throughWeek}`
+              : b.key === 'lastSeason' ? `All of ${b.seasons[0]}`
+              : b.key === 'last3' ? 'Last 3 seasons'
+              : 'All seasons'}
+        </button>
+    `).join('');
+    document.querySelectorAll('#baselineToggle .baseline-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.seasonBaseline = btn.dataset.key;
+            renderSeasonComparison();
+        });
+    });
+
+    renderSeasonView();
+}
+
+function renderSeasonView() {
+    const d = state.season;
+    const key = state.seasonBaseline;
+    const base = d.baselines.find(b => b.key === key);
+    const cs = d.currentSeason, L = d.league;
+    const LB = L.baselines[key];
+    const baseOf = r => r.baselines?.[key] || null;
+    const diff = (r, field) => (baseOf(r) ? r.current[field] - baseOf(r)[field] : null);
+
+    document.getElementById('seasonSubtitle').textContent =
+        `Regular season through Week ${d.throughWeek}, compared with ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}.`;
+    document.getElementById('seasonPrevHeader').textContent = base.short;
+
+    // League strip
+    const stat = (label, field, digits) => `
+        <div class="season-stat">
+            <div class="season-stat-label">${label}</div>
+            <div class="season-stat-value">${fmtNum(L.current?.[field], digits)}</div>
+            <div class="season-stat-compare">
+                ${base.short}: <strong>${fmtNum(LB?.[field], digits)}</strong>
+                ${LB ? fmtDelta(L.current[field] - LB[field], digits) : ''}
+            </div>
+        </div>`;
+
+    document.getElementById('seasonLeague').innerHTML = `
+        <div class="season-stat">
+            <div class="season-stat-label">${cs} so far</div>
+            <div class="season-stat-value">${fmtNum(L.current?.penalties)}</div>
+            <div class="season-stat-compare">penalties for <strong>${fmtNum(L.current?.yards)}</strong> yards in ${fmtNum(L.current?.games)} games</div>
+        </div>
+        ${stat('Penalties per game', 'perGame', 1)}
+        ${stat('Penalty yards per game', 'yardsPerGame', 1)}
+        ${stat('Yards per penalty', 'yardsPerPenalty', 1)}
+    `;
+
+    // Charts: always most on down
+    const byPenalties = [...d.crewChiefs].sort((a, b) => b.current.perGame - a.current.perGame);
+    const byYards = [...d.crewChiefs].sort((a, b) => b.current.yardsPerGame - a.current.yardsPerGame);
+
+    state.charts.seasonPenalties = renderSeasonBarChart({
+        canvasId: 'seasonPenaltiesChart', existing: state.charts.seasonPenalties, rows: byPenalties,
+        field: 'perGame', unit: 'penalties/game', axisTitle: 'Penalties per game',
+        currentLabel: `${cs}`, baseLabel: base.short, baseOf
+    });
+    state.charts.seasonYards = renderSeasonBarChart({
+        canvasId: 'seasonYardsChart', existing: state.charts.seasonYards, rows: byYards,
+        field: 'yardsPerGame', unit: 'yds/game', axisTitle: 'Penalty yards per game',
+        currentLabel: `${cs}`, baseLabel: base.short, baseOf,
+        // Show the yardage on the axis next to each name: "Scott Novak" / "215 yds · vs 147"
+        labelFn: r => [r.name, `${fmtNum(r.current.yardsPerGame)} yds` +
+                       (baseOf(r) ? ` · vs ${fmtNum(baseOf(r).yardsPerGame)}` : '')],
+        rowHeight: 44
+    });
+
+    // Table (most penalties per game first)
+    document.getElementById('seasonTableBody').innerHTML = byPenalties.map(r => {
+        const b = baseOf(r);
+        return `
+        <tr onclick="openRefereeModal('${r.slug}')">
+            <td><strong>${r.name}</strong></td>
+            <td>${r.current.games}</td>
+            <td>${fmtNum(r.current.penalties)} for ${fmtNum(r.current.yards)} yds</td>
+            <td>${fmtNum(r.current.perGame, 1)} ${fmtDelta(diff(r, 'perGame'), 1)}</td>
+            <td>${fmtNum(r.current.yardsPerGame, 1)} ${fmtDelta(diff(r, 'yardsPerGame'), 1)}</td>
+            <td class="season-prev">${b
+                ? `${fmtNum(b.penalties)} for ${fmtNum(b.yards)} yds <span>(${fmtNum(b.perGame, 1)}/g, ${b.games} g)</span>`
+                : '—'}</td>
+        </tr>`;
+    }).join('');
+}
+
+function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle,
+                                currentLabel, baseLabel, baseOf, labelFn, rowHeight = 34 }) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return null;
+    if (existing) existing.destroy();
+
+    // Grow the chart so every crew chief gets a readable row
+    canvas.parentElement.style.height = `${Math.max(300, rows.length * rowHeight + 80)}px`;
+
+    return new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: rows.map(r => (labelFn ? labelFn(r) : r.name)),
+            datasets: [
+                {
+                    label: currentLabel,
+                    data: rows.map(r => r.current[field]),
+                    backgroundColor: CONFIG.chartColors.cyan,
+                    borderRadius: 4,
+                    barPercentage: 0.9,
+                    categoryPercentage: 0.75
+                },
+                {
+                    label: baseLabel,
+                    data: rows.map(r => (baseOf(r) ? baseOf(r)[field] : null)),
+                    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+                    borderRadius: 4,
+                    barPercentage: 0.9,
+                    categoryPercentage: 0.75
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            animation: { duration: 400 },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'end',
+                    labels: { color: 'rgba(255,255,255,0.7)', boxWidth: 12 }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => rows[items[0].dataIndex].name,
+                        label: (ctx) => {
+                            const r = rows[ctx.dataIndex];
+                            const b = ctx.datasetIndex === 0 ? r.current : baseOf(r);
+                            if (!b) return `${ctx.dataset.label}: did not work`;
+                            return `${ctx.dataset.label}: ${fmtNum(b[field], 1)} ${unit} ` +
+                                   `(${fmtNum(b.penalties)} pen, ${fmtNum(b.yards)} yds, ${b.games} g)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: 'rgba(255,255,255,0.5)' },
+                    title: { display: true, text: axisTitle, color: 'rgba(255,255,255,0.5)' }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255,255,255,0.75)', autoSkip: false }
+                }
+            },
+            onClick: (evt, elements) => {
+                if (elements.length) openRefereeModal(rows[elements[0].index].slug);
+            }
         }
-        requestAnimationFrame(update);
     });
 }
 
@@ -934,11 +1108,11 @@ async function init() {
     
     await loadAllData();
     
-    renderHeroStats();
-    renderInsightsCarousel();
-    renderRefereeCards();
+    renderSeasonComparison();
     renderCharts();
+    renderRefereeCards();
     renderDataTable();
+    renderInsightsCarousel();
     
     initScrollAnimations();
     

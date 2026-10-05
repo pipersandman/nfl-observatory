@@ -1,0 +1,38 @@
+/* Shared look for every post: Theme A "Penalty Flag" */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px;background:#0c0d0f}
+.card{width:1080px;height:1350px;background:#0c0d0f;color:#ecebe7;font-family:'Barlow Condensed','DejaVu Sans Condensed','Arial Narrow',sans-serif;padding:66px 72px;position:relative;overflow:hidden}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px}
+.in{position:relative;height:100%;display:flex;flex-direction:column}
+.series{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.kick{font:600 26px 'JetBrains Mono','DejaVu Sans Mono',monospace;color:#ffc400;letter-spacing:.12em;text-transform:uppercase}
+.tag{font:600 24px 'JetBrains Mono','DejaVu Sans Mono',monospace;color:#6d7178}
+.h{font-weight:700;font-size:96px;line-height:.95;letter-spacing:-.01em;margin:8px 0 12px}
+.sub{font-size:32px;color:#9a9ea4;margin-bottom:34px;font-family:Inter,'DejaVu Sans',sans-serif}
+.muted{color:#9a9ea4}.dim{color:#6d7178}.y{color:#ffc400}.up{color:#f0605d}.down{color:#3fb98a}
+.big{font-weight:700;font-size:220px;line-height:.85;letter-spacing:-.03em;color:#f5f4f0}
+.badge{display:inline-block;font:700 28px 'JetBrains Mono','DejaVu Sans Mono',monospace;padding:7px 14px;border-radius:10px}
+.badge.up{color:#f0605d;background:rgba(240,96,93,.15)}.badge.down{color:#3fb98a;background:rgba(63,185,138,.15)}.badge.flat{color:#9a9ea4;background:rgba(255,255,255,.07)}
+.tt{font:600 24px 'JetBrains Mono','DejaVu Sans Mono',monospace;color:#9a9ea4;letter-spacing:.08em;margin:6px 0 16px;text-transform:uppercase}
+.row{display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:20px;padding:18px 0;border-bottom:2px solid #22262b}
+.rk{font:700 40px 'JetBrains Mono','DejaVu Sans Mono',monospace;color:#6d7178}
+.m{font-weight:700;font-size:46px}.m small{display:block;font-weight:400;font-size:26px;color:#9a9ea4;margin-top:4px;font-family:Inter,'DejaVu Sans',sans-serif}
+.n{font-weight:700;font-size:64px;text-align:right}.n small{display:block;font:600 22px 'JetBrains Mono','DejaVu Sans Mono',monospace;margin-top:2px}
+.split{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;font-size:44px;font-weight:700}
+.bar{display:flex;gap:4px;height:24px}.bar i{border-radius:5px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.28)}
+.typ{display:grid;grid-template-columns:360px 1fr 110px;gap:20px;align-items:center;font-size:32px;margin-bottom:14px}
+.tb{display:flex;flex-direction:column;gap:5px}.tb span{height:16px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}.tb i{display:block;height:100%;border-radius:99px}
+.cur{background:#ffc400}.hist{background:#5c616a}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
+.tiles.three{grid-template-columns:1fr 1fr 1fr}
+.tile{background:#16181b;border:2px solid #24272b;border-radius:22px;padding:26px 28px}
+.tile .l{font-size:26px;color:#9a9ea4;font-family:Inter,'DejaVu Sans',sans-serif}.tile .v{font-weight:700;font-size:70px;margin:6px 0 4px;line-height:1}.tile .s{font-size:23px;color:#8d9197;font-family:Inter,'DejaVu Sans',sans-serif}
+.chip{display:inline-block;font-size:26px;color:#cfcfcf;border:2px solid #2a2d32;border-radius:999px;padding:9px 20px;margin:0 10px 10px 0;font-family:Inter,'DejaVu Sans',sans-serif}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:26px;color:#6d7178;padding-top:22px;font-family:Inter,'DejaVu Sans',sans-serif}
+.brand{display:flex;align-items:center;gap:14px;color:#ecebe7;font-weight:700;font-size:30px}
+.flag{width:46px;height:46px;border-radius:10px;background:#16181b;border:2px solid #2a2d32;display:flex;align-items:center;justify-content:center}
+.flag i{width:22px;height:22px;background:#ffc400;transform:rotate(-18deg);border-radius:2px;display:block}
+.note{font-size:22px;color:#6d7178;font-family:Inter,'DejaVu Sans',sans-serif;margin-top:12px}
+.q{font-weight:700;font-size:64px;line-height:1.05;margin:4px 0 26px}
+.hbar{display:grid;grid-template-columns:330px 1fr 130px;gap:20px;align-items:center;font-size:32px;margin-bottom:18px}
+.hbar span{height:34px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden}.hbar i{display:block;height:100%;border-radius:8px}

@@ -24,6 +24,7 @@
         <div class="logo">NFL Officiating Observatory</div>
         <div class="nav-links">
             <a href="#season">This Season</a>
+            <a href="#previews">Next Week</a>
             <a href="#trends">Trends</a>
             <a href="#referees">Crew Chiefs</a>
             <a href="#data">Data</a>
@@ -96,11 +97,29 @@
         </div>
     </section>
 
+    <!-- Game Previews Section -->
+    <section id="previews">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">02 / NEXT WEEK</div>
+                <h2 class="section-title" id="previewsTitle">Game Previews</h2>
+                <p class="section-subtitle" id="previewsSubtitle">
+                    Projected penalties for every upcoming game, ranked most flags first
+                    <button class="info-trigger-inline" onclick="openExplainer('previews')">How projections work</button>
+                </p>
+            </div>
+            <div class="preview-grid" id="previewGrid">
+                <div class="loading"><div class="spinner"></div></div>
+            </div>
+            <p class="preview-credit" id="previewCredit"></p>
+        </div>
+    </section>
+
     <!-- Trends Section -->
     <section id="trends">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">02 / LEAGUE TRENDS</div>
+                <div class="section-number">03 / LEAGUE TRENDS</div>
                 <h2 class="section-title">The Big Picture</h2>
                 <p class="section-subtitle">How officiating patterns have evolved across seasons</p>
             </div>
@@ -153,7 +172,7 @@
     <section id="referees">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">03 / CREW CHIEF PROFILES</div>
+                <div class="section-number">04 / CREW CHIEF PROFILES</div>
                 <h2 class="section-title">Meet The Officials</h2>
                 <p class="section-subtitle">
                     This season vs last season vs all years, ranked by this season's penalties per game. Click any crew chief for their full profile
@@ -171,7 +190,7 @@
     <section id="data">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">04 / FULL DATA</div>
+                <div class="section-number">05 / FULL DATA</div>
                 <h2 class="section-title">Complete Crew Chief Stats</h2>
                 <p class="section-subtitle">All active head referees ranked by experience</p>
             </div>
@@ -207,7 +226,7 @@
     <section id="insights">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">05 / KEY FINDINGS</div>
+                <div class="section-number">06 / KEY FINDINGS</div>
                 <h2 class="section-title">What The Data Shows</h2>
                 <p class="section-subtitle">Swipe through headline discoveries from five seasons of penalty data</p>
             </div>

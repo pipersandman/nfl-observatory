@@ -137,6 +137,23 @@ const EXPLAINERS = {
             more pass interference and personal fouls will rank higher here than one that mostly calls false starts.</p>
         `
     },
+    'previews': {
+        title: 'How game previews work',
+        content: `
+            <p>Each projection starts from the <strong>league's current penalty rate</strong> for home and away teams, 
+            penalty type by penalty type, and adjusts it for:</p>
+            <p>• how often each team <strong>commits</strong> that type<br>
+            • how often the opponent <strong>draws</strong> it (e.g. a pass rush that forces holding)<br>
+            • how often the assigned <strong>crew chief calls</strong> it</p>
+            <p>Every adjustment is measured against the league over the last three regular seasons, weighted toward 
+            this season, and pulled toward average when the sample is small, so a team's four games or a crew's 
+            handful of calls can't swing the projection wildly.</p>
+            <p>The <strong>range</strong> covers 80% of likely outcomes, based on how much real game totals vary. 
+            Context like primetime, division games, and rest is shown for reference but not added to the number.</p>
+            <p>Crew assignments come from <strong>Football Zebras</strong>, usually posted Tuesday morning. 
+            Until then, games show "Crew TBA" and use a neutral crew.</p>
+        `
+    },
     'penalties-by-ref': {
         title: 'Penalties By Crew Chief',
         content: `
@@ -152,6 +169,7 @@ const EXPLAINERS = {
 
 let state = {
     stats: null,
+    previews: null,
     season: null,
     seasonBaseline: null,
     referees: [],
@@ -189,6 +207,10 @@ async function loadAllData() {
     ]);
     
     state.season = season;
+
+    // Next week's previews (latest.json points at the current week's file)
+    const latest = await fetchJSON('previews/latest.json');
+    state.previews = latest?.file ? await fetchJSON(latest.file) : null;
     state.referees = referees || [];
     state.trends = trends;
     state.insights = insights || [];
@@ -631,6 +653,292 @@ function goToSlide(index) {
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === index);
     });
+}
+
+// =============================================================================
+// RENDERING - GAME PREVIEWS (next week)
+// =============================================================================
+
+const WEEKDAY_SHORT = { Sunday: 'Sun', Monday: 'Mon', Tuesday: 'Tue', Wednesday: 'Wed', Thursday: 'Thu', Friday: 'Fri', Saturday: 'Sat' };
+
+function fmtKickoff(g) {
+    const d = g.gameday ? new Date(`${g.gameday}T12:00:00`) : null;
+    const date = d ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+    let time = '';
+    if (g.gametime) {
+        const [h, m] = g.gametime.split(':').map(Number);
+        time = `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'} ET`;
+    }
+    return [WEEKDAY_SHORT[g.weekday] || '', date, time].filter(Boolean).join(' · ');
+}
+
+function teamChip(t, home) {
+    return `<span class="pv-team">
+        ${t.logo ? `<img src="${t.logo}" alt="" class="pv-logo" onerror="this.style.display='none'">` : ''}
+        <span class="pv-abbr">${t.abbr}</span>${home ? '<span class="pv-home-tag">home</span>' : ''}
+    </span>`;
+}
+
+function renderPreviews() {
+    const grid = document.getElementById('previewGrid');
+    if (!grid) return;
+    const pv = state.previews;
+    if (!pv || !pv.games?.length) {
+        grid.innerHTML = '<p class="season-error">Next week\'s previews aren\'t available yet.</p>';
+        return;
+    }
+
+    document.getElementById('previewsTitle').textContent = `Week ${pv.week} Previews`;
+    const a = pv.assignments || {};
+    const crewNote = a.assigned >= a.games ? 'All crews assigned.'
+        : a.assigned ? `Crews assigned for ${a.assigned} of ${a.games} games.`
+        : 'Crew assignments usually post Tuesday — projections update automatically.';
+    document.getElementById('previewsSubtitle').firstChild.textContent =
+        `Projected penalties for all ${pv.games.length} games, ranked most flags first. ${crewNote} `;
+
+    const league = pv.model?.leagueAveragePerGame;
+    const maxTotal = Math.max(...pv.games.map(g => g.projection.range[1]), 1);
+
+    // Already sorted most projected flags first by the pipeline; keep it that way
+    const games = [...pv.games].sort((x, y) => y.projection.total - x.projection.total);
+
+    grid.innerHTML = games.map(g => {
+        const p = g.projection;
+        const homeW = p.total ? (p.home / p.total * 100) : 50;
+        return `
+        <div class="preview-card" onclick="openPreviewModal('${g.gameId}')">
+            <div class="pv-head">
+                <div class="pv-matchup">${teamChip(g.awayTeam)}<span class="pv-at">@</span>${teamChip(g.homeTeam, true)}</div>
+                <div class="pv-when">${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''}</div>
+            </div>
+            <div class="pv-main">
+                <div>
+                    <div class="pv-total">${fmtNum(p.total, 1)}</div>
+                    <div class="pv-total-label">projected flags · ${p.range[0]}–${p.range[1]} likely</div>
+                </div>
+                <div class="pv-vs">${pctBadge(p.total, league)}<span>vs league ${fmtNum(league, 1)}</span></div>
+            </div>
+            <div class="pv-range-track" title="Likely range ${p.range[0]}–${p.range[1]}">
+                <div class="pv-range" style="left:${p.range[0] / maxTotal * 100}%; width:${(p.range[1] - p.range[0]) / maxTotal * 100}%"></div>
+                <div class="pv-point" style="left:${p.total / maxTotal * 100}%"></div>
+            </div>
+            <div class="pv-split">
+                <span>${g.awayTeam.abbr} <strong>${fmtNum(p.away, 1)}</strong></span>
+                <div class="pv-split-bar"><div class="pv-split-away" style="width:${100 - homeW}%"></div><div class="pv-split-home" style="width:${homeW}%"></div></div>
+                <span><strong>${fmtNum(p.home, 1)}</strong> ${g.homeTeam.abbr}</span>
+            </div>
+            <div class="pv-foot">
+                <span class="${g.crew ? '' : 'pv-tba'}">👨‍⚖️ ${g.crew ? g.crew.name : 'Crew TBA'}</span>
+                <span>~${fmtNum(p.yards)} penalty yds</span>
+            </div>
+        </div>`;
+    }).join('');
+
+    const src = a.source;
+    document.getElementById('previewCredit').innerHTML = src?.url
+        ? `Crew assignments via <a href="${src.url}" target="_blank" rel="noopener">Football Zebras</a>.`
+        : 'Crew assignments via <a href="https://www.footballzebras.com/category/assignments/" target="_blank" rel="noopener">Football Zebras</a> once posted.';
+}
+
+function openPreviewModal(gameId) {
+    const g = state.previews?.games?.find(x => x.gameId === gameId);
+    const modal = document.getElementById('modal');
+    const body = document.getElementById('modalBody');
+    if (!g || !modal || !body) return;
+    if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
+
+    const pv = state.previews, p = g.projection, H = g.homeTeam, A = g.awayTeam;
+    const league = pv.model.leagueAveragePerGame;
+    const crewSeason = g.crew
+        ? [...(state.season?.crewChiefs || []), ...(state.season?.inactiveCrewChiefs || [])].find(c => c.slug === g.crew.slug)
+        : null;
+
+    document.getElementById('modalTitle').textContent = `${A.abbr} @ ${H.abbr}`;
+    document.getElementById('modalSubtitle').textContent =
+        `Week ${pv.week} · ${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''} · ${g.crew ? `Crew: ${g.crew.name}` : 'Crew TBA'}`;
+
+    // Drivers (+/- flags vs a league-average matchup)
+    const maxDrv = Math.max(...p.drivers.map(d => Math.abs(d.value)), 0.5);
+    const drivers = p.drivers.map(d => `
+        <div class="drv-row">
+            <div class="drv-label">${d.label}</div>
+            <div class="drv-track">
+                <div class="drv-mid"></div>
+                <div class="drv-bar ${d.value >= 0 ? 'drv-up' : 'drv-down'}"
+                     style="${d.value >= 0 ? 'left:50%' : `right:50%`}; width:${Math.abs(d.value) / maxDrv * 50}%"></div>
+            </div>
+            <div class="drv-val ${d.value > 0.05 ? 'pct-up' : d.value < -0.05 ? 'pct-down' : ''}">${d.value > 0 ? '+' : ''}${fmtNum(d.value, 1)}</div>
+        </div>`).join('');
+
+    // Projected table: type x home/away
+    const typeRows = g.byType.map(r => `
+        <tr>
+            <td>${r.type}</td>
+            <td>${fmtNum(r.away, 1)}</td>
+            <td>${fmtNum(r.home, 1)}</td>
+            <td><strong>${fmtNum(r.total, 1)}</strong> ${pctBadge(r.total, r.leagueTotal)}</td>
+            <td class="season-prev">${fmtNum(r.total * r.yardsEach)} yds</td>
+        </tr>`).join('');
+
+    // Quarters
+    const qMax = Math.max(...p.byQuarter.map(q => q.home + q.away), 0.1);
+    const quarters = p.byQuarter.map(q => `
+        <div class="pvq">
+            <div class="pvq-bars">
+                <div class="pvq-stack" style="height:${(q.home + q.away) / qMax * 100}%">
+                    <div class="pvq-away" style="flex:${q.away}"></div>
+                    <div class="pvq-home" style="flex:${q.home}"></div>
+                </div>
+            </div>
+            <div class="pvq-total">${fmtNum(q.home + q.away, 1)}</div>
+            <div class="pvq-split">${A.abbr} ${fmtNum(q.away, 1)} · ${H.abbr} ${fmtNum(q.home, 1)}</div>
+            <div class="pvq-label">Q${q.quarter}</div>
+        </div>`).join('');
+
+    // Crew
+    const crewHtml = g.crew ? `
+        <div class="modal-section">
+            <h4>👨‍⚖️ The crew: <a href="#" onclick="openRefereeModal('${g.crew.slug}'); return false;">${g.crew.name}</a></h4>
+            <div class="pv-crew-grid">
+                <div class="season-stat">
+                    <div class="season-stat-label">Crew effect on this game</div>
+                    <div class="season-stat-value">${p.drivers[0].value > 0 ? '+' : ''}${fmtNum(p.drivers[0].value, 1)}</div>
+                    <div class="season-stat-compare">flags vs an average crew (${fmtNum((g.crew.overallFactor - 1) * 100, 0)}%)</div>
+                </div>
+                ${crewSeason?.current ? `
+                <div class="season-stat">
+                    <div class="season-stat-label">${state.season.currentSeason} pen/game</div>
+                    <div class="season-stat-value">${fmtNum(crewSeason.current.perGame, 1)}</div>
+                    <div class="season-stat-compare">${crewSeason.current.games} games ·
+                        last season ${fmtNum(crewSeason.baselines?.lastSeason?.perGame, 1)}</div>
+                </div>` : ''}
+            </div>
+            <div class="pv-tilts">
+                ${g.crew.typeTilts.map(t => `<span class="pv-tilt">${t.type} ${pctBadge(t.factor, 1)}</span>`).join('')}
+            </div>
+            <p class="modal-footnote">Tilts compare how often this crew calls each type vs the league (last 3 seasons, ${g.crew.gamesInModel} games, shrunk toward average).</p>
+        </div>` : `
+        <div class="modal-section">
+            <h4>👨‍⚖️ The crew</h4>
+            <p class="modal-footnote">Not assigned yet. Football Zebras usually posts assignments Tuesday morning; this projection will update with the crew factor once it's published.</p>
+        </div>`;
+
+    // Teams
+    const teamCol = (t, d, side) => `
+        <div class="pv-team-col">
+            <h5>${t.abbr} <span class="modal-muted">${t.name || ''}</span></h5>
+            <div class="pv-kv"><span>Penalties/game</span><strong>${fmtNum(d.perGame, 1)}</strong>
+                ${d.lastSeasonPerGame != null ? pctBadge(d.perGame, d.lastSeasonPerGame, { small: d.games < MIN_GAMES_FOR_PCT, title: `vs ${d.lastSeasonPerGame} last season` }) : ''}</div>
+            <div class="pv-kv"><span>Most-penalized rank</span><strong>${d.rank ? `#${d.rank} of 32` : '—'}</strong></div>
+            <div class="pv-kv"><span>Offense / Defense</span><strong>${fmtNum(d.offensePerGame, 1)} / ${fmtNum(d.defensePerGame, 1)}</strong></div>
+            <div class="pv-kv"><span>Drawn from opponents</span><strong>${fmtNum(d.drawnPerGame, 1)}</strong></div>
+            <div class="pv-kv"><span>Penalty yds/game</span><strong>${fmtNum(d.yardsPerGame, 0)}</strong></div>
+            <div class="pv-kv"><span>Most common</span><strong>${d.mostCommon || '—'}</strong></div>
+            <div class="pv-watch">
+                <div class="pv-watch-title">Watchlist (${pv.season})</div>
+                ${(d.watchlist || []).map(w => `
+                    <div class="pv-watch-row"><span>${w.player}</span>
+                    <span>${w.count} flags · ${w.yards} yds</span>
+                    <span class="modal-muted">${w.types.map(x => `${x.type}${x.count > 1 ? ` ×${x.count}` : ''}`).join(', ')}</span></div>`).join('') || '<span class="modal-muted">No individual penalties yet</span>'}
+            </div>
+        </div>`;
+
+    // Context
+    const c = g.context, ref = pv.contextReference || {};
+    const chips = [];
+    if (c.primetime) chips.push('🌙 Primetime');
+    if (g.weekday === 'Thursday') chips.push(`Thursday night${ref.thursday ? ` (avg ${ref.thursday} flags vs ${ref.sunday} Sunday)` : ''}`);
+    if (c.divisionGame) chips.push(`Division game${ref.division ? ` (avg ${ref.division} vs ${ref.nonDivision})` : ''}`);
+    if (c.neutralSite) chips.push('Neutral site');
+    if (c.roof) chips.push(`Roof: ${c.roof}`);
+    if (c.surface) chips.push(`Surface: ${c.surface}`);
+    if (c.homeRest != null && c.awayRest != null) chips.push(`Rest: ${A.abbr} ${c.awayRest}d · ${H.abbr} ${c.homeRest}d`);
+    if (c.spread != null) chips.push(`Spread: ${c.spread > 0 ? `${H.abbr} −${c.spread}` : c.spread < 0 ? `${A.abbr} −${Math.abs(c.spread)}` : 'Pick'}${Math.abs(c.spread) <= 3 ? ' (expected close — late flags tend to drop)' : ''}`);
+    if (c.total != null) chips.push(`O/U ${c.total}`);
+    if (c.temp != null) chips.push(`${c.temp}°F`);
+    if (c.wind != null) chips.push(`Wind ${c.wind} mph`);
+    if (c.awayQB && c.homeQB) chips.push(`QBs: ${c.awayQB} vs ${c.homeQB}`);
+
+    const h2h = (g.headToHead || []).map(m => `
+        <div class="game-item">
+            <div class="game-teams"><span>${m.away}</span><span class="game-vs">@</span><span>${m.home}</span></div>
+            <div class="game-info">
+                ${m.awayScore != null ? `<div class="game-score">${m.awayScore} - ${m.homeScore}</div>` : ''}
+                <div class="game-date">${m.season} Wk ${m.week}${m.crew ? ` · ${m.crew}` : ''}</div>
+            </div>
+            <div class="game-penalties">
+                <div class="game-penalties-value">${m.flags}</div>
+                <div class="game-penalties-label">${m.away} ${m.awayFlags} · ${m.home} ${m.homeFlags}</div>
+            </div>
+        </div>`).join('');
+
+    body.innerHTML = `
+        <div class="modal-section">
+            <div class="season-league pv-headline">
+                <div class="season-stat">
+                    <div class="season-stat-label">Projected flags</div>
+                    <div class="season-stat-value">${fmtNum(p.total, 1)}</div>
+                    <div class="season-stat-compare">${pctBadge(p.total, league)} likely ${p.range[0]}–${p.range[1]}</div>
+                </div>
+                <div class="season-stat">
+                    <div class="season-stat-label">On ${A.abbr} (away)</div>
+                    <div class="season-stat-value">${fmtNum(p.away, 1)}</div>
+                    <div class="season-stat-compare">likely ${p.awayRange[0]}–${p.awayRange[1]} · ~${fmtNum(p.awayYards)} yds</div>
+                </div>
+                <div class="season-stat">
+                    <div class="season-stat-label">On ${H.abbr} (home)</div>
+                    <div class="season-stat-value">${fmtNum(p.home, 1)}</div>
+                    <div class="season-stat-compare">likely ${p.homeRange[0]}–${p.homeRange[1]} · ~${fmtNum(p.homeYards)} yds</div>
+                </div>
+                <div class="season-stat">
+                    <div class="season-stat-label">Chance of ${p.overThreshold + 1}+ flags</div>
+                    <div class="season-stat-value">${Math.round(p.probOver * 100)}%</div>
+                    <div class="season-stat-compare">league avg game: ${fmtNum(league, 1)}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-section">
+            <h4>🧭 What's driving the projection</h4>
+            ${drivers}
+            <p class="modal-footnote">Extra or fewer flags vs a league-average matchup with an average crew.</p>
+        </div>
+
+        <div class="modal-section">
+            <h4>🚩 Projected penalties by type</h4>
+            <div class="table-scroll">
+                <table class="pv-table">
+                    <thead><tr><th>Type</th><th>On ${A.abbr}</th><th>On ${H.abbr}</th><th>Total vs league</th><th>Yards</th></tr></thead>
+                    <tbody>${typeRows}</tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal-section">
+            <h4>⏱️ Quarter by quarter</h4>
+            <div class="pair-legend"><span><i class="pair-swatch pvq-away"></i>${A.abbr}</span><span><i class="pair-swatch pvq-home"></i>${H.abbr}</span></div>
+            <div class="pvq-grid">${quarters}</div>
+        </div>
+
+        ${crewHtml}
+
+        <div class="modal-section">
+            <h4>🏈 Team discipline (${pv.season})</h4>
+            <div class="pv-teams">${teamCol(A, g.teams.away, 'away')}${teamCol(H, g.teams.home, 'home')}</div>
+        </div>
+
+        <div class="modal-section">
+            <h4>📍 Context</h4>
+            <div class="pv-chips">${chips.map(x => `<span class="pv-chip">${x}</span>`).join('')}</div>
+            <p class="modal-footnote">Shown for reference; not added into the projection.</p>
+        </div>
+
+        ${h2h ? `<div class="modal-section"><h4>🔁 Recent meetings</h4><div class="game-list">${h2h}</div></div>` : ''}
+
+        <p class="modal-footnote">Projection uses ${pv.model.seasons.join(', ')} regular seasons, weighted toward ${pv.season}.
+        ${pv.assignments?.source?.url ? `Crew assignments via <a href="${pv.assignments.source.url}" target="_blank" rel="noopener">Football Zebras</a>.` : ''}</p>
+    `;
+    modal.classList.add('active');
 }
 
 // =============================================================================
@@ -1410,6 +1718,7 @@ async function init() {
     await loadAllData();
     
     renderSeasonComparison();
+    renderPreviews();
     renderCharts();
     renderRefereeCards();   // uses state.season, so render after it loads
     renderDataTable();
@@ -1440,6 +1749,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 // Global exports
 window.openRefereeModal = openRefereeModal;
+window.openPreviewModal = openPreviewModal;
 window.closeModal = closeModal;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;

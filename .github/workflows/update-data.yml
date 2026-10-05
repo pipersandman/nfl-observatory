@@ -4,6 +4,10 @@ on:
   schedule:
     # Run every Tuesday at 6am UTC (1am EST) - after Monday Night Football
     - cron: '0 6 * * 2'
+    # Tuesday ~12pm PT - Football Zebras usually posts crew assignments 9-10am PT
+    - cron: '0 19 * * 2'
+    # Wednesday 8am PT - backstop in case assignments post late
+    - cron: '0 15 * * 3'
   workflow_dispatch:
     # Manual trigger option (no longer needs checkbox - always full)
   push:
@@ -12,6 +16,10 @@ on:
     branches: [main]
     paths-ignore:
       - 'frontend/data/**'
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
 
 jobs:
   update-data:
@@ -30,6 +38,11 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
+
+      - name: Fetch crew assignments (Football Zebras)
+        # Never blocks the update: previews just show "Crew TBA" if this fails
+        continue-on-error: true
+        run: python scripts/fetch_assignments.py
 
       - name: Run data update (full rebuild)
         run: python scripts/update_data.py --full

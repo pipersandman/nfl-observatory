@@ -10,13 +10,16 @@
 const CONFIG = {
     dataPath: './data',
     chartColors: {
-        cyan: '#00f0ff',
-        purple: '#a855f7',
-        orange: '#ff6b35',
-        green: '#10b981',
-        red: '#ef4444',
-        yellow: '#fbbf24',
-        gold: '#FFD700'
+        flag: '#ffc400',      // accent: "look here"
+        data: '#f5f4f0',      // this season's numbers and bars
+        neutral: '#9a9ea4',   // average / neither high nor low
+        hist: 'rgba(255, 255, 255, 0.2)',
+        green: '#3fb98a',     // fewer flags
+        red: '#f0605d',       // more flags
+        // Muted categorical palette for penalty-type charts (no strong red/green,
+        // so it never reads as "more/fewer"); yellow marks the biggest category
+        categorical: ['#ffc400', '#ecebe7', '#8fa3b8', '#c9a27e', '#9a9ea4',
+                      '#6f8f86', '#b38fa9', '#5d6268', '#d9cfa8', '#7b8794']
     }
 };
 
@@ -448,7 +451,7 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 {
                     label: currentLabel,
                     data: rows.map(r => r.current[field]),
-                    backgroundColor: CONFIG.chartColors.cyan,
+                    backgroundColor: CONFIG.chartColors.data,
                     borderRadius: 4,
                     barPercentage: 0.9,
                     categoryPercentage: 0.75
@@ -734,7 +737,7 @@ function matchupColors(home, away) {
 
 function gameColors(g) {
     return matchupColors(g.homeTeam.abbr, g.awayTeam.abbr)
-        || { home: CONFIG.chartColors.cyan, away: CONFIG.chartColors.purple };
+        || { home: CONFIG.chartColors.data, away: CONFIG.chartColors.neutral };
 }
 
 function colorVars(g) {
@@ -1196,8 +1199,8 @@ function renderSeasonTrendChart() {
             datasets: [{
                 label: 'Avg Penalties/Game',
                 data: state.trends.bySeason.map(s => s.avg_per_game),
-                borderColor: CONFIG.chartColors.cyan,
-                backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                borderColor: CONFIG.chartColors.flag,
+                backgroundColor: 'rgba(255, 196, 0, 0.08)',
                 fill: true,
                 tension: 0.4,
                 pointRadius: 6,
@@ -1222,11 +1225,7 @@ function renderPenaltyTypeChart() {
     
     if (state.charts.type) state.charts.type.destroy();
     
-    const colors = [
-        CONFIG.chartColors.cyan, CONFIG.chartColors.purple, CONFIG.chartColors.orange,
-        CONFIG.chartColors.green, CONFIG.chartColors.red, CONFIG.chartColors.yellow,
-        '#6366f1', '#ec4899', '#14b8a6', '#f97316'
-    ];
+    const colors = CONFIG.chartColors.categorical;
     
     state.charts.type = new Chart(ctx, {
         type: 'doughnut',
@@ -1235,7 +1234,8 @@ function renderPenaltyTypeChart() {
             datasets: [{
                 data: state.trends.byType.map(t => t.count),
                 backgroundColor: colors,
-                borderWidth: 0
+                borderColor: '#16181b',
+                borderWidth: 2
             }]
         },
         options: {
@@ -1275,7 +1275,7 @@ function renderPenaltiesByRefChart() {
                 backgroundColor: topRefs.map(r => 
                     r.avg_per_game > leagueAvg + 1 ? CONFIG.chartColors.red :
                     r.avg_per_game < leagueAvg - 1 ? CONFIG.chartColors.green :
-                    CONFIG.chartColors.cyan
+                    CONFIG.chartColors.neutral
                 ),
                 borderRadius: 4
             }]
@@ -1327,8 +1327,7 @@ function renderQuarterChart() {
         const quarterTotals = {};
         byQuarter.forEach(q => { quarterTotals[q.quarter] = q.count; });
         
-        const colors = [CONFIG.chartColors.cyan, CONFIG.chartColors.purple, CONFIG.chartColors.orange,
-                        CONFIG.chartColors.green, CONFIG.chartColors.red, CONFIG.chartColors.yellow];
+        const colors = CONFIG.chartColors.categorical;
         
         // Convert percentages back to approximate counts for each type per quarter
         const datasets = qtrTypeData.types.map((type, i) => {
@@ -1342,6 +1341,8 @@ function renderQuarterChart() {
                 label: type.replace('Offensive ', 'Off ').replace('Defensive ', 'Def '),
                 data: counts,
                 backgroundColor: colors[i % colors.length],
+                borderColor: '#16181b',
+                borderWidth: 1,
                 borderRadius: 2
             };
         });
@@ -1381,10 +1382,7 @@ function renderQuarterChart() {
                 datasets: [{
                     label: 'Penalties',
                     data: byQuarter.map(q => q.count),
-                    backgroundColor: [
-                        CONFIG.chartColors.cyan, CONFIG.chartColors.purple,
-                        CONFIG.chartColors.orange, CONFIG.chartColors.green
-                    ],
+                    backgroundColor: CONFIG.chartColors.categorical.slice(0, 4),
                     borderRadius: 8
                 }]
             },
@@ -1730,7 +1728,7 @@ function renderModalChart(profile, priorAll) {
         type: 'bar',
         label: 'Penalties/game',
         data: seasons.map(s => s.perGame),
-        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.cyan : 'rgba(255,255,255,0.22)'),
+        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.data : 'rgba(255,255,255,0.22)'),
         borderRadius: 4,
         order: 2
     }];

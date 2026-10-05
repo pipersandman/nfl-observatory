@@ -20,6 +20,7 @@ import json
 import math
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -82,34 +83,35 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
         print("   ✗ Missing data")
         return {}
 
-    # ---- Target week: next regular-season week with unplayed games ----
+    # ---- Target weeks ----
+    # Games still to come (dates compared in US Eastern, so a Monday-night game stays
+    # "upcoming" all evening). If the current week is partly played (e.g. only Monday
+    # night is left), preview those remaining games AND the following week.
     reg_sched = schedules[schedules['game_type'] == 'REG']
     season = int(reg_sched['season'].max())
-    upcoming = reg_sched[(reg_sched['season'] == season) & reg_sched['result'].isna()]
+    today_et = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+    upcoming = reg_sched[(reg_sched['season'] == season) & reg_sched['result'].isna()
+                         & (reg_sched['gameday'].astype(str) >= today_et)]
     if upcoming.empty:
         print("   … No upcoming regular-season games")
         return {}
-    # Skip a week whose only unplayed games are today or earlier (e.g. Monday night)
-    today = datetime.now(timezone.utc).date().isoformat()
-    week = None
-    for wk_num in sorted(upcoming['week'].unique()):
-        wk_up = upcoming[upcoming['week'] == wk_num]
-        if (wk_up['gameday'].astype(str) > today).any():
-            week = int(wk_num)
-            break
-    if week is None:
-        week = int(upcoming['week'].max())
-    week_games = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == week)].copy()
+    up_weeks = sorted(int(w) for w in upcoming['week'].unique())
+    first = up_weeks[0]
+    first_full = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == first)]
+    target_weeks = [first]
+    if len(upcoming[upcoming['week'] == first]) < len(first_full) and len(up_weeks) > 1:
+        target_weeks.append(up_weeks[1])   # current week is partly played -> also preview next week
 
-    # ---- Crew assignments for that week (Football Zebras via fetch_assignments.py) ----
-    assign_path = data_dir / 'assignments' / f'{season}-week-{week:02d}.json'
-    assignments, assign_meta = {}, {}
-    if assign_path.exists():
-        a = json.loads(assign_path.read_text())
-        assign_meta = a.get('source', {})
-        for g in a.get('games', []):
-            if g.get('referee'):
-                assignments[g['game_id']] = {**g, 'referee': name_fixes.get(g['referee'], g['referee'])}
+    def load_assignments(week):
+        path = data_dir / 'assignments' / f'{season}-week-{week:02d}.json'
+        out, meta = {}, {}
+        if path.exists():
+            a = json.loads(path.read_text())
+            meta = a.get('source', {})
+            for g in a.get('games', []):
+                if g.get('referee'):
+                    out[g['game_id']] = {**g, 'referee': name_fixes.get(g['referee'], g['referee'])}
+        return out, meta
 
     # ---- Historical regular-season data (last 3 seasons, weighted) ----
     seasons = [s for s in (season, season - 1, season - 2)]
@@ -301,137 +303,158 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
             })
         return out
 
-    # ---- Build each game ----
-    previews = []
-    for _, g in week_games.sort_values(['gameday', 'gametime', 'game_id']).iterrows():
-        home, away = g['home_team'], g['away_team']
-        crew = assignments.get(g['game_id'], {}).get('referee')
-        hc, h_games = team_factors(home)
-        ac, a_games = team_factors(away)
-        hd, ad = draw_factors(home), draw_factors(away)
-        cf, crew_n, crew_tilt = crew_factors(crew) if crew else ({t: 1.0 for t in types}, 0, None)
+    def build_week(week, week_games):
+        # ---- Build each game ----
+        assignments, assign_meta = load_assignments(week)
+        all_week = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == week)]
+        remaining_only = len(week_games) < len(all_week)
+        previews = []
+        for _, g in week_games.sort_values(['gameday', 'gametime', 'game_id']).iterrows():
+            home, away = g['home_team'], g['away_team']
+            crew = assignments.get(g['game_id'], {}).get('referee')
+            hc, h_games = team_factors(home)
+            ac, a_games = team_factors(away)
+            hd, ad = draw_factors(home), draw_factors(away)
+            cf, crew_n, crew_tilt = crew_factors(crew) if crew else ({t: 1.0 for t in types}, 0, None)
 
-        rows = []
-        lam_h = lam_a = 0.0
-        L0 = L1 = L2 = 0.0
-        q_home = np.zeros(4)
-        q_away = np.zeros(4)
-        for t in types:
-            bh, ba = float(base_rate[True][t]), float(base_rate[False][t])
-            eh = bh * hc[t] * ad[t] * cf[t]     # home team commits, away team draws
-            ea = ba * ac[t] * hd[t] * cf[t]
-            lam_h += eh
-            lam_a += ea
-            L0 += bh + ba
-            L1 += (bh + ba) * cf[t]
-            L2 += bh * cf[t] * hc[t] + ba * cf[t] * hd[t]
-            share = q_share.loc[t].values
-            if crew_tilt is not None:
-                share = share * crew_tilt.values
-                share = share / share.sum()
-            q_home += eh * share
-            q_away += ea * share
-            rows.append({
-                'type': t, 'home': round(eh, 2), 'away': round(ea, 2), 'total': round(eh + ea, 2),
-                'leagueTotal': round(bh + ba, 2), 'yardsEach': round(float(yds[t]), 1),
-                'factors': {'homeCommit': round(hc[t], 2), 'awayCommit': round(ac[t], 2),
-                            'homeDraw': round(hd[t], 2), 'awayDraw': round(ad[t], 2), 'crew': round(cf[t], 2)},
+            rows = []
+            lam_h = lam_a = 0.0
+            L0 = L1 = L2 = 0.0
+            q_home = np.zeros(4)
+            q_away = np.zeros(4)
+            for t in types:
+                bh, ba = float(base_rate[True][t]), float(base_rate[False][t])
+                eh = bh * hc[t] * ad[t] * cf[t]     # home team commits, away team draws
+                ea = ba * ac[t] * hd[t] * cf[t]
+                lam_h += eh
+                lam_a += ea
+                L0 += bh + ba
+                L1 += (bh + ba) * cf[t]
+                L2 += bh * cf[t] * hc[t] + ba * cf[t] * hd[t]
+                share = q_share.loc[t].values
+                if crew_tilt is not None:
+                    share = share * crew_tilt.values
+                    share = share / share.sum()
+                q_home += eh * share
+                q_away += ea * share
+                rows.append({
+                    'type': t, 'home': round(eh, 2), 'away': round(ea, 2), 'total': round(eh + ea, 2),
+                    'leagueTotal': round(bh + ba, 2), 'yardsEach': round(float(yds[t]), 1),
+                    'factors': {'homeCommit': round(hc[t], 2), 'awayCommit': round(ac[t], 2),
+                                'homeDraw': round(hd[t], 2), 'awayDraw': round(ad[t], 2), 'crew': round(cf[t], 2)},
+                })
+            rows.sort(key=lambda r: (r['type'] != 'Other', r['total']), reverse=True)   # most expected first, Other last
+            total = lam_h + lam_a
+            L3 = total
+            lo, hi = _poisson_nb_quantiles(total, phi, (0.1, 0.9))
+            h_lo, h_hi = _poisson_nb_quantiles(lam_h, phi, (0.1, 0.9))
+            a_lo, a_hi = _poisson_nb_quantiles(lam_a, phi, (0.1, 0.9))
+            threshold = int(round(league_game))
+
+            crew_block = None
+            if crew:
+                tilts = sorted(((t, cf[t]) for t in types if t != 'Other'), key=lambda x: abs(math.log(x[1])), reverse=True)
+                crew_block = {
+                    'name': crew, 'slug': slugify(crew), 'gamesInModel': crew_n,
+                    'overallFactor': round(L1 / L0, 3) if L0 else 1.0,
+                    'typeTilts': [{'type': t, 'factor': round(f, 2)} for t, f in tilts[:4]],
+                    'quarterTilt': [round(float(x), 2) for x in crew_tilt.values] if crew_tilt is not None else None,
+                }
+
+            gametime = str(g.get('gametime') or '')
+            hour = int(gametime.split(':')[0]) if gametime[:2].isdigit() else None
+            primetime = bool((hour is not None and hour >= 19) or g.get('weekday') in ('Thursday', 'Monday'))
+            spread = None if pd.isna(g.get('spread_line')) else float(g['spread_line'])
+            a_meta = assignments.get(g['game_id'], {})
+
+            previews.append({
+                'gameId': g['game_id'], 'season': season, 'week': week,
+                'gameday': str(g['gameday']), 'gametime': gametime or None, 'weekday': g.get('weekday'),
+                'network': a_meta.get('network'),
+                'homeTeam': {'abbr': home, **team_info(home)}, 'awayTeam': {'abbr': away, **team_info(away)},
+                'crew': crew_block,
+                'projection': {
+                    'total': round(total, 1), 'home': round(lam_h, 1), 'away': round(lam_a, 1),
+                    'range': [lo, hi], 'homeRange': [h_lo, h_hi], 'awayRange': [a_lo, a_hi],
+                    'yards': round(sum(r['total'] * r['yardsEach'] for r in rows), 0),
+                    'homeYards': round(sum(r['home'] * r['yardsEach'] for r in rows), 0),
+                    'awayYards': round(sum(r['away'] * r['yardsEach'] for r in rows), 0),
+                    'leagueAverage': round(league_game, 1),
+                    'vsLeaguePct': round((total / league_game - 1) * 100, 1),
+                    'overThreshold': threshold,
+                    'probOver': round(_nb_prob_at_least(total, phi, threshold + 1), 3),
+                    'byQuarter': [{'quarter': i + 1, 'home': round(float(q_home[i]), 2), 'away': round(float(q_away[i]), 2)}
+                                  for i in range(4)],
+                    'drivers': [
+                        {'label': 'Crew chief' if crew else 'Crew chief (TBA)', 'value': round(L1 - L0, 2)},
+                        {'label': f'{home} discipline & what it draws', 'value': round(L2 - L1, 2)},
+                        {'label': f'{away} discipline & what it draws', 'value': round(L3 - L2, 2)},
+                    ],
+                },
+                'byType': rows,
+                'teams': {
+                    'home': {**discipline(home), 'watchlist': watchlist(home), 'gamesInModel': h_games},
+                    'away': {**discipline(away), 'watchlist': watchlist(away), 'gamesInModel': a_games},
+                },
+                'headToHead': head_to_head(home, away),
+                'context': {
+                    'primetime': primetime,
+                    'divisionGame': bool(g.get('div_game') == 1),
+                    'neutralSite': g.get('location') == 'Neutral',
+                    'roof': None if pd.isna(g.get('roof')) else g.get('roof'),
+                    'surface': None if pd.isna(g.get('surface')) else g.get('surface'),
+                    'temp': None if pd.isna(g.get('temp')) else int(g['temp']),
+                    'wind': None if pd.isna(g.get('wind')) else int(g['wind']),
+                    'homeRest': None if pd.isna(g.get('home_rest')) else int(g['home_rest']),
+                    'awayRest': None if pd.isna(g.get('away_rest')) else int(g['away_rest']),
+                    'spread': spread, 'total': None if pd.isna(g.get('total_line')) else float(g['total_line']),
+                    'stadium': None if pd.isna(g.get('stadium')) else g.get('stadium'),
+                    'homeQB': g.get('home_qb_name'), 'awayQB': g.get('away_qb_name'),
+                    'homeCoach': g.get('home_coach'), 'awayCoach': g.get('away_coach'),
+                },
             })
-        rows.sort(key=lambda r: (r['type'] != 'Other', r['total']), reverse=True)   # most expected first, Other last
-        total = lam_h + lam_a
-        L3 = total
-        lo, hi = _poisson_nb_quantiles(total, phi, (0.1, 0.9))
-        h_lo, h_hi = _poisson_nb_quantiles(lam_h, phi, (0.1, 0.9))
-        a_lo, a_hi = _poisson_nb_quantiles(lam_a, phi, (0.1, 0.9))
-        threshold = int(round(league_game))
 
-        crew_block = None
-        if crew:
-            tilts = sorted(((t, cf[t]) for t in types if t != 'Other'), key=lambda x: abs(math.log(x[1])), reverse=True)
-            crew_block = {
-                'name': crew, 'slug': slugify(crew), 'gamesInModel': crew_n,
-                'overallFactor': round(L1 / L0, 3) if L0 else 1.0,
-                'typeTilts': [{'type': t, 'factor': round(f, 2)} for t, f in tilts[:4]],
-                'quarterTilt': [round(float(x), 2) for x in crew_tilt.values] if crew_tilt is not None else None,
-            }
+        previews.sort(key=lambda p: p['projection']['total'], reverse=True)   # most flags first
 
-        gametime = str(g.get('gametime') or '')
-        hour = int(gametime.split(':')[0]) if gametime[:2].isdigit() else None
-        primetime = bool((hour is not None and hour >= 19) or g.get('weekday') in ('Thursday', 'Monday'))
-        spread = None if pd.isna(g.get('spread_line')) else float(g['spread_line'])
-        a_meta = assignments.get(g['game_id'], {})
-
-        previews.append({
-            'gameId': g['game_id'], 'season': season, 'week': week,
-            'gameday': str(g['gameday']), 'gametime': gametime or None, 'weekday': g.get('weekday'),
-            'network': a_meta.get('network'),
-            'homeTeam': {'abbr': home, **team_info(home)}, 'awayTeam': {'abbr': away, **team_info(away)},
-            'crew': crew_block,
-            'projection': {
-                'total': round(total, 1), 'home': round(lam_h, 1), 'away': round(lam_a, 1),
-                'range': [lo, hi], 'homeRange': [h_lo, h_hi], 'awayRange': [a_lo, a_hi],
-                'yards': round(sum(r['total'] * r['yardsEach'] for r in rows), 0),
-                'homeYards': round(sum(r['home'] * r['yardsEach'] for r in rows), 0),
-                'awayYards': round(sum(r['away'] * r['yardsEach'] for r in rows), 0),
-                'leagueAverage': round(league_game, 1),
-                'vsLeaguePct': round((total / league_game - 1) * 100, 1),
-                'overThreshold': threshold,
-                'probOver': round(_nb_prob_at_least(total, phi, threshold + 1), 3),
-                'byQuarter': [{'quarter': i + 1, 'home': round(float(q_home[i]), 2), 'away': round(float(q_away[i]), 2)}
-                              for i in range(4)],
-                'drivers': [
-                    {'label': 'Crew chief' if crew else 'Crew chief (TBA)', 'value': round(L1 - L0, 2)},
-                    {'label': f'{home} discipline & what it draws', 'value': round(L2 - L1, 2)},
-                    {'label': f'{away} discipline & what it draws', 'value': round(L3 - L2, 2)},
-                ],
+        result = {
+            'season': season, 'week': week,
+            'remainingOnly': remaining_only,   # True when earlier games this week are already played
+            'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+            'assignments': {'assigned': sum(1 for g in week_games['game_id'] if g in assignments), 'games': len(week_games),
+                            'source': assign_meta or None},
+            'model': {
+                'seasons': seasons, 'seasonWeights': {str(k): v for k, v in weights.items()},
+                'leagueAveragePerGame': round(league_game, 1), 'dispersion': round(phi, 2),
+                'regularSeasonOnly': True,
             },
-            'byType': rows,
-            'teams': {
-                'home': {**discipline(home), 'watchlist': watchlist(home), 'gamesInModel': h_games},
-                'away': {**discipline(away), 'watchlist': watchlist(away), 'gamesInModel': a_games},
+            'contextReference': {
+                'thursday': thu[0], 'sunday': sun[0], 'division': div[0], 'nonDivision': nondiv[0],
             },
-            'headToHead': head_to_head(home, away),
-            'context': {
-                'primetime': primetime,
-                'divisionGame': bool(g.get('div_game') == 1),
-                'neutralSite': g.get('location') == 'Neutral',
-                'roof': None if pd.isna(g.get('roof')) else g.get('roof'),
-                'surface': None if pd.isna(g.get('surface')) else g.get('surface'),
-                'temp': None if pd.isna(g.get('temp')) else int(g['temp']),
-                'wind': None if pd.isna(g.get('wind')) else int(g['wind']),
-                'homeRest': None if pd.isna(g.get('home_rest')) else int(g['home_rest']),
-                'awayRest': None if pd.isna(g.get('away_rest')) else int(g['away_rest']),
-                'spread': spread, 'total': None if pd.isna(g.get('total_line')) else float(g['total_line']),
-                'stadium': None if pd.isna(g.get('stadium')) else g.get('stadium'),
-                'homeQB': g.get('home_qb_name'), 'awayQB': g.get('away_qb_name'),
-                'homeCoach': g.get('home_coach'), 'awayCoach': g.get('away_coach'),
-            },
-        })
+            'games': previews,
+        }
 
-    previews.sort(key=lambda p: p['projection']['total'], reverse=True)   # most flags first
+        out_dir = data_dir / 'previews'
+        out_dir.mkdir(parents=True, exist_ok=True)
+        fname = f'{season}-week-{week:02d}.json'
+        result['file'] = f'previews/{fname}'
+        (out_dir / fname).write_text(json.dumps(result, indent=2, default=str))
+        print(f"   ✓ {season} Week {week}{' (remaining games)' if remaining_only else ''}: {len(previews)} games, "
+              f"crews assigned for {result['assignments']['assigned']}")
+        print(f"   💾 previews/{fname}")
+        return result
 
-    result = {
-        'season': season, 'week': week,
-        'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
-        'assignments': {'assigned': len(assignments), 'games': len(week_games),
-                        'source': assign_meta or None},
-        'model': {
-            'seasons': seasons, 'seasonWeights': {str(k): v for k, v in weights.items()},
-            'leagueAveragePerGame': round(league_game, 1), 'dispersion': round(phi, 2),
-            'regularSeasonOnly': True,
-        },
-        'contextReference': {
-            'thursday': thu[0], 'sunday': sun[0], 'division': div[0], 'nonDivision': nondiv[0],
-        },
-        'games': previews,
-    }
+    results = []
+    for wk in target_weeks:
+        wk_games = upcoming[upcoming['week'] == wk].copy()
+        results.append(build_week(wk, wk_games))
 
     out_dir = data_dir / 'previews'
-    out_dir.mkdir(parents=True, exist_ok=True)
-    fname = f'{season}-week-{week:02d}.json'
-    (out_dir / fname).write_text(json.dumps(result, indent=2, default=str))
-    (out_dir / 'latest.json').write_text(json.dumps(
-        {'season': season, 'week': week, 'file': f'previews/{fname}', 'generatedAt': result['generatedAt']}, indent=2))
-    print(f"   ✓ {season} Week {week}: {len(previews)} games, crews assigned for {len(assignments)}")
-    print(f"   💾 previews/{fname}")
-    return result
+    (out_dir / 'latest.json').write_text(json.dumps({
+        'season': season,
+        'weeks': [{'week': r['week'], 'file': r['file'], 'remainingOnly': r['remainingOnly'],
+                   'games': len(r['games'])} for r in results],
+        # backward compatible single pointer (first week)
+        'week': results[0]['week'], 'file': results[0]['file'],
+        'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+    }, indent=2))
+    return {'weeks': results}

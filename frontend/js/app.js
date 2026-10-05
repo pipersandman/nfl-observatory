@@ -209,8 +209,10 @@ async function loadAllData() {
     state.season = season;
 
     // Next week's previews (latest.json points at the current week's file)
+    // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
-    state.previews = latest?.file ? await fetchJSON(latest.file) : null;
+    const files = latest?.weeks?.map(w => w.file) || (latest?.file ? [latest.file] : []);
+    state.previews = (await Promise.all(files.map(f => fetchJSON(f)))).filter(Boolean);
     state.referees = referees || [];
     state.trends = trends;
     state.insights = insights || [];
@@ -679,75 +681,92 @@ function teamChip(t, home) {
     </span>`;
 }
 
+function previewCard(g, pv, maxTotal, todayET) {
+    const p = g.projection;
+    const league = pv.model?.leagueAveragePerGame;
+    const homeW = p.total ? (p.home / p.total * 100) : 50;
+    const isToday = g.gameday === todayET;
+    return `
+    <div class="preview-card ${isToday ? 'preview-card-today' : ''}" onclick="openPreviewModal('${g.gameId}')">
+        <div class="pv-head">
+            <div class="pv-matchup">${teamChip(g.awayTeam)}<span class="pv-at">@</span>${teamChip(g.homeTeam, true)}
+                ${isToday ? '<span class="pv-today">Today</span>' : ''}</div>
+            <div class="pv-when">${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''}</div>
+        </div>
+        <div class="pv-main">
+            <div>
+                <div class="pv-total">${fmtNum(p.total, 1)}</div>
+                <div class="pv-total-label">projected flags · ${p.range[0]}–${p.range[1]} likely</div>
+            </div>
+            <div class="pv-vs">${pctBadge(p.total, league)}<span>vs league ${fmtNum(league, 1)}</span></div>
+        </div>
+        <div class="pv-range-track" title="Likely range ${p.range[0]}–${p.range[1]}">
+            <div class="pv-range" style="left:${p.range[0] / maxTotal * 100}%; width:${(p.range[1] - p.range[0]) / maxTotal * 100}%"></div>
+            <div class="pv-point" style="left:${p.total / maxTotal * 100}%"></div>
+        </div>
+        <div class="pv-split">
+            <span>${g.awayTeam.abbr} <strong>${fmtNum(p.away, 1)}</strong></span>
+            <div class="pv-split-bar"><div class="pv-split-away" style="width:${100 - homeW}%"></div><div class="pv-split-home" style="width:${homeW}%"></div></div>
+            <span><strong>${fmtNum(p.home, 1)}</strong> ${g.homeTeam.abbr}</span>
+        </div>
+        <div class="pv-foot">
+            <span class="${g.crew ? '' : 'pv-tba'}">👨‍⚖️ ${g.crew ? g.crew.name : 'Crew TBA'}</span>
+            <span>~${fmtNum(p.yards)} penalty yds</span>
+        </div>
+    </div>`;
+}
+
 function renderPreviews() {
     const grid = document.getElementById('previewGrid');
     if (!grid) return;
-    const pv = state.previews;
-    if (!pv || !pv.games?.length) {
-        grid.innerHTML = '<p class="season-error">Next week\'s previews aren\'t available yet.</p>';
+    const weeks = (state.previews || []).filter(w => w.games?.length);
+    if (!weeks.length) {
+        grid.innerHTML = '<p class="season-error">Upcoming game previews aren\'t available yet.</p>';
         return;
     }
 
-    document.getElementById('previewsTitle').textContent = `Week ${pv.week} Previews`;
-    const a = pv.assignments || {};
+    const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const full = weeks.find(w => !w.remainingOnly) || weeks[0];
+    document.getElementById('previewsTitle').textContent =
+        weeks.length > 1 ? `Week ${weeks[0].week} Finale & Week ${full.week} Previews` : `Week ${full.week} Previews`;
+
+    const a = full.assignments || {};
     const crewNote = a.assigned >= a.games ? 'All crews assigned.'
-        : a.assigned ? `Crews assigned for ${a.assigned} of ${a.games} games.`
-        : 'Crew assignments usually post Tuesday — projections update automatically.';
+        : a.assigned ? `Week ${full.week} crews assigned for ${a.assigned} of ${a.games} games.`
+        : `Week ${full.week} crew assignments usually post Tuesday — projections update automatically.`;
     document.getElementById('previewsSubtitle').firstChild.textContent =
-        `Projected penalties for all ${pv.games.length} games, ranked most flags first. ${crewNote} `;
+        `Projected penalties for every upcoming game, ranked most flags first. ${crewNote} `;
 
-    const league = pv.model?.leagueAveragePerGame;
-    const maxTotal = Math.max(...pv.games.map(g => g.projection.range[1]), 1);
+    // One shared scale for the range bars across all groups
+    const maxTotal = Math.max(...weeks.flatMap(w => w.games.map(g => g.projection.range[1])), 1);
 
-    // Already sorted most projected flags first by the pipeline; keep it that way
-    const games = [...pv.games].sort((x, y) => y.projection.total - x.projection.total);
-
-    grid.innerHTML = games.map(g => {
-        const p = g.projection;
-        const homeW = p.total ? (p.home / p.total * 100) : 50;
+    grid.innerHTML = weeks.map(w => {
+        const games = [...w.games].sort((x, y) => y.projection.total - x.projection.total);   // most flags first
+        const label = w.remainingOnly
+            ? `Week ${w.week} · ${games.every(g => g.gameday === todayET) ? 'Tonight' : 'Remaining'}`
+            : `Week ${w.week}`;
         return `
-        <div class="preview-card" onclick="openPreviewModal('${g.gameId}')">
-            <div class="pv-head">
-                <div class="pv-matchup">${teamChip(g.awayTeam)}<span class="pv-at">@</span>${teamChip(g.homeTeam, true)}</div>
-                <div class="pv-when">${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''}</div>
-            </div>
-            <div class="pv-main">
-                <div>
-                    <div class="pv-total">${fmtNum(p.total, 1)}</div>
-                    <div class="pv-total-label">projected flags · ${p.range[0]}–${p.range[1]} likely</div>
-                </div>
-                <div class="pv-vs">${pctBadge(p.total, league)}<span>vs league ${fmtNum(league, 1)}</span></div>
-            </div>
-            <div class="pv-range-track" title="Likely range ${p.range[0]}–${p.range[1]}">
-                <div class="pv-range" style="left:${p.range[0] / maxTotal * 100}%; width:${(p.range[1] - p.range[0]) / maxTotal * 100}%"></div>
-                <div class="pv-point" style="left:${p.total / maxTotal * 100}%"></div>
-            </div>
-            <div class="pv-split">
-                <span>${g.awayTeam.abbr} <strong>${fmtNum(p.away, 1)}</strong></span>
-                <div class="pv-split-bar"><div class="pv-split-away" style="width:${100 - homeW}%"></div><div class="pv-split-home" style="width:${homeW}%"></div></div>
-                <span><strong>${fmtNum(p.home, 1)}</strong> ${g.homeTeam.abbr}</span>
-            </div>
-            <div class="pv-foot">
-                <span class="${g.crew ? '' : 'pv-tba'}">👨‍⚖️ ${g.crew ? g.crew.name : 'Crew TBA'}</span>
-                <span>~${fmtNum(p.yards)} penalty yds</span>
-            </div>
-        </div>`;
+            <div class="preview-group">
+                <h3 class="preview-group-title">${label} <span class="modal-muted">${games.length} game${games.length > 1 ? 's' : ''}</span></h3>
+                <div class="preview-grid-inner">${games.map(g => previewCard(g, w, maxTotal, todayET)).join('')}</div>
+            </div>`;
     }).join('');
 
-    const src = a.source;
-    document.getElementById('previewCredit').innerHTML = src?.url
-        ? `Crew assignments via <a href="${src.url}" target="_blank" rel="noopener">Football Zebras</a>.`
+    const src = weeks.map(w => w.assignments?.source?.url).find(Boolean);
+    document.getElementById('previewCredit').innerHTML = src
+        ? `Crew assignments via <a href="${src}" target="_blank" rel="noopener">Football Zebras</a>.`
         : 'Crew assignments via <a href="https://www.footballzebras.com/category/assignments/" target="_blank" rel="noopener">Football Zebras</a> once posted.';
 }
 
 function openPreviewModal(gameId) {
-    const g = state.previews?.games?.find(x => x.gameId === gameId);
+    const pv = (state.previews || []).find(w => w.games?.some(x => x.gameId === gameId));
+    const g = pv?.games.find(x => x.gameId === gameId);
     const modal = document.getElementById('modal');
     const body = document.getElementById('modalBody');
     if (!g || !modal || !body) return;
     if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
 
-    const pv = state.previews, p = g.projection, H = g.homeTeam, A = g.awayTeam;
+    const p = g.projection, H = g.homeTeam, A = g.awayTeam;
     const league = pv.model.leagueAveragePerGame;
     const crewSeason = g.crew
         ? [...(state.season?.crewChiefs || []), ...(state.season?.inactiveCrewChiefs || [])].find(c => c.slug === g.crew.slug)

@@ -7,38 +7,48 @@
    CSS Variables
    ----------------------------------------------------------------------------- */
 :root {
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #12121a;
-    --bg-card: rgba(20, 20, 30, 0.7);
-    --bg-glass: rgba(255, 255, 255, 0.03);
-    
-    --text-primary: #f0f0f5;
-    --text-secondary: rgba(255, 255, 255, 0.6);
-    --text-muted: rgba(255, 255, 255, 0.4);
-    
-    --accent-cyan: #00f0ff;
-    --accent-purple: #a855f7;
-    --accent-orange: #ff6b35;
-    --accent-green: #10b981;
-    --accent-red: #ef4444;
-    --accent-yellow: #fbbf24;
-    --accent-gold: #FFD700;
-    
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(0, 240, 255, 0.3);
-    
-    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    /* Theme A · "Penalty Flag": neutral graphite UI, one accent (flag yellow).
+       Color carries meaning only: yellow = where to look, white = this season's data,
+       gray = history, red/green = more/fewer flags, team colors = teams. */
+    --bg-primary: #0c0d0f;
+    --bg-secondary: #121417;
+    --bg-card: #16181b;
+    --bg-glass: rgba(255, 255, 255, 0.035);
+
+    --text-primary: #ecebe7;
+    --text-secondary: #9a9ea4;
+    --text-muted: #6d7178;
+
+    --accent: #ffc400;                       /* penalty-flag yellow (matches favicon) */
+    --accent-hover: #ffd54d;
+    --accent-soft: rgba(255, 196, 0, 0.22);
+    --data: #f5f4f0;                          /* numbers + this-season bars */
+    --data-hist: #4a4e55;                     /* history / comparison */
+
+    /* legacy names kept so older rules still resolve */
+    --accent-cyan: var(--accent);
+    --accent-purple: var(--text-secondary);
+    --accent-orange: #e8894a;
+    --accent-green: #3fb98a;
+    --accent-red: #f0605d;
+    --accent-yellow: #ffc400;
+    --accent-gold: #ffc400;
+
+    --border-subtle: #262a2f;
+    --border-glow: rgba(255, 196, 0, 0.35);
+
+    --font-display: 'Barlow Condensed', 'Oswald', system-ui, sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    
+
     --section-padding: clamp(3rem, 8vw, 6rem);
     --card-padding: 1.5rem;
     --gap-sm: 0.75rem;
     --gap-md: 1.5rem;
     --gap-lg: 2.5rem;
-    
+
     --blur-glass: 12px;
-    --shadow-glow: 0 0 40px rgba(0, 240, 255, 0.15);
+    --shadow-glow: 0 0 0 1px rgba(255, 196, 0, 0.12), 0 8px 30px rgba(0, 0, 0, 0.45);
     --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -78,12 +88,12 @@ body::before {
 }
 
 a {
-    color: var(--accent-cyan);
+    color: var(--accent);
     text-decoration: none;
     transition: color var(--transition-base);
 }
 
-a:hover { color: var(--accent-purple); }
+a:hover { color: var(--accent-hover); }
 
 /* -----------------------------------------------------------------------------
    Typography
@@ -149,7 +159,7 @@ nav {
     letter-spacing: 0.05em;
 }
 
-.nav-links a:hover { color: var(--accent-cyan); }
+.nav-links a:hover { color: var(--accent); }
 
 /* -----------------------------------------------------------------------------
    Hero Section
@@ -173,7 +183,7 @@ nav {
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    color: var(--accent-cyan);
+    color: var(--accent);
     margin-bottom: 1.5rem;
     animation: pulse 3s ease-in-out infinite;
 }
@@ -234,7 +244,7 @@ nav {
     font-family: var(--font-display);
     font-size: 2.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--data);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -252,7 +262,7 @@ nav {
    Crew Chief Explainer Banner
    ----------------------------------------------------------------------------- */
 .explainer-banner {
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 240, 255, 0.1));
+    background: var(--bg-glass);
     border-top: 1px solid var(--border-subtle);
     border-bottom: 1px solid var(--border-subtle);
     padding: 1.5rem 0;
@@ -276,7 +286,7 @@ nav {
 .explainer-text h3 {
     font-size: 1rem;
     margin-bottom: 0.5rem;
-    color: var(--accent-cyan);
+    color: var(--accent);
 }
 
 .explainer-text p {
@@ -291,7 +301,7 @@ nav {
 }
 
 .explainer-text strong {
-    color: var(--accent-cyan);
+    color: var(--accent);
 }
 
 .explainer-close {
@@ -324,14 +334,14 @@ nav {
 }
 
 .info-trigger:hover {
-    border-color: var(--accent-cyan);
-    color: var(--accent-cyan);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .info-trigger-inline {
     background: none;
     border: none;
-    color: var(--accent-cyan);
+    color: var(--accent);
     font-size: inherit;
     cursor: pointer;
     text-decoration: underline;
@@ -358,8 +368,8 @@ nav {
 
 .info-trigger-small:hover,
 .th-info:hover {
-    border-color: var(--accent-cyan);
-    color: var(--accent-cyan);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 /* -----------------------------------------------------------------------------
@@ -373,7 +383,7 @@ nav {
 .section-number {
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: var(--accent-cyan);
+    color: var(--accent);
     letter-spacing: 0.1em;
     margin-bottom: 0.75rem;
 }
@@ -429,9 +439,9 @@ nav {
 }
 
 .carousel-btn:hover {
-    background: var(--accent-cyan);
+    background: var(--accent);
     color: var(--bg-primary);
-    border-color: var(--accent-cyan);
+    border-color: var(--accent);
 }
 
 .carousel-prev { left: 0; }
@@ -454,7 +464,7 @@ nav {
 }
 
 .carousel-dot.active {
-    background: var(--accent-cyan);
+    background: var(--accent);
     transform: scale(1.3);
 }
 
@@ -483,11 +493,11 @@ nav {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--accent);
 }
 
 .insight-card.positive::before {
-    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+    background: var(--accent-green);
 }
 
 .insight-card.negative::before {
@@ -509,7 +519,7 @@ nav {
     font-family: var(--font-display);
     font-size: 3rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--data);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -529,7 +539,7 @@ nav {
     padding: 1rem;
     font-size: 0.85rem;
     color: var(--text-muted);
-    border-left: 3px solid var(--accent-purple);
+    border-left: 3px solid var(--accent);
 }
 
 .insight-explainer strong {
@@ -591,7 +601,7 @@ nav {
     font-family: var(--font-display);
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--accent-cyan);
+    color: var(--data);
 }
 
 .referee-stat-label {
@@ -611,7 +621,7 @@ nav {
 }
 
 .referee-top-penalty strong {
-    color: var(--accent-cyan);
+    color: var(--accent);
 }
 
 /* =============================================================================
@@ -644,7 +654,7 @@ nav {
 .penalty-type-pct {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--accent-cyan);
+    color: var(--data);
     font-weight: 600;
 }
 
@@ -657,7 +667,7 @@ nav {
 
 .penalty-type-bar {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--data);
     border-radius: 3px;
     transition: width 0.5s ease;
 }
@@ -699,7 +709,7 @@ nav {
 
 .quarter-bar {
     width: 100%;
-    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+    background: var(--data);
     border-radius: 4px 4px 0 0;
     transition: height 0.5s ease;
 }
@@ -707,7 +717,7 @@ nav {
 .quarter-pct {
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: var(--accent-cyan);
+    color: var(--data);
     font-weight: 600;
 }
 
@@ -932,7 +942,7 @@ tbody tr:hover td {
     font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--accent-cyan);
+    color: var(--data);
 }
 
 .modal-stat-label {
@@ -1001,7 +1011,7 @@ tbody tr:hover td {
     font-family: var(--font-display);
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--accent-cyan);
+    color: var(--data);
 }
 
 .game-penalties-label {
@@ -1032,7 +1042,7 @@ tbody tr:hover td {
 }
 
 .explainer-modal h3 {
-    color: var(--accent-cyan);
+    color: var(--accent);
     margin-bottom: 1rem;
 }
 
@@ -1111,7 +1121,7 @@ footer {
     width: 40px;
     height: 40px;
     border: 3px solid var(--border-subtle);
-    border-top-color: var(--accent-cyan);
+    border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -1181,7 +1191,7 @@ footer {
     font-family: var(--font-display);
     font-size: 2.25rem;
     font-weight: 600;
-    color: var(--accent-cyan);
+    color: var(--data);
     line-height: 1.15;
     margin: 0.25rem 0;
     font-variant-numeric: tabular-nums;
@@ -1269,7 +1279,7 @@ footer {
 .baseline-btn:hover { color: var(--text-primary); }
 
 .baseline-btn.active {
-    background: var(--accent-cyan);
+    background: var(--accent);
     color: var(--bg-primary);
 }
 
@@ -1296,8 +1306,8 @@ footer {
 .pct-down { color: var(--accent-green); }
 .pct-flat, .pct-none { color: var(--text-muted); }
 
-.pct-badge.pct-up   { background: rgba(239, 68, 68, 0.14); }
-.pct-badge.pct-down { background: rgba(16, 185, 129, 0.14); }
+.pct-badge.pct-up   { background: rgba(240, 96, 93, 0.14); }
+.pct-badge.pct-down { background: rgba(63, 185, 138, 0.14); }
 .pct-badge.pct-flat,
 .pct-badge.pct-none { background: rgba(255, 255, 255, 0.06); }
 
@@ -1337,7 +1347,7 @@ footer {
 }
 
 .cc-status-active {
-    color: var(--accent-cyan);
+    color: var(--accent);
     border-color: var(--border-glow);
 }
 
@@ -1407,9 +1417,9 @@ footer {
 }
 
 /* This season row stands out; history rows recede */
-.cc-current .cc-bar   { background: var(--accent-cyan); }
-.cc-current .cc-label { color: var(--accent-cyan); font-weight: 600; }
-.cc-current .cc-value { color: var(--accent-cyan); font-size: 1.1rem; }
+.cc-current .cc-bar   { background: var(--data); }
+.cc-current .cc-label { color: var(--data); font-weight: 600; }
+.cc-current .cc-value { color: var(--data); font-size: 1.1rem; }
 .cc-current .cc-yards { color: var(--text-secondary); }
 .cc-all .cc-bar       { background: rgba(255, 255, 255, 0.16); }
 .cc-last .cc-value,
@@ -1483,9 +1493,9 @@ footer {
     background: var(--bg-glass);
     border-radius: 12px;
     padding: 1rem;
-    border-left: 3px solid var(--accent-cyan);
+    border-left: 3px solid var(--accent);
 }
-.modal-tendency h4 { margin-bottom: 0.5rem; color: var(--accent-cyan); }
+.modal-tendency h4 { margin-bottom: 0.5rem; color: var(--accent); }
 .modal-tendency p { color: var(--text-secondary); margin: 0; line-height: 1.6; }
 .modal-tendency strong { color: var(--text-primary); }
 .modal-tendency-career { margin-top: 0.6rem !important; font-size: 0.85rem; color: var(--text-muted) !important; }
@@ -1513,7 +1523,7 @@ footer {
 .pair-bars { display: flex; flex-direction: column; gap: 3px; }
 .pair-bar-track { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.04); overflow: hidden; }
 .pair-bar { height: 100%; border-radius: 999px; }
-.pair-current { background: var(--accent-cyan); }
+.pair-current { background: var(--data); }
 .pair-prior { background: rgba(255, 255, 255, 0.25); }
 .pair-values {
     display: flex;
@@ -1522,17 +1532,17 @@ footer {
     font-variant-numeric: tabular-nums;
     line-height: 1.15;
 }
-.pair-cur { font-family: var(--font-display); font-weight: 600; color: var(--accent-cyan); font-size: 0.9rem; }
+.pair-cur { font-family: var(--font-display); font-weight: 600; color: var(--data); font-size: 0.9rem; }
 .pair-prior-val { font-size: 0.72rem; color: var(--text-muted); }
 .pair-pct { text-align: right; }
 .pair-pct .pct-badge { margin-left: 0; }
 
 /* Recent games: this season's games stand out */
-.game-item-current { border-left: 3px solid var(--accent-cyan); padding-left: 0.75rem; }
+.game-item-current { border-left: 3px solid var(--accent); padding-left: 0.75rem; }
 .game-season-tag {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--accent-cyan);
+    color: var(--accent);
 }
 
 @media (max-width: 520px) {
@@ -1566,7 +1576,7 @@ footer {
 .preview-card-today { border-color: var(--border-glow); }
 .pv-today {
     margin-left: auto; font-family: var(--font-mono); font-size: 0.65rem; color: var(--bg-primary);
-    background: var(--accent-cyan); border-radius: 999px; padding: 0.15rem 0.5rem;
+    background: var(--accent); border-radius: 999px; padding: 0.15rem 0.5rem;
 }
 
 .preview-card {
@@ -1588,14 +1598,14 @@ footer {
 .pv-when { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.3rem; }
 
 .pv-main { display: flex; justify-content: space-between; align-items: flex-end; gap: 0.5rem; }
-.pv-total { font-family: var(--font-display); font-size: 2.4rem; font-weight: 600; color: var(--accent-cyan); line-height: 1; font-variant-numeric: tabular-nums; }
+.pv-total { font-family: var(--font-display); font-size: 2.4rem; font-weight: 600; color: var(--data); line-height: 1; font-variant-numeric: tabular-nums; }
 .pv-total-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
 .pv-vs { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; font-size: 0.7rem; color: var(--text-muted); }
 .pv-vs .pct-badge { margin-left: 0; }
 
 .pv-range-track { position: relative; height: 8px; margin: 0.9rem 0 0.8rem; border-radius: 999px; background: rgba(255,255,255,0.04); }
-.pv-range { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: rgba(0, 240, 255, 0.22); }
-.pv-point { position: absolute; top: -3px; width: 3px; height: 14px; margin-left: -1px; border-radius: 2px; background: var(--accent-cyan); }
+.pv-range { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--accent-soft); }
+.pv-point { position: absolute; top: -3px; width: 3px; height: 14px; margin-left: -1px; border-radius: 2px; background: var(--accent); }
 
 .pv-split { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--text-secondary); }
 .pv-split strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
@@ -1603,8 +1613,8 @@ footer {
 /* Team colors per matchup (--away-c / --home-c set on each card and report).
    Used ONLY for the card split bar and the quarter-by-quarter bars + legend, so they
    never compete with red = more flags / green = fewer elsewhere on the page. */
-.pv-split-away, .pvq-away { background: var(--away-c, var(--accent-purple)); }
-.pv-split-home, .pvq-home { background: var(--home-c, var(--accent-cyan)); }
+.pv-split-away, .pvq-away { background: var(--away-c, var(--text-secondary)); }
+.pv-split-home, .pvq-home { background: var(--home-c, var(--data)); }
 /* Thin light edge so dark team colors (navy, dark green) stay visible on the dark site */
 .pv-split-away, .pv-split-home, .pvq-away, .pvq-home { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28); }
 .pv-split-bar { gap: 2px; }
@@ -1613,7 +1623,7 @@ footer {
 .pv-foot { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; color: var(--text-secondary); }
 .pv-tba { color: var(--text-muted); font-style: italic; }
 .preview-credit { margin-top: 1rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); }
-.preview-credit a, .modal-footnote a { color: var(--accent-cyan); }
+.preview-credit a, .modal-footnote a { color: var(--accent); }
 
 /* Report modal */
 .pv-headline { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 0; }
@@ -1640,7 +1650,7 @@ footer {
 .pvq-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
 
 .pv-crew-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem; }
-.modal-section h4 a { color: var(--accent-cyan); }
+.modal-section h4 a { color: var(--accent); }
 .pv-tilts { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.8rem; color: var(--text-secondary); }
 
 .pv-teams { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -1664,3 +1674,19 @@ footer {
     .pvq-stack { width: 30px; }
     .pvq-split { font-size: 0.62rem; }
 }
+
+
+/* -----------------------------------------------------------------------------
+   Theme A · Penalty Flag — details
+   ----------------------------------------------------------------------------- */
+h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-name, .modal-title { letter-spacing: 0.01em; }
+.section-title { text-transform: none; }
+.baseline-btn.active, .pv-today { color: #111; }
+.cc-current .cc-label { color: var(--accent); }        /* "2026" label = where to look */
+.cc-last .cc-bar { background: var(--data-hist); }
+.cc-all .cc-bar { background: #33373d; }
+.pair-prior { background: var(--data-hist); }
+.preview-card:hover, .referee-card:hover, .insight-card:hover { transform: translateY(-2px); }
+.nav-links a:hover { color: var(--accent); }
+.logo { display: flex; align-items: center; gap: 0.6rem; }
+.logo-mark { width: 26px; height: 26px; border-radius: 6px; }

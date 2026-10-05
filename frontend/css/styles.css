@@ -1600,8 +1600,15 @@ footer {
 .pv-split { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--text-secondary); }
 .pv-split strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .pv-split-bar { display: flex; height: 6px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.04); }
-.pv-split-away, .pvq-away { background: var(--accent-purple); }
-.pv-split-home, .pvq-home { background: var(--accent-cyan); }
+/* Team colors per matchup (--away-c / --home-c set on each card and report).
+   Used ONLY for the card split bar and the quarter-by-quarter bars + legend, so they
+   never compete with red = more flags / green = fewer elsewhere on the page. */
+.pv-split-away, .pvq-away { background: var(--away-c, var(--accent-purple)); }
+.pv-split-home, .pvq-home { background: var(--home-c, var(--accent-cyan)); }
+/* Thin light edge so dark team colors (navy, dark green) stay visible on the dark site */
+.pv-split-away, .pv-split-home, .pvq-away, .pvq-home { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28); }
+.pv-split-bar { gap: 2px; }
+.pvq-stack { gap: 2px; }
 
 .pv-foot { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; color: var(--text-secondary); }
 .pv-tba { color: var(--text-muted); font-style: italic; }

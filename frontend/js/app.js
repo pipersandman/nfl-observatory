@@ -10,13 +10,16 @@
 const CONFIG = {
     dataPath: './data',
     chartColors: {
-        cyan: '#00f0ff',
-        purple: '#a855f7',
-        orange: '#ff6b35',
-        green: '#10b981',
-        red: '#ef4444',
-        yellow: '#fbbf24',
-        gold: '#FFD700'
+        flag: '#ffc400',      // accent: "look here"
+        data: '#f5f4f0',      // this season's numbers and bars
+        neutral: '#9a9ea4',   // average / neither high nor low
+        hist: 'rgba(255, 255, 255, 0.2)',
+        green: '#3fb98a',     // fewer flags
+        red: '#f0605d',       // more flags
+        // Muted categorical palette for penalty-type charts (no strong red/green,
+        // so it never reads as "more/fewer"); yellow marks the biggest category
+        categorical: ['#ffc400', '#ecebe7', '#8fa3b8', '#c9a27e', '#9a9ea4',
+                      '#6f8f86', '#b38fa9', '#5d6268', '#d9cfa8', '#7b8794']
     }
 };
 
@@ -448,7 +451,7 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 {
                     label: currentLabel,
                     data: rows.map(r => r.current[field]),
-                    backgroundColor: CONFIG.chartColors.cyan,
+                    backgroundColor: CONFIG.chartColors.data,
                     borderRadius: 4,
                     barPercentage: 0.9,
                     categoryPercentage: 0.75
@@ -658,6 +661,91 @@ function goToSlide(index) {
 }
 
 // =============================================================================
+// TEAM COLORS (preview split bars + quarter-by-quarter chart only)
+// Exact official team colors, never lightened. Home shows its signature color;
+// if the away team's is too similar, the away team switches to one of its own
+// alternate colors (like jerseys), else wears white. Pure black is never used as
+// a fill. Checked on all 992 matchups: every pair is clearly different.
+// =============================================================================
+// Official team colors, in each team's own hex values. First = the color used
+// by default (the team's signature color); the rest are its real alternates,
+// used only when the opponent's color is too similar. No color is lightened or
+// altered. Pure-black colors are never used as a fill (invisible on the dark site).
+const TEAM_COLORS = {
+    ARI: ['#97233F', '#FFB612', '#000000'],            // cardinal red, gold
+    ATL: ['#A71930', '#A5ACAF', '#000000'],            // falcons red, silver
+    BAL: ['#241773', '#9E7C0C', '#000000'],            // purple, metallic gold
+    BUF: ['#00338D', '#C60C30'],                       // royal blue, red
+    CAR: ['#0085CA', '#BFC0BF', '#101820'],            // panther blue, silver
+    CHI: ['#0B162A', '#C83803'],                       // navy, orange
+    CIN: ['#FB4F14', '#000000'],                       // orange
+    CLE: ['#FF3C00', '#311D00'],                       // orange, brown
+    DAL: ['#003594', '#869397', '#041E42'],            // royal blue, silver, navy
+    DEN: ['#FB4F14', '#002244'],                       // orange, navy
+    DET: ['#0076B6', '#B0B7BC'],                       // honolulu blue, silver
+    GB:  ['#203731', '#FFB612'],                       // dark green, gold
+    HOU: ['#03202F', '#A71930'],                       // deep steel blue, battle red
+    IND: ['#002C5F', '#A2AAAD'],                       // speed blue, gray
+    JAX: ['#006778', '#D7A22A', '#101820'],            // teal, gold
+    KC:  ['#E31837', '#FFB81C'],                       // red, gold
+    LA:  ['#003594', '#FFD100'],                       // royal blue, sol yellow
+    LAC: ['#0080C6', '#FFC20E'],                       // powder blue, sunshine gold
+    LV:  ['#A5ACAF', '#000000'],                       // silver (black isn't visible here)
+    MIA: ['#008E97', '#FC4C02', '#005778'],            // aqua, orange, blue
+    MIN: ['#4F2683', '#FFC62F'],                       // purple, gold
+    NE:  ['#002244', '#C60C30', '#B0B7BC'],            // navy, red, silver
+    NO:  ['#D3BC8D', '#101820'],                       // old gold
+    NYG: ['#0B2265', '#A71930', '#A5ACAF'],            // blue, red, gray
+    NYJ: ['#125740', '#FFFFFF'],                       // gotham green, white
+    PHI: ['#004C54', '#A5ACAF', '#ACC0C6'],            // midnight green, silver
+    PIT: ['#FFB612', '#101820'],                       // gold (black isn't visible here)
+    SEA: ['#002244', '#69BE28', '#A5ACAF'],            // college navy, action green, wolf gray
+    SF:  ['#AA0000', '#B3995D'],                       // red, gold
+    TB:  ['#D50A0A', '#FF7900', '#34302B'],            // red, bay orange, pewter
+    TEN: ['#4B92DB', '#0C2340', '#C8102E'],            // titans blue, navy, red
+    WAS: ['#5A1414', '#FFB612'],                       // burgundy, gold
+};
+const MIN_DISTANCE = 45;                               // CIE76 deltaE between the two teams' colors
+const AWAY_FALLBACKS = ['#E5E7EB', '#00F0FF'];         // "away team wears white"; site cyan if white is too close (e.g. vs silver)
+
+function hexToRgb(h) { h = h.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function luminance(rgb) {
+    const c = rgb.map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+function rgbToLab(rgb) {
+    let [r, g, b] = rgb.map(v => { v /= 255; return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92; });
+    let x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047, y = r * 0.2126 + g * 0.7152 + b * 0.0722, z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+    [x, y, z] = [x, y, z].map(v => v > 0.008856 ? Math.cbrt(v) : 7.787 * v + 16 / 116);
+    return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
+}
+function deltaE(a, b) { const [p, q] = [rgbToLab(hexToRgb(a)), rgbToLab(hexToRgb(b))]; return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]); }
+const isBlack = hex => luminance(hexToRgb(hex)) < 0.008;      // #000000, #101820 ...
+const usable = team => (TEAM_COLORS[team] || []).filter(c => !isBlack(c));
+
+// Home keeps its signature color; the away team switches to one of its own
+// alternates if the colors are too close, else wears white.
+function matchupColors(home, away) {
+    const H = usable(home), A = usable(away);
+    if (!H.length || !A.length) return null;
+    const far = h => x => deltaE(x, h) >= MIN_DISTANCE;
+    const a = A.find(far(H[0])) || AWAY_FALLBACKS.find(far(H[0]));
+    if (a) return { home: H[0], away: a };
+    for (const h of H.slice(1)) { const a2 = A.find(far(h)) || AWAY_FALLBACKS.find(far(h)); if (a2) return { home: h, away: a2 }; }
+    return { home: H[0], away: AWAY_FALLBACKS[1] };
+}
+
+function gameColors(g) {
+    return matchupColors(g.homeTeam.abbr, g.awayTeam.abbr)
+        || { home: CONFIG.chartColors.data, away: CONFIG.chartColors.neutral };
+}
+
+function colorVars(g) {
+    const c = gameColors(g);
+    return `--home-c:${c.home};--away-c:${c.away};`;
+}
+
+// =============================================================================
 // RENDERING - GAME PREVIEWS (next week)
 // =============================================================================
 
@@ -687,7 +775,7 @@ function previewCard(g, pv, maxTotal, todayET) {
     const homeW = p.total ? (p.home / p.total * 100) : 50;
     const isToday = g.gameday === todayET;
     return `
-    <div class="preview-card ${isToday ? 'preview-card-today' : ''}" onclick="openPreviewModal('${g.gameId}')">
+    <div class="preview-card ${isToday ? 'preview-card-today' : ''}" style="${colorVars(g)}" onclick="openPreviewModal('${g.gameId}')">
         <div class="pv-head">
             <div class="pv-matchup">${teamChip(g.awayTeam)}<span class="pv-at">@</span>${teamChip(g.homeTeam, true)}
                 ${isToday ? '<span class="pv-today">Today</span>' : ''}</div>
@@ -891,6 +979,7 @@ function openPreviewModal(gameId) {
             </div>
         </div>`).join('');
 
+    body.setAttribute('style', colorVars(g));
     body.innerHTML = `
         <div class="modal-section">
             <div class="season-league pv-headline">
@@ -1110,8 +1199,8 @@ function renderSeasonTrendChart() {
             datasets: [{
                 label: 'Avg Penalties/Game',
                 data: state.trends.bySeason.map(s => s.avg_per_game),
-                borderColor: CONFIG.chartColors.cyan,
-                backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                borderColor: CONFIG.chartColors.flag,
+                backgroundColor: 'rgba(255, 196, 0, 0.08)',
                 fill: true,
                 tension: 0.4,
                 pointRadius: 6,
@@ -1136,11 +1225,7 @@ function renderPenaltyTypeChart() {
     
     if (state.charts.type) state.charts.type.destroy();
     
-    const colors = [
-        CONFIG.chartColors.cyan, CONFIG.chartColors.purple, CONFIG.chartColors.orange,
-        CONFIG.chartColors.green, CONFIG.chartColors.red, CONFIG.chartColors.yellow,
-        '#6366f1', '#ec4899', '#14b8a6', '#f97316'
-    ];
+    const colors = CONFIG.chartColors.categorical;
     
     state.charts.type = new Chart(ctx, {
         type: 'doughnut',
@@ -1149,7 +1234,8 @@ function renderPenaltyTypeChart() {
             datasets: [{
                 data: state.trends.byType.map(t => t.count),
                 backgroundColor: colors,
-                borderWidth: 0
+                borderColor: '#16181b',
+                borderWidth: 2
             }]
         },
         options: {
@@ -1189,7 +1275,7 @@ function renderPenaltiesByRefChart() {
                 backgroundColor: topRefs.map(r => 
                     r.avg_per_game > leagueAvg + 1 ? CONFIG.chartColors.red :
                     r.avg_per_game < leagueAvg - 1 ? CONFIG.chartColors.green :
-                    CONFIG.chartColors.cyan
+                    CONFIG.chartColors.neutral
                 ),
                 borderRadius: 4
             }]
@@ -1241,8 +1327,7 @@ function renderQuarterChart() {
         const quarterTotals = {};
         byQuarter.forEach(q => { quarterTotals[q.quarter] = q.count; });
         
-        const colors = [CONFIG.chartColors.cyan, CONFIG.chartColors.purple, CONFIG.chartColors.orange,
-                        CONFIG.chartColors.green, CONFIG.chartColors.red, CONFIG.chartColors.yellow];
+        const colors = CONFIG.chartColors.categorical;
         
         // Convert percentages back to approximate counts for each type per quarter
         const datasets = qtrTypeData.types.map((type, i) => {
@@ -1256,6 +1341,8 @@ function renderQuarterChart() {
                 label: type.replace('Offensive ', 'Off ').replace('Defensive ', 'Def '),
                 data: counts,
                 backgroundColor: colors[i % colors.length],
+                borderColor: '#16181b',
+                borderWidth: 1,
                 borderRadius: 2
             };
         });
@@ -1295,10 +1382,7 @@ function renderQuarterChart() {
                 datasets: [{
                     label: 'Penalties',
                     data: byQuarter.map(q => q.count),
-                    backgroundColor: [
-                        CONFIG.chartColors.cyan, CONFIG.chartColors.purple,
-                        CONFIG.chartColors.orange, CONFIG.chartColors.green
-                    ],
+                    backgroundColor: CONFIG.chartColors.categorical.slice(0, 4),
                     borderRadius: 8
                 }]
             },
@@ -1644,7 +1728,7 @@ function renderModalChart(profile, priorAll) {
         type: 'bar',
         label: 'Penalties/game',
         data: seasons.map(s => s.perGame),
-        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.cyan : 'rgba(255,255,255,0.22)'),
+        backgroundColor: seasons.map(s => s.season === cs ? CONFIG.chartColors.data : 'rgba(255,255,255,0.22)'),
         borderRadius: 4,
         order: 2
     }];

@@ -190,7 +190,8 @@ let state = {
 
 async function fetchJSON(filename) {
     try {
-        const response = await fetch(`${CONFIG.dataPath}/${filename}`);
+        // no-cache = always check the server for a newer copy (data changes weekly)
+        const response = await fetch(`${CONFIG.dataPath}/${filename}`, { cache: "no-cache" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return await response.json();
     } catch (error) {

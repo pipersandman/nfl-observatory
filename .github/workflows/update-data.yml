@@ -61,6 +61,22 @@ jobs:
             git push
           fi
 
+      - name: Cache-bust CSS/JS/icons (deploy copy only, not committed)
+        # Browsers cache styles.css and app.js aggressively. Stamping each deploy's
+        # commit into the URLs (styles.css?v=abc1234) forces every visitor to get
+        # the new files together with the new page.
+        run: |
+          V="${GITHUB_SHA::8}"
+          sed -i -E \
+            -e "s#(href=\"css/styles\.css)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
+            -e "s#(src=\"js/app\.js)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
+            -e "s#(favicon\.svg)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
+            -e "s#(favicon\.ico)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
+            -e "s#(favicon-32\.png)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
+            -e "s#(apple-touch-icon\.png)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
+            frontend/index.html
+          grep -nE "styles\.css|app\.js|favicon" frontend/index.html
+
       - name: Deploy to HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

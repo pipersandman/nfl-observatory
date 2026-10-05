@@ -916,6 +916,16 @@ def main():
     
     # Individual profiles (with penalty type breakdown)
     generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'])
+
+    # Game previews for the next week (uses Football Zebras assignments if fetched)
+    try:
+        from previews import build_previews
+        build_previews(data, slugify, get_team_info, NAME_FIXES, DATA_DIR)
+    except Exception as e:
+        # Previews must never block the main data update
+        import traceback
+        print(f"   ⚠️  Previews failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
     
     print("\n" + "=" * 60)
     print("✅ DATA UPDATE COMPLETE")

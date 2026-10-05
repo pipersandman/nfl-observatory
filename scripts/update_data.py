@@ -917,6 +917,15 @@ def main():
     # Individual profiles (with penalty type breakdown)
     generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'])
 
+    # Team pages (all 32 teams, by division)
+    try:
+        from team_pages import build_team_pages
+        build_team_pages(data, get_team_info, slugify, DATA_DIR)
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Team pages failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
     # Game previews for the next week (uses Football Zebras assignments if fetched)
     try:
         from previews import build_previews

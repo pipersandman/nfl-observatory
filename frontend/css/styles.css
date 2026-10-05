@@ -1744,3 +1744,13 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .pair-prior { background: var(--bar-hist); }
 .pair-cur { color: var(--text-primary); }
 .cc-bar-track, .pair-bar-track { background: rgba(255, 255, 255, 0.05); }
+
+/* Copy-link button in report pop-ups */
+.modal-share {
+    display: inline-block; margin-top: 0.75rem;
+    font: 500 0.8rem var(--font-body); color: var(--text-secondary);
+    background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: 999px;
+    padding: 0.4rem 0.8rem; cursor: pointer; max-width: 50vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.modal-share:hover { color: var(--accent); border-color: var(--border-glow); }
+@media (max-width: 520px) { .modal-share { font-size: 0.72rem; padding: 0.35rem 0.6rem; } }

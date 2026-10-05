@@ -589,9 +589,16 @@ def calculate_season_comparison(data: dict) -> dict:
     }
 
     crews = []
+    inactive = []  # crew chiefs with history but no games this season (cards still need their numbers)
     for name, s in g.dropna(subset=['name']).groupby('name'):
         cur = summarize(s[s['season'] == current])
         if cur is None:  # hasn't worked a game this season
+            inactive.append({
+                'name': name,
+                'slug': slugify(name),
+                'current': None,
+                'baselines': {b['key']: summarize(s[b['mask'](s)]) for b in baselines},
+            })
             continue
         crews.append({
             'name': name,
@@ -615,6 +622,7 @@ def calculate_season_comparison(data: dict) -> dict:
         'defaultBaseline': 'sameWeeks' if previous in prior_seasons else (baselines[0]['key'] if baselines else None),
         'league': league,
         'crewChiefs': crews,
+        'inactiveCrewChiefs': inactive,
         'generatedAt': datetime.utcnow().isoformat() + 'Z',
     }
 

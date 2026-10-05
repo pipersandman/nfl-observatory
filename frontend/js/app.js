@@ -645,33 +645,112 @@ function renderRefereeCards() {
         container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
         return;
     }
-    
-    container.innerHTML = state.referees.map((ref, index) => {
-        // Get most common penalty from cached profile
+
+    const d = state.season;
+    const cs = d?.currentSeason;
+    const lastKey = 'lastSeason', allKey = 'all';
+    const lastBase = d?.baselines?.find(b => b.key === lastKey);
+    const allBase = d?.baselines?.find(b => b.key === allKey);
+    const allLabel = allBase
+        ? `${allBase.seasons[0]}–${String(allBase.seasons[allBase.seasons.length - 1]).slice(2)}`
+        : 'All';
+
+    // Season numbers by slug (regular season only, from season_comparison.json)
+    const bySlug = {};
+    [...(d?.crewChiefs || []), ...(d?.inactiveCrewChiefs || [])].forEach(c => { bySlug[c.slug] = c; });
+
+    // Active crews first, most penalties/game this season on down; then inactive by all-years rate
+    const cards = state.referees.map(ref => ({ ref, cmp: bySlug[ref.slug] || null }));
+    cards.sort((a, b) => {
+        const ac = a.cmp?.current, bc = b.cmp?.current;
+        if (ac && bc) return bc.perGame - ac.perGame;
+        if (ac) return -1;
+        if (bc) return 1;
+        const aa = a.cmp?.baselines?.[allKey]?.perGame ?? a.ref.avg_per_game;
+        const ba = b.cmp?.baselines?.[allKey]?.perGame ?? b.ref.avg_per_game;
+        return ba - aa;
+    });
+
+    // One shared scale so bar lengths are comparable across every card
+    const allRates = cards.flatMap(({ cmp }) => [
+        cmp?.current?.perGame, cmp?.baselines?.[lastKey]?.perGame, cmp?.baselines?.[allKey]?.perGame
+    ]).filter(v => v != null);
+    const maxRate = Math.max(...allRates, 1);
+
+    const row = (cls, label, block) => {
+        if (!block) {
+            return `
+                <div class="cc-row ${cls} cc-empty">
+                    <div class="cc-label">${label}</div>
+                    <div class="cc-bar-track"></div>
+                    <div class="cc-value">—</div>
+                    <div class="cc-yards">—</div>
+                </div>`;
+        }
+        const width = Math.max(2, block.perGame / maxRate * 100);
+        return `
+            <div class="cc-row ${cls}">
+                <div class="cc-label">${label}<span>${block.games} g</span></div>
+                <div class="cc-bar-track"><div class="cc-bar" style="width:${width}%"></div></div>
+                <div class="cc-value">${fmtNum(block.perGame, 1)}</div>
+                <div class="cc-yards">${fmtNum(block.yardsPerGame)} yds</div>
+            </div>`;
+    };
+
+    container.innerHTML = cards.map(({ ref, cmp }, index) => {
         const profile = state.refereeProfiles[ref.slug];
         const topPenalty = profile?.penaltyTypes?.[0];
         const topPenaltyDisplay = topPenalty 
             ? topPenalty.type.replace('Offensive ', '').replace('Defensive ', '').replace(' (Offense)', '')
             : null;
-        
+
+        const cur = cmp?.current || null;
+        const last = cmp?.baselines?.[lastKey] || null;
+        const all = cmp?.baselines?.[allKey] || null;
+        const active = !!cur;
+        const small = active && cur.games < MIN_GAMES_FOR_PCT;
+
+        const bias = `<span class="${ref.home_bias_pct > 5 ? 'cell-high' : ref.home_bias_pct < 0 ? 'cell-low' : ''}">
+                        ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct}%</span>`;
+
         return `
-            <div class="referee-card" onclick="openRefereeModal('${ref.slug}')" data-index="${index}">
-                <div class="referee-name">${ref.name}</div>
-                <div class="referee-meta">${ref.first_season}-${ref.last_season} • ${ref.games} games</div>
-                ${topPenaltyDisplay ? `<div class="referee-top-penalty">🚩 Most common: <strong>${topPenaltyDisplay}</strong></div>` : ''}
+            <div class="referee-card ${active ? '' : 'referee-card-inactive'}" onclick="openRefereeModal('${ref.slug}')" data-index="${index}">
+                <div class="cc-head">
+                    <div>
+                        <div class="referee-name">${ref.name}</div>
+                        <div class="referee-meta">${ref.first_season}–${ref.last_season} • ${ref.games} games</div>
+                    </div>
+                    <span class="cc-status ${active ? 'cc-status-active' : ''}">${active ? `Active ${cs}` : `Not active in ${cs ?? 'current season'}`}</span>
+                </div>
+
+                ${cmp ? `
+                <div class="cc-rows">
+                    <div class="cc-row-head">
+                        <span></span><span></span><span>Pen/g</span><span>Yds/g</span>
+                    </div>
+                    ${row('cc-current', cs ?? 'This season', cur)}
+                    ${row('cc-last', lastBase ? lastBase.seasons[0] : 'Last season', last)}
+                    ${row('cc-all', allLabel, all)}
+                </div>
+
+                ${active ? `
+                <div class="cc-changes">
+                    <span>vs ${lastBase?.seasons[0] ?? 'last season'} ${pctBadge(cur.perGame, last?.perGame, { small })}</span>
+                    <span>vs ${allLabel} ${pctBadge(cur.perGame, all?.perGame, { small })}</span>
+                </div>
+                ${small ? `<div class="cc-note">Only ${cur.games} games this season — early numbers swing a lot.</div>` : ''}
+                ` : ''}
+                ` : `
                 <div class="referee-stats">
                     <div class="referee-stat">
                         <div class="referee-stat-value">${ref.avg_per_game}</div>
                         <div class="referee-stat-label">Avg/Game</div>
                     </div>
-                    <div class="referee-stat">
-                        <div class="referee-stat-value">${ref.min_penalties}-${ref.max_penalties}</div>
-                        <div class="referee-stat-label">Range</div>
-                    </div>
-                    <div class="referee-stat">
-                        <div class="referee-stat-value ${ref.home_bias_pct > 5 ? 'cell-high' : ref.home_bias_pct < 0 ? 'cell-low' : ''}">${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct}%</div>
-                        <div class="referee-stat-label">Home Bias</div>
-                    </div>
+                </div>`}
+
+                <div class="cc-foot">
+                    ${topPenaltyDisplay ? `<span>🚩 Most common: <strong>${topPenaltyDisplay}</strong></span>` : '<span></span>'}
+                    <span>Home bias ${bias}</span>
                 </div>
             </div>
         `;
@@ -1183,7 +1262,7 @@ async function init() {
     
     renderSeasonComparison();
     renderCharts();
-    renderRefereeCards();
+    renderRefereeCards();   // uses state.season, so render after it loads
     renderDataTable();
     renderInsightsCarousel();
     

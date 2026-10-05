@@ -1311,3 +1311,150 @@ footer {
 }
 
 .season-stat-vs { white-space: nowrap; }
+
+/* -----------------------------------------------------------------------------
+   Crew chief cards: this season vs last season vs all years
+   ----------------------------------------------------------------------------- */
+.cc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.cc-head .referee-meta { margin-bottom: 0; }
+
+.cc-status {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    white-space: nowrap;
+}
+
+.cc-status-active {
+    color: var(--accent-cyan);
+    border-color: var(--border-glow);
+}
+
+.cc-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.75rem;
+    background: var(--bg-glass);
+    border-radius: 10px;
+}
+
+.cc-row-head,
+.cc-row {
+    display: grid;
+    grid-template-columns: 3.75rem 1fr 2.5rem 3.4rem;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cc-row-head span {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.cc-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.15;
+}
+
+.cc-label span {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--text-muted);
+}
+
+.cc-bar-track {
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+}
+
+.cc-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.cc-value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.cc-yards {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* This season row stands out; history rows recede */
+.cc-current .cc-bar   { background: var(--accent-cyan); }
+.cc-current .cc-label { color: var(--accent-cyan); font-weight: 600; }
+.cc-current .cc-value { color: var(--accent-cyan); font-size: 1.1rem; }
+.cc-current .cc-yards { color: var(--text-secondary); }
+.cc-all .cc-bar       { background: rgba(255, 255, 255, 0.16); }
+.cc-last .cc-value,
+.cc-all .cc-value     { color: var(--text-secondary); }
+.cc-empty .cc-value,
+.cc-empty .cc-yards   { color: var(--text-muted); }
+
+.cc-changes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.cc-changes .pct-badge { margin-left: 0.25rem; }
+
+.cc-note {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.cc-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.cc-foot strong { color: var(--text-secondary); }
+
+.referee-grid:has(.cc-rows) {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+@media (max-width: 400px) {
+    .referee-grid:has(.cc-rows) { grid-template-columns: 1fr; }
+}
+
+.referee-card-inactive { opacity: 0.6; }
+.referee-card-inactive:hover { opacity: 1; }

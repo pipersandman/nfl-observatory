@@ -1690,3 +1690,44 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .nav-links a:hover { color: var(--accent); }
 .logo { display: flex; align-items: center; gap: 0.6rem; }
 .logo-mark { width: 26px; height: 26px; border-radius: 6px; }
+
+/* -----------------------------------------------------------------------------
+   Teams: division picker -> team cards -> team profile
+   ----------------------------------------------------------------------------- */
+.division-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: var(--gap-lg); }
+.division-tile {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.6rem;
+    background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px;
+    padding: 0.85rem 1rem; cursor: pointer; color: var(--text-secondary); font: inherit; text-align: left;
+    transition: border-color var(--transition-base), color var(--transition-base);
+}
+.division-tile:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.division-tile.active { border-color: var(--accent); color: var(--text-primary); box-shadow: inset 0 -3px 0 var(--accent); }
+.division-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; letter-spacing: 0.02em; }
+.division-logos { display: flex; gap: 0.5rem; }
+.division-logos img { width: 28px; height: 28px; object-fit: contain; }
+
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--gap-md); }
+.team-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px;
+    padding: 1.25rem; cursor: pointer; transition: all var(--transition-base);
+}
+.team-card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+.team-card-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+.team-card-logo { width: 44px; height: 44px; object-fit: contain; }
+.team-card-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+.team-card .referee-meta { margin-bottom: 0; }
+
+.team-title { display: inline-flex; align-items: center; gap: 0.6rem; }
+.team-title img { width: 40px; height: 40px; object-fit: contain; }
+.team-tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 0; }
+.team-tiles .season-stat-value { font-size: 1.6rem; }
+.team-next { margin-bottom: 1.25rem; }
+.team-next .baseline-btn { font-size: 0.85rem; }
+.team-result { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; padding: 0.05rem 0.35rem; border-radius: 4px; background: var(--bg-glass); }
+.team-result-W { color: var(--text-primary); }
+.team-result-L, .team-result-T { color: var(--text-muted); }
+.pv-table tbody tr[onclick] { cursor: pointer; }
+
+@media (max-width: 900px) { .division-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 400px) { .division-logos img { width: 22px; height: 22px; } }

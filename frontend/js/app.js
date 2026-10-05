@@ -173,6 +173,9 @@ const EXPLAINERS = {
 let state = {
     stats: null,
     previews: null,
+    teamsIndex: null,
+    selectedDivision: null,
+    teamProfiles: {},
     season: null,
     seasonBaseline: null,
     referees: [],
@@ -213,6 +216,8 @@ async function loadAllData() {
     state.season = season;
 
     // Next week's previews (latest.json points at the current week's file)
+    state.teamsIndex = await fetchJSON('teams/index.json');
+
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
     const files = latest?.weeks?.map(w => w.file) || (latest?.file ? [latest.file] : []);
@@ -946,7 +951,7 @@ function openPreviewModal(gameId) {
                 <div class="pv-watch-title">Watchlist (${pv.season})</div>
                 ${(d.watchlist || []).map(w => `
                     <div class="pv-watch-row"><span>${w.player}</span>
-                    <span>${w.count} flags · ${w.yards} yds</span>
+                    <span>${w.count} flag${w.count === 1 ? "" : "s"} · ${w.yards} yds</span>
                     <span class="modal-muted">${w.types.map(x => `${x.type}${x.count > 1 ? ` ×${x.count}` : ''}`).join(', ')}</span></div>`).join('') || '<span class="modal-muted">No individual penalties yet</span>'}
             </div>
         </div>`;
@@ -1048,6 +1053,249 @@ function openPreviewModal(gameId) {
         ${pv.assignments?.source?.url ? `Crew assignments via <a href="${pv.assignments.source.url}" target="_blank" rel="noopener">Football Zebras</a>.` : ''}</p>
     `;
     modal.classList.add('active');
+}
+
+// =============================================================================
+// RENDERING - TEAMS (division -> team -> full profile)
+// =============================================================================
+
+function renderTeams() {
+    const grid = document.getElementById('divisionGrid');
+    if (!grid) return;
+    const idx = state.teamsIndex;
+    if (!idx?.divisions?.length) {
+        grid.innerHTML = '<p class="season-error">Team data isn\'t available yet.</p>';
+        return;
+    }
+    if (!state.selectedDivision) state.selectedDivision = idx.divisions[0].name;
+
+    grid.innerHTML = idx.divisions.map(d => `
+        <button class="division-tile ${d.name === state.selectedDivision ? 'active' : ''}" onclick="selectDivision('${d.name}')">
+            <span class="division-name">${d.name}</span>
+            <span class="division-logos">${d.teams.map(t =>
+                `<img src="${t.logo}" alt="${t.abbr}" title="${t.name}" onerror="this.style.display='none'">`).join('')}</span>
+        </button>`).join('');
+    renderDivisionTeams();
+}
+
+function selectDivision(name) {
+    state.selectedDivision = name;
+    renderTeams();
+    // On phones the team cards sit below the division tiles: bring them into view
+    if (window.innerWidth < 700) {
+        document.getElementById('divisionTeams')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function renderDivisionTeams() {
+    const box = document.getElementById('divisionTeams');
+    const idx = state.teamsIndex;
+    const div = idx?.divisions?.find(d => d.name === state.selectedDivision);
+    if (!box || !div) return;
+    const league = idx.leaguePerGame;
+    // Most penalties per game first
+    const teams = [...div.teams].sort((a, b) => (b.perGame ?? 0) - (a.perGame ?? 0));
+    box.innerHTML = `
+        <h3 class="preview-group-title">${div.name} <span class="modal-muted">${idx.season} · ranked by penalties per game</span></h3>
+        <div class="team-grid">${teams.map(t => `
+            <div class="team-card" onclick="openTeamModal('${t.abbr}')">
+                <div class="team-card-head">
+                    <img src="${t.logo}" alt="" class="team-card-logo" onerror="this.style.display='none'">
+                    <div>
+                        <div class="team-card-name">${t.name}</div>
+                        <div class="referee-meta">${t.record} · ${t.games} games</div>
+                    </div>
+                </div>
+                <div class="pv-main">
+                    <div>
+                        <div class="pv-total">${fmtNum(t.perGame, 1)}</div>
+                        <div class="pv-total-label">penalties/game · ${fmtNum(t.yardsPerGame)} yds</div>
+                    </div>
+                    <div class="pv-vs">${pctBadge(t.perGame, league, { small: t.games < MIN_GAMES_FOR_PCT })}<span>vs league avg ${fmtNum(league, 1)}</span></div>
+                </div>
+                <div class="cc-foot">
+                    <span>Most-penalized rank <strong>${t.rank ? `#${t.rank}` : '—'}</strong></span>
+                    <span>Last season ${fmtNum(t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
+                </div>
+            </div>`).join('')}
+        </div>`;
+}
+
+async function openTeamModal(abbr) {
+    const modal = document.getElementById('modal');
+    const body = document.getElementById('modalBody');
+    if (!modal || !body) return;
+    modal.classList.add('active');
+    body.removeAttribute('style');
+    body.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+    if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
+
+    const t = state.teamProfiles[abbr] || await fetchJSON(`teams/${abbr}.json`);
+    if (!t) { body.innerHTML = '<p class="season-error">Team profile unavailable.</p>'; return; }
+    state.teamProfiles[abbr] = t;
+
+    const cs = t.season, cur = t.current, last = t.lastSeason, all = t.allPrior;
+    const ps = t.priorSeasons || [];
+    const allLabel = ps.length ? `${ps[0]}–${String(ps[ps.length - 1]).slice(2)}` : 'Prior';
+    const small = !cur || cur.games < MIN_GAMES_FOR_PCT;
+
+    // Next game (links to its preview when one exists)
+    const nextPv = t.nextGame && (state.previews || []).some(w => w.games?.some(g => g.gameId === t.nextGame.gameId));
+    const nextTxt = t.nextGame
+        ? `Next: ${t.nextGame.home ? 'vs' : '@'} ${t.nextGame.opponent}, Wk ${t.nextGame.week}` : '';
+    document.getElementById('modalTitle').innerHTML =
+        `<span class="team-title"><img src="${t.logo}" alt="" onerror="this.style.display='none'">${t.name}</span>`;
+    document.getElementById('modalSubtitle').textContent =
+        `${t.division || ''} · ${cs} record ${t.record}${nextTxt ? ` · ${nextTxt}` : ''}`;
+
+    // Rows: this season vs last vs all prior
+    const maxRate = Math.max(...[cur, last, all].filter(Boolean).map(b => b.perGame), 1);
+    const row = (cls, label, b) => b ? `
+        <div class="cc-row ${cls}">
+            <div class="cc-label">${label}<span>${b.games} g</span></div>
+            <div class="cc-bar-track"><div class="cc-bar" style="width:${Math.max(2, b.perGame / maxRate * 100)}%"></div></div>
+            <div class="cc-value">${fmtNum(b.perGame, 1)}</div>
+            <div class="cc-yards">${fmtNum(b.yardsPerGame)} yds</div>
+            <div class="cc-yards">${fmtNum(b.drawnPerGame, 1)}</div>
+        </div>` : `
+        <div class="cc-row ${cls} cc-empty"><div class="cc-label">${label}</div><div class="cc-bar-track"></div>
+            <div class="cc-value">—</div><div class="cc-yards">—</div><div class="cc-yards">—</div></div>`;
+
+    const tile = (label, value, sub) => `
+        <div class="season-stat"><div class="season-stat-label">${label}</div>
+        <div class="season-stat-value">${value}</div><div class="season-stat-compare">${sub}</div></div>`;
+    const net = cur?.netPerGame;
+
+    const crews = (t.crews || []).map(c => `
+        <tr onclick="openRefereeModal('${c.slug}')">
+            <td><strong>${c.name}</strong></td><td>${c.games}</td>
+            <td>${fmtNum(c.perGame, 1)} ${pctBadge(c.perGame, all?.perGame ?? cur?.perGame, { small: c.games < 4 })}</td>
+            <td class="season-prev">${fmtNum(c.opponentPerGame, 1)}</td>
+            <td class="season-prev">${c.lastSeason}</td>
+        </tr>`).join('');
+
+    const log = (t.games || []).map(g => `
+        <tr ${g.gameId ? '' : ''}>
+            <td>Wk ${g.week}</td>
+            <td>${g.home ? 'vs' : '@'} ${g.opponent}</td>
+            <td>${g.result ? `<span class="team-result team-result-${g.result}">${g.result}</span> ${g.score}` : '—'}</td>
+            <td><strong>${g.flags}</strong> <span class="modal-muted">${g.yards} yds</span></td>
+            <td class="season-prev">${g.opponentFlags}</td>
+            <td class="season-prev">${g.crew || '—'}</td>
+        </tr>`).join('');
+
+    body.innerHTML = `
+        ${nextPv ? `<div class="team-next"><button class="baseline-btn active" onclick="openPreviewModal('${t.nextGame.gameId}')">Preview next game: ${t.nextGame.home ? 'vs' : '@'} ${t.nextGame.opponent} →</button></div>` : ''}
+
+        <div class="modal-section">
+            <h4>📊 ${cs} vs history</h4>
+            <div class="cc-rows cc-rows-lg">
+                <div class="cc-row-head"><span></span><span></span><span>Pen/g</span><span>Yds/g</span><span>Drawn/g</span></div>
+                ${row('cc-current', cs, cur)}
+                ${row('cc-last', cs - 1, last)}
+                ${row('cc-all', allLabel, all)}
+            </div>
+            ${cur ? `<div class="cc-changes">
+                <span>Pen/g vs ${cs - 1} ${pctBadge(cur.perGame, last?.perGame, { small })}</span>
+                <span>vs ${allLabel} ${pctBadge(cur.perGame, all?.perGame, { small })}</span>
+                <span>Yds/g vs ${cs - 1} ${pctBadge(cur.yardsPerGame, last?.yardsPerGame, { small })}</span>
+            </div>` : ''}
+            ${small && cur ? `<div class="cc-note">Only ${cur.games} games this season — early numbers swing a lot.</div>` : ''}
+        </div>
+
+        ${cur ? `<div class="modal-section">
+            <div class="season-league team-tiles">
+                ${tile('Most-penalized rank', t.rank.current ? `#${t.rank.current}` : '—', `of ${t.rank.of} · last season ${t.rank.lastSeason ? `#${t.rank.lastSeason}` : '—'}`)}
+                ${tile('Offense / Defense', `${fmtNum(cur.offensePerGame, 1)} / ${fmtNum(cur.defensePerGame, 1)}`, 'flags per game on each side')}
+                ${tile('Home / Away', `${fmtNum(cur.homePerGame, 1)} / ${fmtNum(cur.awayPerGame, 1)}`, 'flags per game')}
+                ${tile('Flag margin', `${net > 0 ? '+' : ''}${fmtNum(net, 1)}`, net > 0 ? 'drew more than committed per game' : net < 0 ? 'committed more than drew per game' : 'even')}
+            </div>
+        </div>` : ''}
+
+        <div class="chart-container modal-section">
+            <div class="chart-title">📈 Penalties per game by season <span class="modal-muted">(regular season)</span></div>
+            <div class="chart-wrapper" style="height: 200px;"><canvas id="modalSeasonChart"></canvas></div>
+        </div>
+
+        ${t.committedTypes?.length ? `<div class="modal-section">
+            <h4>🚩 What they get flagged for: ${cs} vs ${allLabel}</h4>
+            ${pairLegend(cs, allLabel)}
+            ${renderPairedRows(t.committedTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
+        </div>` : ''}
+
+        ${t.drawnTypes?.length ? `<div class="modal-section">
+            <h4>🎯 What they draw from opponents</h4>
+            ${pairLegend(cs, allLabel)}
+            ${renderPairedRows(t.drawnTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
+        </div>` : ''}
+
+        <div class="modal-section">
+            <h4>⏱️ When they get flagged</h4>
+            ${pairLegend(cs, allLabel)}
+            ${renderPairedRows(t.quarters, cs, allLabel, small, q => `Q${q.quarter}`)}
+        </div>
+
+        ${crews ? `<div class="modal-section">
+            <h4>👨‍⚖️ Flags on ${t.abbr} by crew chief <span class="modal-muted">(${ps[0] ?? cs}–${cs}, 2+ games)</span></h4>
+            <div class="table-scroll"><table class="pv-table">
+                <thead><tr><th>Crew chief</th><th>Games</th><th>${t.abbr} flags/g</th><th>Opp flags/g</th><th>Last worked</th></tr></thead>
+                <tbody>${crews}</tbody>
+            </table></div>
+            <p class="modal-footnote">Sorted by flags on ${t.abbr} per game, most first. Badge compares with ${t.abbr}'s ${allLabel} average.</p>
+        </div>` : ''}
+
+        ${t.players?.length ? `<div class="modal-section">
+            <h4>🧾 Watchlist (${cs})</h4>
+            <div class="pv-team-col">${t.players.map(w => `
+                <div class="pv-watch-row"><span>${w.player}</span><span>${w.count} flag${w.count === 1 ? "" : "s"} · ${w.yards} yds</span>
+                <span class="modal-muted">${w.types.map(x => `${x.type}${x.count > 1 ? ` ×${x.count}` : ''}`).join(', ')}</span></div>`).join('')}
+            </div>
+        </div>` : ''}
+
+        ${log ? `<div class="modal-section">
+            <h4>📋 ${cs} game log</h4>
+            <div class="table-scroll"><table class="pv-table">
+                <thead><tr><th>Week</th><th>Opponent</th><th>Result</th><th>${t.abbr} flags</th><th>Opp flags</th><th>Crew</th></tr></thead>
+                <tbody>${log}</tbody>
+            </table></div>
+        </div>` : ''}
+    `;
+    setTimeout(() => renderTeamChart(t, all), 100);
+}
+
+function renderTeamChart(t, priorAll) {
+    const ctx = document.getElementById('modalSeasonChart')?.getContext('2d');
+    if (!ctx || !t.history?.length) return;
+    if (state.charts.modal) state.charts.modal.destroy();
+    const h = t.history;
+    const datasets = [{
+        type: 'bar', label: 'Penalties/game', data: h.map(s => s.perGame),
+        backgroundColor: h.map(s => s.season === t.season ? CONFIG.chartColors.data : 'rgba(255,255,255,0.22)'),
+        borderRadius: 4, order: 2
+    }];
+    if (priorAll) datasets.push({
+        type: 'line', label: 'Prior-years avg', data: h.map(() => priorAll.perGame),
+        borderColor: 'rgba(255,255,255,0.45)', borderDash: [5, 5], borderWidth: 1.5, pointRadius: 0, order: 1
+    });
+    state.charts.modal = new Chart(ctx, {
+        data: { labels: h.map(s => s.season), datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: !!priorAll, position: 'top', align: 'end',
+                          labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 } } },
+                tooltip: { callbacks: { label: (c) => {
+                    if (c.dataset.type === 'line') return `Prior-years avg: ${fmtNum(c.raw, 1)}/g`;
+                    const s = h[c.dataIndex];
+                    return `${fmtNum(s.perGame, 1)}/g · ${fmtNum(s.yardsPerGame)} yds/g · rank #${s.rank ?? '—'} · ${s.games} games`;
+                } } }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.6)' } },
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } }
+            }
+        }
+    });
 }
 
 // =============================================================================
@@ -1825,6 +2073,7 @@ async function init() {
     renderPreviews();
     renderCharts();
     renderRefereeCards();   // uses state.season, so render after it loads
+    renderTeams();
     renderDataTable();
     renderInsightsCarousel();
     
@@ -1854,6 +2103,8 @@ document.addEventListener('DOMContentLoaded', init);
 // Global exports
 window.openRefereeModal = openRefereeModal;
 window.openPreviewModal = openPreviewModal;
+window.openTeamModal = openTeamModal;
+window.selectDivision = selectDivision;
 window.closeModal = closeModal;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;

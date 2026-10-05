@@ -6,6 +6,12 @@ on:
     - cron: '0 6 * * 2'
   workflow_dispatch:
     # Manual trigger option (no longer needs checkbox - always full)
+  push:
+    # Deploy automatically whenever code is merged to main.
+    # Data-only commits (including the bot's weekly commit) don't retrigger.
+    branches: [main]
+    paths-ignore:
+      - 'frontend/data/**'
 
 jobs:
   update-data:

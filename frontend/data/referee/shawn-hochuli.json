@@ -5,13 +5,13 @@
   "lastSeason": 2026,
   "experience": "7 seasons",
   "stats": {
-    "games": 101,
-    "totalPenalties": 1271,
+    "games": 104,
+    "totalPenalties": 1314,
     "avgPerGame": 12.6,
     "minGame": 4,
     "maxGame": 28,
     "stdDev": 3.83,
-    "homeBiasPct": 2.1,
+    "homeBiasPct": 1.8,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -59,87 +59,159 @@
     },
     {
       "season": 2026,
-      "games": 1,
-      "penalties": 15,
-      "avg": 15.0,
-      "homeBias": 60.0
+      "games": 4,
+      "penalties": 58,
+      "avg": 14.5,
+      "homeBias": 10.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 258,
+      "count": 267,
       "pct": 20.3
     },
     {
       "type": "False Start",
-      "count": 248,
+      "count": 256,
       "pct": 19.5
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 102,
+      "count": 105,
       "pct": 8.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 71,
+      "count": 74,
       "pct": 5.6
     },
     {
       "type": "Defensive Holding",
-      "count": 70,
-      "pct": 5.5
+      "count": 73,
+      "pct": 5.6
     },
     {
       "type": "Roughing the Passer",
       "count": 60,
-      "pct": 4.7
+      "pct": 4.6
     },
     {
       "type": "Defensive Offside",
-      "count": 55,
+      "count": 57,
       "pct": 4.3
     },
     {
       "type": "Delay of Game",
-      "count": 49,
+      "count": 51,
       "pct": 3.9
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 34,
+      "count": 35,
       "pct": 2.7
     },
     {
-      "type": "Face Mask",
+      "type": "Illegal Use of Hands",
       "count": 34,
-      "pct": 2.7
+      "pct": 2.6
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 288,
-      "pct": 22.8
+      "count": 296,
+      "pct": 22.7
     },
     {
       "quarter": 2,
-      "count": 356,
-      "pct": 28.2
+      "count": 369,
+      "pct": 28.3
     },
     {
       "quarter": 3,
-      "count": 276,
-      "pct": 21.9
+      "count": 287,
+      "pct": 22.0
     },
     {
       "quarter": 4,
-      "count": 343,
-      "pct": 27.2
+      "count": 354,
+      "pct": 27.1
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_04_TEN_BAL",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "homeTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "awayTeam": {
+        "abbr": "TEN",
+        "name": "Tennessee Titans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
+      },
+      "homeScore": 24,
+      "awayScore": 18,
+      "penalties": 18,
+      "homePenalties": 13,
+      "awayPenalties": 5,
+      "stadium": "M&T Bank Stadium",
+      "weather": null,
+      "temp": 62
+    },
+    {
+      "gameId": "2026_03_PHI_CHI",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-28",
+      "homeTeam": {
+        "abbr": "CHI",
+        "name": "Chicago Bears",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
+      },
+      "awayTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "homeScore": 27,
+      "awayScore": 7,
+      "penalties": 15,
+      "homePenalties": 5,
+      "awayPenalties": 10,
+      "stadium": "Soldier Field",
+      "weather": null,
+      "temp": 64
+    },
+    {
+      "gameId": "2026_02_WAS_DAL",
+      "season": 2026,
+      "week": 2,
+      "date": "2026-09-20",
+      "homeTeam": {
+        "abbr": "DAL",
+        "name": "Dallas Cowboys",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
+      },
+      "awayTeam": {
+        "abbr": "WAS",
+        "name": "Washington Commanders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
+      },
+      "homeScore": 37,
+      "awayScore": 20,
+      "penalties": 10,
+      "homePenalties": 5,
+      "awayPenalties": 5,
+      "stadium": "AT&T Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2026_01_GB_MIN",
       "season": 2026,
@@ -547,83 +619,11 @@
       "stadium": "NRG Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2025_01_SF_SEA",
-      "season": 2025,
-      "week": 1,
-      "date": "2025-09-07",
-      "homeTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "awayTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "homeScore": 13,
-      "awayScore": 17,
-      "penalties": 13,
-      "homePenalties": 4,
-      "awayPenalties": 9,
-      "stadium": "Lumen Field",
-      "weather": null,
-      "temp": 67
-    },
-    {
-      "gameId": "2024_21_WAS_PHI",
-      "season": 2024,
-      "week": 21,
-      "date": "2025-01-26",
-      "homeTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "awayTeam": {
-        "abbr": "WAS",
-        "name": "Washington Commanders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
-      },
-      "homeScore": 55,
-      "awayScore": 23,
-      "penalties": 14,
-      "homePenalties": 5,
-      "awayPenalties": 9,
-      "stadium": "Lincoln Financial Field",
-      "weather": null,
-      "temp": 40
-    },
-    {
-      "gameId": "2024_18_KC_DEN",
-      "season": 2024,
-      "week": 18,
-      "date": "2025-01-05",
-      "homeTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "awayTeam": {
-        "abbr": "KC",
-        "name": "Kansas City Chiefs",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
-      },
-      "homeScore": 38,
-      "awayScore": 0,
-      "penalties": 8,
-      "homePenalties": 5,
-      "awayPenalties": 3,
-      "stadium": "Empower Field at Mile High",
-      "weather": null,
-      "temp": 28
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.7,
-    "avgVsLeaguePct": 5.9,
+    "avgVsLeague": 0.6,
+    "avgVsLeaguePct": 5.2,
     "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
@@ -633,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-09-29T06:32:24.155725Z"
+  "generatedAt": "2026-10-05T19:13:22.377513Z"
 }

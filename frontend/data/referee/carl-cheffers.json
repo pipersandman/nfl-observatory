@@ -5,13 +5,13 @@
   "lastSeason": 2026,
   "experience": "7 seasons",
   "stats": {
-    "games": 104,
-    "totalPenalties": 1285,
+    "games": 107,
+    "totalPenalties": 1329,
     "avgPerGame": 12.4,
     "minGame": 2,
     "maxGame": 23,
-    "stdDev": 4.36,
-    "homeBiasPct": 6.8,
+    "stdDev": 4.34,
+    "homeBiasPct": 7.0,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -59,87 +59,159 @@
     },
     {
       "season": 2026,
-      "games": 1,
-      "penalties": 19,
-      "avg": 19.0,
-      "homeBias": -5.3
+      "games": 4,
+      "penalties": 63,
+      "avg": 15.8,
+      "homeBias": 7.9
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 242,
-      "pct": 18.8
+      "count": 246,
+      "pct": 18.5
     },
     {
       "type": "False Start",
-      "count": 235,
-      "pct": 18.3
+      "count": 242,
+      "pct": 18.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 126,
-      "pct": 9.8
+      "count": 129,
+      "pct": 9.7
     },
     {
       "type": "Defensive Holding",
-      "count": 76,
+      "count": 79,
       "pct": 5.9
     },
     {
       "type": "Defensive Offside",
-      "count": 70,
+      "count": 72,
       "pct": 5.4
     },
     {
-      "type": "Unnecessary Roughness",
-      "count": 64,
+      "type": "Delay of Game",
+      "count": 67,
       "pct": 5.0
     },
     {
-      "type": "Delay of Game",
-      "count": 61,
-      "pct": 4.7
+      "type": "Unnecessary Roughness",
+      "count": 66,
+      "pct": 5.0
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 42,
-      "pct": 3.3
+      "count": 43,
+      "pct": 3.2
     },
     {
       "type": "Offensive Pass Interference",
       "count": 40,
-      "pct": 3.1
+      "pct": 3.0
     },
     {
       "type": "Roughing the Passer",
-      "count": 38,
-      "pct": 3.0
+      "count": 39,
+      "pct": 2.9
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 243,
-      "pct": 19.1
+      "count": 257,
+      "pct": 19.6
     },
     {
       "quarter": 2,
-      "count": 361,
-      "pct": 28.4
+      "count": 372,
+      "pct": 28.3
     },
     {
       "quarter": 3,
-      "count": 308,
-      "pct": 24.3
+      "count": 316,
+      "pct": 24.1
     },
     {
       "quarter": 4,
-      "count": 357,
-      "pct": 28.1
+      "count": 368,
+      "pct": 28.0
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_04_NYJ_CHI",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "homeTeam": {
+        "abbr": "CHI",
+        "name": "Chicago Bears",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
+      },
+      "awayTeam": {
+        "abbr": "NYJ",
+        "name": "New York Jets",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
+      },
+      "homeScore": 23,
+      "awayScore": 12,
+      "penalties": 16,
+      "homePenalties": 4,
+      "awayPenalties": 12,
+      "stadium": "Soldier Field",
+      "weather": null,
+      "temp": 72
+    },
+    {
+      "gameId": "2026_03_SEA_WAS",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "homeTeam": {
+        "abbr": "WAS",
+        "name": "Washington Commanders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"
+      },
+      "awayTeam": {
+        "abbr": "SEA",
+        "name": "Seattle Seahawks",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
+      },
+      "homeScore": 33,
+      "awayScore": 31,
+      "penalties": 17,
+      "homePenalties": 9,
+      "awayPenalties": 8,
+      "stadium": "Northwest Stadium",
+      "weather": null,
+      "temp": 63
+    },
+    {
+      "gameId": "2026_02_PIT_NE",
+      "season": 2026,
+      "week": 2,
+      "date": "2026-09-20",
+      "homeTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "awayTeam": {
+        "abbr": "PIT",
+        "name": "Pittsburgh Steelers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
+      },
+      "homeScore": 20,
+      "awayScore": 3,
+      "penalties": 11,
+      "homePenalties": 6,
+      "awayPenalties": 5,
+      "stadium": "Gillette Stadium",
+      "weather": null,
+      "temp": 63
+    },
     {
       "gameId": "2026_01_DAL_NYG",
       "season": 2026,
@@ -547,83 +619,11 @@
       "stadium": "FirstEnergy Stadium",
       "weather": null,
       "temp": 79
-    },
-    {
-      "gameId": "2025_01_KC_LAC",
-      "season": 2025,
-      "week": 1,
-      "date": "2025-09-05",
-      "homeTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "awayTeam": {
-        "abbr": "KC",
-        "name": "Kansas City Chiefs",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
-      },
-      "homeScore": 27,
-      "awayScore": 21,
-      "penalties": 16,
-      "homePenalties": 6,
-      "awayPenalties": 10,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_20_BAL_BUF",
-      "season": 2024,
-      "week": 20,
-      "date": "2025-01-19",
-      "homeTeam": {
-        "abbr": "BUF",
-        "name": "Buffalo Bills",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
-      },
-      "awayTeam": {
-        "abbr": "BAL",
-        "name": "Baltimore Ravens",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
-      },
-      "homeScore": 27,
-      "awayScore": 25,
-      "penalties": 6,
-      "homePenalties": 1,
-      "awayPenalties": 5,
-      "stadium": "New Era Field",
-      "weather": null,
-      "temp": 19
-    },
-    {
-      "gameId": "2024_18_LAC_LV",
-      "season": 2024,
-      "week": 18,
-      "date": "2025-01-05",
-      "homeTeam": {
-        "abbr": "LV",
-        "name": "Las Vegas Raiders",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
-      },
-      "awayTeam": {
-        "abbr": "LAC",
-        "name": "Los Angeles Chargers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
-      },
-      "homeScore": 20,
-      "awayScore": 34,
-      "penalties": 10,
-      "homePenalties": 3,
-      "awayPenalties": 7,
-      "stadium": "Allegiant Stadium",
-      "weather": null,
-      "temp": null
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.5,
-    "avgVsLeaguePct": 4.2,
+    "avgVsLeague": 0.4,
+    "avgVsLeaguePct": 3.5,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
@@ -633,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-09-29T06:32:24.086045Z"
+  "generatedAt": "2026-10-05T19:13:22.320347Z"
 }

@@ -2,16 +2,16 @@
   "name": "Bill Vinovich",
   "slug": "bill-vinovich",
   "firstSeason": 2020,
-  "lastSeason": 2025,
-  "experience": "6 seasons",
+  "lastSeason": 2026,
+  "experience": "7 seasons",
   "stats": {
-    "games": 102,
-    "totalPenalties": 1096,
-    "avgPerGame": 10.7,
+    "games": 105,
+    "totalPenalties": 1138,
+    "avgPerGame": 10.8,
     "minGame": 3,
     "maxGame": 26,
-    "stdDev": 4.07,
-    "homeBiasPct": 3.1,
+    "stdDev": 4.08,
+    "homeBiasPct": 3.5,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -56,83 +56,162 @@
       "penalties": 230,
       "avg": 13.5,
       "homeBias": 10.4
+    },
+    {
+      "season": 2026,
+      "games": 3,
+      "penalties": 42,
+      "avg": 14.0,
+      "homeBias": 14.3
     }
   ],
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 240,
+      "count": 249,
       "pct": 21.9
     },
     {
       "type": "Offensive Holding",
-      "count": 170,
-      "pct": 15.5
+      "count": 179,
+      "pct": 15.7
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 95,
+      "count": 99,
       "pct": 8.7
     },
     {
       "type": "Unnecessary Roughness",
       "count": 56,
-      "pct": 5.1
+      "pct": 4.9
     },
     {
       "type": "Defensive Offside",
-      "count": 55,
-      "pct": 5.0
+      "count": 56,
+      "pct": 4.9
     },
     {
       "type": "Defensive Holding",
-      "count": 52,
-      "pct": 4.7
+      "count": 55,
+      "pct": 4.8
+    },
+    {
+      "type": "Delay of Game",
+      "count": 48,
+      "pct": 4.2
     },
     {
       "type": "Neutral Zone Infraction",
       "count": 46,
-      "pct": 4.2
-    },
-    {
-      "type": "Delay of Game",
-      "count": 46,
-      "pct": 4.2
+      "pct": 4.0
     },
     {
       "type": "Face Mask",
-      "count": 28,
+      "count": 30,
       "pct": 2.6
     },
     {
-      "type": "Offensive Pass Interference",
-      "count": 27,
+      "type": "Illegal Use of Hands",
+      "count": 29,
       "pct": 2.5
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 261,
-      "pct": 24.0
+      "count": 264,
+      "pct": 23.3
     },
     {
       "quarter": 2,
-      "count": 326,
-      "pct": 29.9
+      "count": 341,
+      "pct": 30.2
     },
     {
       "quarter": 3,
-      "count": 252,
-      "pct": 23.1
+      "count": 260,
+      "pct": 23.0
     },
     {
       "quarter": 4,
-      "count": 250,
-      "pct": 23.0
+      "count": 266,
+      "pct": 23.5
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_04_NE_BUF",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "homeTeam": {
+        "abbr": "BUF",
+        "name": "Buffalo Bills",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
+      },
+      "awayTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "homeScore": 26,
+      "awayScore": 29,
+      "penalties": 10,
+      "homePenalties": 5,
+      "awayPenalties": 5,
+      "stadium": "Highmark Stadium",
+      "weather": null,
+      "temp": 69
+    },
+    {
+      "gameId": "2026_03_LA_DEN",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "homeTeam": {
+        "abbr": "DEN",
+        "name": "Denver Broncos",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
+      },
+      "awayTeam": {
+        "abbr": "LA",
+        "name": "Los Angeles Rams",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
+      },
+      "homeScore": 30,
+      "awayScore": 26,
+      "penalties": 18,
+      "homePenalties": 5,
+      "awayPenalties": 13,
+      "stadium": "Empower Field at Mile High",
+      "weather": null,
+      "temp": 83
+    },
+    {
+      "gameId": "2026_02_LV_LAC",
+      "season": 2026,
+      "week": 2,
+      "date": "2026-09-20",
+      "homeTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "awayTeam": {
+        "abbr": "LV",
+        "name": "Las Vegas Raiders",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png"
+      },
+      "homeScore": 14,
+      "awayScore": 26,
+      "penalties": 14,
+      "homePenalties": 8,
+      "awayPenalties": 6,
+      "stadium": "SoFi Stadium",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2025_18_SEA_SF",
       "season": 2025,
@@ -540,84 +619,12 @@
       "stadium": "MetLife Stadium",
       "weather": null,
       "temp": 67
-    },
-    {
-      "gameId": "2024_19_DEN_BUF",
-      "season": 2024,
-      "week": 19,
-      "date": "2025-01-12",
-      "homeTeam": {
-        "abbr": "BUF",
-        "name": "Buffalo Bills",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
-      },
-      "awayTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "homeScore": 31,
-      "awayScore": 7,
-      "penalties": 10,
-      "homePenalties": 7,
-      "awayPenalties": 3,
-      "stadium": "New Era Field",
-      "weather": null,
-      "temp": 32
-    },
-    {
-      "gameId": "2024_18_SEA_LA",
-      "season": 2024,
-      "week": 18,
-      "date": "2025-01-05",
-      "homeTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "awayTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "homeScore": 25,
-      "awayScore": 30,
-      "penalties": 5,
-      "homePenalties": 2,
-      "awayPenalties": 3,
-      "stadium": "SoFi Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2024_17_IND_NYG",
-      "season": 2024,
-      "week": 17,
-      "date": "2024-12-29",
-      "homeTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
-      },
-      "awayTeam": {
-        "abbr": "IND",
-        "name": "Indianapolis Colts",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png"
-      },
-      "homeScore": 45,
-      "awayScore": 33,
-      "penalties": 10,
-      "homePenalties": 7,
-      "awayPenalties": 3,
-      "stadium": "MetLife Stadium",
-      "weather": null,
-      "temp": 54
     }
   ],
   "tendencies": {
     "avgVsLeague": -1.2,
-    "avgVsLeaguePct": -10.0,
-    "description": "Let-them-play style \u2014 fewer flags than average. Bill Vinovich's games average 1.2 fewer penalties per game."
+    "avgVsLeaguePct": -9.8,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -626,5 +633,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-09-29T06:32:24.133046Z"
+  "generatedAt": "2026-10-05T19:13:22.336421Z"
 }

@@ -859,6 +859,7 @@ function renderPreviews() {
 }
 
 function openPreviewModal(gameId) {
+    setDeepLink('game', gameId);
     const pv = (state.previews || []).find(w => w.games?.some(x => x.gameId === gameId));
     const g = pv?.games.find(x => x.gameId === gameId);
     const modal = document.getElementById('modal');
@@ -1128,6 +1129,7 @@ function renderDivisionTeams() {
 }
 
 async function openTeamModal(abbr) {
+    setDeepLink('team', abbr);
     const modal = document.getElementById('modal');
     const body = document.getElementById('modalBody');
     if (!modal || !body) return;
@@ -1684,6 +1686,7 @@ function renderDataTable() {
 // =============================================================================
 
 async function openRefereeModal(slug) {
+    setDeepLink('crew', slug);
     const modal = document.getElementById('modal');
     const modalBody = document.getElementById('modalBody');
     
@@ -2031,6 +2034,65 @@ function renderModalChart(profile, priorAll) {
 function closeModal() {
     document.getElementById('modal')?.classList.remove('active');
     state.currentReferee = null;
+    clearDeepLink();
+}
+
+// =============================================================================
+// DEEP LINKS — every report has its own shareable address
+//   #game=2026_05_TB_DAL   game preview (or, once played, the home team's profile)
+//   #team=DAL              team profile
+//   #crew=scott-novak      crew chief profile
+//   #division=NFC East     teams section, that division selected
+// Works alongside tracking parameters: /?utm_source=x#game=...
+// =============================================================================
+
+const DEEP_LINK_RE = /^#(game|team|crew|division)=(.+)$/;
+
+function setDeepLink(key, value) {
+    const url = `${location.pathname}${location.search}#${key}=${encodeURIComponent(value)}`;
+    history.replaceState(null, '', url);
+}
+
+function clearDeepLink() {
+    if (DEEP_LINK_RE.test(location.hash)) {
+        history.replaceState(null, '', `${location.pathname}${location.search}`);
+    }
+}
+
+function handleDeepLink() {
+    const m = location.hash.match(DEEP_LINK_RE);
+    if (!m) return false;
+    const key = m[1], value = decodeURIComponent(m[2]);
+
+    if (key === 'game') {
+        const inPreviews = (state.previews || []).some(w => w.games?.some(g => g.gameId === value));
+        if (inPreviews) { openPreviewModal(value); return true; }
+        // Already played: show the home team's profile (its game log has the result and flags)
+        const home = value.split('_').pop();
+        if (home) { openTeamModal(home); return true; }
+    }
+    if (key === 'team') { openTeamModal(value.toUpperCase()); return true; }
+    if (key === 'crew') { openRefereeModal(value); return true; }
+    if (key === 'division') {
+        const div = state.teamsIndex?.divisions?.find(d => d.name.toLowerCase() === value.toLowerCase());
+        if (div) {
+            document.getElementById('modal')?.classList.remove('active');
+            selectDivision(div.name);
+            document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return true;
+        }
+    }
+    return false;
+}
+
+async function copyModalLink() {
+    const btn = document.getElementById('modalShare');
+    try {
+        await navigator.clipboard.writeText(location.href);
+        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = '🔗 Copy link'; }, 1800); }
+    } catch {
+        if (btn) btn.textContent = location.href;
+    }
 }
 
 // =============================================================================
@@ -2084,6 +2146,14 @@ async function init() {
     renderInsightsCarousel();
     
     initScrollAnimations();
+
+    // Open a specific report if the URL asks for one (e.g. from a social post)
+    handleDeepLink();
+    window.addEventListener('hashchange', () => {
+        // A section link (#teams) or a new report link: close any open pop-up first
+        document.getElementById('modal')?.classList.remove('active');
+        handleDeepLink();
+    });
     
     // Event listeners
     document.getElementById('modal')?.addEventListener('click', (e) => {
@@ -2112,6 +2182,7 @@ window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;
+window.copyModalLink = copyModalLink;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;
 window.moveCarousel = moveCarousel;

@@ -72,18 +72,22 @@ def load_schedule(season: int) -> pd.DataFrame:
     return nfl.load_schedules([season]).to_pandas()
 
 
-def next_unplayed_week(schedule: pd.DataFrame):
-    """Earliest week with games still to come (skips a week whose only unplayed
-    games are today or earlier, e.g. Monday night)."""
+def upcoming_weeks(schedule: pd.DataFrame) -> list[int]:
+    """Weeks to cover: the earliest week with games still to come (US Eastern date,
+    so Monday night stays 'upcoming' all evening), plus the next week when the
+    current one is already partly played."""
+    from zoneinfo import ZoneInfo
     reg = schedule[schedule['game_type'] == 'REG']
-    unplayed = reg[reg['result'].isna()]
-    if unplayed.empty:
-        return None
-    today = datetime.now(timezone.utc).date().isoformat()
-    for wk in sorted(unplayed['week'].unique()):
-        if (unplayed[unplayed['week'] == wk]['gameday'].astype(str) > today).any():
-            return int(wk)
-    return int(unplayed['week'].max())
+    today_et = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+    up = reg[reg['result'].isna() & (reg['gameday'].astype(str) >= today_et)]
+    if up.empty:
+        return []
+    weeks = sorted(int(w) for w in up['week'].unique())
+    first = weeks[0]
+    out = [first]
+    if len(up[up['week'] == first]) < len(reg[reg['week'] == first]) and len(weeks) > 1:
+        out.append(weeks[1])
+    return out
 
 
 # -----------------------------------------------------------------------------
@@ -172,51 +176,27 @@ def load_overrides(season: int, week: int) -> dict:
 # Main
 # -----------------------------------------------------------------------------
 
-def main():
-    ap = argparse.ArgumentParser(description='Fetch crew chief assignments from Football Zebras')
-    ap.add_argument('--season', type=int, default=datetime.now().year)
-    ap.add_argument('--week', type=int)
-    ap.add_argument('--html', help='Parse a saved article HTML file instead of fetching (testing)')
-    ap.add_argument('--force', action='store_true', help='Refetch even if the week is complete')
-    args = ap.parse_args()
-
-    print('\n🦓 Crew assignments (Football Zebras)')
-    print('=' * 60)
-
-    schedule = load_schedule(args.season)
-    week = args.week or next_unplayed_week(schedule)
-    if week is None:
-        print('   No unplayed regular-season games. Nothing to do.')
-        return 0
-
+def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set,
+                 get_feed, html_override: str | None = None, force: bool = False) -> None:
     wk = schedule[(schedule['game_type'] == 'REG') & (schedule['week'] == week)].copy()
-    out_path = OUT_DIR / f'{args.season}-week-{week:02d}.json'
-    print(f'   Target: {args.season} Week {week} ({len(wk)} games)')
+    out_path = OUT_DIR / f'{season}-week-{week:02d}.json'
+    print(f'   Target: {season} Week {week} ({len(wk)} games)')
 
     existing = json.loads(out_path.read_text()) if out_path.exists() else None
-    if existing and not args.force and not args.html:
+    if existing and not force and not html_override:
         assigned = sum(1 for g in existing.get('games', []) if g.get('referee'))
         if assigned >= len(wk):
             print(f'   ✓ Already have all {assigned} assignments — skipping fetch')
-            return 0
-
-    # Known referee names help the parser (from schedule history + overrides)
-    known_refs = set(NAME_FIXES.values())
-    try:
-        import nflreadpy as nfl
-        hist = nfl.load_schedules([args.season - 1, args.season]).to_pandas()
-        known_refs |= set(hist['referee'].dropna().replace(NAME_FIXES))
-    except Exception:
-        pass
+            return
 
     source_url, published = None, None
     parsed = []
     try:
-        if args.html:
-            html = Path(args.html).read_text(encoding='utf-8')
-            source_url = args.html
+        if html_override:
+            html = Path(html_override).read_text(encoding='utf-8')
+            source_url = html_override
         else:
-            source_url, published = find_post_url(http_get(FEED_URL), week, args.season)
+            source_url, published = find_post_url(get_feed(), week, season)
             if not source_url:
                 print(f'   … Week {week} assignments not posted yet (checked feed)')
                 html = None
@@ -229,20 +209,17 @@ def main():
     except Exception as e:
         print(f'   ⚠️  Fetch/parse failed: {type(e).__name__}: {e}')
 
-    # Match parsed games to schedule game_ids (order-insensitive for neutral sites)
     by_pair = {}
     for g in parsed:
         by_pair[(g['away'], g['home'])] = g
         by_pair.setdefault((g['home'], g['away']), g)
 
-    overrides = load_overrides(args.season, week)
+    overrides = load_overrides(season, week)
     games = []
     for _, row in wk.sort_values(['gameday', 'gametime', 'game_id']).iterrows():
         g = by_pair.get((row['away_team'], row['home_team']))
-        ref = overrides.get(row['game_id']) or (g['referee'] if g else None)
         prev = next((x for x in (existing or {}).get('games', []) if x['game_id'] == row['game_id']), None)
-        if not ref and prev:  # keep an earlier successful parse if this run failed
-            ref = prev.get('referee')
+        ref = overrides.get(row['game_id']) or (g['referee'] if g else None) or (prev or {}).get('referee')
         games.append({
             'game_id': row['game_id'],
             'away': row['away_team'],
@@ -254,18 +231,19 @@ def main():
         })
 
     assigned = sum(1 for g in games if g['referee'])
-    unmatched = [f"{g['away']}@{g['home']}" for g in parsed
-                 if not any(x['away'] in (g['away'], g['home']) and x['home'] in (g['away'], g['home']) for x in games)]
+    scheduled_pairs = {(x['away'], x['home']) for x in games} | {(x['home'], x['away']) for x in games}
+    unmatched = [f"{g['away']}@{g['home']}" for g in parsed if (g['away'], g['home']) not in scheduled_pairs]
 
+    prev_src = (existing or {}).get('source', {})
     result = {
-        'season': args.season,
+        'season': season,
         'week': week,
         'gamesScheduled': len(wk),
         'gamesAssigned': assigned,
         'source': {
             'name': 'Football Zebras',
-            'url': source_url if source_url and source_url.startswith('http') else (existing or {}).get('source', {}).get('url'),
-            'published': published or (existing or {}).get('source', {}).get('published'),
+            'url': source_url if source_url and source_url.startswith('http') else prev_src.get('url'),
+            'published': published or prev_src.get('published'),
         },
         'fetchedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'games': games,
@@ -279,6 +257,41 @@ def main():
     if parsed and assigned < len(wk):
         missing = [f"{g['away']}@{g['home']}" for g in games if not g['referee']]
         print(f'   ⚠️  Missing: {", ".join(missing)} (add to data/assignments_overrides.csv if needed)')
+
+
+def main():
+    ap = argparse.ArgumentParser(description='Fetch crew chief assignments from Football Zebras')
+    ap.add_argument('--season', type=int, default=datetime.now().year)
+    ap.add_argument('--week', type=int)
+    ap.add_argument('--html', help='Parse a saved article HTML file instead of fetching (testing)')
+    ap.add_argument('--force', action='store_true', help='Refetch even if the week is complete')
+    args = ap.parse_args()
+
+    print('\n🦓 Crew assignments (Football Zebras)')
+    print('=' * 60)
+
+    schedule = load_schedule(args.season)
+    weeks = [args.week] if args.week else upcoming_weeks(schedule)
+    if not weeks:
+        print('   No upcoming regular-season games. Nothing to do.')
+        return 0
+
+    known_refs = set(NAME_FIXES.values())
+    try:
+        import nflreadpy as nfl
+        hist = nfl.load_schedules([args.season - 1, args.season]).to_pandas()
+        known_refs |= set(hist['referee'].dropna().replace(NAME_FIXES))
+    except Exception:
+        pass
+
+    feed_cache = {}
+    def get_feed():   # fetched at most once per run, and only if a week needs it
+        if 'xml' not in feed_cache:
+            feed_cache['xml'] = http_get(FEED_URL)
+        return feed_cache['xml']
+
+    for week in weeks:
+        process_week(args.season, week, schedule, known_refs, get_feed, args.html, args.force)
     return 0
 
 

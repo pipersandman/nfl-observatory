@@ -39,6 +39,7 @@ OUT = ROOT / 'social' / 'output'
 SNAP = ROOT / 'social' / 'snapshots'
 sys.path.insert(0, str(HERE))
 from colors import matchup_colors  # noqa: E402
+import captions as C  # noqa: E402
 
 SITE = 'nflobservatory.com'
 NAME_FIXES = {'Ronald Torbert': 'Ron Torbert', 'Adrian Hall': 'Adrian Hill'}
@@ -104,6 +105,15 @@ class Data:
         tg = pd.concat(rows, ignore_index=True)
         tg = tg.merge(per.rename(columns={'penalty_team': 'team'}), on=['game_id', 'team'], how='left').fillna({'f': 0, 'y': 0})
         return tg
+
+
+def load_team_ranks():
+    """Current most-penalized ranks from the site's team index (if built)."""
+    try:
+        idx = json.loads((DATA / 'teams' / 'index.json').read_text())
+        return {t['abbr']: t['rank'] for d in idx['divisions'] for t in d['teams']}
+    except Exception:
+        return {}
 
 
 def load_previews():
@@ -175,14 +185,17 @@ class Writer:
                 pg.screenshot(path=str(self.dir / f'{name}.png'))
                 (self.dir / f'{name}.html').unlink()
             b.close()
-        md = [f'# Posts · {self.dir.name}\n', f'Generated {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC. '
-              'Review every number before posting.\n']
-        for name, cap, alt in self.items:
-            md.append(f'\n## {name}.png\n\n**Caption**\n\n{cap}\n\n**Alt text**\n\n{alt}\n')
+        # captions.md: one section per image; re-running replaces that image's section
         cap_path = self.dir / 'captions.md'
-        existing = cap_path.read_text() if cap_path.exists() else ''
-        # append new items to an existing captions file for the week
-        cap_path.write_text((existing + '\n'.join(md[2:])) if existing else ''.join(md[:2]) + '\n'.join(md[2:]))
+        sections = {}
+        if cap_path.exists():
+            for block in cap_path.read_text(encoding='utf-8').split('\n## ')[1:]:
+                sections[block.split('\n', 1)[0].strip()] = '## ' + block.rstrip() + '\n'
+        for name, cap, alt in self.items:
+            sections[f'{name}.png'] = f'## {name}.png\n\n**Caption**\n\n{cap}\n\n**Alt text**\n\n{alt}\n'
+        head = (f'# Posts · {self.dir.name}\n\nUpdated {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC. '
+                'Review every number before posting.\n\n')
+        cap_path.write_text(head + '\n'.join(sections[k] for k in sorted(sections)), encoding='utf-8')
         print(f'   ✓ {len(self.items)} posts → {self.dir.relative_to(ROOT)}')
 
 
@@ -209,10 +222,11 @@ def t_forecast(w, pv):
     body = f"""<div class='h'>Most flags<br>expected</div>
 <div class='sub'>Week {pv['week']} projected accepted penalties · league avg {league}</div>{rows}"""
     top = games[0]
-    cap = (f"🚩 Week {pv['week']} Flag Forecast: {top['awayTeam']['abbr']} @ {top['homeTeam']['abbr']} projects as the most flag-heavy game "
-           f"({top['projection']['total']:.1f} vs a {league} league average)"
-           f"{' with ' + top['crew']['name'] + ' calling it' if top.get('crew') else ''}.\n\n"
-           f"All {len(pv['games'])} previews → {link('forecast', pv['week'])}\n\n{tags('forecast')}")
+    bot = sorted(pv['games'], key=lambda g: g['projection']['total'])[0]
+    ab = lambda g: {'A': g['awayTeam']['abbr'], 'H': g['homeTeam']['abbr'], 'total': g['projection']['total'],
+                    'crew': (g.get('crew') or {}).get('name')}
+    cap = C.flag_forecast({'week': pv['week'], 'top': ab(top), 'bottom': ab(bot), 'league': league,
+                           'n_games': len(pv['games']), 'crews_assigned': a.get('assigned', 0)}, link('forecast', pv['week']))
     alt = (f"Week {pv['week']} Flag Forecast. Top projected penalty totals: " +
            '; '.join(f"{g['awayTeam']['abbr']} at {g['homeTeam']['abbr']} {g['projection']['total']:.1f}" for g in games) + '.')
     w.add('flag-forecast', frame('forecast', f"WEEK {pv['week']}", body,
@@ -245,10 +259,12 @@ def t_watch(w, pv, g):
 <div style='padding-bottom:20px'>{badge(p['total'], league, ' vs avg')}<div class='sub' style='margin:12px 0 0;font-size:28px'>projected flags · likely {p['range'][0]}–{p['range'][1]}</div></div></div>
 <div class='split' style='margin:38px 0 40px'><span>{A} {p['away']:.1f}</span><div class='bar'><i style='flex:{p['away']};background:{ac}'></i><i style='flex:{p['home']};background:{hc}'></i></div><span>{p['home']:.1f} {H}</span></div>
 <div class='tt'>Most likely calls</div>{trows}<div style='margin-top:18px'>{chips}</div>"""
-    cap = (f"🚩 {A} @ {H} — Flag Watch\n\nProjected {p['total']:.1f} flags (likely {p['range'][0]}–{p['range'][1]}), "
-           f"{abs(pct(p['total'], league)):.0f}% {'above' if p['total'] > league else 'below'} the league average."
-           f"{' ' + crew['name'] + ' has the crew.' if crew else ''}\n\nFull game report → {link('watch', g['week'])}\n\n"
-           f"{tags('watch', '#' + A + 'vs' + H)}")
+    ranks = load_team_ranks()
+    cap = C.flag_watch({'A': A, 'H': H, 'total': p['total'], 'range': p['range'], 'home': p['home'], 'away': p['away'],
+                        'league': league, 'crew': crew['name'] if crew else None, 'crew_effect': drv,
+                        'top_type': types[0]['type'] if types else None, 'top_type_val': types[0]['total'] if types else None,
+                        'home_rank': ranks.get(H), 'away_rank': ranks.get(A), 'game_id': g['gameId'],
+                        'primetime': (g.get('context') or {}).get('primetime')}, link('watch', g['week']))
     alt = (f"Flag Watch for {A} at {H}: projected {p['total']:.1f} accepted penalties, {p['away']:.1f} on {A} and {p['home']:.1f} on {H}. "
            f"Most likely: " + ', '.join(f"{r['type']} {r['total']:.1f}" for r in types) + '.')
     w.add(f"flag-watch-{A.lower()}-{H.lower()}", frame('watch', f"WEEK {g['week']}", body, 'Full report on site'), cap, alt)
@@ -295,10 +311,16 @@ def t_final(w, d, game_id, season_avg):
 <div class='tt'>What was called</div>{trows}
 <div style='margin-top:14px'>{proj_html}{f"<span class='chip'>Most flagged: {e(top_player)}</span>" if top_player else ''}<span class='chip'>{d.season} avg {season_avg:.1f}/game</span></div>"""
     proj_txt = f" We projected {snap['total']:.1f}." if snap else ''
-    cap = (f"🏁 {A} @ {H} — Final Flags\n\n{total} accepted penalties for {ya + yh} yards ({A} {fa}, {H} {fh})"
-           f"{', with ' + crew + ' calling it' if crew else ''}. Top call: {vc.index[0] if len(vc) else '—'} ({vc.iloc[0] if len(vc) else 0})."
-           f"{proj_txt}\n\n"
-           f"Every game, every crew → {link('final', int(g['week']))}\n\n{tags('final', '#' + A + 'vs' + H)}")
+    gr = d.game_rows()
+    before = gr[(gr['season'] == d.season) & (gr['game_id'] != game_id) &
+                ((gr['week'] < g['week']) | ((gr['week'] == g['week']) & (gr['gameday'] < g['gameday'])))]
+    cap = C.final_flags({'A': A, 'H': H, 'total': total, 'fa': fa, 'fh': fh, 'yards': ya + yh, 'crew': crew,
+                         'season': d.season, 'season_avg': season_avg,
+                         'season_max_before': int(before['flags'].max()) if len(before) else None,
+                         'top_type': vc.index[0] if len(vc) else None, 'top_type_n': int(vc.iloc[0]) if len(vc) else 0,
+                         'top_player': pl.index[0] if len(pl) else None, 'top_player_n': int(pl.iloc[0]) if len(pl) else 0,
+                         'projected': snap['total'] if snap else None, 'proj_range': snap['range'] if snap else None,
+                         'week': int(g['week']), 'game_id': game_id}, link('final', int(g['week'])))
     alt = (f"Final Flags for {A} at {H}: {total} accepted penalties, {fa} on {A} and {fh} on {H}, {ya + yh} total yards. "
            f"Most called: " + ', '.join(f'{t} {n}' for t, n in vc.items()) + '.')
     w.add(f"final-flags-{A.lower()}-{H.lower()}", frame('final', f"WEEK {int(g['week'])}", body, 'Full game log on site'), cap, alt)
@@ -338,11 +360,12 @@ def t_laundry(w, d, week):
 {tile('Fewest flags', f"{int(lo['flags'])}", f"{lo['away_team']} @ {lo['home_team']} · {e(str(lo['referee']).split()[-1])}")}
 {tile('Most-flagged team', f"{int(tm['f'])}", f"{tm['team']} vs {tm['opp']}")}
 </div>"""
-    cap = (f"🧺 Laundry Day — Week {week}\n\n{wk:.1f} flags per game this week "
-           f"({'up' if prev and wk > prev else 'down'} from {prev:.1f} in Week {week - 1}; {S - 1} Week {week}: {ly:.1f}). "
-           f"{S} is running {abs(pct(std, lstd)):.0f}% {'above' if std > lstd else 'below'} {S - 1} through Week {week}.\n\n"
-           f"Most flags: {hi['away_team']} @ {hi['home_team']} ({int(hi['flags'])}). Fewest: {lo['away_team']} @ {lo['home_team']} ({int(lo['flags'])}).\n\n"
-           f"Full breakdown → {link('laundry', week)}\n\n{tags('laundry')}")
+    crew_last = lambda r: str(r['referee']).split()[-1] if isinstance(r['referee'], str) else '—'
+    cap = C.laundry_day({'week': week, 'season': S, 'wk': wk, 'prev': prev, 'ly': ly, 'std': std, 'lstd': lstd,
+                         'hi': {'A': hi['away_team'], 'H': hi['home_team'], 'flags': int(hi['flags']), 'crew': crew_last(hi)},
+                         'lo': {'A': lo['away_team'], 'H': lo['home_team'], 'flags': int(lo['flags']), 'crew': crew_last(lo)},
+                         'team': {'abbr': tm['team'], 'flags': int(tm['f']), 'opp': tm['opp']},
+                         'n_games': wk_n, 'pending': max(pending, 0)}, link('laundry', week))
     alt = (f"Laundry Day Week {week}: {wk:.1f} accepted penalties per game across {wk_n} games. Previous week {prev:.1f}; "
            f"same week last season {ly:.1f}; season to date {std:.1f} vs {lstd:.1f} last season. Most flags {int(hi['flags'])} in "
            f"{hi['away_team']} at {hi['home_team']}; fewest {int(lo['flags'])} in {lo['away_team']} at {lo['home_team']}.")
@@ -379,9 +402,10 @@ def t_team(w, d, team, week):
 {tile('Most common', e(short_type(top_type.index[0])) if len(top_type) else '—', f"{int(top_type.iloc[0])} this season" if len(top_type) else '')}
 {tile('Penalty yards / game', f"{cur['y'].mean():.0f}", f"rank #{rk} of 32 in flags")}
 </div>"""
-    cap = (f"🧺 Team Laundry: {name}\n\n{pg:.1f} flags per game in {S} (#{rk} most penalized)"
-           f"{f', vs {lpg:.1f} in {S - 1} (#{lrk})' if lpg else ''}. Flag margin {drawn - pg:+.1f} per game.\n\n"
-           f"Full team profile → {link('team', week)}\n\n{tags('team', '#' + team)}")
+    cap = C.team_laundry({'team': team, 'name': name, 'season': S, 'pg': pg, 'lpg': lpg, 'rank': rk, 'lrank': lrk,
+                          'margin': drawn - pg, 'top_type': top_type.index[0] if len(top_type) else None,
+                          'top_n': int(top_type.iloc[0]) if len(top_type) else 0, 'week': week, 'games': len(cur)},
+                         link('team', week))
     alt = f"Team Laundry for the {name}: {pg:.1f} accepted penalties per game in {S}, ranked {rk} most penalized of 32."
     w.add(f'team-laundry-{team.lower()}', frame('team', team, body, 'Every team on site'), cap, alt)
 
@@ -396,8 +420,9 @@ def t_division(w, d, division, week):
     rows = ''.join(f"""<div class='row'><span class='rk'>{i + 1}</span><span class='m'>{e(TEAM_NAMES.get(t, t))}<small>{S - 1}: {last.get(t, float('nan')):.1f} per game</small></span>
         <span class='n'>{cur.get(t, 0):.1f}<small>{badge(cur.get(t), last.get(t))}</small></span></div>""" for i, t in enumerate(order))
     body = f"<div class='h'>{e(division)}</div><div class='sub'>Flags per game, {S} through Week {week} · most first</div>{rows}"
-    cap = (f"🧺 Division Laundry: {division}\n\nMost penalized: {TEAM_NAMES.get(order[0], order[0])} ({cur.get(order[0]):.1f}/game). "
-           f"Cleanest: {TEAM_NAMES.get(order[-1], order[-1])} ({cur.get(order[-1]):.1f}/game).\n\n{link('division', week)}\n\n{tags('division')}")
+    cap = C.division_laundry({'division': division, 'week': week,
+                              'order': [(TEAM_NAMES.get(t, t), cur.get(t, 0), last.get(t)) for t in order]},
+                             link('division', week))
     alt = f"Division Laundry for the {division}: " + '; '.join(f"{TEAM_NAMES.get(t, t)} {cur.get(t, 0):.1f} flags per game" for t in order) + '.'
     w.add(f"division-laundry-{division.lower().replace(' ', '-')}", frame('division', f'WEEK {week}', body, 'All 8 divisions on site'), cap, alt)
 
@@ -415,8 +440,11 @@ def t_magnets(w, d, week):
                  f"<span class='n'>{r.n}<small class='dim'>{int(r.y)} yds</small></span></div>")
     body = f"<div class='h'>Flag<br>magnets</div><div class='sub'>Most accepted penalties, {S} through Week {week}</div>{rows}"
     lead = top.iloc[0]
-    cap = (f"🧲 Flag Magnets: {lead['penalty_player_name']} ({lead['penalty_team']}) leads the league with {lead['n']} accepted penalties "
-           f"through Week {week}.\n\n{link('magnets', week)}\n\n{tags('magnets')}")
+    leaders = []
+    for r in top.itertuples():
+        tt = p[(p['penalty_player_name'] == r.penalty_player_name) & (p['penalty_team'] == r.penalty_team)]['penalty_type'].value_counts()
+        leaders.append((r.penalty_player_name, r.penalty_team, int(r.n), int(r.y), tt.index[0] if len(tt) else None))
+    cap = C.flag_magnets({'week': week, 'leaders': leaders}, link('magnets', week))
     alt = 'Flag Magnets, most penalized players: ' + '; '.join(f"{r.penalty_player_name} {r.penalty_team} {r.n}" for r in top.itertuples()) + '.'
     w.add('flag-magnets', frame('magnets', f'WEEK {week}', body, 'Watchlists for every game on site'), cap, alt)
 
@@ -435,7 +463,7 @@ def t_hood(w, week, spec):
 {bars}
 <div class='sub' style='margin:22px 0 0;color:#ecebe7;font-size:32px'>{e(spec['takeaway'])}</div>
 <div class='note'>{e(spec['method'])}</div>"""
-    cap = f"🔎 Under the Hood: {spec['question']}\n\n{spec['takeaway']}\n\n{link('hood', week)}\n\n{tags('hood')}"
+    cap = C.under_the_hood(spec, link('hood', week))
     alt = f"Under the Hood. {spec['question']} " + '; '.join(f'{l}: {v:.1f}{spec.get("unit", "")}' for l, v, _ in spec['bars']) + f'. {spec["takeaway"]}'
     w.add(f"under-the-hood-{spec['slug']}", frame('hood', f'WEEK {week}', body, 'Method on site'), cap, alt)
 

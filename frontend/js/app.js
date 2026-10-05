@@ -121,6 +121,9 @@ const EXPLAINERS = {
             <p><strong>Same weeks</strong> compares against last season through the same week we're in now (updates 
             automatically each week). <strong>Last 3 seasons</strong> and <strong>All seasons</strong> are 
             games-weighted averages across those years.</p>
+            <p>The <strong>percentage at the end of each bar</strong> is the change vs the comparison: 
+            <span style="color:#ef4444">▲ red</span> = more flags, <span style="color:#10b981">▼ green</span> = fewer, 
+            gray = within ±2% (basically flat). Faded labels mean the crew has worked fewer than 4 games this season.</p>
             <p>Regular season only — playoff games are worked by all-star crews, which would skew the comparison. 
             Early in the season each crew has only a handful of games, so one wild game can move the average a lot.</p>
         `
@@ -230,11 +233,69 @@ function fmtNum(n, digits = 0) {
     return Number(n).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 }
 
-function fmtDelta(v, digits = 1) {
-    if (v === null || v === undefined) return '<span class="season-delta">new</span>';
-    const cls = v > 0 ? 'cell-high' : v < 0 ? 'cell-low' : '';
-    return `<span class="season-delta ${cls}">${v > 0 ? '+' : ''}${fmtNum(v, digits)}</span>`;
+// Percent change vs the selected comparison.
+// Red = more flags/yards, green = fewer, gray = within ±PCT_NEUTRAL (noise).
+const PCT_NEUTRAL = 2;      // percent
+const MIN_GAMES_FOR_PCT = 4; // crews below this get a dimmed badge (small sample)
+
+function pctChange(cur, base) {
+    if (cur === null || cur === undefined || !base) return null;
+    return (cur - base) / base * 100;
 }
+
+function pctDirection(pct) {
+    if (pct === null) return 'none';
+    if (Math.abs(pct) < PCT_NEUTRAL) return 'flat';
+    return pct > 0 ? 'up' : 'down';
+}
+
+function pctText(pct) {
+    if (pct === null) return 'new';
+    const abs = Math.abs(pct);
+    const shown = abs < 10 ? abs.toFixed(1) : Math.round(abs).toString();
+    const dir = pctDirection(pct);
+    const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '●';
+    return `${arrow} ${shown}%`;
+}
+
+function pctBadge(cur, base, { small = false, title = '' } = {}) {
+    const pct = pctChange(cur, base);
+    const dir = pctDirection(pct);
+    const tip = title || (pct === null ? 'No comparison data' : `${pct > 0 ? '+' : ''}${pct.toFixed(1)}%`);
+    return `<span class="pct-badge pct-${dir}${small ? ' pct-small-sample' : ''}" title="${tip}">${pctText(pct)}</span>`;
+}
+
+const PCT_COLORS = {
+    up: CONFIG.chartColors.red,
+    down: CONFIG.chartColors.green,
+    flat: 'rgba(255,255,255,0.45)',
+    none: 'rgba(255,255,255,0.45)'
+};
+
+// Chart.js plugin: draws the % change at the end of each current-season bar
+const pctLabelPlugin = {
+    id: 'pctLabels',
+    afterDatasetsDraw(chart, args, opts) {
+        if (!opts || !opts.rows) return;
+        const meta = chart.getDatasetMeta(0);
+        if (!meta || meta.hidden) return;
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = '600 11px "JetBrains Mono", monospace';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        meta.data.forEach((bar, i) => {
+            const r = opts.rows[i];
+            const b = opts.baseOf(r);
+            const pct = pctChange(r.current[opts.field], b ? b[opts.field] : null);
+            const dir = pctDirection(pct);
+            ctx.globalAlpha = r.current.games < MIN_GAMES_FOR_PCT ? 0.5 : 1;
+            ctx.fillStyle = PCT_COLORS[dir];
+            ctx.fillText(pctText(pct), bar.x + 6, bar.y);
+        });
+        ctx.restore();
+    }
+};
 
 function renderSeasonComparison() {
     const d = state.season;
@@ -281,7 +342,6 @@ function renderSeasonView() {
     const cs = d.currentSeason, L = d.league;
     const LB = L.baselines[key];
     const baseOf = r => r.baselines?.[key] || null;
-    const diff = (r, field) => (baseOf(r) ? r.current[field] - baseOf(r)[field] : null);
 
     document.getElementById('seasonSubtitle').textContent =
         `Regular season through Week ${d.throughWeek}, compared with ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}.`;
@@ -293,8 +353,8 @@ function renderSeasonView() {
             <div class="season-stat-label">${label}</div>
             <div class="season-stat-value">${fmtNum(L.current?.[field], digits)}</div>
             <div class="season-stat-compare">
-                ${base.short}: <strong>${fmtNum(LB?.[field], digits)}</strong>
-                ${LB ? fmtDelta(L.current[field] - LB[field], digits) : ''}
+                ${pctBadge(L.current?.[field], LB?.[field])}
+                <span class="season-stat-vs">vs ${base.short}: <strong>${fmtNum(LB?.[field], digits)}</strong></span>
             </div>
         </div>`;
 
@@ -331,13 +391,14 @@ function renderSeasonView() {
     // Table (most penalties per game first)
     document.getElementById('seasonTableBody').innerHTML = byPenalties.map(r => {
         const b = baseOf(r);
+        const small = r.current.games < MIN_GAMES_FOR_PCT;
         return `
         <tr onclick="openRefereeModal('${r.slug}')">
             <td><strong>${r.name}</strong></td>
             <td>${r.current.games}</td>
             <td>${fmtNum(r.current.penalties)} for ${fmtNum(r.current.yards)} yds</td>
-            <td>${fmtNum(r.current.perGame, 1)} ${fmtDelta(diff(r, 'perGame'), 1)}</td>
-            <td>${fmtNum(r.current.yardsPerGame, 1)} ${fmtDelta(diff(r, 'yardsPerGame'), 1)}</td>
+            <td>${fmtNum(r.current.perGame, 1)} ${pctBadge(r.current.perGame, b?.perGame, { small })}</td>
+            <td>${fmtNum(r.current.yardsPerGame, 1)} ${pctBadge(r.current.yardsPerGame, b?.yardsPerGame, { small })}</td>
             <td class="season-prev">${b
                 ? `${fmtNum(b.penalties)} for ${fmtNum(b.yards)} yds <span>(${fmtNum(b.perGame, 1)}/g, ${b.games} g)</span>`
                 : '—'}</td>
@@ -356,6 +417,7 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
 
     return new Chart(canvas.getContext('2d'), {
         type: 'bar',
+        plugins: [pctLabelPlugin],
         data: {
             labels: rows.map(r => (labelFn ? labelFn(r) : r.name)),
             datasets: [
@@ -382,7 +444,9 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
             maintainAspectRatio: false,
             indexAxis: 'y',
             animation: { duration: 400 },
+            layout: { padding: { right: 64 } },
             plugins: {
+                pctLabels: { rows, field, baseOf },
                 legend: {
                     position: 'top',
                     align: 'end',
@@ -391,6 +455,15 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 tooltip: {
                     callbacks: {
                         title: (items) => rows[items[0].dataIndex].name,
+                        footer: (items) => {
+                            const r = rows[items[0].dataIndex];
+                            const b = baseOf(r);
+                            if (!b) return 'No comparison data';
+                            const pct = pctChange(r.current[field], b[field]);
+                            const d = r.current[field] - b[field];
+                            const note = r.current.games < MIN_GAMES_FOR_PCT ? `  (only ${r.current.games} games — small sample)` : '';
+                            return `${pctText(pct)} (${d > 0 ? '+' : ''}${fmtNum(d, 1)}) vs ${baseLabel}${note}`;
+                        },
                         label: (ctx) => {
                             const r = rows[ctx.dataIndex];
                             const b = ctx.datasetIndex === 0 ? r.current : baseOf(r);

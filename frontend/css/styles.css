@@ -1277,3 +1277,37 @@ footer {
     .baseline-toggle { border-radius: 16px; }
     .baseline-btn { font-size: 0.78rem; padding: 0.45rem 0.75rem; }
 }
+
+/* Percent change badges: red = more flags/yards, green = fewer, gray = flat (±2%) */
+.pct-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    margin-left: 0.4rem;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.pct-up   { color: var(--accent-red); }
+.pct-down { color: var(--accent-green); }
+.pct-flat, .pct-none { color: var(--text-muted); }
+
+.pct-badge.pct-up   { background: rgba(239, 68, 68, 0.14); }
+.pct-badge.pct-down { background: rgba(16, 185, 129, 0.14); }
+.pct-badge.pct-flat,
+.pct-badge.pct-none { background: rgba(255, 255, 255, 0.06); }
+
+.pct-badge.pct-small-sample { opacity: 0.5; }
+
+/* League cards: badge leads the comparison line */
+.season-stat-compare .pct-badge {
+    margin-left: 0;
+    margin-right: 0.4rem;
+    font-size: 0.8rem;
+}
+
+.season-stat-vs { white-space: nowrap; }

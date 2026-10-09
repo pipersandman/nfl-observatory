@@ -2181,6 +2181,105 @@ function handleDeepLink() {
     return false;
 }
 
+// =============================================================================
+// EXPORT — save any report pop-up as a full-length PNG or PDF
+// Libraries load only when someone clicks Export (pinned versions on cdnjs).
+// =============================================================================
+
+const EXPORT_LIBS = {
+    html2canvas: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    jspdf: 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+};
+const _scriptPromises = {};
+
+function loadScriptOnce(src) {
+    if (!_scriptPromises[src]) {
+        _scriptPromises[src] = new Promise((resolve, reject) => {
+            const el = document.createElement('script');
+            el.src = src;
+            el.onload = resolve;
+            el.onerror = () => { delete _scriptPromises[src]; reject(new Error('Could not load ' + src)); };
+            document.head.appendChild(el);
+        });
+    }
+    return _scriptPromises[src];
+}
+
+function exportFileName(ext) {
+    const m = location.hash.match(DEEP_LINK_RE);
+    const slug = m ? `${m[1]}-${decodeURIComponent(m[2])}` : (document.getElementById('modalTitle')?.textContent || 'report');
+    const safe = slug.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+    return `nfl-observatory-${safe}.${ext}`;
+}
+
+async function renderModalCanvas() {
+    await loadScriptOnce(EXPORT_LIBS.html2canvas);
+    const modal = document.querySelector('#modal .modal');
+    const fullHeight = modal.scrollHeight;
+    return window.html2canvas(modal, {
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-secondary').trim() || '#121417',
+        scale: 2,                       // sharp on retina screens and when zoomed
+        useCORS: true,                 // team logos load cross-origin; skipped if the host doesn't allow it
+        logging: false,
+        windowWidth: Math.max(document.documentElement.clientWidth, 1000),
+        windowHeight: fullHeight + 400,
+        onclone: (doc) => {
+            // Unroll the scrolling pop-up so the whole report is captured, not just what's on screen
+            const overlay = doc.getElementById('modal');
+            Object.assign(overlay.style, { position: 'absolute', inset: 'auto', top: '0', left: '0', height: 'auto',
+                display: 'block', padding: '0', background: 'none', backdropFilter: 'none', overflow: 'visible' });
+            const m = overlay.querySelector('.modal');
+            Object.assign(m.style, { maxHeight: 'none', height: 'auto', overflow: 'visible', width: '900px', maxWidth: '900px' });
+            const head = m.querySelector('.modal-header');
+            if (head) head.style.position = 'static';
+            m.querySelectorAll('.modal-actions, .modal-close, .info-trigger-small, .team-next').forEach(el => { el.style.display = 'none'; });
+            // Branded footer with the report's address
+            const foot = doc.createElement('div');
+            foot.style.cssText = 'padding:18px 32px 26px;border-top:1px solid #262a2f;display:flex;justify-content:space-between;' +
+                'align-items:center;font:500 14px Inter,system-ui,sans-serif;color:#9a9ea4';
+            const when = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            foot.innerHTML = `<span style="display:flex;align-items:center;gap:10px;color:#ecebe7;font-weight:600">` +
+                `<span style="width:22px;height:22px;border-radius:5px;background:#16181b;border:1px solid #2a2d32;display:inline-flex;align-items:center;justify-content:center">` +
+                `<span style="width:11px;height:11px;background:#ffc400;transform:rotate(-18deg);display:block;border-radius:1px"></span></span>` +
+                `nflobservatory.com</span><span>${when} · ${location.host}${location.pathname}${location.hash}</span>`;
+            m.appendChild(foot);
+        }
+    });
+}
+
+async function exportModal(format) {
+    const btn = document.getElementById(format === 'pdf' ? 'modalExportPdf' : 'modalExportPng');
+    const label = btn?.textContent;
+    if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
+    try {
+        const canvas = await renderModalCanvas();
+        if (format === 'png') {
+            const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = exportFileName('png');
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        } else {
+            await loadScriptOnce(EXPORT_LIBS.jspdf);
+            const { jsPDF } = window.jspdf;
+            // One continuous page sized to the report, so nothing is split mid-chart
+            const w = canvas.width / 2, h = canvas.height / 2;
+            const pdf = new jsPDF({ orientation: h > w ? 'portrait' : 'landscape', unit: 'px', format: [w, h], hotfixes: ['px_scaling'] });
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, w, h);
+            pdf.setProperties({ title: document.getElementById('modalTitle')?.textContent || 'NFL Officiating Observatory',
+                                subject: location.href, creator: 'nflobservatory.com' });
+            pdf.save(exportFileName('pdf'));
+        }
+        if (btn) btn.textContent = 'Saved ✓';
+    } catch (err) {
+        console.error('Export failed:', err);
+        if (btn) btn.textContent = 'Export failed';
+    } finally {
+        setTimeout(() => { if (btn) { btn.textContent = label; btn.disabled = false; } }, 1800);
+    }
+}
+
 async function copyModalLink() {
     const btn = document.getElementById('modalShare');
     try {
@@ -2281,6 +2380,7 @@ window.openScorecardModal = openScorecardModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;
 window.copyModalLink = copyModalLink;
+window.exportModal = exportModal;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;
 window.moveCarousel = moveCarousel;

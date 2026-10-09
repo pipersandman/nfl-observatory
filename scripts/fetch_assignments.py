@@ -249,7 +249,7 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
         'games': games,
     }
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(result, indent=2))
+    out_path.write_text(json.dumps(result, indent=2, default=str))
 
     print(f'   💾 {out_path.relative_to(PROJECT_DIR)}: {assigned}/{len(wk)} games assigned')
     if unmatched:

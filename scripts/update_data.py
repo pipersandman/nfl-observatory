@@ -637,8 +637,9 @@ def save_json(data, filename: str):
     filepath = DATA_DIR / filename
     filepath.parent.mkdir(parents=True, exist_ok=True)
     
+    from jsonsafe import dumps as safe_dumps   # NaN-proof: one NaN breaks the whole file in browsers
     with open(filepath, 'w') as f:
-        json.dump(data, f, indent=2, default=str)
+        f.write(safe_dumps(data))
     
     print(f"   💾 {filename}")
 
@@ -858,7 +859,7 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
         
         # Save
         with open(referee_dir / f"{slug}.json", 'w') as f:
-            json.dump(profile, f, indent=2)
+            f.write(__import__('jsonsafe').dumps(profile))
     
     print(f"   ✓ Generated {len(ref_stats)} profiles")
 

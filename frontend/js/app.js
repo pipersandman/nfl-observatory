@@ -2284,6 +2284,45 @@ async function exportModal(format) {
 
 function slugify_(t) { return (t || 'chart').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 
+// =============================================================================
+// NAV: hamburger menu on phones + highlight the section you're in
+// =============================================================================
+
+function initNav() {
+    const nav = document.querySelector('nav');
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    if (!nav || !toggle || !links) return;
+
+    const setOpen = (open) => {
+        nav.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    toggle.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('nav-open')); });
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('click', (e) => { if (!nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 768) setOpen(false); });
+
+    // Highlight the current section in the menu
+    const map = new Map();
+    links.querySelectorAll('a[href^="#"]').forEach(a => {
+        const sec = document.querySelector(a.getAttribute('href'));
+        if (sec) map.set(sec, a);
+    });
+    if (!('IntersectionObserver' in window) || !map.size) return;
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+            if (en.isIntersecting) {
+                links.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+                map.get(en.target)?.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    map.forEach((_, sec) => io.observe(sec));
+}
+
 function addChartDownloadButtons() {
     document.querySelectorAll('main .chart-container, section .chart-container').forEach(box => {
         if (box.closest('.modal-overlay') || box.querySelector('.chart-dl')) return;
@@ -2528,6 +2567,7 @@ async function init() {
 
     // PNG / PDF download buttons on every chart (charts exist by now)
     addChartDownloadButtons();
+    initNav();
 
     // Open a specific report if the URL asks for one (e.g. from a social post)
     handleDeepLink();

@@ -55,9 +55,26 @@ def _load(path):
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def _clean(o):
+    """NaN/inf aren't valid JSON (browsers refuse the whole file): write them as null."""
+    if isinstance(o, float):
+        return None if (o != o or o in (float('inf'), float('-inf'))) else o
+    if isinstance(o, dict):
+        return {k: _clean(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple)):
+        return [_clean(v) for v in o]
+    if isinstance(o, np.generic):
+        return _clean(o.item())
+    return o
+
+
+def _num(x):
+    return x is not None and not (isinstance(x, float) and x != x)
+
+
 def _save(path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, default=str))
+    path.write_text(json.dumps(_clean(obj), indent=2, default=str, allow_nan=False))
 
 
 # -----------------------------------------------------------------------------
@@ -158,7 +175,7 @@ def _grade_games(records, actuals, crews):
         if a is None:
             continue
         lo, hi = r['range']
-        base = r.get('leagueAverage')
+        base = r.get('leagueAverage') if _num(r.get('leagueAverage')) else None
         rows.append({
             'gameId': r['gameId'], 'season': r['season'], 'week': r['week'], 'away': r['away'], 'home': r['home'],
             'crew': crews.get(r['gameId']) or r.get('crew'), 'source': r['source'],
@@ -175,7 +192,7 @@ def summarize(rows):
     if not rows:
         return None
     miss = np.array([r['miss'] for r in rows], dtype=float)
-    base = [r['baselineMiss'] for r in rows if r['baselineMiss'] is not None]
+    base = [r['baselineMiss'] for r in rows if _num(r.get('baselineMiss'))]
     mae = float(np.abs(miss).mean())
     base_mae = float(np.mean(base)) if base else None
     return {
@@ -189,11 +206,10 @@ def summarize(rows):
 
 
 def by_week(rows):
-    out = []
-    for (s, w), grp in pd.DataFrame(rows).groupby(['season', 'week']):
-        sm = summarize(grp.to_dict('records'))
-        out.append({'season': int(s), 'week': int(w), **sm})
-    return out
+    groups = {}
+    for r in rows:   # plain grouping (a DataFrame would turn missing values into NaN)
+        groups.setdefault((r['season'], r['week']), []).append(r)
+    return [{'season': int(s), 'week': int(w), **summarize(g)} for (s, w), g in sorted(groups.items())]
 
 
 def grade(data, data_dir: Path):
@@ -212,9 +228,15 @@ def grade(data, data_dir: Path):
     bt_recs = collect('backtest')
     league_by_game = {r['gameId']: r.get('leagueAverage') for r in bt_recs}
     live_recs = collect('live')
-    for r in live_recs:   # posted snapshots don't store the league average: use that week's
-        if not r.get('leagueAverage'):
-            r['leagueAverage'] = league_by_game.get(r['gameId'])
+    # Posted snapshots don't store the league average: use that game's backtest, else that
+    # week's preview file, else the most recent backtest week
+    latest_bt = next((r.get('leagueAverage') for r in sorted(bt_recs, key=lambda r: (r['season'], r['week']), reverse=True)
+                      if _num(r.get('leagueAverage'))), None)
+    for r in live_recs:
+        if not _num(r.get('leagueAverage')):
+            pv = data_dir / 'previews' / f"{r['season']}-week-{int(r['week']):02d}.json"
+            pv_avg = _load(pv).get('model', {}).get('leagueAveragePerGame') if pv.exists() else None
+            r['leagueAverage'] = league_by_game.get(r['gameId']) or pv_avg or latest_bt
     live = _grade_games(live_recs, actuals, crews)
     bt = _grade_games(bt_recs, actuals, crews)
     season = int(data['schedules']['season'].max())

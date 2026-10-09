@@ -15,6 +15,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from jsonsafe import dumps as safe_dumps
+
 DIVISION_ORDER = ['AFC East', 'AFC North', 'AFC South', 'AFC West',
                   'NFC East', 'NFC North', 'NFC South', 'NFC West']
 MIN_CREW_GAMES = 2
@@ -234,10 +236,10 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     out = data_dir / 'teams'
     out.mkdir(parents=True, exist_ok=True)
     for team, p in profiles.items():
-        (out / f'{team}.json').write_text(json.dumps(p, indent=2, default=str))
+        (out / f'{team}.json').write_text(safe_dumps(p, indent=2, default=str))
     divisions = [{'name': d, 'teams': sorted(index[d], key=lambda x: (x['perGame'] or 0), reverse=True)}
                  for d in DIVISION_ORDER]
-    (out / 'index.json').write_text(json.dumps({
+    (out / 'index.json').write_text(safe_dumps({
         'season': season, 'leaguePerGame': _r(league_pg), 'divisions': divisions,
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }, indent=2))

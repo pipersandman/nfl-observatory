@@ -558,7 +558,7 @@ function renderInsightsCarousel() {
     
     container.innerHTML = insights.map((insight, i) => `
         <div class="insight-card ${insight.isPositive === true ? 'positive' : insight.isPositive === false ? 'negative' : ''}" data-index="${i}">
-            <div class="insight-icon">${insight.icon}</div>
+            ${['🏈', '⏱️'].includes(insight.icon) ? `<div class="insight-icon">${insight.icon}</div>` : ''}
             <div class="insight-title">${insight.title}</div>
             <div class="insight-value">${insight.value}</div>
             <p class="insight-desc">${insight.description}</p>
@@ -589,7 +589,7 @@ function generateInsightsFromTrends() {
         const change = ((latest.avg_per_game - previous.avg_per_game) / previous.avg_per_game * 100).toFixed(0);
         
         insights.push({
-            icon: '📈',
+            icon: '',
             title: `${latest.season} Penalty Trend`,
             value: `${change > 0 ? '+' : ''}${change}%`,
             description: `Penalties per game ${change > 0 ? 'jumped' : 'dropped'} from ${previous.avg_per_game} to ${latest.avg_per_game}`,
@@ -602,7 +602,7 @@ function generateInsightsFromTrends() {
     const homeAway = trends.homeVsAway || {};
     if (homeAway.bias_pct !== undefined) {
         insights.push({
-            icon: '🏠',
+            icon: '',
             title: 'Home Field Bias',
             value: `${homeAway.bias_pct > 0 ? '+' : ''}${homeAway.bias_pct}%`,
             description: `Away teams are penalized ${Math.abs(homeAway.bias_pct)}% more than home teams`,
@@ -617,7 +617,7 @@ function generateInsightsFromTrends() {
         const minAvg = Math.min(...state.referees.map(r => r.avg_per_game));
         
         insights.push({
-            icon: '🎯',
+            icon: '',
             title: 'Crew Chief Spread',
             value: `${minAvg.toFixed(1)} - ${maxAvg.toFixed(1)}`,
             description: `Penalty rates range from ${minAvg.toFixed(1)} to ${maxAvg.toFixed(1)} per game depending on crew`,
@@ -630,7 +630,7 @@ function generateInsightsFromTrends() {
     const types = trends.byType || [];
     if (types.length) {
         insights.push({
-            icon: '🚩',
+            icon: '',
             title: 'Most Common Call',
             value: types[0].type.replace('Offensive ', '').replace('Defensive ', ''),
             description: `${types[0].count.toLocaleString()} total calls (${(types[0].count / types.reduce((a, t) => a + t.count, 0) * 100).toFixed(0)}% of all penalties)`,
@@ -812,7 +812,7 @@ function previewCard(g, pv, maxTotal, todayET) {
             <span><strong>${fmtNum(p.home, 1)}</strong> ${g.homeTeam.abbr}</span>
         </div>
         <div class="pv-foot">
-            <span class="${g.crew ? '' : 'pv-tba'}">👨‍⚖️ ${g.crew ? g.crew.name : 'Crew TBA'}</span>
+            <span class="${g.crew ? '' : 'pv-tba'}">${g.crew ? `Crew: ${g.crew.name}` : 'Crew TBA'}</span>
             <span>~${fmtNum(p.yards)} penalty yds</span>
         </div>
     </div>`;
@@ -921,7 +921,7 @@ function openPreviewModal(gameId) {
     // Crew
     const crewHtml = g.crew ? `
         <div class="modal-section">
-            <h4>👨‍⚖️ The crew: <a href="#" onclick="openRefereeModal('${g.crew.slug}'); return false;">${g.crew.name}</a></h4>
+            <h4>The crew: <a href="#" onclick="openRefereeModal('${g.crew.slug}'); return false;">${g.crew.name}</a></h4>
             <div class="pv-crew-grid">
                 <div class="season-stat">
                     <div class="season-stat-label">Crew effect on this game</div>
@@ -942,7 +942,7 @@ function openPreviewModal(gameId) {
             <p class="modal-footnote">Tilts compare how often this crew calls each type vs the league (last 3 seasons, ${g.crew.gamesInModel} games, shrunk toward average).</p>
         </div>` : `
         <div class="modal-section">
-            <h4>👨‍⚖️ The crew</h4>
+            <h4>The crew</h4>
             <p class="modal-footnote">Not assigned yet. Football Zebras usually posts assignments Tuesday morning; this projection will update with the crew factor once it's published.</p>
         </div>`;
 
@@ -969,7 +969,7 @@ function openPreviewModal(gameId) {
     // Context
     const c = g.context, ref = pv.contextReference || {};
     const chips = [];
-    if (c.primetime) chips.push('🌙 Primetime');
+    if (c.primetime) chips.push('Primetime');
     if (g.weekday === 'Thursday') chips.push(`Thursday night${ref.thursday ? ` (avg ${ref.thursday} flags vs ${ref.sunday} Sunday)` : ''}`);
     if (c.divisionGame) chips.push(`Division game${ref.division ? ` (avg ${ref.division} vs ${ref.nonDivision})` : ''}`);
     if (c.neutralSite) chips.push('Neutral site');
@@ -1023,13 +1023,13 @@ function openPreviewModal(gameId) {
         </div>
 
         <div class="modal-section">
-            <h4>🧭 What's driving the projection</h4>
+            <h4>What's driving the projection</h4>
             ${drivers}
             <p class="modal-footnote">Extra or fewer flags vs a league-average matchup with an average crew.</p>
         </div>
 
         <div class="modal-section">
-            <h4>🚩 Projected penalties by type</h4>
+            <h4>Projected penalties by type</h4>
             <div class="table-scroll">
                 <table class="pv-table">
                     <thead><tr><th>Type</th><th>On ${A.abbr}</th><th>On ${H.abbr}</th><th>Total vs league</th><th>Yards</th></tr></thead>
@@ -1052,12 +1052,12 @@ function openPreviewModal(gameId) {
         </div>
 
         <div class="modal-section">
-            <h4>📍 Context</h4>
+            <h4>Context</h4>
             <div class="pv-chips">${chips.map(x => `<span class="pv-chip">${x}</span>`).join('')}</div>
             <p class="modal-footnote">Shown for reference; not added into the projection.</p>
         </div>
 
-        ${h2h ? `<div class="modal-section"><h4>🔁 Recent meetings</h4><div class="game-list">${h2h}</div></div>` : ''}
+        ${h2h ? `<div class="modal-section"><h4>Recent meetings</h4><div class="game-list">${h2h}</div></div>` : ''}
 
         <p class="modal-footnote">Projection uses ${pv.model.seasons.join(', ')} regular seasons, weighted toward ${pv.season}.
         ${pv.assignments?.source?.url ? `Crew assignments via <a href="${pv.assignments.source.url}" target="_blank" rel="noopener">Football Zebras</a>.` : ''}</p>
@@ -1085,7 +1085,7 @@ function renderTrackRecord() {
         </div>` : '';
     box.innerHTML = `
         <div class="tr-head">
-            <span class="tr-title">📏 Track record</span>
+            <span class="tr-title">Track record</span>
             <button class="info-trigger-inline" onclick="openScorecardModal()">See every game →</button>
         </div>
         <div class="tr-items">
@@ -1292,7 +1292,7 @@ async function openTeamModal(abbr) {
         ${nextPv ? `<div class="team-next"><button class="baseline-btn active" onclick="openPreviewModal('${t.nextGame.gameId}')">Preview next game: ${t.nextGame.home ? 'vs' : '@'} ${t.nextGame.opponent} →</button></div>` : ''}
 
         <div class="modal-section">
-            <h4>📊 ${cs} vs history</h4>
+            <h4>${cs} vs history</h4>
             <div class="cc-rows cc-rows-lg">
                 <div class="cc-row-head"><span></span><span></span><span>Pen/g</span><span>Yds/g</span><span>Drawn/g</span></div>
                 ${row('cc-current', cs, cur)}
@@ -1317,18 +1317,18 @@ async function openTeamModal(abbr) {
         </div>` : ''}
 
         <div class="chart-container modal-section">
-            <div class="chart-title">📈 Penalties per game by season <span class="modal-muted">(regular season)</span></div>
+            <div class="chart-title">Penalties per game by season <span class="modal-muted">(regular season)</span></div>
             <div class="chart-wrapper" style="height: 200px;"><canvas id="modalSeasonChart"></canvas></div>
         </div>
 
         ${t.committedTypes?.length ? `<div class="modal-section">
-            <h4>🚩 What they get flagged for: ${cs} vs ${allLabel}</h4>
+            <h4>What they get flagged for: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(t.committedTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
         </div>` : ''}
 
         ${t.drawnTypes?.length ? `<div class="modal-section">
-            <h4>🎯 What they draw from opponents</h4>
+            <h4>What they draw from opponents</h4>
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(t.drawnTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
         </div>` : ''}
@@ -1340,7 +1340,7 @@ async function openTeamModal(abbr) {
         </div>
 
         ${crews ? `<div class="modal-section">
-            <h4>👨‍⚖️ Flags on ${t.abbr} by crew chief <span class="modal-muted">(${ps[0] ?? cs}–${cs}, 2+ games)</span></h4>
+            <h4>Flags on ${t.abbr} by crew chief <span class="modal-muted">(${ps[0] ?? cs}–${cs}, 2+ games)</span></h4>
             <div class="table-scroll"><table class="pv-table">
                 <thead><tr><th>Crew chief</th><th>Games</th><th>${t.abbr} flags/g</th><th>Opp flags/g</th><th>Last worked</th></tr></thead>
                 <tbody>${crews}</tbody>
@@ -1349,7 +1349,7 @@ async function openTeamModal(abbr) {
         </div>` : ''}
 
         ${t.players?.length ? `<div class="modal-section">
-            <h4>🧾 Watchlist (${cs})</h4>
+            <h4>Watchlist (${cs})</h4>
             <div class="pv-team-col">${t.players.map(w => `
                 <div class="pv-watch-row"><span>${w.player}</span><span>${w.count} flag${w.count === 1 ? "" : "s"} · ${w.yards} yds</span>
                 <span class="modal-muted">${w.types.map(x => `${x.type}${x.count > 1 ? ` ×${x.count}` : ''}`).join(', ')}</span></div>`).join('')}
@@ -1357,7 +1357,7 @@ async function openTeamModal(abbr) {
         </div>` : ''}
 
         ${log ? `<div class="modal-section">
-            <h4>📋 ${cs} game log</h4>
+            <h4>${cs} game log</h4>
             <div class="table-scroll"><table class="pv-table">
                 <thead><tr><th>Week</th><th>Opponent</th><th>Result</th><th>${t.abbr} flags</th><th>Opp flags</th><th>Crew</th></tr></thead>
                 <tbody>${log}</tbody>
@@ -1518,7 +1518,7 @@ function renderRefereeCards() {
                 </div>`}
 
                 <div class="cc-foot">
-                    ${topPenaltyDisplay ? `<span>🚩 Most common: <strong>${topPenaltyDisplay}</strong></span>` : '<span></span>'}
+                    ${topPenaltyDisplay ? `<span>Most common: <strong>${topPenaltyDisplay}</strong></span>` : '<span></span>'}
                     <span>Home bias ${bias}</span>
                 </div>
             </div>
@@ -1847,7 +1847,7 @@ async function openRefereeModal(slug) {
 
     const comparisonHtml = cmp ? `
         <div class="modal-section">
-            <h4>📊 ${active ? `${cs} vs history` : 'Regular-season history'}</h4>
+            <h4>${active ? `${cs} vs history` : 'Regular-season history'}</h4>
             <div class="cc-rows cc-rows-lg">
                 <div class="cc-row-head"><span></span><span></span><span>Pen/g</span><span>Yds/g</span><span>Yds/pen</span></div>
                 ${row('cc-current', cs, cur)}
@@ -1876,17 +1876,17 @@ async function openRefereeModal(slug) {
 
         ${active ? `
         <div class="modal-tendency">
-            <h4>🎯 ${cs} so far</h4>
+            <h4>${cs} so far</h4>
             <p>${seasonTendency}</p>
             <p class="modal-tendency-career"><strong>Career:</strong> ${profile.tendencies?.description || 'League-average officiating style'}</p>
         </div>` : `
         <div class="modal-tendency">
-            <h4>🎯 Tendencies</h4>
+            <h4>Tendencies</h4>
             <p>${profile.tendencies?.description || 'League-average officiating style'}</p>
         </div>`}
 
         <div class="chart-container modal-section">
-            <div class="chart-title">📈 Penalties per game by season <span class="modal-muted">(regular season)</span></div>
+            <div class="chart-title">Penalties per game by season <span class="modal-muted">(regular season)</span></div>
             <div class="chart-wrapper" style="height: 200px;">
                 <canvas id="modalSeasonChart"></canvas>
             </div>
@@ -1897,7 +1897,7 @@ async function openRefereeModal(slug) {
         ${quartersHtml}
 
         <div class="modal-section">
-            <h4>🗂️ Career (all games incl. playoffs, ${profile.firstSeason}–${profile.lastSeason})</h4>
+            <h4>Career (all games incl. playoffs, ${profile.firstSeason}–${profile.lastSeason})</h4>
             <div class="modal-stats-grid">
                 <div class="modal-stat">
                     <div class="modal-stat-value">${profile.stats.avgPerGame}</div>
@@ -1919,7 +1919,7 @@ async function openRefereeModal(slug) {
         </div>
 
         <div>
-            <h4 style="margin-bottom: 0.75rem;">📋 Recent Games</h4>
+            <h4 style="margin-bottom: 0.75rem;">Recent Games</h4>
             <div class="game-list">
                 ${renderRecentGames(profile.recentGames, cs)}
             </div>
@@ -1960,7 +1960,7 @@ function renderTypeComparison(types, cs, allLabel, small) {
     const rows = types.slice(0, 10);
     return `
         <div class="modal-section">
-            <h4>🚩 What's being called: ${cs} vs ${allLabel}</h4>
+            <h4>What's being called: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(rows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
             <p class="modal-footnote">Penalties per game of each type in this crew's regular-season games. Sorted by ${cs} rate, most first.</p>
@@ -1985,7 +1985,7 @@ function renderPenaltyTypesBreakdown(penaltyTypes) {
     
     return `
         <div style="margin-bottom: 1.5rem;">
-            <h4 style="margin-bottom: 0.75rem;">🚩 Penalty Type Breakdown</h4>
+            <h4 style="margin-bottom: 0.75rem;">Penalty Type Breakdown</h4>
             <div class="penalty-types-list">
                 ${penaltyTypes.slice(0, 8).map(p => `
                     <div class="penalty-type-item">
@@ -2479,7 +2479,7 @@ function showSaveSheet(blob, file, name, canShareFile) {
                 <button class="save-sheet-x" aria-label="Close">✕</button>
             </div>
             <div class="save-sheet-img"><img src="${url}" alt="Exported image"></div>
-            ${canShareFile ? `<button class="save-sheet-btn" id="saveSheetShare">📷 Save to Photos</button>` : ''}
+            ${canShareFile ? `<button class="save-sheet-btn" id="saveSheetShare">Save to Photos</button>` : ''}
             <p class="save-sheet-hint">${canShareFile
                 ? (isIOS ? 'Tap <b>Save to Photos</b>, then choose <b>Save Image</b>.' : 'Tap <b>Save to Photos</b>, then choose Photos or Gallery.')
                 : (isIOS ? 'Press and hold the image, then tap <b>Save to Photos</b>.' : 'Press and hold the image, then tap <b>Download image</b>.')}
@@ -2506,7 +2506,7 @@ async function copyModalLink() {
     const btn = document.getElementById('modalShare');
     try {
         await navigator.clipboard.writeText(location.href);
-        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = '🔗 Copy link'; }, 1800); }
+        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = 'Copy link'; }, 1800); }
     } catch {
         if (btn) btn.textContent = location.href;
     }

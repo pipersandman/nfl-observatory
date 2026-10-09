@@ -401,7 +401,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
         change = ((latest['avg_per_game'] - baseline['avg_per_game']) / baseline['avg_per_game'] * 100)
         insights.append({
             'id': 'season_trend',
-            'icon': '📈',
+            'icon': '',
             'title': 'Penalty Surge Since 2022',
             'value': f"{'+' if change > 0 else ''}{change:.0f}%",
             'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
@@ -414,7 +414,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     bias = home_away.get('bias_pct', 0)
     insights.append({
         'id': 'home_bias',
-        'icon': '🏠',
+        'icon': '',
         'title': 'Home Field Bias',
         'value': f"{'+' if bias > 0 else ''}{bias}%",
         'description': f"Away teams are penalized {abs(bias):.1f}% more than home teams",
@@ -431,7 +431,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
         
         insights.append({
             'id': 'ref_variance',
-            'icon': '🎯',
+            'icon': '',
             'title': 'Referee Variance',
             'value': f"{variance_pct:.0f}%",
             'description': f"Crew chiefs range from {min_avg:.1f} to {max_avg:.1f} penalties/game",
@@ -463,7 +463,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
         total_penalties = sum(t['count'] for t in types)
         insights.append({
             'id': 'top_penalty',
-            'icon': '🚩',
+            'icon': '',
             'title': 'Most Common Call',
             'value': top['type'].replace('Offensive ', '').replace('Defensive ', ''),
             'description': f"{top['count']:,} total calls ({top['count'] / total_penalties * 100:.0f}% of all penalties)",
@@ -477,7 +477,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
         fewest_flags = ref_stats.loc[ref_stats['avg_per_game'].idxmin()]
         insights.append({
             'id': 'crew_spread',
-            'icon': '👨‍⚖️',
+            'icon': '',
             'title': 'Crew Chief Spread',
             'value': f"{fewest_flags['avg_per_game']:.1f} - {most_flags['avg_per_game']:.1f}",
             'description': f"{fewest_flags['name'].split()[-1]} ({fewest_flags['avg_per_game']:.1f}/g) vs {most_flags['name'].split()[-1]} ({most_flags['avg_per_game']:.1f}/g)",

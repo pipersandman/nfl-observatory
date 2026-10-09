@@ -2255,11 +2255,7 @@ async function exportModal(format) {
         const canvas = await renderModalCanvas();
         if (format === 'png') {
             const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = exportFileName('png');
-            document.body.appendChild(a); a.click(); a.remove();
-            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+            deliverPng(blob, exportFileName('png'));
         } else {
             await loadScriptOnce(EXPORT_LIBS.jspdf);
             const { jsPDF } = window.jspdf;
@@ -2382,10 +2378,7 @@ async function downloadChart(box, fmt, btn) {
         const name = `nfl-observatory-${slugify_(title)}.${fmt}`;
         if (fmt === 'png') {
             const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob); a.download = name;
-            document.body.appendChild(a); a.click(); a.remove();
-            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+            deliverPng(blob, name);
         } else {
             await loadScriptOnce(EXPORT_LIBS.jspdf);
             const { jsPDF } = window.jspdf;
@@ -2401,6 +2394,72 @@ async function downloadChart(box, fmt, btn) {
     } finally {
         setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 1500);
     }
+}
+
+// =============================================================================
+// SAVE TO PHOTOS (phones)
+// Browsers can't save straight to the camera roll; downloads land in Files /
+// Downloads. The share sheet can ("Save Image" on iPhone, Photos/Gallery on
+// Android), but it only opens directly from a tap, and building the image takes
+// longer than that. So on phones we show the finished image with a
+// "Save to Photos" button: that tap opens the share sheet instantly.
+// Desktop keeps the normal one-click download.
+// =============================================================================
+
+function isPhoneLike() {
+    return window.matchMedia?.('(pointer: coarse)').matches && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '')
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   // iPadOS reports as Mac
+}
+
+function downloadBlob(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+function deliverPng(blob, name) {
+    const file = new File([blob], name, { type: 'image/png' });
+    const canShareFile = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+    if (!isPhoneLike()) { downloadBlob(blob, name); return; }
+    showSaveSheet(blob, file, name, canShareFile);
+}
+
+function showSaveSheet(blob, file, name, canShareFile) {
+    document.getElementById('saveSheet')?.remove();
+    const url = URL.createObjectURL(blob);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const sheet = document.createElement('div');
+    sheet.id = 'saveSheet';
+    sheet.className = 'save-sheet';
+    sheet.innerHTML = `
+        <div class="save-sheet-panel" role="dialog" aria-label="Save image">
+            <div class="save-sheet-head">
+                <span>Your image is ready</span>
+                <button class="save-sheet-x" aria-label="Close">✕</button>
+            </div>
+            <div class="save-sheet-img"><img src="${url}" alt="Exported image"></div>
+            ${canShareFile ? `<button class="save-sheet-btn" id="saveSheetShare">📷 Save to Photos</button>` : ''}
+            <p class="save-sheet-hint">${canShareFile
+                ? (isIOS ? 'Tap <b>Save to Photos</b>, then choose <b>Save Image</b>.' : 'Tap <b>Save to Photos</b>, then choose Photos or Gallery.')
+                : (isIOS ? 'Press and hold the image, then tap <b>Save to Photos</b>.' : 'Press and hold the image, then tap <b>Download image</b>.')}
+                ${canShareFile ? `<br>Or press and hold the image to save it.` : ''}</p>
+            <button class="save-sheet-link" id="saveSheetFile">Save as a file instead</button>
+        </div>`;
+    document.body.appendChild(sheet);
+    const close = () => { sheet.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
+    sheet.querySelector('.save-sheet-x').onclick = close;
+    sheet.addEventListener('click', (e) => { if (e.target === sheet) close(); });
+    sheet.querySelector('#saveSheetFile').onclick = () => downloadBlob(blob, name);
+    const shareBtn = sheet.querySelector('#saveSheetShare');
+    if (shareBtn) shareBtn.onclick = async () => {
+        try {
+            await navigator.share({ files: [file], title: name.replace(/\.png$/, '') });
+            close();
+        } catch (err) {
+            if (err?.name !== 'AbortError') shareBtn.textContent = 'Press and hold the image instead';
+        }
+    };
 }
 
 async function copyModalLink() {

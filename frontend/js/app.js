@@ -760,7 +760,7 @@ function colorVars(g) {
 }
 
 // =============================================================================
-// RENDERING - GAME PREVIEWS (next week)
+// RENDERING - GAME PREVIEWS (upcoming games)
 // =============================================================================
 
 const WEEKDAY_SHORT = { Sunday: 'Sun', Monday: 'Mon', Tuesday: 'Tue', Wednesday: 'Wed', Thursday: 'Thu', Friday: 'Fri', Saturday: 'Sat' };

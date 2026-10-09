@@ -179,6 +179,7 @@ const EXPLAINERS = {
 let state = {
     stats: null,
     previews: null,
+    scorecard: null,
     teamsIndex: null,
     selectedDivision: null,
     teamProfiles: {},
@@ -223,6 +224,7 @@ async function loadAllData() {
 
     // Next week's previews (latest.json points at the current week's file)
     state.teamsIndex = await fetchJSON('teams/index.json');
+    state.scorecard = await fetchJSON('scorecard/public.json');
 
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
@@ -1059,6 +1061,99 @@ function openPreviewModal(gameId) {
         <p class="modal-footnote">Projection uses ${pv.model.seasons.join(', ')} regular seasons, weighted toward ${pv.season}.
         ${pv.assignments?.source?.url ? `Crew assignments via <a href="${pv.assignments.source.url}" target="_blank" rel="noopener">Football Zebras</a>.` : ''}</p>
     `;
+    modal.classList.add('active');
+}
+
+// =============================================================================
+// TRACK RECORD (prediction scorecard)
+// Live = published before kickoff. Backtest = rebuilt afterward using only data
+// available before each week. Always labeled separately.
+// =============================================================================
+
+function renderTrackRecord() {
+    const box = document.getElementById('trackRecord');
+    const sc = state.scorecard;
+    if (!box || !sc) return;
+    const L = sc.live?.summary, B = sc.backtest?.lastSeason?.summary, C = sc.backtest?.currentSeason?.summary;
+    const lastS = sc.backtest?.lastSeason?.season;
+    const item = (label, s, note) => s ? `
+        <div class="tr-item">
+            <div class="tr-label">${label}</div>
+            <div class="tr-nums"><strong>${fmtNum(s.avgMiss, 1)}</strong> avg miss · <strong>${fmtNum(s.hitRate, 0)}%</strong> in range</div>
+            <div class="tr-note">${note}</div>
+        </div>` : '';
+    box.innerHTML = `
+        <div class="tr-head">
+            <span class="tr-title">📏 Track record</span>
+            <button class="info-trigger-inline" onclick="openScorecardModal()">See every game →</button>
+        </div>
+        <div class="tr-items">
+            ${item('Published before kickoff', L, L ? `${L.games} game${L.games === 1 ? '' : 's'} graded so far` : '')}
+            ${item(`${lastS} full season (backtest)`, B, B ? `${B.games} games` : '')}
+            ${item(`${sc.season} so far (backtest)`, C, C ? `${C.games} games` : '')}
+        </div>`;
+}
+
+function openScorecardModal() {
+    const sc = state.scorecard;
+    const modal = document.getElementById('modal');
+    const body = document.getElementById('modalBody');
+    if (!sc || !modal || !body) return;
+    setDeepLink('scorecard', 'all');
+    if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
+    body.removeAttribute('style');
+    document.getElementById('modalTitle').textContent = 'Track Record';
+    document.getElementById('modalSubtitle').textContent = 'How close our flag projections land, graded after every game';
+
+    const tile = (label, v, sub) => `<div class="season-stat"><div class="season-stat-label">${label}</div>
+        <div class="season-stat-value">${v}</div><div class="season-stat-compare">${sub}</div></div>`;
+    const block = (title, s, note) => !s ? '' : `
+        <div class="modal-section">
+            <h4>${title}</h4>
+            <div class="season-league pv-headline">
+                ${tile('Average miss', `${fmtNum(s.avgMiss, 1)}`, 'flags per game')}
+                ${tile('In the likely range', `${fmtNum(s.hitRate, 0)}%`, 'target ≈ 80%')}
+                ${tile('Within ±3 flags', `${fmtNum(s.within3, 0)}%`, `${s.games} games`)}
+                ${s.skillPct != null ? tile('vs guessing the average', `${s.skillPct > 0 ? '+' : ''}${fmtNum(s.skillPct, 1)}%`, `league-average guess misses by ${fmtNum(s.baselineAvgMiss, 1)}`) : ''}
+            </div>
+            ${note ? `<p class="modal-footnote">${note}</p>` : ''}
+        </div>`;
+
+    const live = sc.live?.games || [];
+    const rows = live.map(g => `
+        <tr onclick="openPreviewModal('${g.gameId}')">
+            <td>Wk ${g.week}</td>
+            <td><strong>${g.away} @ ${g.home}</strong></td>
+            <td class="season-prev">${g.crew || '—'}</td>
+            <td>${fmtNum(g.projected, 1)} <span class="modal-muted">(${g.low}–${g.high})</span></td>
+            <td><strong>${g.actual}</strong></td>
+            <td><span class="season-delta ${g.miss > 0 ? 'pct-up' : g.miss < 0 ? 'pct-down' : ''}">${g.miss > 0 ? '+' : ''}${fmtNum(g.miss, 1)}</span></td>
+            <td>${g.inRange ? '✓' : '✗'}</td>
+        </tr>`).join('');
+
+    const weekRows = (sc.backtest?.currentSeason?.byWeek || []).map(w => `
+        <tr><td>Wk ${w.week}</td><td>${w.games}</td><td>${fmtNum(w.avgMiss, 1)}</td><td>${fmtNum(w.hitRate, 0)}%</td></tr>`).join('');
+
+    body.innerHTML = `
+        ${block('Published before kickoff', sc.live?.summary, 'Projections exactly as they appeared on the site before each game. Grows every week.')}
+        <div class="modal-section">
+            <h4>Every published projection</h4>
+            ${rows ? `<div class="table-scroll"><table class="pv-table">
+                <thead><tr><th>Week</th><th>Game</th><th>Crew</th><th>Projected</th><th>Actual</th><th>Miss</th><th>In range</th></tr></thead>
+                <tbody>${rows}</tbody></table></div>
+                <p class="modal-footnote">Miss = actual − projected: <span class="pct-up">red</span> means more flags than projected, <span class="pct-down">green</span> fewer.</p>`
+              : '<p class="modal-footnote">The first published projections are graded after this week\'s games.</p>'}
+        </div>
+        ${block(`${sc.backtest?.lastSeason?.season} full season (backtest)`, sc.backtest?.lastSeason?.summary,
+                'Rebuilt afterward, game by game, using only data that existed before each week. Shows how the model would have done.')}
+        ${block(`${sc.season} so far (backtest)`, sc.backtest?.currentSeason?.summary, '')}
+        ${weekRows ? `<div class="modal-section"><h4>${sc.season} by week (backtest)</h4>
+            <div class="table-scroll"><table class="pv-table"><thead><tr><th>Week</th><th>Games</th><th>Avg miss</th><th>In range</th></tr></thead>
+            <tbody>${weekRows}</tbody></table></div></div>` : ''}
+        <div class="modal-section">
+            <h4>How it's graded</h4>
+            <p class="modal-footnote">${Object.values(sc.definitions || {}).join(' · ')}</p>
+        </div>`;
     modal.classList.add('active');
 }
 
@@ -2046,7 +2141,7 @@ function closeModal() {
 // Works alongside tracking parameters: /?utm_source=x#game=...
 // =============================================================================
 
-const DEEP_LINK_RE = /^#(game|team|crew|division)=(.+)$/;
+const DEEP_LINK_RE = /^#(game|team|crew|division|scorecard)=(.+)$/;
 
 function setDeepLink(key, value) {
     const url = `${location.pathname}${location.search}#${key}=${encodeURIComponent(value)}`;
@@ -2072,6 +2167,7 @@ function handleDeepLink() {
         if (home) { openTeamModal(home); return true; }
     }
     if (key === 'team') { openTeamModal(value.toUpperCase()); return true; }
+    if (key === 'scorecard') { openScorecardModal(); return true; }
     if (key === 'crew') { openRefereeModal(value); return true; }
     if (key === 'division') {
         const div = state.teamsIndex?.divisions?.find(d => d.name.toLowerCase() === value.toLowerCase());
@@ -2139,6 +2235,7 @@ async function init() {
     
     renderSeasonComparison();
     renderPreviews();
+    renderTrackRecord();
     renderCharts();
     renderRefereeCards();   // uses state.season, so render after it loads
     renderTeams();
@@ -2180,6 +2277,7 @@ document.addEventListener('DOMContentLoaded', init);
 window.openRefereeModal = openRefereeModal;
 window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
+window.openScorecardModal = openScorecardModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;
 window.copyModalLink = copyModalLink;

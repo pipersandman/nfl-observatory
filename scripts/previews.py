@@ -72,8 +72,12 @@ def _clamp(v):
     return float(min(FACTOR_CLAMP[1], max(FACTOR_CLAMP[0], v)))
 
 
-def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: Path) -> dict:
-    print("\n🔮 Building game previews...")
+def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: Path, as_of=None) -> dict:
+    """as_of=(season, week): backtest mode. Rebuild the projection for every game of that
+    week using ONLY data from before it (and the crew that actually worked it, since crews
+    are public before kickoff). Writes nothing; returns that week's result."""
+    if not as_of:
+        print("\n🔮 Building game previews...")
 
     schedules = data.get('schedules', pd.DataFrame())
     penalties = data.get('penalties', pd.DataFrame())
@@ -88,21 +92,32 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
     # "upcoming" all evening). If the current week is partly played (e.g. only Monday
     # night is left), preview those remaining games AND the following week.
     reg_sched = schedules[schedules['game_type'] == 'REG']
-    season = int(reg_sched['season'].max())
-    today_et = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
-    upcoming = reg_sched[(reg_sched['season'] == season) & reg_sched['result'].isna()
-                         & (reg_sched['gameday'].astype(str) >= today_et)]
-    if upcoming.empty:
-        print("   … No upcoming regular-season games")
-        return {}
-    up_weeks = sorted(int(w) for w in upcoming['week'].unique())
-    first = up_weeks[0]
-    first_full = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == first)]
-    target_weeks = [first]
-    if len(upcoming[upcoming['week'] == first]) < len(first_full) and len(up_weeks) > 1:
-        target_weeks.append(up_weeks[1])   # current week is partly played -> also preview next week
+    if as_of:
+        season, bt_week = int(as_of[0]), int(as_of[1])
+        upcoming = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == bt_week)]
+        if upcoming.empty:
+            return {}
+        target_weeks = [bt_week]
+    else:
+        season = int(reg_sched['season'].max())
+        today_et = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+        upcoming = reg_sched[(reg_sched['season'] == season) & reg_sched['result'].isna()
+                             & (reg_sched['gameday'].astype(str) >= today_et)]
+        if upcoming.empty:
+            print("   … No upcoming regular-season games")
+            return {}
+        up_weeks = sorted(int(w) for w in upcoming['week'].unique())
+        first = up_weeks[0]
+        first_full = reg_sched[(reg_sched['season'] == season) & (reg_sched['week'] == first)]
+        target_weeks = [first]
+        if len(upcoming[upcoming['week'] == first]) < len(first_full) and len(up_weeks) > 1:
+            target_weeks.append(up_weeks[1])   # current week is partly played -> also preview next week
 
     def load_assignments(week):
+        if as_of:   # backtest: the crew that actually worked each game
+            ids = set(upcoming['game_id'])
+            return ({gid: {'game_id': gid, 'referee': name}
+                     for gid, name in chiefs.set_index('game_id')['crew'].items() if gid in ids}, {})
         path = data_dir / 'assignments' / f'{season}-week-{week:02d}.json'
         out, meta = {}, {}
         if path.exists():
@@ -119,6 +134,8 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
 
     gp = games_played[games_played.get('season_type', 'REG') == 'REG'] if 'season_type' in games_played else games_played
     gp = gp[gp['season'].isin(seasons)][['game_id', 'season', 'week']].drop_duplicates('game_id')
+    if as_of:   # only games played before the backtest week
+        gp = gp[(gp['season'] < season) | (gp['week'] < bt_week)]
     teams_by_game = reg_sched[['game_id', 'home_team', 'away_team', 'gameday', 'gametime', 'weekday', 'div_game']]
     gp = gp.merge(teams_by_game, on='game_id', how='inner')
     gp['w'] = gp['season'].map(weights)
@@ -433,6 +450,8 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
             'games': previews,
         }
 
+        if as_of:
+            return result
         out_dir = data_dir / 'previews'
         out_dir.mkdir(parents=True, exist_ok=True)
         fname = f'{season}-week-{week:02d}.json'
@@ -447,6 +466,8 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
     for wk in target_weeks:
         wk_games = upcoming[upcoming['week'] == wk].copy()
         results.append(build_week(wk, wk_games))
+    if as_of:
+        return results[0]
 
     out_dir = data_dir / 'previews'
     (out_dir / 'latest.json').write_text(json.dumps({

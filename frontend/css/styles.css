@@ -1754,3 +1754,13 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 }
 .modal-share:hover { color: var(--accent); border-color: var(--border-glow); }
 @media (max-width: 520px) { .modal-share { font-size: 0.72rem; padding: 0.35rem 0.6rem; } }
+
+/* Track record strip (prediction scorecard) */
+.track-record { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: var(--gap-lg); }
+.tr-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+.tr-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+.tr-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem 1.5rem; }
+.tr-label { font-size: 0.78rem; color: var(--text-muted); }
+.tr-nums { font-size: 0.95rem; color: var(--text-secondary); margin: 0.15rem 0; }
+.tr-nums strong { color: var(--text-primary); font-family: var(--font-display); font-size: 1.15rem; }
+.tr-note { font-size: 0.72rem; color: var(--text-muted); }

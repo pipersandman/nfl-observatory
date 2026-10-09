@@ -929,7 +929,16 @@ def main():
     # Game previews for the next week (uses Football Zebras assignments if fetched)
     try:
         from previews import build_previews
-        build_previews(data, slugify, get_team_info, NAME_FIXES, DATA_DIR)
+        preview_out = build_previews(data, slugify, get_team_info, NAME_FIXES, DATA_DIR)
+        # Prediction scorecard: freeze upcoming projections, backtest past weeks, grade
+        try:
+            import scorecard
+            scorecard.run(data, build_previews, (slugify, get_team_info, NAME_FIXES, DATA_DIR),
+                          (preview_out or {}).get('weeks', []), DATA_DIR, PROJECT_DIR)
+        except Exception as e:
+            import traceback
+            print(f"   ⚠️  Scorecard failed: {type(e).__name__}: {e}")
+            traceback.print_exc()
     except Exception as e:
         # Previews must never block the main data update
         import traceback

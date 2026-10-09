@@ -1781,3 +1781,19 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .chart-dl button:hover { color: var(--accent); border-color: var(--border-glow); }
 .chart-dl button:disabled { cursor: progress; }
 .chart-dl + .info-trigger-small { margin-left: 0.25rem; }
+
+/* Save-to-Photos sheet (phones) */
+.save-sheet { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.8); display: flex; align-items: flex-end; justify-content: center; }
+.save-sheet-panel {
+    width: 100%; max-width: 520px; max-height: 92vh; display: flex; flex-direction: column; gap: 0.75rem;
+    background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: 20px 20px 0 0;
+    padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+}
+.save-sheet-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
+.save-sheet-x { background: var(--bg-glass); border: 1px solid var(--border-subtle); color: var(--text-secondary); border-radius: 50%; width: 34px; height: 34px; font-size: 0.9rem; }
+.save-sheet-img { overflow: auto; border-radius: 12px; border: 1px solid var(--border-subtle); max-height: 52vh; background: var(--bg-card); }
+.save-sheet-img img { display: block; width: 100%; height: auto; -webkit-touch-callout: default; user-select: auto; }
+.save-sheet-btn { font: 600 1.05rem var(--font-body); background: var(--accent); color: #111; border: 0; border-radius: 12px; padding: 0.9rem; }
+.save-sheet-hint { font-size: 0.82rem; color: var(--text-secondary); text-align: center; line-height: 1.5; }
+.save-sheet-hint b { color: var(--text-primary); }
+.save-sheet-link { background: none; border: 0; color: var(--text-muted); font-size: 0.8rem; text-decoration: underline; padding: 0.25rem; }

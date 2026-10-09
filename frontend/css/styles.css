@@ -1769,3 +1769,15 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
 .modal-actions .modal-share { margin-top: 0; }
 .modal-share:disabled { opacity: 0.6; cursor: progress; }
+
+/* Chart download buttons (PNG / PDF) */
+.chart-header { gap: 0.5rem; }
+.chart-dl { display: inline-flex; gap: 0.25rem; margin-left: auto; }
+.chart-dl button {
+    font: 600 0.68rem var(--font-mono); letter-spacing: 0.04em; color: var(--text-muted);
+    background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: 6px;
+    padding: 0.2rem 0.45rem; cursor: pointer; transition: color var(--transition-base), border-color var(--transition-base);
+}
+.chart-dl button:hover { color: var(--accent); border-color: var(--border-glow); }
+.chart-dl button:disabled { cursor: progress; }
+.chart-dl + .info-trigger-small { margin-left: 0.25rem; }

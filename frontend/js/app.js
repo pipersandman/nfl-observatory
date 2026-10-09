@@ -2280,6 +2280,129 @@ async function exportModal(format) {
     }
 }
 
+// =============================================================================
+// CHART DOWNLOADS — every chart on the page gets PNG / PDF buttons
+// The export is a branded card: chart title, the chart at 3x resolution, and a footer.
+// =============================================================================
+
+function slugify_(t) { return (t || 'chart').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+function addChartDownloadButtons() {
+    document.querySelectorAll('main .chart-container, section .chart-container').forEach(box => {
+        if (box.closest('.modal-overlay') || box.querySelector('.chart-dl')) return;
+        const canvas = box.querySelector('canvas');
+        const header = box.querySelector('.chart-header');
+        if (!canvas || !header) return;
+        const wrap = document.createElement('span');
+        wrap.className = 'chart-dl';
+        wrap.innerHTML = `<button title="Download PNG" data-fmt="png">PNG</button><button title="Download PDF" data-fmt="pdf">PDF</button>`;
+        wrap.querySelectorAll('button').forEach(b => b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            downloadChart(box, b.dataset.fmt, b);
+        }));
+        const help = header.querySelector('.info-trigger-small');
+        help ? header.insertBefore(wrap, help) : header.appendChild(wrap);
+    });
+}
+
+function chartImage(canvas, ratio = 3) {
+    // Re-render the chart at high resolution, grab it, then restore the on-screen chart
+    const chart = window.Chart?.getChart?.(canvas);
+    if (!chart) return { src: canvas.toDataURL('image/png'), w: canvas.clientWidth, h: canvas.clientHeight };
+    const prev = chart.options.devicePixelRatio;
+    chart.options.devicePixelRatio = ratio;
+    chart.resize();
+    chart.update('none');
+    const src = chart.toBase64Image('image/png', 1);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    chart.options.devicePixelRatio = prev;
+    chart.resize();
+    chart.update('none');
+    return { src, w, h };
+}
+
+async function composeChartCard(box) {
+    const title = box.querySelector('.chart-title')?.textContent.trim() || 'Chart';
+    const section = box.closest('section');
+    const kicker = section?.querySelector('.section-number')?.textContent.trim() || '';
+    const img = chartImage(box.querySelector('canvas'));
+    const css = getComputedStyle(document.documentElement);
+    const v = (n, f) => css.getPropertyValue(n).trim() || f;
+    const S = 3, pad = 40;
+    const W = Math.round(Math.max(img.w + pad * 2, 720));          // a minimum width keeps titles and footers readable
+    const inner = W - pad * 2;
+
+    // Measure text first so the title shrinks to fit and the footer wraps instead of overlapping
+    const m = document.createElement('canvas').getContext('2d');
+    let tSize = 30;
+    m.font = `700 ${tSize}px ${v('--font-display', 'sans-serif')}`;
+    while (m.measureText(title).width > inner && tSize > 16) { tSize -= 1; m.font = `700 ${tSize}px ${v('--font-display', 'sans-serif')}`; }
+    const when = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const right = `${when} · data through ${state.season?.currentSeason ?? ''} Week ${state.season?.throughWeek ?? ''}`;
+    m.font = `600 15px ${v('--font-body', 'sans-serif')}`; const leftW = 26 + m.measureText('nflobservatory.com').width;
+    m.font = `400 13px ${v('--font-body', 'sans-serif')}`; const rightW = m.measureText(right).width;
+    const footTwoLines = leftW + rightW + 24 > inner;
+    const headH = 58 + tSize + 12, footH = footTwoLines ? 82 : 60;
+    const H = Math.round(headH + img.h + footH + 16);
+
+    const c = document.createElement('canvas');
+    c.width = W * S; c.height = H * S;
+    const ctx = c.getContext('2d');
+    ctx.scale(S, S);
+    ctx.fillStyle = v('--bg-card', '#16181b'); ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = v('--accent', '#ffc400');
+    ctx.font = `600 12px ${v('--font-mono', 'monospace')}`;
+    ctx.fillText(kicker.toUpperCase(), pad, pad + 4);
+    ctx.fillStyle = v('--text-primary', '#ecebe7');
+    ctx.font = `700 ${tSize}px ${v('--font-display', 'sans-serif')}`;
+    ctx.fillText(title, pad, pad + 14 + tSize);
+
+    const im = new Image();
+    await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = img.src; });
+    ctx.drawImage(im, Math.round((W - img.w) / 2), headH, img.w, img.h);
+
+    const fy = headH + img.h + 22;
+    ctx.strokeStyle = v('--border-subtle', '#262a2f'); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad, fy); ctx.lineTo(W - pad, fy); ctx.stroke();
+    const ly = fy + 30;
+    ctx.save(); ctx.translate(pad + 8, ly - 5); ctx.rotate(-0.31); ctx.fillStyle = '#ffc400'; ctx.fillRect(-6, -6, 12, 12); ctx.restore();
+    ctx.fillStyle = v('--text-primary', '#ecebe7'); ctx.font = `600 15px ${v('--font-body', 'sans-serif')}`;
+    ctx.fillText('nflobservatory.com', pad + 26, ly);
+    ctx.fillStyle = v('--text-muted', '#6d7178'); ctx.font = `400 13px ${v('--font-body', 'sans-serif')}`;
+    if (footTwoLines) ctx.fillText(right, pad, ly + 24);
+    else ctx.fillText(right, W - pad - rightW, ly);
+    return { canvas: c, title, w: W, h: H };
+}
+
+async function downloadChart(box, fmt, btn) {
+    const label = btn.textContent;
+    btn.disabled = true; btn.textContent = '…';
+    try {
+        const { canvas, title, w, h } = await composeChartCard(box);
+        const name = `nfl-observatory-${slugify_(title)}.${fmt}`;
+        if (fmt === 'png') {
+            const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob); a.download = name;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        } else {
+            await loadScriptOnce(EXPORT_LIBS.jspdf);
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: w > h ? 'landscape' : 'portrait', unit: 'px', format: [w, h], hotfixes: ['px_scaling'] });
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, w, h);   // JPEG keeps the PDF small
+            pdf.setProperties({ title, creator: 'nflobservatory.com' });
+            pdf.save(name);
+        }
+        btn.textContent = '✓';
+    } catch (err) {
+        console.error('Chart download failed:', err);
+        btn.textContent = '✗';
+    } finally {
+        setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 1500);
+    }
+}
+
 async function copyModalLink() {
     const btn = document.getElementById('modalShare');
     try {
@@ -2342,6 +2465,9 @@ async function init() {
     renderInsightsCarousel();
     
     initScrollAnimations();
+
+    // PNG / PDF download buttons on every chart (charts exist by now)
+    addChartDownloadButtons();
 
     // Open a specific report if the URL asks for one (e.g. from a social post)
     handleDeepLink();

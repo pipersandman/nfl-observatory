@@ -1797,3 +1797,43 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .save-sheet-hint { font-size: 0.82rem; color: var(--text-secondary); text-align: center; line-height: 1.5; }
 .save-sheet-hint b { color: var(--text-primary); }
 .save-sheet-link { background: none; border: 0; color: var(--text-muted); font-size: 0.8rem; text-decoration: underline; padding: 0.25rem; }
+
+/* -----------------------------------------------------------------------------
+   Phones: report pop-ups go full-screen
+   (before: page padding + pop-up margin + inner padding left a narrow column)
+   ----------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+    .modal-overlay { padding: 0; align-items: stretch; }
+    .modal-overlay .modal {
+        margin: 0; width: 100%; max-width: 100%;
+        height: 100vh; height: 100dvh; max-height: 100vh; max-height: 100dvh;
+        border-radius: 0; border: 0;
+        -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    }
+    /* Compact header that scrolls away; the close button stays pinned */
+    .modal-header { position: static; padding: calc(0.9rem + env(safe-area-inset-top, 0px)) 1rem 0.9rem; }
+    .modal-close {
+        position: fixed; z-index: 5; top: calc(0.6rem + env(safe-area-inset-top, 0px)); right: 0.6rem;
+        width: 38px; height: 38px; background: rgba(22, 24, 27, 0.92);
+    }
+    .modal-title { font-size: 1.55rem; padding-right: 2.75rem; }
+    .modal-subtitle { font-size: 0.85rem; }
+    .modal-actions { margin-top: 0.6rem; gap: 0.4rem; }
+    .modal-body { padding: 1rem 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+    .modal-section { margin-bottom: 1.25rem; }
+
+    /* Stat tiles: two per row instead of one */
+    .modal .season-league, .modal .pv-headline, .modal .team-tiles { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .modal .season-stat { padding: 0.8rem 0.85rem; border-radius: 12px; }
+    .modal .season-stat-label { font-size: 0.74rem; }
+    .modal .season-stat-value, .modal .pv-headline .season-stat-value, .modal .team-tiles .season-stat-value { font-size: 1.55rem; }
+    .modal .season-stat-compare { font-size: 0.7rem; }
+    .modal .pv-crew-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+
+    .modal .chart-container { padding: 0.9rem; }
+    .modal .modal-tendency { padding: 0.85rem; }
+    .modal .modal-tendency p { font-size: 0.9rem; }
+    .modal .pv-table th, .modal .pv-table td { padding: 0.5rem 0.55rem; font-size: 0.8rem; }
+    .modal .modal-stats-grid { gap: 0.6rem; }
+    .modal .game-item { padding-left: 0; padding-right: 0; }
+}

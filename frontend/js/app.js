@@ -881,7 +881,8 @@ function openPreviewModal(gameId) {
 
     // Drivers (+/- flags vs a league-average matchup)
     const maxDrv = Math.max(...p.drivers.map(d => Math.abs(d.value)), 0.5);
-    const drivers = p.drivers.map(d => `
+    const drivers = p.drivers.map(d0 => ({ ...d0, value: Math.abs(d0.value) < 0.05 ? 0 : d0.value }))   // no "-0.0"
+                             .map(d => `
         <div class="drv-row">
             <div class="drv-label">${d.label}</div>
             <div class="drv-track">

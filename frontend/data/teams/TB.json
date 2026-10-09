@@ -4,21 +4,21 @@
   "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
   "division": "NFC South",
   "season": 2026,
-  "record": "0-4",
-  "leaguePerGame": 7.51,
+  "record": "1-4",
+  "leaguePerGame": 7.55,
   "current": {
-    "games": 4,
-    "penalties": 26,
-    "yards": 199,
-    "perGame": 6.5,
-    "yardsPerGame": 49.8,
-    "offensePerGame": 4.0,
-    "defensePerGame": 2.5,
-    "drawnPerGame": 8.0,
-    "drawnYardsPerGame": 65.0,
-    "netPerGame": 1.5,
+    "games": 5,
+    "penalties": 40,
+    "yards": 291,
+    "perGame": 8.0,
+    "yardsPerGame": 58.2,
+    "offensePerGame": 5.2,
+    "defensePerGame": 2.8,
+    "drawnPerGame": 7.8,
+    "drawnYardsPerGame": 63.4,
+    "netPerGame": -0.2,
     "homePerGame": 6.0,
-    "awayPerGame": 8.0
+    "awayPerGame": 11.0
   },
   "lastSeason": {
     "games": 17,
@@ -57,117 +57,132 @@
     2025
   ],
   "rank": {
-    "current": 26,
+    "current": 9,
     "lastSeason": 28,
     "of": 32
   },
   "committedTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 2.0,
-      "currentCount": 8,
+      "currentPerGame": 2.6,
+      "currentCount": 13,
       "priorPerGame": 1.18
     },
     {
       "type": "False Start",
-      "currentPerGame": 1.25,
-      "currentCount": 5,
+      "currentPerGame": 1.8,
+      "currentCount": 9,
       "priorPerGame": 1.17
     },
     {
       "type": "Unnecessary Roughness",
-      "currentPerGame": 0.75,
+      "currentPerGame": 0.6,
       "currentCount": 3,
       "priorPerGame": 0.21
     },
     {
-      "type": "Defensive Holding",
-      "currentPerGame": 0.5,
-      "currentCount": 2,
-      "priorPerGame": 0.36
-    },
-    {
       "type": "Defensive Offside",
-      "currentPerGame": 0.25,
-      "currentCount": 1,
+      "currentPerGame": 0.4,
+      "currentCount": 2,
       "priorPerGame": 0.43
     },
     {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.25,
-      "currentCount": 1,
+      "currentPerGame": 0.4,
+      "currentCount": 2,
       "priorPerGame": 0.42
     },
     {
-      "type": "Delay of Game",
-      "currentPerGame": 0.25,
-      "currentCount": 1,
-      "priorPerGame": 0.18
+      "type": "Defensive Holding",
+      "currentPerGame": 0.4,
+      "currentCount": 2,
+      "priorPerGame": 0.36
     },
     {
-      "type": "Chop Block",
-      "currentPerGame": 0.25,
-      "currentCount": 1,
-      "priorPerGame": 0.0
+      "type": "Neutral Zone Infraction",
+      "currentPerGame": 0.4,
+      "currentCount": 2,
+      "priorPerGame": 0.34
+    },
+    {
+      "type": "Delay of Game",
+      "currentPerGame": 0.4,
+      "currentCount": 2,
+      "priorPerGame": 0.18
     }
   ],
   "drawnTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 1.75,
+      "currentPerGame": 1.8,
       "priorPerGame": 1.0
     },
     {
       "type": "False Start",
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.8,
       "priorPerGame": 0.99
     },
     {
       "type": "Delay of Game",
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.8,
       "priorPerGame": 0.33
     },
     {
       "type": "Defensive Offside",
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.8,
       "priorPerGame": 0.2
     },
     {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.6,
       "priorPerGame": 0.75
     },
     {
       "type": "Face Mask",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.6,
       "priorPerGame": 0.19
     }
   ],
   "quarters": [
     {
       "quarter": 1,
-      "currentPerGame": 0.25,
+      "currentPerGame": 0.8,
       "priorPerGame": 1.25
     },
     {
       "quarter": 2,
-      "currentPerGame": 2.25,
+      "currentPerGame": 2.8,
       "priorPerGame": 1.66
     },
     {
       "quarter": 3,
-      "currentPerGame": 1.5,
+      "currentPerGame": 2.0,
       "priorPerGame": 1.29
     },
     {
       "quarter": 4,
-      "currentPerGame": 2.5,
+      "currentPerGame": 2.4,
       "priorPerGame": 1.53
     }
   ],
   "players": [
     {
       "player": "G.Barton",
+      "count": 5,
+      "yards": 45,
+      "types": [
+        {
+          "type": "Offensive Holding",
+          "count": 4
+        },
+        {
+          "type": "False Start",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "player": "B.Bredeson",
       "count": 4,
       "yards": 35,
       "types": [
@@ -201,6 +216,32 @@
       ]
     },
     {
+      "player": "L.Goedeke",
+      "count": 3,
+      "yards": 22,
+      "types": [
+        {
+          "type": "Offensive Holding",
+          "count": 2
+        },
+        {
+          "type": "False Start",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "player": "T.Wirfs",
+      "count": 3,
+      "yards": 15,
+      "types": [
+        {
+          "type": "False Start",
+          "count": 3
+        }
+      ]
+    },
+    {
       "player": "C.Mauch",
       "count": 2,
       "yards": 15,
@@ -216,57 +257,28 @@
       ]
     },
     {
-      "player": "T.Wirfs",
+      "player": "C.Kancey",
+      "count": 2,
+      "yards": 10,
+      "types": [
+        {
+          "type": "Encroachment",
+          "count": 1
+        },
+        {
+          "type": "Illegal Use of Hands",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "player": "C.Otton",
       "count": 2,
       "yards": 10,
       "types": [
         {
           "type": "False Start",
           "count": 2
-        }
-      ]
-    },
-    {
-      "player": "K.Knowles",
-      "count": 1,
-      "yards": 15,
-      "types": [
-        {
-          "type": "Unnecessary Roughness",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "Y.Diaby",
-      "count": 1,
-      "yards": 15,
-      "types": [
-        {
-          "type": "Face Mask",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "B.Irving",
-      "count": 1,
-      "yards": 14,
-      "types": [
-        {
-          "type": "Chop Block",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "B.Bredeson",
-      "count": 1,
-      "yards": 10,
-      "types": [
-        {
-          "type": "Offensive Holding",
-          "count": 1
         }
       ]
     }
@@ -476,14 +488,27 @@
     },
     {
       "season": 2026,
-      "games": 4,
-      "perGame": 6.5,
-      "yardsPerGame": 49.8,
-      "drawnPerGame": 8.0,
-      "rank": 26
+      "games": 5,
+      "perGame": 8.0,
+      "yardsPerGame": 58.2,
+      "drawnPerGame": 7.8,
+      "rank": 9
     }
   ],
   "games": [
+    {
+      "gameId": "2026_05_TB_DAL",
+      "week": 5,
+      "date": "2026-10-08",
+      "opponent": "DAL",
+      "home": false,
+      "score": "24-16",
+      "result": "W",
+      "flags": 14,
+      "yards": 92,
+      "opponentFlags": 7,
+      "crew": null
+    },
     {
       "gameId": "2026_04_GB_TB",
       "week": 4,
@@ -538,11 +563,11 @@
     }
   ],
   "nextGame": {
-    "gameId": "2026_05_TB_DAL",
-    "week": 5,
-    "date": "2026-10-08",
-    "opponent": "DAL",
-    "home": false
+    "gameId": "2026_06_PIT_TB",
+    "week": 6,
+    "date": "2026-10-18",
+    "opponent": "PIT",
+    "home": true
   },
-  "generatedAt": "2026-10-07T15:22:33+00:00"
+  "generatedAt": "2026-10-09T06:06:50+00:00"
 }

@@ -1,0 +1,333 @@
+{
+  "season": 2026,
+  "generatedAt": "2026-10-09T06:07:12+00:00",
+  "definitions": {
+    "avgMiss": "Average gap between projected and actual accepted penalties per game",
+    "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
+    "skillPct": "How much smaller our average miss is than guessing the league average every game",
+    "live": "Projections published on the site before kickoff",
+    "backtest": "Projections reconstructed afterward using only data available before each week"
+  },
+  "live": {
+    "summary": {
+      "games": 2,
+      "avgMiss": 2.95,
+      "hitRate": 100.0,
+      "within3": 100.0,
+      "baselineAvgMiss": 2.3,
+      "skillPct": -28.3
+    },
+    "byWeek": [
+      {
+        "season": 2026,
+        "week": 4,
+        "games": 1,
+        "avgMiss": 3.0,
+        "hitRate": 100.0,
+        "within3": 100.0,
+        "baselineAvgMiss": 2.3,
+        "skillPct": -30.4
+      },
+      {
+        "season": 2026,
+        "week": 5,
+        "games": 1,
+        "avgMiss": 2.9,
+        "hitRate": 100.0,
+        "within3": 100.0,
+        "baselineAvgMiss": NaN,
+        "skillPct": NaN
+      }
+    ],
+    "games": [
+      {
+        "gameId": "2026_05_TB_DAL",
+        "season": 2026,
+        "week": 5,
+        "away": "TB",
+        "home": "DAL",
+        "crew": "Alex Moore",
+        "source": "live-post",
+        "projected": 18.1,
+        "low": 12,
+        "high": 25,
+        "actual": 21,
+        "miss": 2.9,
+        "inRange": true,
+        "baselineMiss": null,
+        "homeProjected": 9.4,
+        "awayProjected": 8.8,
+        "homeActual": 7,
+        "awayActual": 14
+      },
+      {
+        "gameId": "2026_04_ATL_NO",
+        "season": 2026,
+        "week": 4,
+        "away": "ATL",
+        "home": "NO",
+        "crew": "Land Clark",
+        "source": "live-post",
+        "projected": 13.0,
+        "low": 8,
+        "high": 19,
+        "actual": 16,
+        "miss": 3.0,
+        "inRange": true,
+        "baselineMiss": 2.3,
+        "homeProjected": 6.5,
+        "awayProjected": 6.6,
+        "homeActual": 8,
+        "awayActual": 8
+      }
+    ]
+  },
+  "backtest": {
+    "currentSeason": {
+      "season": 2026,
+      "summary": {
+        "games": 64,
+        "avgMiss": 3.51,
+        "hitRate": 85.9,
+        "within3": 56.2,
+        "baselineAvgMiss": 3.57,
+        "skillPct": 1.7
+      },
+      "byWeek": [
+        {
+          "season": 2026,
+          "week": 1,
+          "games": 16,
+          "avgMiss": 2.85,
+          "hitRate": 93.8,
+          "within3": 68.8,
+          "baselineAvgMiss": 3.19,
+          "skillPct": 10.6
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "games": 16,
+          "avgMiss": 3.39,
+          "hitRate": 81.2,
+          "within3": 68.8,
+          "baselineAvgMiss": 3.04,
+          "skillPct": -11.7
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "games": 16,
+          "avgMiss": 3.38,
+          "hitRate": 93.8,
+          "within3": 56.2,
+          "baselineAvgMiss": 3.29,
+          "skillPct": -2.9
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "games": 16,
+          "avgMiss": 4.41,
+          "hitRate": 75.0,
+          "within3": 31.2,
+          "baselineAvgMiss": 4.78,
+          "skillPct": 7.6
+        }
+      ]
+    },
+    "lastSeason": {
+      "season": 2025,
+      "summary": {
+        "games": 272,
+        "avgMiss": 3.43,
+        "hitRate": 80.1,
+        "within3": 51.8,
+        "baselineAvgMiss": 3.49,
+        "skillPct": 1.8
+      },
+      "byWeek": [
+        {
+          "season": 2025,
+          "week": 1,
+          "games": 16,
+          "avgMiss": 3.86,
+          "hitRate": 75.0,
+          "within3": 50.0,
+          "baselineAvgMiss": 3.61,
+          "skillPct": -6.9
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "games": 16,
+          "avgMiss": 3.54,
+          "hitRate": 75.0,
+          "within3": 62.5,
+          "baselineAvgMiss": 3.65,
+          "skillPct": 2.9
+        },
+        {
+          "season": 2025,
+          "week": 3,
+          "games": 16,
+          "avgMiss": 3.37,
+          "hitRate": 87.5,
+          "within3": 56.2,
+          "baselineAvgMiss": 3.48,
+          "skillPct": 3.1
+        },
+        {
+          "season": 2025,
+          "week": 4,
+          "games": 16,
+          "avgMiss": 2.84,
+          "hitRate": 87.5,
+          "within3": 62.5,
+          "baselineAvgMiss": 2.86,
+          "skillPct": 0.7
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "games": 14,
+          "avgMiss": 2.7,
+          "hitRate": 92.9,
+          "within3": 64.3,
+          "baselineAvgMiss": 2.81,
+          "skillPct": 4.1
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "games": 15,
+          "avgMiss": 3.05,
+          "hitRate": 86.7,
+          "within3": 53.3,
+          "baselineAvgMiss": 3.0,
+          "skillPct": -1.6
+        },
+        {
+          "season": 2025,
+          "week": 7,
+          "games": 15,
+          "avgMiss": 3.14,
+          "hitRate": 86.7,
+          "within3": 60.0,
+          "baselineAvgMiss": 3.72,
+          "skillPct": 15.6
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "games": 13,
+          "avgMiss": 2.79,
+          "hitRate": 84.6,
+          "within3": 53.8,
+          "baselineAvgMiss": 3.05,
+          "skillPct": 8.3
+        },
+        {
+          "season": 2025,
+          "week": 9,
+          "games": 14,
+          "avgMiss": 3.91,
+          "hitRate": 71.4,
+          "within3": 35.7,
+          "baselineAvgMiss": 3.54,
+          "skillPct": -10.5
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "games": 14,
+          "avgMiss": 3.42,
+          "hitRate": 85.7,
+          "within3": 57.1,
+          "baselineAvgMiss": 4.03,
+          "skillPct": 15.1
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "games": 15,
+          "avgMiss": 3.93,
+          "hitRate": 66.7,
+          "within3": 40.0,
+          "baselineAvgMiss": 3.35,
+          "skillPct": -17.5
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "games": 14,
+          "avgMiss": 4.51,
+          "hitRate": 71.4,
+          "within3": 35.7,
+          "baselineAvgMiss": 4.61,
+          "skillPct": 2.2
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "games": 16,
+          "avgMiss": 3.72,
+          "hitRate": 81.2,
+          "within3": 37.5,
+          "baselineAvgMiss": 3.9,
+          "skillPct": 4.6
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "games": 14,
+          "avgMiss": 2.24,
+          "hitRate": 92.9,
+          "within3": 78.6,
+          "baselineAvgMiss": 2.19,
+          "skillPct": -2.3
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "games": 16,
+          "avgMiss": 4.4,
+          "hitRate": 62.5,
+          "within3": 25.0,
+          "baselineAvgMiss": 4.54,
+          "skillPct": 3.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "games": 16,
+          "avgMiss": 3.49,
+          "hitRate": 81.2,
+          "within3": 50.0,
+          "baselineAvgMiss": 3.56,
+          "skillPct": 2.1
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "games": 16,
+          "avgMiss": 3.41,
+          "hitRate": 75.0,
+          "within3": 50.0,
+          "baselineAvgMiss": 3.5,
+          "skillPct": 2.7
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "games": 16,
+          "avgMiss": 3.21,
+          "hitRate": 81.2,
+          "within3": 62.5,
+          "baselineAvgMiss": 3.28,
+          "skillPct": 2.1
+        }
+      ]
+    }
+  }
+}

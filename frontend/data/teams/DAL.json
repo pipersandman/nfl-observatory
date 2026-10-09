@@ -4,20 +4,20 @@
   "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
   "division": "NFC East",
   "season": 2026,
-  "record": "2-2",
-  "leaguePerGame": 7.51,
+  "record": "2-3",
+  "leaguePerGame": 7.55,
   "current": {
-    "games": 4,
-    "penalties": 27,
-    "yards": 257,
-    "perGame": 6.75,
-    "yardsPerGame": 64.2,
-    "offensePerGame": 3.0,
-    "defensePerGame": 3.75,
-    "drawnPerGame": 9.25,
-    "drawnYardsPerGame": 80.0,
-    "netPerGame": 2.5,
-    "homePerGame": 6.0,
+    "games": 5,
+    "penalties": 34,
+    "yards": 314,
+    "perGame": 6.8,
+    "yardsPerGame": 62.8,
+    "offensePerGame": 2.6,
+    "defensePerGame": 4.2,
+    "drawnPerGame": 10.2,
+    "drawnYardsPerGame": 82.4,
+    "netPerGame": 3.4,
+    "homePerGame": 6.33,
     "awayPerGame": 7.5
   },
   "lastSeason": {
@@ -57,115 +57,136 @@
     2025
   ],
   "rank": {
-    "current": 22,
+    "current": 23,
     "lastSeason": 1,
     "of": 32
   },
   "committedTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 1.25,
-      "currentCount": 5,
+      "currentPerGame": 1.4,
+      "currentCount": 7,
       "priorPerGame": 1.41
     },
     {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.75,
-      "currentCount": 3,
+      "currentPerGame": 0.8,
+      "currentCount": 4,
       "priorPerGame": 0.48
     },
     {
+      "type": "Neutral Zone Infraction",
+      "currentPerGame": 0.6,
+      "currentCount": 3,
+      "priorPerGame": 0.26
+    },
+    {
       "type": "False Start",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.4,
       "currentCount": 2,
       "priorPerGame": 1.17
     },
     {
       "type": "Defensive Offside",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.4,
       "currentCount": 2,
       "priorPerGame": 0.52
     },
     {
       "type": "Unnecessary Roughness",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.4,
       "currentCount": 2,
       "priorPerGame": 0.47
     },
     {
-      "type": "Neutral Zone Infraction",
-      "currentPerGame": 0.5,
+      "type": "Defensive Holding",
+      "currentPerGame": 0.4,
       "currentCount": 2,
-      "priorPerGame": 0.26
+      "priorPerGame": 0.38
+    },
+    {
+      "type": "Face Mask",
+      "currentPerGame": 0.4,
+      "currentCount": 2,
+      "priorPerGame": 0.19
     },
     {
       "type": "Kickoff Out of Bounds",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.4,
       "currentCount": 2,
       "priorPerGame": 0.04
-    },
-    {
-      "type": "Defensive Holding",
-      "currentPerGame": 0.25,
-      "currentCount": 1,
-      "priorPerGame": 0.38
     }
   ],
   "drawnTypes": [
     {
       "type": "False Start",
-      "currentPerGame": 2.0,
+      "currentPerGame": 2.4,
       "priorPerGame": 1.43
     },
     {
-      "type": "Defensive Pass Interference",
-      "currentPerGame": 1.5,
-      "priorPerGame": 0.77
-    },
-    {
       "type": "Offensive Holding",
-      "currentPerGame": 1.25,
+      "currentPerGame": 2.0,
       "priorPerGame": 1.19
     },
     {
+      "type": "Defensive Pass Interference",
+      "currentPerGame": 1.4,
+      "priorPerGame": 0.77
+    },
+    {
+      "type": "Defensive Offside",
+      "currentPerGame": 0.6,
+      "priorPerGame": 0.32
+    },
+    {
       "type": "Ineligible Downfield Pass",
-      "currentPerGame": 0.75,
+      "currentPerGame": 0.6,
       "priorPerGame": 0.19
     },
     {
-      "type": "Unnecessary Roughness",
-      "currentPerGame": 0.5,
-      "priorPerGame": 0.33
-    },
-    {
-      "type": "Face Mask",
-      "currentPerGame": 0.5,
-      "priorPerGame": 0.11
+      "type": "Illegal Use of Hands",
+      "currentPerGame": 0.4,
+      "priorPerGame": 0.09
     }
   ],
   "quarters": [
     {
       "quarter": 1,
-      "currentPerGame": 1.25,
+      "currentPerGame": 1.4,
       "priorPerGame": 1.55
     },
     {
       "quarter": 2,
-      "currentPerGame": 1.75,
+      "currentPerGame": 2.0,
       "priorPerGame": 2.03
     },
     {
       "quarter": 3,
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.8,
       "priorPerGame": 1.53
     },
     {
       "quarter": 4,
-      "currentPerGame": 2.75,
+      "currentPerGame": 2.6,
       "priorPerGame": 1.73
     }
   ],
   "players": [
+    {
+      "player": "D.Bland",
+      "count": 3,
+      "yards": 29,
+      "types": [
+        {
+          "type": "Defensive Holding",
+          "count": 2
+        },
+        {
+          "type": "Defensive Pass Interference",
+          "count": 1
+        }
+      ]
+    },
     {
       "player": "B.Aubrey",
       "count": 3,
@@ -189,21 +210,6 @@
         {
           "type": "Defensive Pass Interference",
           "count": 2
-        }
-      ]
-    },
-    {
-      "player": "D.Bland",
-      "count": 2,
-      "yards": 24,
-      "types": [
-        {
-          "type": "Defensive Holding",
-          "count": 1
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "count": 1
         }
       ]
     },
@@ -253,23 +259,27 @@
       ]
     },
     {
+      "player": "S.Revel",
+      "count": 2,
+      "yards": 12,
+      "types": [
+        {
+          "type": "Illegal Contact",
+          "count": 1
+        },
+        {
+          "type": "Defensive Pass Interference",
+          "count": 1
+        }
+      ]
+    },
+    {
       "player": "D.Overshown",
       "count": 1,
       "yards": 15,
       "types": [
         {
           "type": "Unnecessary Roughness",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "J.Williams",
-      "count": 1,
-      "yards": 15,
-      "types": [
-        {
-          "type": "Taunting",
           "count": 1
         }
       ]
@@ -480,14 +490,27 @@
     },
     {
       "season": 2026,
-      "games": 4,
-      "perGame": 6.75,
-      "yardsPerGame": 64.2,
-      "drawnPerGame": 9.25,
-      "rank": 22
+      "games": 5,
+      "perGame": 6.8,
+      "yardsPerGame": 62.8,
+      "drawnPerGame": 10.2,
+      "rank": 23
     }
   ],
   "games": [
+    {
+      "gameId": "2026_05_TB_DAL",
+      "week": 5,
+      "date": "2026-10-08",
+      "opponent": "TB",
+      "home": true,
+      "score": "16-24",
+      "result": "L",
+      "flags": 7,
+      "yards": 57,
+      "opponentFlags": 14,
+      "crew": null
+    },
     {
       "gameId": "2026_04_DAL_HOU",
       "week": 4,
@@ -542,11 +565,11 @@
     }
   ],
   "nextGame": {
-    "gameId": "2026_05_TB_DAL",
-    "week": 5,
-    "date": "2026-10-08",
-    "opponent": "TB",
-    "home": true
+    "gameId": "2026_06_DAL_GB",
+    "week": 6,
+    "date": "2026-10-18",
+    "opponent": "GB",
+    "home": false
   },
-  "generatedAt": "2026-10-07T15:22:33+00:00"
+  "generatedAt": "2026-10-09T06:06:49+00:00"
 }

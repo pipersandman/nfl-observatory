@@ -1764,3 +1764,8 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .tr-nums { font-size: 0.95rem; color: var(--text-secondary); margin: 0.15rem 0; }
 .tr-nums strong { color: var(--text-primary); font-family: var(--font-display); font-size: 1.15rem; }
 .tr-note { font-size: 0.72rem; color: var(--text-muted); }
+
+/* Report pop-up actions: Copy link, Export PNG, Export PDF */
+.modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.modal-actions .modal-share { margin-top: 0; }
+.modal-share:disabled { opacity: 0.6; cursor: progress; }

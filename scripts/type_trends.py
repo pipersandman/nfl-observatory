@@ -82,7 +82,11 @@ def build_type_trends(data: dict) -> dict:
             {'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size']),
              'complete': bool(r['size'] >= sched_n.get(w, 0))} for w, r in d.iterrows()]})
     pw = gw[gw['season'].isin(prior)].groupby('week')['flags'].agg(['mean', 'size'])
+    # Typical range per week across past seasons (lowest and highest season)
+    pr = gw[gw['season'].isin(prior)].groupby(['season', 'week'])['flags'].mean().reset_index()
+    rng = pr.groupby('week')['flags'].agg(['min', 'max'])
     weekly = {
+        'priorRange': [{'week': int(w), 'low': _r(r['min'], 2), 'high': _r(r['max'], 2)} for w, r in rng.iterrows()],
         'seasons': weekly_seasons,
         'priorAverage': [{'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size'])} for w, r in pw.iterrows()],
         'priorLabel': f"{prior[0]}–{str(prior[-1])[2:]} avg" if prior else None,

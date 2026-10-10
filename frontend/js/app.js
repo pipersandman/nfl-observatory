@@ -101,12 +101,13 @@ const EXPLAINERS = {
         title: 'Penalties Per Game By Week Of Season',
         content: `
             <p>Average accepted penalties per game for each week of the regular season.</p>
-            <p><strong>Yellow</strong> is this season, week by week. <strong>White</strong> is the average of all past
-            seasons for that week. <strong>Gray</strong> lines are each past season.</p>
-            <p>Historically, flags run highest in the first month and fade as the season goes on, with the last
-            two weeks lowest of all (resting starters and games with nothing at stake play a part). The data can't
-            separate player discipline from officiating or game context, and some seasons (2024) broke the pattern.
-            A week that's still in progress is shown as a hollow point.</p>
+            <p><strong>Yellow</strong> is this season. <strong>White</strong> is the average of past seasons for that
+            week, and the <strong>shaded band</strong> shows the lowest-to-highest past season, so you can see what's normal.
+            Add any past season with the season buttons above the chart (this season is always shown), switch the average or
+            range off, or pick "All seasons".</p>
+            <p>Historically, flags run highest early and fade late, with the last two weeks lowest of all (resting starters
+            and games with nothing at stake play a part). The data can't separate player discipline from officiating or
+            game context. A week appears once all of its games are played.</p>
         `
     },
     'season-trend': {
@@ -1325,6 +1326,52 @@ function renderScoreboard(animate = false) {
 // FLAGS PER GAME BY WEEK OF SEASON (League Trends)
 // =============================================================================
 
+// Season chips: this season is always on; any past season can be added; the
+// all-seasons average and the range band can be switched on/off
+const SEASON_COLORS = ['#4DA3FF', '#FF8F3F', '#2EC4D6', '#F472B6', '#B07CFF', '#D2B48C', '#8B95A7', '#7C3AED'];
+function seasonColor(season, seasons) {
+    const past = seasons.filter(x => x !== state.typeTrends?.season);
+    return SEASON_COLORS[past.indexOf(season) % SEASON_COLORS.length] || '#8B95A7';
+}
+function toggleWeekLayer(key) {
+    if (!state.weekLayers) state.weekLayers = { avg: true, band: true, years: [] };
+    const L = state.weekLayers;
+    if (key === 'avg' || key === 'band') L[key] = !L[key];
+    else if (key === 'none') { L.years = []; }
+    else if (key === 'all') { L.years = (state.typeTrends?.weekly?.seasons || []).map(x => x.season).filter(x => x !== state.typeTrends.season); }
+    else {
+        const y = Number(key);
+        L.years = L.years.includes(y) ? L.years.filter(x => x !== y) : [...L.years, y].sort();
+    }
+    renderWeekChart();
+}
+
+// Draws a label at the end of a line ("2026", "2020–25 average") so nobody needs the legend
+const endLabelPlugin = {
+    id: 'endLabels',
+    afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        chart.data.datasets.forEach((ds, i) => {
+            if (!ds._endLabel) return;
+            const meta = chart.getDatasetMeta(i);
+            if (meta.hidden) return;
+            let k = ds.data.length - 1;
+            while (k >= 0 && ds.data[k] == null) k--;
+            if (k < 0) return;
+            const pt = meta.data[k];
+            ctx.save();
+            ctx.font = `600 12px ${getComputedStyle(document.documentElement).getPropertyValue('--font-body') || 'sans-serif'}`;
+            ctx.fillStyle = ds._labelColor || ds.borderColor;
+            const text = ds._endLabel;
+            const w = ctx.measureText(text).width;
+            const right = chart.chartArea.right;
+            const x = pt.x + 8 + w > right ? pt.x - w - 8 : pt.x + 8;
+            ctx.fillText(text, x, pt.y + (ds._labelDy || -8));
+            ctx.restore();
+        });
+    }
+};
+
 function renderWeekChart() {
     const canvas = document.getElementById('weekChart');
     const wk = state.typeTrends?.weekly;
@@ -1333,54 +1380,102 @@ function renderWeekChart() {
     const cur = state.typeTrends.season;
     const maxWeek = Math.max(18, ...wk.seasons.flatMap(s => s.weeks.map(w => w.week)));
     const labels = Array.from({ length: maxWeek }, (_, i) => i + 1);
-    const series = (weeks) => labels.map(n => weeks.find(w => w.week === n)?.perGame ?? null);
-
-    const past = wk.seasons.filter(s => s.season !== cur).map(s => ({
-        label: String(s.season), data: series(s.weeks), borderColor: 'rgba(255,255,255,0.13)', borderWidth: 1.2,
-        pointRadius: 0, tension: 0.3, spanGaps: true, order: 3, _past: true
-    }));
+    const series = (weeks, f = 'perGame') => labels.map(n => weeks.find(w => w.week === n)?.[f] ?? null);
     const now = wk.seasons.find(s => s.season === cur);
+    const doneWeeks = (now?.weeks || []).filter(w => w.complete);           // only finished weeks are drawn
+    const inProgress = (now?.weeks || []).find(w => !w.complete);
+    const avgLabel = wk.priorLabel ? wk.priorLabel.replace(' avg', ' average') : 'Past seasons average';
+
+    // Plain-English takeaway: this season vs the usual for the same weeks
+    const take = document.getElementById('weekTakeaway');
+    if (take && doneWeeks.length) {
+        const n = doneWeeks.length;
+        const curAvg = doneWeeks.reduce((a, w) => a + w.perGame * w.games, 0) / doneWeeks.reduce((a, w) => a + w.games, 0);
+        const usual = doneWeeks.map(w => wk.priorAverage.find(p => p.week === w.week)?.perGame).filter(v => v != null);
+        const usualAvg = usual.reduce((a, v) => a + v, 0) / usual.length;
+        const pct = (curAvg / usualAvg - 1) * 100;
+        const late = wk.priorAverage.filter(p => p.week >= 15), early = wk.priorAverage.filter(p => p.week <= 4);
+        const fade = early.length && late.length
+            ? (1 - (late.reduce((a, p) => a + p.perGame, 0) / late.length) / (early.reduce((a, p) => a + p.perGame, 0) / early.length)) * 100 : null;
+        take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fade ? ` (Weeks 15–18 average about ${fmtNum(fade, 0)}% fewer than Weeks 1–4)` : ''}. ` +
+            `Through Week ${doneWeeks.at(-1).week}, ${cur} is averaging <strong class="y">${fmtNum(curAvg, 1)}</strong> per game, ` +
+            `<strong>${fmtNum(Math.abs(pct), 0)}% ${pct >= 0 ? 'above' : 'below'}</strong> the usual ${fmtNum(usualAvg, 1)} for those weeks.` +
+'';
+    }
+    const note = document.getElementById('weekNote');
+    if (note) note.textContent = inProgress
+        ? `Week ${inProgress.week} is added once all of its games are played (${inProgress.games} played so far).` : '';
+    if (!state.weekLayers) state.weekLayers = { avg: true, band: true, years: [] };
+    const L = state.weekLayers;
+    const allSeasons = wk.seasons.map(x => x.season);
+    const pastSeasons = allSeasons.filter(x => x !== cur);
+
+    // Chips: this season (always on) · each past season · all-seasons average · range
+    const chips = document.getElementById('weekChips');
+    if (chips) {
+        const chip = (key, label, on, color, locked = false, extra = '') =>
+            `<button class="week-chip ${on ? 'on' : ''} ${locked ? 'locked' : ''} ${extra}" ${locked ? 'disabled aria-disabled="true" title="Always shown"' : ''}
+                aria-pressed="${on}" onclick="toggleWeekLayer('${key}')"><i style="${color}"></i>${label}</button>`;
+        chips.innerHTML =
+            chip('cur', `${cur}`, true, `background:${CONFIG.chartColors.flag}`, true) +
+            pastSeasons.slice().reverse().map(y => chip(String(y), String(y), L.years.includes(y), `background:${seasonColor(y, allSeasons)}`)).join('') +
+            `<span class="week-chip-sep"></span>` +
+            chip('avg', `${(wk.priorLabel || 'Past').replace(' avg', '')} average`, L.avg, 'background:#cfd2d6;height:3px') +
+            chip('band', 'Range', L.band, 'background:rgba(255,255,255,0.18);height:10px') +
+            (L.years.length < pastSeasons.length
+                ? `<button class="week-chip week-chip-link" onclick="toggleWeekLayer('all')">All seasons</button>`
+                : `<button class="week-chip week-chip-link" onclick="toggleWeekLayer('none')">Clear seasons</button>`);
+    }
+
+    const past = wk.seasons.filter(x => L.years.includes(x.season)).map(x => {
+        const color = seasonColor(x.season, allSeasons);
+        return { label: String(x.season), data: series(x.weeks), borderColor: color, backgroundColor: color, borderWidth: 2,
+                 pointRadius: 0, pointHoverRadius: 4, tension: 0.3, spanGaps: true, order: 3,
+                 _endLabel: String(x.season), _labelColor: color, _labelDy: 4 };
+    });
     const datasets = [
+        // shaded band: lowest to highest past season for each week
+        L.band && { label: 'range-low', data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.low ?? null),
+          borderWidth: 0, pointRadius: 0, tension: 0.3, fill: false, order: 5, _band: true },
+        L.band && { label: `${wk.priorLabel ? wk.priorLabel.replace(' avg', '') : 'Past'} range`, data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.high ?? null),
+          borderWidth: 0, pointRadius: 0, tension: 0.3, fill: '-1', backgroundColor: 'rgba(255,255,255,0.07)', order: 5, _band: true },
         ...past,
-        { label: wk.priorLabel || 'Past seasons avg', data: series(wk.priorAverage), borderColor: CONFIG.chartColors.data,
-          borderWidth: 2, borderDash: [6, 4], pointRadius: 0, tension: 0.3, spanGaps: true, order: 2 },
-        now && { label: String(cur), data: series(now.weeks), borderColor: CONFIG.chartColors.flag, backgroundColor: CONFIG.chartColors.flag,
-          borderWidth: 3, tension: 0.3, order: 1,
-          pointRadius: labels.map(n => now.weeks.some(w => w.week === n) ? 4 : 0),
-          pointBackgroundColor: labels.map(n => now.weeks.find(w => w.week === n)?.complete === false ? '#16181b' : CONFIG.chartColors.flag),
-          pointBorderColor: CONFIG.chartColors.flag, pointBorderWidth: 2,
-          // the week still in progress: dashed line into a hollow point, so one game doesn't read as a trend
-          segment: { borderDash: (ctx) => now.weeks.find(w => w.week === ctx.p1DataIndex + 1)?.complete === false ? [5, 5] : undefined } }
+        L.avg && { label: avgLabel, data: series(wk.priorAverage), borderColor: '#cfd2d6', borderWidth: 2.5, pointRadius: 0,
+          tension: 0.3, spanGaps: true, order: 2, _endLabel: avgLabel, _labelDy: 18 },
+        doneWeeks.length && { label: String(cur), data: series(doneWeeks), borderColor: CONFIG.chartColors.flag,
+          backgroundColor: CONFIG.chartColors.flag, borderWidth: 3.5, pointRadius: 5, pointHoverRadius: 7, tension: 0.25, order: 1,
+          _endLabel: `${cur}`, _labelDy: -10 }
     ].filter(Boolean);
 
     state.charts.week = new Chart(canvas.getContext('2d'), {
         type: 'line',
         data: { labels, datasets },
+        plugins: [endLabelPlugin],
         options: {
             responsive: true, maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
+            layout: { padding: { right: 8, top: 22 } },   // room for the end labels
             plugins: {
-                legend: { position: 'top', align: 'end', labels: { color: 'rgba(255,255,255,0.7)', boxWidth: 14,
-                    filter: (item, data) => !data.datasets[item.datasetIndex]._past || item.datasetIndex === 0,   // one legend entry for all past seasons
-                    generateLabels: (chart) => Chart.defaults.plugins.legend.labels.generateLabels(chart).map(l => {
-                        const ds = chart.data.datasets[l.datasetIndex];
-                        if (ds._past) return { ...l, text: 'Each past season', strokeStyle: 'rgba(255,255,255,0.35)', fillStyle: 'rgba(255,255,255,0.35)' };
-                        return l;
-                    }) } },
-                tooltip: { filter: (it) => !it.dataset._past, callbacks: {
-                    title: (items) => `Week ${items[0].label}`,
-                    label: (c) => {
-                        if (c.raw == null) return null;
-                        const extra = c.dataset.label === String(cur)
-                            ? (() => { const w = now.weeks.find(x => x.week === Number(c.label)); return w && !w.complete ? ` (in progress, ${w.games} game${w.games === 1 ? '' : 's'})` : ''; })() : '';
-                        return `${c.dataset.label}: ${fmtNum(c.raw, 1)} flags/game${extra}`;
-                    } } }
+                legend: { display: false },
+                tooltip: {
+                    filter: (it) => it.raw != null && it.dataset.label !== 'range-low',
+                    callbacks: {
+                        title: (items) => `Week ${items[0].label}`,
+                        label: (c) => {
+                            if (c.dataset._band) {
+                                const r = wk.priorRange?.find(x => x.week === Number(c.label));
+                                return r ? `Past seasons ranged ${fmtNum(r.low, 1)}–${fmtNum(r.high, 1)}` : null;
+                            }
+                            return `${c.dataset.label}: ${fmtNum(c.raw, 1)} flags per game`;
+                        }
+                    }
+                }
             },
             scales: {
-                x: { title: { display: true, text: 'Week of season', color: 'rgba(255,255,255,0.5)' },
-                     grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.6)' } },
-                y: { title: { display: true, text: 'Penalties per game', color: 'rgba(255,255,255,0.5)' },
-                     grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+                x: { title: { display: true, text: 'Week of the season', color: 'rgba(255,255,255,0.55)' },
+                     grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.65)' } },
+                y: { grace: '6%', title: { display: true, text: 'Flags per game', color: 'rgba(255,255,255,0.55)' },
+                     grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.65)' } }
             }
         }
     });
@@ -3065,6 +3160,7 @@ window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
 window.setScoreboardFrame = setScoreboardFrame;
 window.setScoreboardWeek = setScoreboardWeek;
+window.toggleWeekLayer = toggleWeekLayer;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;

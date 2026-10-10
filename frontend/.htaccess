@@ -1,0 +1,38 @@
+# php -- BEGIN cPanel-generated handler, do not edit
+# This domain inherits the “PHP” package.
+# php -- END cPanel-generated handler, do not edit
+
+# =============================================================================
+# nflobservatory.com: HTTPS, one canonical address, security headers, caching
+# =============================================================================
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Always HTTPS, always nflobservatory.com (no www)
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} ^www\. [NC]
+    RewriteRule ^ https://nflobservatory.com%{REQUEST_URI} [L,R=301]
+    # Hide dot-files (e.g. the deploy tool's .ftp-deploy-sync-state.json), keep .well-known
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+    # Only this site, jsDelivr (pinned + integrity-checked libraries), Cloudflare
+    # analytics, Google Fonts and ESPN team logos may load content
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://a.espncdn.com; connect-src 'self' https://cloudflareinsights.com https://cdn.jsdelivr.net; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
+
+    # Always check for a fresh page, scripts, styles and data; icons can be cached
+    <FilesMatch "\.(html|js|css|json|webmanifest)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+    <FilesMatch "\.(png|ico|svg|woff2?)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>

@@ -60,6 +60,7 @@ NAME_FIXES = {
 
 MATCHUP_RE = re.compile(r'^\s*([A-Za-z0-9]+)\s+(at|vs\.?|@)\s+([A-Za-z0-9]+)\s*$', re.IGNORECASE)
 NAME_RE = re.compile(r"^[A-Z][a-zA-Z'.\-]+(?:\s+[A-Z][a-zA-Z'.\-]+){1,2}$")
+SAFE_NETWORK_RE = re.compile(r"^[A-Za-z0-9 +&./'-]{1,40}$")
 TIME_RE = re.compile(r'^\d{1,2}(:\d{2})?\s*[ap]\.?m\.?$', re.IGNORECASE)
 
 
@@ -147,8 +148,8 @@ def parse_assignments(lines: list[str], known_refs: set[str]) -> list[dict]:
                     referee = cand
                 elif kickoff is None and TIME_RE.match(ln):
                     kickoff = ln
-                elif referee and kickoff and network is None and len(ln) <= 40:
-                    network = ln
+                elif referee and kickoff and network is None and len(ln) <= 40 and SAFE_NETWORK_RE.match(ln):
+                    network = ln   # only plain network names (letters/numbers/+/&/./-/space) are kept
                 j += 1
             if referee:
                 games.append({'away': away, 'home': home, 'neutral': neutral,

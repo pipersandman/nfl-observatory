@@ -1312,6 +1312,11 @@ function renderTypeTrends() {
         <div class="table-header tt-head">
             <div>
                 <div class="table-title">Which calls are rising?</div>
+                <div class="modal-actions block-actions">
+                    <button class="modal-share" onclick="copyBlockLink('typeTrends', this)">Copy link</button>
+                    <button class="modal-share" onclick="exportBlock('typeTrends', 'png', this)">Save PNG</button>
+                    <button class="modal-share" onclick="exportBlock('typeTrends', 'pdf', this)">Save PDF</button>
+                </div>
                 <div class="tt-sub">${tt.season} accepted penalties per game vs ${comp.label.charAt(0).toLowerCase() + comp.label.slice(1)}, all teams · biggest increases first</div>
             </div>
             <div class="baseline-toggle tt-toggle" role="group" aria-label="Compare against">${tt.comparisons.map(c => `
@@ -2469,6 +2474,75 @@ function exportFileName(ext) {
     return `nfl-observatory-${safe}.${ext}`;
 }
 
+// Export any on-page panel (e.g. "Which calls are rising?") as a branded PNG / PDF,
+// same look as pop-up exports: buttons hidden, full width, footer with the link.
+async function renderBlockCanvas(el) {
+    await loadScriptOnce(EXPORT_LIBS.html2canvas);
+    const id = el.id;
+    return window.html2canvas(el, {
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-card').trim() || '#16181b',
+        scale: 2, useCORS: true, logging: false,
+        windowWidth: Math.max(document.documentElement.clientWidth, 1100),
+        onclone: (doc) => {
+            const b = doc.getElementById(id);
+            Object.assign(b.style, { width: '1000px', maxWidth: '1000px', margin: '0', transform: 'none', opacity: '1' });
+            b.querySelectorAll('.block-actions, .baseline-toggle').forEach(x => { x.style.display = 'none'; });
+            b.querySelectorAll('.table-scroll').forEach(x => { x.style.overflow = 'visible'; });
+            const foot = doc.createElement('div');
+            foot.style.cssText = 'padding:16px 24px 22px;border-top:1px solid #262a2f;display:flex;justify-content:space-between;' +
+                'align-items:center;font:500 14px Inter,system-ui,sans-serif;color:#9a9ea4';
+            const when = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            foot.innerHTML = `<span style="display:flex;align-items:center;gap:10px;color:#ecebe7;font-weight:600">` +
+                `<span style="width:22px;height:22px;border-radius:5px;background:#16181b;border:1px solid #2a2d32;display:inline-flex;align-items:center;justify-content:center">` +
+                `<span style="width:11px;height:11px;background:#ffc400;transform:rotate(-18deg);display:block;border-radius:1px"></span></span>` +
+                `nflobservatory.com</span><span>${when} · ${location.host}/#${id}</span>`;
+            b.appendChild(foot);
+        }
+    });
+}
+
+async function exportBlock(id, format, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const label = btn?.textContent;
+    if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
+    try {
+        const canvas = await renderBlockCanvas(el);
+        const title = el.querySelector('.table-title')?.textContent.trim() || id;
+        const name = `nfl-observatory-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}.${format}`;
+        if (format === 'png') {
+            const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+            deliverPng(blob, name);
+        } else {
+            await loadScriptOnce(EXPORT_LIBS.jspdf);
+            const { jsPDF } = window.jspdf;
+            const w = canvas.width / 2, h = canvas.height / 2;
+            const pdf = new jsPDF({ orientation: h > w ? 'portrait' : 'landscape', unit: 'px', format: [w, h], hotfixes: ['px_scaling'] });
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, w, h);
+            pdf.setProperties({ title, creator: 'nflobservatory.com' });
+            pdf.save(name);
+        }
+        if (btn) btn.textContent = 'Saved ✓';
+    } catch (err) {
+        console.error('Export failed:', err);
+        if (btn) btn.textContent = 'Export failed';
+    } finally {
+        setTimeout(() => { if (btn) { btn.textContent = label; btn.disabled = false; } }, 1800);
+    }
+}
+
+async function copyBlockLink(id, btn) {
+    const url = `${location.origin}${location.pathname}#${id}`;
+    const label = btn?.textContent;
+    try {
+        await navigator.clipboard.writeText(url);
+        if (btn) btn.textContent = 'Copied ✓';
+    } catch {
+        if (btn) btn.textContent = url;
+    }
+    setTimeout(() => { if (btn) btn.textContent = label; }, 1800);
+}
+
 async function renderModalCanvas() {
     await loadScriptOnce(EXPORT_LIBS.html2canvas);
     const modal = document.querySelector('#modal .modal');
@@ -2829,6 +2903,11 @@ async function init() {
 
     // Open a specific report if the URL asks for one (e.g. from a social post)
     handleDeepLink();
+    // Plain section links (#typeTrends, #teams): the content is drawn after load,
+    // so scroll once it exists
+    if (location.hash.length > 1 && !DEEP_LINK_RE.test(location.hash)) {
+        setTimeout(() => { try { document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }); } catch {} }, 250);
+    }
     window.addEventListener('hashchange', () => {
         // A section link (#teams) or a new report link: close any open pop-up first
         document.getElementById('modal')?.classList.remove('active');
@@ -2869,6 +2948,8 @@ window.selectDivision = selectDivision;
 window.closeModal = closeModal;
 window.copyModalLink = copyModalLink;
 window.exportModal = exportModal;
+window.exportBlock = exportBlock;
+window.copyBlockLink = copyBlockLink;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;
 window.moveCarousel = moveCarousel;

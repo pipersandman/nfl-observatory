@@ -82,7 +82,7 @@ jobs:
           grep -nE "styles\.css|app\.js|favicon" frontend/index.html
 
       - name: Deploy to HostGator
-        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65  # v4.3.5 (pinned: this step receives the FTP password)
+        uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287  # v4.3.5 (pinned: this step receives the FTP password)
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}

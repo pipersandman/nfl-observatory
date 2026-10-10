@@ -1452,8 +1452,7 @@ function renderWeekChart() {
     const past = wk.seasons.filter(x => L.years.includes(x.season)).map(x => {
         const color = seasonColor(x.season, allSeasons);
         return { label: String(x.season), data: series(x.weeks), borderColor: color, backgroundColor: color, borderWidth: 2,
-                 pointRadius: 0, pointHoverRadius: 4, tension: 0.3, spanGaps: true, order: 3,
-                 _endLabel: String(x.season), _labelColor: color, _labelDy: 4 };
+                 pointRadius: 0, pointHoverRadius: 4, tension: 0.3, spanGaps: true, order: 3 };   // no end label: the season buttons are the key
     });
     const datasets = [
         // shaded band: lowest to highest past season for each week
@@ -1463,7 +1462,7 @@ function renderWeekChart() {
           borderWidth: 0, pointRadius: 0, tension: 0.3, fill: '-1', backgroundColor: 'rgba(255,255,255,0.07)', order: 5, _band: true },
         ...past,
         L.avg && { label: avgLabel, data: series(wk.priorAverage), borderColor: '#cfd2d6', borderWidth: 2.5, pointRadius: 0,
-          tension: 0.3, spanGaps: true, order: 2, _endLabel: avgLabel, _labelDy: 18 },
+          tension: 0.3, spanGaps: true, order: 2 },
         doneWeeks.length && { label: String(cur), data: series(doneWeeks), borderColor: CONFIG.chartColors.flag,
           backgroundColor: CONFIG.chartColors.flag, borderWidth: 3.5, pointRadius: 5, pointHoverRadius: 7, tension: 0.25, order: 1,
           _endLabel: `${cur}`, _labelDy: -10 }

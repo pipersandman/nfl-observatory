@@ -2116,21 +2116,50 @@ function renderCharts() {
 const valueLabelPlugin = {
     id: 'valueLabels',
     afterDatasetsDraw(chart) {
-        const { ctx } = chart;
+        const { ctx, chartArea } = chart;
         const horizontal = chart.options.indexAxis === 'y';
+        const mono = getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace';
         chart.data.datasets.forEach((ds, di) => {
-            if (!ds._valueLabel) return;
+            if (!ds._valueLabel && !ds._columns) return;
             const meta = chart.getDatasetMeta(di);
             if (meta.hidden) return;
             meta.data.forEach((bar, i) => {
                 const v = ds.data[i];
                 if (v == null) return;
-                const text = ds._valueLabel(v, i);
                 ctx.save();
-                ctx.font = `600 11px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
-                ctx.fillStyle = ds._labelColor || 'rgba(255,255,255,0.85)';
-                if (horizontal) { ctx.textBaseline = 'middle'; ctx.fillText(text, bar.x + 6, bar.y); }
-                else { ctx.textAlign = 'center'; ctx.fillText(text, bar.x, bar.y - 6); }
+                ctx.font = `600 11px ${mono}`;
+                if (horizontal && ds._columns) {
+                    // fixed, right-aligned columns to the right of the plot: numbers line up
+                    ctx.textBaseline = 'middle';
+                    ctx.textAlign = 'right';
+                    let x = chartArea.right + 8;
+                    ds._columns.forEach(col => {
+                        x += col.width;
+                        ctx.fillStyle = col.color || 'rgba(255,255,255,0.85)';
+                        ctx.fillText(col.text(v, i), x, bar.y);
+                    });
+                } else if (horizontal) {
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = ds._labelColor || 'rgba(255,255,255,0.85)';
+                    ctx.fillText(ds._valueLabel(v, i), bar.x + 6, bar.y);
+                } else {
+                    const text = ds._valueLabel(v, i);
+                    const tw = ctx.measureText(text).width;
+                    const bw = Math.abs(bar.width || 0);
+                    if (tw + 2 <= bw) {                       // fits above the bar
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = ds._labelColor || 'rgba(255,255,255,0.85)';
+                        ctx.fillText(text, bar.x, bar.y - 6);
+                    } else {                                  // narrow bar (phones): sideways, inside the bar
+                        ctx.translate(bar.x, bar.y + 6);
+                        ctx.rotate(-Math.PI / 2);
+                        ctx.textAlign = 'right';
+                        ctx.textBaseline = 'middle';
+                        ctx.font = `700 ${Math.max(9, Math.min(11, bw - 2))}px ${mono}`;
+                        ctx.fillStyle = ds._insideColor || '#111';
+                        ctx.fillText(text, 0, 0);
+                    }
+                }
                 ctx.restore();
             });
         });
@@ -2165,9 +2194,9 @@ function renderSeasonTrendChart() {
             labels: sc.map(x => x.season),
             datasets: [
                 { label: 'Full season', data: sc.map(x => x.complete ? x.fullSeason : null), backgroundColor: '#5c616a', borderRadius: 4,
-                  _valueLabel: v => fmtNum(v, 1), _labelColor: 'rgba(255,255,255,0.6)' },
+                  _valueLabel: v => fmtNum(v, 1), _labelColor: 'rgba(255,255,255,0.6)', _insideColor: '#f5f4f0' },
                 { label: `Weeks 1–${wk}`, data: sc.map(x => x.early), backgroundColor: CONFIG.chartColors.flag, borderRadius: 4,
-                  _valueLabel: v => fmtNum(v, 1), _labelColor: CONFIG.chartColors.flag }
+                  _valueLabel: v => fmtNum(v, 1), _labelColor: CONFIG.chartColors.flag, _insideColor: '#111' }
             ]
         },
         options: {
@@ -2185,6 +2214,10 @@ function renderSeasonTrendChart() {
 }
 
 // 2) Type share: % of all flags, labeled, with "All other"; this season or since 2020
+function shortPenalty(t) {
+    return t.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. ').replace('Unnecessary ', 'Unnec. ')
+            .replace('Interference', 'Interf.').replace(' (', '\n(').split('\n')[0] + (t.includes('(') ? ` ${t.slice(t.indexOf('('))}` : '');
+}
 function setTypeScope(k) { state.typeScope = k; renderPenaltyTypeChart(); }
 function renderPenaltyTypeChart() {
     const ctx = document.getElementById('typeChart')?.getContext('2d');
@@ -2198,14 +2231,18 @@ function renderPenaltyTypeChart() {
         `(${fmtNum(d.total)} flags in ${fmtNum(d.games)} games, ${fmtNum(d.perGame, 1)} per game). ` +
         `The top two calls alone are ${fmtNum((d.types[0]?.pct || 0) + (d.types[1]?.pct || 0), 0)}% of every flag.`);
     const rows = d.types;
+    const narrow = (ctx.canvas.parentElement?.clientWidth || 800) < 520;   // phones: % column only, shorter names
+    const labelsArr = rows.map(x => narrow ? shortPenalty(x.type).replace('Illegal ', 'Ill. ').replace('Roughing the Passer', 'Rough. Passer').replace(' types)', ')') : shortPenalty(x.type));
+    const cols = [{ width: 46, text: v => `${fmtNum(v, 1)}%`, color: 'rgba(255,255,255,0.9)' }];
+    if (!narrow) cols.push({ width: 58, text: (v, i) => `${fmtNum(rows[i].perGame, 2)}/g`, color: 'rgba(255,255,255,0.55)' });
     state.charts.type = new Chart(ctx, {
         type: 'bar', plugins: [valueLabelPlugin],
-        data: { labels: rows.map(x => x.type), datasets: [{
+        data: { labels: labelsArr, datasets: [{
             data: rows.map(x => x.pct), borderRadius: 4,
             backgroundColor: rows.map((x, i) => x.other ? '#3e434a' : i < 2 ? CONFIG.chartColors.flag : '#8b95a7'),
-            _valueLabel: (v, i) => `${fmtNum(v, 1)}%  ·  ${fmtNum(rows[i].perGame, 2)}/game`, _labelColor: 'rgba(255,255,255,0.75)' }] },
+            _columns: cols }] },
         options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 120 } },
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: narrow ? 56 : 112 } },
             plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtNum(rows[c.dataIndex].count)} flags · ${fmtNum(c.raw, 1)}% of all` } } },
             scales: { x: { beginAtZero: true, title: { display: true, text: '% of all flags', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor, callback: v => `${v}%` } },
                       y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.8)', autoSkip: false } } }
@@ -2232,11 +2269,21 @@ function renderPenaltiesByRefChart() {
         .sort((a, b) => b.perGame - a.perGame);   // most flags first
     setSub('biasChartSub', `Accepted penalties per game in each crew chief's regular-season games ` +
         `(${scope === 'current' ? `${cs} so far, small samples` : `${labels.all}, at least ${minGames} games`}). ` +
-        `Dashed line: league average ${fmtNum(league, 1)}. <span class="pct-up">Red</span> = 5%+ above, <span class="pct-down">green</span> = 5%+ below.`);
+        `The yellow marker under the chart shows the league average (${fmtNum(league, 1)}). <span class="pct-up">Red</span> = 5%+ above, <span class="pct-down">green</span> = 5%+ below.`);
     canvas.parentElement.style.height = `${Math.max(320, rows.length * 26 + 70)}px`;
-    const avgLine = { id: 'avgLine', afterDatasetsDraw(chart) {
-        const x = chart.scales.x.getPixelForValue(league), { top, bottom } = chart.chartArea, ctx = chart.ctx;
-        ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, bottom); ctx.stroke(); ctx.restore();
+    // league-average marker under the x-axis (instead of a line through the bars)
+    const avgLine = { id: 'avgMarker', afterDraw(chart) {
+        const x = chart.scales.x.getPixelForValue(league), y = chart.scales.x.top + 24, ctx = chart.ctx;
+        ctx.save();
+        ctx.fillStyle = CONFIG.chartColors.flag;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 6, y + 9); ctx.lineTo(x + 6, y + 9); ctx.closePath(); ctx.fill();
+        ctx.font = `600 11px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
+        ctx.textBaseline = 'top';
+        const label = `League avg ${fmtNum(league, 1)}`;
+        const w = ctx.measureText(label).width;
+        ctx.textAlign = x + 10 + w > chart.width - 4 ? 'right' : 'left';
+        ctx.fillText(label, ctx.textAlign === 'left' ? x + 10 : x - 10, y + 1);
+        ctx.restore();
     } };
     state.charts.bias = new Chart(canvas.getContext('2d'), {
         type: 'bar', plugins: [valueLabelPlugin, avgLine],
@@ -2247,7 +2294,8 @@ function renderPenaltiesByRefChart() {
         options: {
             indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 90 } },
             plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtNum(c.raw, 2)} flags/game in ${rows[c.dataIndex].games} games` } } },
-            scales: { x: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } },
+            scales: { x: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor, padding: { top: 22 } },
+                           grid: { color: gridColor }, ticks: { color: axisColor } },
                       y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.85)', autoSkip: false } } }
         }
     });

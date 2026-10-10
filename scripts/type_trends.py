@@ -71,12 +71,29 @@ def build_type_trends(data: dict) -> dict:
             'compare': {k: _r(v[2].get(t, 0)) for k, v in comps.items()},
             'bySeason': [{'season': s, 'perGame': _r(by_season[s].get(t, 0))} for s in seasons],
         })
-    print(f"   ✓ {len(types)} penalty types, {len(seasons)} seasons")
+    # Flags per game by week of the season, every season (+ prior-seasons average per week)
+    per_game = pen.groupby('game_id').size().rename('flags')
+    gw = games.set_index('game_id').join(per_game).fillna({'flags': 0}).reset_index()
+    weekly_seasons = []
+    for s_ in seasons:
+        d = gw[gw['season'] == s_].groupby('week')['flags'].agg(['mean', 'size'])
+        sched_n = reg[reg['season'] == s_].groupby('week').size()
+        weekly_seasons.append({'season': s_, 'weeks': [
+            {'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size']),
+             'complete': bool(r['size'] >= sched_n.get(w, 0))} for w, r in d.iterrows()]})
+    pw = gw[gw['season'].isin(prior)].groupby('week')['flags'].agg(['mean', 'size'])
+    weekly = {
+        'seasons': weekly_seasons,
+        'priorAverage': [{'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size'])} for w, r in pw.iterrows()],
+        'priorLabel': f"{prior[0]}–{str(prior[-1])[2:]} avg" if prior else None,
+    }
+    print(f"   ✓ {len(types)} penalty types, {len(seasons)} seasons, weekly profile")
     return {
         'season': season, 'throughWeek': through, 'currentGames': cur_n,
         'comparisons': [{'key': k, 'label': v[0], 'short': v[1], 'games': v[3]} for k, v in comps.items()],
         'defaultComparison': 'sameWeeks' if 'sameWeeks' in comps else next(iter(comps), None),
         'types': types,
+        'weekly': weekly,
         'notes': 'Regular season. Accepted penalties per game, all teams combined.',
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }

@@ -48,6 +48,178 @@
     "homePerGame": 5.9,
     "awayPerGame": 6.35
   },
+  "throughWeek": 5,
+  "baselines": {
+    "sameWeeks": {
+      "label": "2025 through Week 5",
+      "short": "2025 Wk 1\u20135",
+      "games": 5,
+      "penalties": 42,
+      "yards": 295,
+      "perGame": 8.4,
+      "yardsPerGame": 59.0,
+      "offensePerGame": 4.6,
+      "defensePerGame": 3.8,
+      "drawnPerGame": 8.2,
+      "drawnYardsPerGame": 62.8,
+      "netPerGame": -0.2,
+      "homePerGame": 9.0,
+      "awayPerGame": 7.5,
+      "types": {
+        "Unnecessary Roughness": 0.2,
+        "Defensive Offside": 0.6,
+        "Face Mask": 0.2,
+        "False Start": 2.0,
+        "Defensive Pass Interference": 0.6,
+        "Delay of Game": 0.0,
+        "Offensive Holding": 1.0,
+        "Illegal Shift": 0.4,
+        "Defensive Holding": 0.4
+      },
+      "drawnTypes": {
+        "Unnecessary Roughness": 0.6,
+        "False Start": 1.4,
+        "Defensive Pass Interference": 0.8,
+        "Delay of Game": 0.6,
+        "Neutral Zone Infraction": 0.2,
+        "Offensive Holding": 2.0,
+        "Illegal Contact": 0.6
+      },
+      "quarters": [
+        3.4,
+        1.8,
+        1.6,
+        1.6
+      ]
+    },
+    "lastSeason": {
+      "label": "All of 2025",
+      "short": "2025",
+      "games": 17,
+      "penalties": 118,
+      "yards": 920,
+      "perGame": 6.94,
+      "yardsPerGame": 54.1,
+      "offensePerGame": 4.12,
+      "defensePerGame": 2.82,
+      "drawnPerGame": 6.82,
+      "drawnYardsPerGame": 53.7,
+      "netPerGame": -0.12,
+      "homePerGame": 7.38,
+      "awayPerGame": 6.56,
+      "types": {
+        "Unnecessary Roughness": 0.18,
+        "Defensive Offside": 0.29,
+        "Face Mask": 0.18,
+        "False Start": 1.76,
+        "Defensive Pass Interference": 0.47,
+        "Delay of Game": 0.06,
+        "Offensive Holding": 1.41,
+        "Illegal Shift": 0.24,
+        "Defensive Holding": 0.35
+      },
+      "drawnTypes": {
+        "Unnecessary Roughness": 0.41,
+        "False Start": 1.53,
+        "Defensive Pass Interference": 0.53,
+        "Delay of Game": 0.35,
+        "Neutral Zone Infraction": 0.18,
+        "Offensive Holding": 1.35,
+        "Illegal Contact": 0.35
+      },
+      "quarters": [
+        1.82,
+        2.18,
+        1.65,
+        1.29
+      ]
+    },
+    "last3": {
+      "label": "Last 3 seasons (2023\u201325)",
+      "short": "2023\u201325 avg",
+      "games": 51,
+      "penalties": 324,
+      "yards": 2769,
+      "perGame": 6.35,
+      "yardsPerGame": 54.3,
+      "offensePerGame": 3.78,
+      "defensePerGame": 2.57,
+      "drawnPerGame": 6.53,
+      "drawnYardsPerGame": 51.9,
+      "netPerGame": 0.18,
+      "homePerGame": 6.04,
+      "awayPerGame": 6.65,
+      "types": {
+        "Unnecessary Roughness": 0.35,
+        "Defensive Offside": 0.22,
+        "Face Mask": 0.2,
+        "False Start": 1.35,
+        "Defensive Pass Interference": 0.59,
+        "Delay of Game": 0.18,
+        "Offensive Holding": 1.37,
+        "Illegal Shift": 0.14,
+        "Defensive Holding": 0.39
+      },
+      "drawnTypes": {
+        "Unnecessary Roughness": 0.47,
+        "False Start": 1.51,
+        "Defensive Pass Interference": 0.35,
+        "Delay of Game": 0.33,
+        "Neutral Zone Infraction": 0.18,
+        "Offensive Holding": 1.51,
+        "Illegal Contact": 0.16
+      },
+      "quarters": [
+        1.63,
+        1.61,
+        1.45,
+        1.67
+      ]
+    },
+    "all": {
+      "label": "All seasons (2020\u201325)",
+      "short": "2020\u201325 avg",
+      "games": 101,
+      "penalties": 619,
+      "yards": 5426,
+      "perGame": 6.13,
+      "yardsPerGame": 53.7,
+      "offensePerGame": 3.33,
+      "defensePerGame": 2.8,
+      "drawnPerGame": 5.72,
+      "drawnYardsPerGame": 46.8,
+      "netPerGame": -0.41,
+      "homePerGame": 5.9,
+      "awayPerGame": 6.35,
+      "types": {
+        "Unnecessary Roughness": 0.37,
+        "Defensive Offside": 0.17,
+        "Face Mask": 0.14,
+        "False Start": 1.2,
+        "Defensive Pass Interference": 0.69,
+        "Delay of Game": 0.27,
+        "Offensive Holding": 1.14,
+        "Illegal Shift": 0.08,
+        "Defensive Holding": 0.47
+      },
+      "drawnTypes": {
+        "Unnecessary Roughness": 0.34,
+        "False Start": 1.21,
+        "Defensive Pass Interference": 0.32,
+        "Delay of Game": 0.33,
+        "Neutral Zone Infraction": 0.24,
+        "Offensive Holding": 1.26,
+        "Illegal Contact": 0.09
+      },
+      "quarters": [
+        1.42,
+        1.59,
+        1.5,
+        1.57
+      ]
+    }
+  },
+  "defaultBaseline": "sameWeeks",
   "priorSeasons": [
     2020,
     2021,
@@ -527,5 +699,5 @@
     "opponent": "MIN",
     "home": true
   },
-  "generatedAt": "2026-10-09T20:54:26+00:00"
+  "generatedAt": "2026-10-10T00:24:37+00:00"
 }

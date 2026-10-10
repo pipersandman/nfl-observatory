@@ -166,8 +166,21 @@
                         <div class="chart-title">Penalties Per Game By Season</div>
                         <button class="info-trigger-small" onclick="openExplainer('season-trend')">?</button>
                     </div>
+                    <p class="chart-sub" id="seasonChartSub"></p>
                     <div class="chart-wrapper">
                         <canvas id="seasonChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Penalties Per Game By Quarter</div>
+                        <button class="info-trigger-small" onclick="openExplainer('quarter-penalties')">?</button>
+                    </div>
+                    <p class="chart-sub" id="quarterChartSub"></p>
+                    <div class="chart-controls" id="quarterControls"></div>
+                    <div class="chart-wrapper">
+                        <canvas id="quarterChart"></canvas>
                     </div>
                 </div>
 
@@ -186,33 +199,27 @@
                     </div>
                 </div>
                 
-                <div class="chart-container">
+                <div class="chart-container chart-wide">
                     <div class="chart-header">
-                        <div class="chart-title">Most Common Penalty Types</div>
+                        <div class="chart-title">Share Of All Flags By Penalty Type</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalty-types')">?</button>
                     </div>
+                    <p class="chart-sub" id="typeChartSub"></p>
+                    <div class="chart-controls" id="typeControls"></div>
                     <div class="chart-wrapper">
                         <canvas id="typeChart"></canvas>
                     </div>
                 </div>
                 
-                <div class="chart-container">
+                <div class="chart-container chart-wide">
                     <div class="chart-header">
-                        <div class="chart-title">Penalties By Crew Chief</div>
+                        <div class="chart-title">Crew Chief Flag Rates</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalties-by-ref')">?</button>
                     </div>
+                    <p class="chart-sub" id="biasChartSub"></p>
+                    <div class="chart-controls" id="crewControls"></div>
                     <div class="chart-wrapper">
                         <canvas id="biasChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="chart-container">
-                    <div class="chart-header">
-                        <div class="chart-title">Penalty Types By Quarter</div>
-                        <button class="info-trigger-small" onclick="openExplainer('quarter-penalties')">?</button>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="quarterChart"></canvas>
                     </div>
                 </div>
             </div>

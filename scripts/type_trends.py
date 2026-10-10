@@ -91,13 +91,55 @@ def build_type_trends(data: dict) -> dict:
         'priorAverage': [{'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size'])} for w, r in pw.iterrows()],
         'priorLabel': f"{prior[0]}–{str(prior[-1])[2:]} avg" if prior else None,
     }
-    print(f"   ✓ {len(types)} penalty types, {len(seasons)} seasons, weekly profile")
+    # ---- Charts for League Trends (regular season only) ----
+    # Full season vs the same early weeks for every season (fair comparison for a
+    # season in progress)
+    season_compare = []
+    for s_ in seasons:
+        g_all = gw[gw['season'] == s_]
+        g_early = g_all[g_all['week'] <= through] if through else g_all.iloc[0:0]
+        season_compare.append({
+            'season': s_, 'games': int(len(g_all)),
+            'fullSeason': _r(g_all['flags'].mean(), 2) if len(g_all) else None,
+            'complete': bool(s_ < season),
+            'earlyGames': int(len(g_early)), 'early': _r(g_early['flags'].mean(), 2) if len(g_early) else None,
+        })
+
+    def quarter_block(mask_g, mask_p):
+        n = int(mask_g.sum())
+        p = pen[mask_p & pen['qtr'].between(1, 4)]
+        top = p['penalty_type'].value_counts().head(8).index
+        return {'games': n,
+                'total': [_r((p['qtr'] == q).sum() / n, 2) if n else None for q in (1, 2, 3, 4)],
+                'types': {t: [_r(((p['qtr'] == q) & (p['penalty_type'] == t)).sum() / n, 2) for q in (1, 2, 3, 4)] for t in top}}
+
+    def share_block(mask_g, mask_p):
+        n = int(mask_g.sum())
+        p = pen[mask_p]
+        vc = p['penalty_type'].value_counts()
+        total = int(vc.sum())
+        top = [{'type': t, 'count': int(c), 'pct': _r(c / total * 100, 1), 'perGame': _r(c / n, 2)} for t, c in vc.head(10).items()]
+        rest = int(vc.iloc[10:].sum())
+        if rest:
+            top.append({'type': f'All other ({len(vc) - 10} types)', 'count': rest, 'pct': _r(rest / total * 100, 1), 'perGame': _r(rest / n, 2), 'other': True})
+        return {'games': n, 'total': total, 'perGame': _r(total / n, 2) if n else None, 'types': top}
+
+    scopes = {'current': (games['season'] == season, pen['s'] == season),
+              'all': (games['season'] >= seasons[0], pen['s'] >= seasons[0])}
+    quarters = {k: quarter_block(*m) for k, m in scopes.items()}
+    shares = {k: share_block(*m) for k, m in scopes.items()}
+
+    print(f"   ✓ {len(types)} penalty types, {len(seasons)} seasons, weekly profile, trend charts")
     return {
         'season': season, 'throughWeek': through, 'currentGames': cur_n,
         'comparisons': [{'key': k, 'label': v[0], 'short': v[1], 'games': v[3]} for k, v in comps.items()],
         'defaultComparison': 'sameWeeks' if 'sameWeeks' in comps else next(iter(comps), None),
         'types': types,
         'weekly': weekly,
+        'seasonCompare': season_compare,
+        'quarters': quarters,
+        'typeShare': shares,
+        'scopeLabels': {'current': f'{season} season', 'all': f'Since {seasons[0]}'},
         'notes': 'Regular season. Accepted penalties per game, all teams combined.',
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }

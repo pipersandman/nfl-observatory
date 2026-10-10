@@ -1983,3 +1983,16 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 }
 .sb-week:hover .sb-chev { color: var(--accent); }
 .sb-week.active:hover .sb-chev { color: inherit; }
+
+/* Week-of-season chart: takeaway line + footer */
+.week-takeaway { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin: -0.25rem 0 0.75rem; max-width: 900px; }
+.week-takeaway strong { color: var(--text-primary); }
+.week-takeaway strong.y { color: var(--accent); }
+.week-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; margin-top: 0.5rem; font-size: 0.78rem; }
+
+.week-key { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-muted); }
+.week-key span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.week-key i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; }
+.week-key .k-cur { background: var(--accent); height: 5px; }
+.week-key .k-avg { background: #cfd2d6; height: 3px; }
+.week-key .k-band { background: rgba(255, 255, 255, 0.14); height: 10px; }

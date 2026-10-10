@@ -1968,3 +1968,7 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 
 .scoreboard { scroll-margin-top: 80px; }
 .sb-head .block-actions { margin: 0.5rem 0 0.25rem; }
+
+/* Wide chart in a charts grid (Penalties per game by week of season) */
+.charts-grid .chart-wide { grid-column: 1 / -1; }
+.chart-wide .chart-wrapper { height: 320px; }

@@ -97,6 +97,18 @@ const EXPLAINERS = {
             during the regular season, plus playoffs for top-rated officials.</p>
         `
     },
+    'week-of-season': {
+        title: 'Penalties Per Game By Week Of Season',
+        content: `
+            <p>Average accepted penalties per game for each week of the regular season.</p>
+            <p><strong>Yellow</strong> is this season, week by week. <strong>White</strong> is the average of all past
+            seasons for that week. <strong>Gray</strong> lines are each past season.</p>
+            <p>Historically, flags run highest in the first month and fade as the season goes on, with the last
+            two weeks lowest of all (resting starters and games with nothing at stake play a part). The data can't
+            separate player discipline from officiating or game context, and some seasons (2024) broke the pattern.
+            A week that's still in progress is shown as a hollow point.</p>
+        `
+    },
     'season-trend': {
         title: 'Penalties Per Game By Season',
         content: `
@@ -1281,6 +1293,71 @@ function renderScoreboard(animate = false) {
 }
 
 // =============================================================================
+// FLAGS PER GAME BY WEEK OF SEASON (League Trends)
+// =============================================================================
+
+function renderWeekChart() {
+    const canvas = document.getElementById('weekChart');
+    const wk = state.typeTrends?.weekly;
+    if (!canvas || !wk?.seasons?.length) return;
+    if (state.charts.week) state.charts.week.destroy();
+    const cur = state.typeTrends.season;
+    const maxWeek = Math.max(18, ...wk.seasons.flatMap(s => s.weeks.map(w => w.week)));
+    const labels = Array.from({ length: maxWeek }, (_, i) => i + 1);
+    const series = (weeks) => labels.map(n => weeks.find(w => w.week === n)?.perGame ?? null);
+
+    const past = wk.seasons.filter(s => s.season !== cur).map(s => ({
+        label: String(s.season), data: series(s.weeks), borderColor: 'rgba(255,255,255,0.13)', borderWidth: 1.2,
+        pointRadius: 0, tension: 0.3, spanGaps: true, order: 3, _past: true
+    }));
+    const now = wk.seasons.find(s => s.season === cur);
+    const datasets = [
+        ...past,
+        { label: wk.priorLabel || 'Past seasons avg', data: series(wk.priorAverage), borderColor: CONFIG.chartColors.data,
+          borderWidth: 2, borderDash: [6, 4], pointRadius: 0, tension: 0.3, spanGaps: true, order: 2 },
+        now && { label: String(cur), data: series(now.weeks), borderColor: CONFIG.chartColors.flag, backgroundColor: CONFIG.chartColors.flag,
+          borderWidth: 3, tension: 0.3, order: 1,
+          pointRadius: labels.map(n => now.weeks.some(w => w.week === n) ? 4 : 0),
+          pointBackgroundColor: labels.map(n => now.weeks.find(w => w.week === n)?.complete === false ? '#16181b' : CONFIG.chartColors.flag),
+          pointBorderColor: CONFIG.chartColors.flag, pointBorderWidth: 2,
+          // the week still in progress: dashed line into a hollow point, so one game doesn't read as a trend
+          segment: { borderDash: (ctx) => now.weeks.find(w => w.week === ctx.p1DataIndex + 1)?.complete === false ? [5, 5] : undefined } }
+    ].filter(Boolean);
+
+    state.charts.week = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { position: 'top', align: 'end', labels: { color: 'rgba(255,255,255,0.7)', boxWidth: 14,
+                    filter: (item, data) => !data.datasets[item.datasetIndex]._past || item.datasetIndex === 0,   // one legend entry for all past seasons
+                    generateLabels: (chart) => Chart.defaults.plugins.legend.labels.generateLabels(chart).map(l => {
+                        const ds = chart.data.datasets[l.datasetIndex];
+                        if (ds._past) return { ...l, text: 'Each past season', strokeStyle: 'rgba(255,255,255,0.35)', fillStyle: 'rgba(255,255,255,0.35)' };
+                        return l;
+                    }) } },
+                tooltip: { filter: (it) => !it.dataset._past, callbacks: {
+                    title: (items) => `Week ${items[0].label}`,
+                    label: (c) => {
+                        if (c.raw == null) return null;
+                        const extra = c.dataset.label === String(cur)
+                            ? (() => { const w = now.weeks.find(x => x.week === Number(c.label)); return w && !w.complete ? ` (in progress, ${w.games} game${w.games === 1 ? '' : 's'})` : ''; })() : '';
+                        return `${c.dataset.label}: ${fmtNum(c.raw, 1)} flags/game${extra}`;
+                    } } }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Week of season', color: 'rgba(255,255,255,0.5)' },
+                     grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.6)' } },
+                y: { title: { display: true, text: 'Penalties per game', color: 'rgba(255,255,255,0.5)' },
+                     grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+            }
+        }
+    });
+}
+
+// =============================================================================
 // PENALTY TYPE TRENDS (League Trends): which calls are rising or falling
 // =============================================================================
 
@@ -1806,6 +1883,7 @@ function renderCharts() {
 }
 
 function renderSeasonTrendChart() {
+    renderWeekChart();
     const ctx = document.getElementById('seasonChart')?.getContext('2d');
     if (!ctx || !state.trends.bySeason) return;
     

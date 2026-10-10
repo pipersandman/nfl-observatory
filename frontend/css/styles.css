@@ -1972,3 +1972,14 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 /* Wide chart in a charts grid (Penalties per game by week of season) */
 .charts-grid .chart-wide { grid-column: 1 / -1; }
 .chart-wide .chart-wrapper { height: 320px; }
+
+/* Scoreboard week picker: "Week N ▾" (label selects it; the arrow opens the list) */
+.sb-week { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; padding-right: 0.55rem; }
+.sb-week-label { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0; }
+.sb-chev { width: 12px; height: 12px; flex-shrink: 0; }
+.sb-week-select {
+    position: absolute; top: 0; bottom: 0; right: 0; width: 1.6rem;   /* invisible, sits over the arrow */
+    opacity: 0; cursor: pointer; font-size: 16px;                      /* 16px avoids iPhone zoom */
+}
+.sb-week:hover .sb-chev { color: var(--accent); }
+.sb-week.active:hover .sb-chev { color: inherit; }

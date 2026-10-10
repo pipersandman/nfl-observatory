@@ -945,6 +945,15 @@ def main():
         print(f"   ⚠️  Scoreboard failed: {type(e).__name__}: {e}")
         traceback.print_exc()
 
+    # Penalty type trends (which calls are rising or falling)
+    try:
+        from type_trends import build_type_trends
+        save_json(build_type_trends(data), 'type_trends.json')
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Type trends failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
     # Team pages (all 32 teams, by division)
     try:
         from team_pages import build_team_pages

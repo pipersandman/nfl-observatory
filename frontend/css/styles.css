@@ -1917,3 +1917,17 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
     .sb-toggle .baseline-btn { font-size: 0.74rem; padding: 0.45rem 0.3rem; }
     .sb-cell { padding: 0.8rem; }
 }
+
+/* Penalty type trends (League Trends) */
+.type-trends { margin-top: var(--gap-md); }
+.tt-head { flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.tt-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+.tt-toggle { margin-top: 0; }
+.tt-table td, .tt-table th { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-table td .modal-muted { font-size: 0.75rem; margin-left: 0.35rem; }
+.spark { display: block; }
+.opp-more { margin-top: 0.6rem; }
+@media (max-width: 640px) {
+    .tt-toggle { display: grid; grid-template-columns: 1fr 1fr 1fr; width: 100%; border-radius: 14px; }
+    .tt-toggle .baseline-btn { font-size: 0.72rem; padding: 0.45rem 0.3rem; }
+}

@@ -228,6 +228,28 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                             'rank': rank_of.get((s, team))})
 
         # Game log (this season, newest first) + record
+        # Head-to-head by opponent, every regular-season meeting in the data
+        opponents = []
+        for opp_abbr, d in rows.groupby('opp'):
+            d = d.sort_values(['season', 'week'])
+            last_g = d.iloc[-1]
+            res = None
+            if pd.notna(last_g['pts']) and pd.notna(last_g['opp_pts']):
+                res = 'W' if last_g['pts'] > last_g['opp_pts'] else 'L' if last_g['pts'] < last_g['opp_pts'] else 'T'
+            opponents.append({
+                'opponent': opp_abbr, 'games': int(len(d)),
+                'seasons': sorted(int(x) for x in d['season'].unique()),
+                'flagsPerGame': _r(d['flags'].mean()), 'oppFlagsPerGame': _r(d['drawn'].mean()),
+                'yardsPerGame': _r(d['yards'].mean(), 1), 'oppYardsPerGame': _r(d['drawn_yards'].mean(), 1),
+                'netPerGame': _r((d['drawn'] - d['flags']).mean()),
+                'totalFlags': int(d['flags'].sum()), 'totalOppFlags': int(d['drawn'].sum()),
+                'homeGames': int(d['is_home'].sum()),
+                'lastMet': {'season': int(last_g['season']), 'week': int(last_g['week']), 'home': bool(last_g['is_home']),
+                            'score': None if res is None else f"{int(last_g['pts'])}-{int(last_g['opp_pts'])}", 'result': res,
+                            'flags': int(last_g['flags']), 'oppFlags': int(last_g['drawn'])},
+            })
+        opponents.sort(key=lambda o: (o['flagsPerGame'] or 0, o['games']), reverse=True)   # most flags on this team first
+
         log, w, l, t_ = [], 0, 0, 0
         for _, g in cur.sort_values('week', ascending=False).iterrows():
             res = None
@@ -265,6 +287,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'rank': {'current': rank_cur, 'lastSeason': rank_last, 'of': len(current_teams)},
             'committedTypes': committed_types, 'drawnTypes': drawn_types, 'quarters': quarters,
             'players': players[:8], 'crews': crews, 'history': history, 'games': log,
+            'opponents': opponents,
             'nextGame': next_game,
             'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         }

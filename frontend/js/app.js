@@ -181,6 +181,9 @@ let state = {
     previews: null,
     scorecard: null,
     scoreboard: null,
+    typeTrends: null,
+    typeTrendsCompare: null,
+    showAllOpponents: false,
     scoreboardFrame: null,
     teamsIndex: null,
     selectedDivision: null,
@@ -228,6 +231,7 @@ async function loadAllData() {
     state.teamsIndex = await fetchJSON('teams/index.json');
     state.scorecard = await fetchJSON('scorecard/public.json');
     state.scoreboard = await fetchJSON('scoreboard.json');
+    state.typeTrends = await fetchJSON('type_trends.json');
 
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
@@ -1272,6 +1276,70 @@ function renderScoreboard(animate = false) {
 }
 
 // =============================================================================
+// PENALTY TYPE TRENDS (League Trends): which calls are rising or falling
+// =============================================================================
+
+function setTypeTrendsCompare(key) {
+    state.typeTrendsCompare = key;
+    renderTypeTrends();
+}
+
+function sparkline(points, w = 120, h = 30) {
+    const vals = points.map(p => p.perGame ?? 0);
+    const max = Math.max(...vals, 0.01), min = Math.min(...vals) * 0.9;   // scale to the data so changes are visible
+    const x = i => 3 + i * (w - 6) / Math.max(1, vals.length - 1);
+    const y = v => h - 3 - (v - min) / Math.max(0.0001, max - min) * (h - 6);
+    const d = vals.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    const last = vals.length - 1;
+    return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">
+        <path d="${d}" fill="none" stroke="#5c616a" stroke-width="1.6" stroke-linejoin="round"/>
+        <circle cx="${x(last)}" cy="${y(vals[last])}" r="3" fill="#ffc400"/></svg>`;
+}
+
+function renderTypeTrends() {
+    const box = document.getElementById('typeTrends');
+    const tt = state.typeTrends;
+    if (!box) return;
+    if (!tt?.types?.length) { box.innerHTML = '<p class="season-error">Penalty trend data isn\'t available yet.</p>'; return; }
+    const key = tt.comparisons.some(c => c.key === state.typeTrendsCompare) ? state.typeTrendsCompare : tt.defaultComparison;
+    const comp = tt.comparisons.find(c => c.key === key);
+    const first = tt.types[0].bySeason[0].season, last = tt.types[0].bySeason.at(-1).season;
+    // Rising first: biggest increase in flags per game vs the comparison
+    const rows = tt.types.map(t => ({ ...t, base: t.compare[key], diff: (t.current ?? 0) - (t.compare[key] ?? 0) }))
+        .sort((a, b) => b.diff - a.diff);
+    const btn = c => c.key === 'sameWeeks' ? c.label.replace(' through Week ', ' thru Wk ') : c.label;
+    box.innerHTML = `
+        <div class="table-header tt-head">
+            <div>
+                <div class="table-title">Which calls are rising?</div>
+                <div class="tt-sub">${tt.season} accepted penalties per game vs ${comp.label.charAt(0).toLowerCase() + comp.label.slice(1)}, all teams · biggest increases first</div>
+            </div>
+            <div class="baseline-toggle tt-toggle" role="group" aria-label="Compare against">${tt.comparisons.map(c => `
+                <button class="baseline-btn ${c.key === key ? 'active' : ''}" aria-pressed="${c.key === key}" onclick="setTypeTrendsCompare('${c.key}')">${btn(c)}</button>`).join('')}</div>
+        </div>
+        <div class="table-scroll">
+            <table class="tt-table">
+                <thead><tr><th>Penalty</th><th>${tt.season} / game</th><th>${comp.short} / game</th><th>Change</th><th>${first}–${String(last).slice(2)} trend</th></tr></thead>
+                <tbody>${rows.map(r => `
+                    <tr>
+                        <td><strong>${r.type}</strong> <span class="modal-muted">${fmtNum(r.currentCount)} this season</span></td>
+                        <td><strong>${fmtNum(r.current, 2)}</strong></td>
+                        <td class="season-prev">${fmtNum(r.base, 2)}</td>
+                        <td><span class="season-delta ${r.diff > 0.005 ? 'pct-up' : r.diff < -0.005 ? 'pct-down' : ''}">${r.diff > 0 ? '+' : ''}${fmtNum(r.diff, 2)}</span> ${pctBadge(r.current, r.base)}</td>
+                        <td>${sparkline(r.bySeason)}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+        </div>
+        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">${tt.notes} Trend line: each season ${first}–${last}, this season in yellow. ${tt.season} is ${tt.currentGames} games in, so rare penalties can swing.</p>`;
+}
+
+function toggleAllOpponents() {
+    state.showAllOpponents = !state.showAllOpponents;
+    setTeamBaseline(state.teamBaseline || teamBaselineKey(null));
+}
+
+// =============================================================================
 // RENDERING - TEAMS (division -> team -> full profile)
 // =============================================================================
 
@@ -1440,6 +1508,27 @@ function renderTeamProfile(t) {
             <td class="season-prev">${c.lastSeason}</td>
         </tr>`).join('');
 
+    // Every opponent faced in the data, most flags on this team per game first
+    const opp = t.opponents || [];
+    const oppShown = state.showAllOpponents ? opp : opp.slice(0, 10);
+    const opponentsHtml = opp.length ? `<div class="modal-section">
+        <h4>By opponent <span class="modal-muted">(${ps[0] ?? cs}–${cs}, every regular-season meeting)</span></h4>
+        <div class="table-scroll"><table class="pv-table">
+            <thead><tr><th>Opponent</th><th>Games</th><th>${t.abbr} flags/g</th><th>Opp flags/g</th><th>Net</th><th>Last met</th></tr></thead>
+            <tbody>${oppShown.map(o => `
+                <tr onclick="openTeamModal('${o.opponent}')">
+                    <td><strong>${o.opponent}</strong> <span class="modal-muted">${o.seasons.length > 1 ? `${o.seasons[0]}–${String(o.seasons.at(-1)).slice(2)}` : o.seasons[0]}</span></td>
+                    <td>${o.games}</td>
+                    <td><strong>${fmtNum(o.flagsPerGame, 1)}</strong> <span class="modal-muted">${o.totalFlags} total</span></td>
+                    <td class="season-prev">${fmtNum(o.oppFlagsPerGame, 1)}</td>
+                    <td><span class="season-delta ${o.netPerGame > 0 ? 'pct-down' : o.netPerGame < 0 ? 'pct-up' : ''}">${o.netPerGame > 0 ? '+' : ''}${fmtNum(o.netPerGame, 1)}</span></td>
+                    <td class="season-prev">${o.lastMet.season} Wk ${o.lastMet.week} · ${o.lastMet.home ? 'home' : 'away'}${o.lastMet.result ? ` · ${o.lastMet.result} ${o.lastMet.score}` : ''} · ${o.lastMet.flags}–${o.lastMet.oppFlags} flags</td>
+                </tr>`).join('')}
+            </tbody></table></div>
+        ${opp.length > 10 ? `<button class="info-trigger-inline opp-more" onclick="toggleAllOpponents()">${state.showAllOpponents ? 'Show top 10' : `Show all ${opp.length} opponents`}</button>` : ''}
+        <p class="modal-footnote">Sorted by flags on ${t.abbr} per game, most first. Net = opponent's flags minus ${t.abbr}'s per game (<span class="pct-down">green</span>: ${t.abbr} came out ahead). Few meetings = small samples.</p>
+    </div>` : '';
+
     const log = (t.games || []).map(g => `
         <tr ${g.gameId ? '' : ''}>
             <td>Wk ${g.week}</td>
@@ -1520,6 +1609,8 @@ function renderTeamProfile(t) {
                 <span class="modal-muted">${w.types.map(x => `${x.type}${x.count > 1 ? ` ×${x.count}` : ''}`).join(', ')}</span></div>`).join('')}
             </div>
         </div>` : ''}
+
+        ${opponentsHtml}
 
         ${log ? `<div class="modal-section">
             <h4>${cs} game log</h4>
@@ -2726,6 +2817,7 @@ async function init() {
     renderRefereeCards();   // uses state.season, so render after it loads
     renderTeams();
     renderScoreboard();
+    renderTypeTrends();
     renderDataTable();
     renderInsightsCarousel();
     
@@ -2770,6 +2862,8 @@ window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
 window.setScoreboardFrame = setScoreboardFrame;
+window.setTypeTrendsCompare = setTypeTrendsCompare;
+window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;

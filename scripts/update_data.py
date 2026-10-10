@@ -534,8 +534,10 @@ def calculate_season_comparison(data: dict) -> dict:
     penalties = penalties[penalties['game_id'].isin(games['game_id'])].copy()
     penalties['penalty_yards'] = pd.to_numeric(penalties['penalty_yards'], errors='coerce').fillna(0).abs()
 
-    # Auto-adjusts every week: the latest regular-season week with play-by-play
-    through_week = int(games.loc[games['season'] == current, 'week'].max())
+    # "Through Week N" = the last week whose games have ALL been played. A Thursday game
+    # alone doesn't make it "through Week 5"; those early games are counted as extras.
+    from weeks import completed_week
+    through_week, partial = completed_week(data['schedules'], games, current)
 
     per_game = penalties.groupby('game_id').agg(
         penalties=('game_id', 'size'),
@@ -601,11 +603,16 @@ def calculate_season_comparison(data: dict) -> dict:
                 'baselines': {b['key']: summarize(s[b['mask'](s)]) for b in baselines},
             })
             continue
+        crew_week = max(through_week, int(s.loc[s['season'] == current, 'week'].max()))
+        bl = {b['key']: summarize(s[b['mask'](s)]) for b in baselines}
+        if 'sameWeeks' in bl and crew_week != through_week:   # e.g. worked Thursday's Week 5 game
+            bl['sameWeeks'] = summarize(s[(s['season'] == previous) & (s['week'] <= crew_week)])
         crews.append({
             'name': name,
             'slug': slugify(name),
             'current': cur,
-            'baselines': {b['key']: summarize(s[b['mask'](s)]) for b in baselines},
+            'throughWeek': crew_week,
+            'baselines': bl,
         })
 
     # Most penalties per game first
@@ -618,6 +625,7 @@ def calculate_season_comparison(data: dict) -> dict:
         'currentSeason': current,
         'previousSeason': previous,
         'throughWeek': through_week,
+        'partialWeek': partial,   # games already played in the next (unfinished) week
         'regularSeasonOnly': True,
         'baselines': [{k: b[k] for k in ('key', 'label', 'short', 'seasons')} for b in baselines],
         'defaultBaseline': 'sameWeeks' if previous in prior_seasons else (baselines[0]['key'] if baselines else None),

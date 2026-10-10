@@ -385,7 +385,9 @@ function renderSeasonView() {
     const baseOf = r => r.baselines?.[key] || null;
 
     document.getElementById('seasonSubtitle').textContent =
-        `Regular season through Week ${d.throughWeek}, compared with ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}.`;
+        `Regular season through Week ${d.throughWeek}` +
+        (d.partialWeek ? ` (plus ${d.partialWeek.games} game${d.partialWeek.games === 1 ? '' : 's'} from Week ${d.partialWeek.week})` : '') +
+        `, compared with ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}.`;
     document.getElementById('seasonPrevHeader').textContent = base.short;
 
     // League strip
@@ -1223,7 +1225,7 @@ function renderDivisionTeams() {
                 </div>
                 <div class="cc-foot">
                     <span>Most-penalized rank <strong>${t.rank ? `#${t.rank}` : '—'}</strong></span>
-                    <span>${bDef ? bDef.short : 'Last season'} ${fmtNum(t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
+                    <span>${bKey === 'sameWeeks' && t.throughWeek ? `${idx.season - 1} Wk 1–${t.throughWeek}` : (bDef ? bDef.short : 'Last season')} ${fmtNum(t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
                 </div>
             </div>`).join('')}
         </div>`;

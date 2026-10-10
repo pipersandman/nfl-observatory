@@ -121,15 +121,17 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
 
     # Comparison baselines (same choices as the home page toggle). "Same weeks" follows the
     # latest week played this season, so it moves forward automatically every week.
-    played_cur = tg[tg['season'] == season]
-    through_week = int(played_cur['week'].max()) if len(played_cur) else 0
+    # League "through week" = last week with every game played (a lone Thursday game doesn't
+    # count). Each team then compares through its own latest game if that's later.
+    from weeks import completed_week
+    through_week, _partial = completed_week(schedules, games_played, season)
     span = lambda ss: f"{ss[0]}" if len(ss) == 1 else f"{ss[0]}–{str(ss[-1])[2:]}"
     last3 = prior_seasons[-3:]
     baseline_defs = []
     if (season - 1) in prior_seasons:
-        if through_week:
+        if through_week or len(tg[tg['season'] == season]):
             baseline_defs.append(('sameWeeks', f"{season - 1} through Week {through_week}", f"{season - 1} Wk 1–{through_week}",
-                                  lambda r: (r['season'] == season - 1) & (r['week'] <= through_week)))
+                                  None))   # filled in per team below (its own week)
         baseline_defs.append(('lastSeason', f"All of {season - 1}", f"{season - 1}", lambda r: r['season'] == season - 1))
     if len(last3) == 3:
         baseline_defs.append(('last3', f"Last 3 seasons ({span(last3)})", f"{span(last3)} avg", lambda r: r['season'].isin(last3)))
@@ -181,7 +183,11 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
         all_type_keys = set(t['type'] for t in committed_types)
         all_drawn_keys = set(t['type'] for t in drawn_types)
         baselines = {}
+        team_week = max(through_week, int(cur['week'].max()) if len(cur) else 0)
         for key, label, short, mask in baseline_defs:
+            if key == 'sameWeeks':
+                label, short = f"{season - 1} through Week {team_week}", f"{season - 1} Wk 1–{team_week}"
+                mask = (lambda tw: (lambda r: (r['season'] == season - 1) & (r['week'] <= tw)))(team_week)
             brows = rows[mask(rows)]
             n = len(brows)
             ids = set(brows['game_id'])
@@ -252,7 +258,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'division': division, 'season': season, 'record': f'{w}-{l}' + (f'-{t_}' if t_ else ''),
             'leaguePerGame': _r(league_pg),
             'current': cb, 'lastSeason': lb, 'allPrior': ab,
-            'throughWeek': through_week,
+            'throughWeek': team_week,
             'baselines': baselines,
             'defaultBaseline': 'sameWeeks' if 'sameWeeks' in baselines else next(iter(baselines), None),
             'priorSeasons': prior_seasons,
@@ -271,6 +277,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                 'yardsPerGame': cb['yardsPerGame'] if cb else None,
                 'lastSeasonPerGame': lb['perGame'] if lb else None,
                 'baselinePerGame': {k: v.get('perGame') for k, v in baselines.items()},
+                'throughWeek': team_week,
                 'rank': rank_cur,
             })
 

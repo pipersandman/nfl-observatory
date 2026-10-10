@@ -35,10 +35,10 @@
         </button>
         <div class="nav-links" id="navLinks">
             <a href="#season">This Season</a>
+            <a href="#teams">Teams</a>
             <a href="#previews">Upcoming Games</a>
             <a href="#trends">Trends</a>
             <a href="#referees">Crew Chiefs</a>
-            <a href="#teams">Teams</a>
             <a href="#data">Data</a>
             <a href="#insights">Findings</a>
         </div>
@@ -57,6 +57,10 @@
             <div id="seasonBody">
                 <div class="season-league" id="seasonLeague">
                     <div class="loading"><div class="spinner"></div></div>
+                </div>
+
+                <div class="scoreboard" id="scoreboard">
+                <div class="loading"><div class="spinner"></div></div>
                 </div>
 
                 <div class="charts-grid">
@@ -109,11 +113,26 @@
         </div>
     </section>
 
+    <!-- Teams Section -->
+    <section id="teams">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">02 / TEAMS</div>
+                <h2 class="section-title">Team Discipline</h2>
+                <p class="section-subtitle" id="teamsSubtitle">Pick a division, then a team for its full penalty profile. Updated every week.</p>
+            </div>
+            <div class="division-grid" id="divisionGrid">
+                <div class="loading"><div class="spinner"></div></div>
+            </div>
+            <div class="division-teams" id="divisionTeams"></div>
+        </div>
+    </section>
+
     <!-- Game Previews Section -->
     <section id="previews">
         <div class="container">
             <div class="section-header">
-                <div class="section-number">02 / UPCOMING GAMES</div>
+                <div class="section-number">03 / UPCOMING GAMES</div>
                 <h2 class="section-title" id="previewsTitle">Game Previews</h2>
                 <p class="section-subtitle" id="previewsSubtitle">
                     Projected penalties for every upcoming game, ranked most flags first
@@ -132,7 +151,7 @@
     <section id="trends">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">03 / LEAGUE TRENDS</div>
+                <div class="section-number">04 / LEAGUE TRENDS</div>
                 <h2 class="section-title">The Big Picture</h2>
                 <p class="section-subtitle">How officiating patterns have evolved across seasons</p>
             </div>
@@ -185,7 +204,7 @@
     <section id="referees">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">04 / CREW CHIEF PROFILES</div>
+                <div class="section-number">05 / CREW CHIEF PROFILES</div>
                 <h2 class="section-title">Meet The Officials</h2>
                 <p class="section-subtitle">
                     This season vs last season vs all years, ranked by this season's penalties per game. Click any crew chief for their full profile
@@ -199,33 +218,15 @@
         </div>
     </section>
 
-    <!-- Teams Section -->
-    <section id="teams">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">05 / TEAMS</div>
-                <h2 class="section-title">Team Discipline</h2>
-                <p class="section-subtitle" id="teamsSubtitle">Pick a division, then a team for its full penalty profile. Updated every week.</p>
-            </div>
-            <div class="division-grid" id="divisionGrid">
-                <div class="loading"><div class="spinner"></div></div>
-            </div>
-            <div class="division-teams" id="divisionTeams"></div>
-        </div>
-    </section>
-
     <!-- Data Table Section -->
     <section id="data">
         <div class="container">
             <div class="section-header fade-in">
                 <div class="section-number">06 / FULL DATA</div>
-                <h2 class="section-title">By the Numbers</h2>
-                <p class="section-subtitle">A running scoreboard of every regular-season game, then every crew chief's full stats</p>
+                <h2 class="section-title">Complete Crew Chief Stats</h2>
+                <p class="section-subtitle">All active head referees ranked by experience</p>
             </div>
 
-            <div class="scoreboard" id="scoreboard">
-                <div class="loading"><div class="spinner"></div></div>
-            </div>
             
             <div class="table-container fade-in" id="dataTable">
                 <div class="table-header">

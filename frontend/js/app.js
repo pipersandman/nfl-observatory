@@ -113,26 +113,26 @@ const EXPLAINERS = {
     'season-trend': {
         title: 'Penalties Per Game By Season',
         content: `
-            <p>This chart shows how the <strong>league-wide average</strong> of penalties per game has changed 
-            over the seasons.</p>
-            <p>Increases often reflect rule changes, points of emphasis from the NFL, or officiating directives. 
-            The 2024 spike, for example, suggests new enforcement priorities.</p>
+            <p>Accepted penalties per game in each regular season (playoffs excluded), with the axis starting at zero.</p>
+            <p><strong>Yellow bars</strong> compare every season over the <em>same early weeks</em> as the current season,
+            the only fair comparison while a season is in progress (flags also run higher early in every season).
+            <strong>Gray bars</strong> are complete seasons.</p>
         `
     },
     'penalty-types': {
-        title: 'Most Common Penalty Types',
+        title: 'Share Of All Flags By Penalty Type',
         content: `
-            <p>Distribution of the <strong>top 10 most frequently called penalties</strong> across all games.</p>
-            <p><strong>Offensive Holding</strong> and <strong>False Start</strong> typically dominate — these 
-            are the most common mistakes teams make. Understanding penalty mix helps with game strategy.</p>
+            <p>Each call's share of all accepted penalties, with its rate per game. The ten most common calls are shown;
+            everything else is combined into "All other".</p>
+            <p>Switch between this season and every season since 2020. The two biggest calls are highlighted.</p>
         `
     },
     'quarter-penalties': {
-        title: 'Penalty Types By Quarter',
+        title: 'Penalties Per Game By Quarter',
         content: `
-            <p>This chart breaks down <strong>what types of penalties</strong> occur in each quarter, not just totals.</p>
-            <p>Patterns often emerge: more false starts early (pre-snap nerves), more holding late (tired players), 
-            fewer overall calls in Q4 (refs "letting them play" in crunch time).</p>
+            <p>Accepted penalties per game in each quarter (overtime excluded), for all penalties or a single type.</p>
+            <p>The busiest quarter is highlighted. The second quarter usually leads, partly because the two-minute drill
+            packs extra plays in before halftime.</p>
         `
     },
     'season-penalties': {
@@ -177,10 +177,12 @@ const EXPLAINERS = {
         `
     },
     'penalties-by-ref': {
-        title: 'Penalties By Crew Chief',
+        title: 'Crew Chief Flag Rates',
         content: `
-            <p>This chart ranks crew chiefs by their <strong>average penalties per game</strong>, from most to fewest.</p>
-            <p>Knowing which crews throw more flags can help predict game flow and total points.</p>
+            <p>Accepted penalties per game in each crew chief's regular-season games, with the number of games in brackets.
+            The dashed line is the league average for the same period.</p>
+            <p><strong>Red</strong>: 5% or more above average. <strong>Green</strong>: 5% or more below. Gray: within 5%.
+            Early in a season, each crew has only a few games, so expect big swings.</p>
         `
     }
 };
@@ -2110,218 +2112,186 @@ function renderCharts() {
     renderQuarterChart();
 }
 
+// Draws the value at the end of each bar (datasets opt in with _valueLabel)
+const valueLabelPlugin = {
+    id: 'valueLabels',
+    afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const horizontal = chart.options.indexAxis === 'y';
+        chart.data.datasets.forEach((ds, di) => {
+            if (!ds._valueLabel) return;
+            const meta = chart.getDatasetMeta(di);
+            if (meta.hidden) return;
+            meta.data.forEach((bar, i) => {
+                const v = ds.data[i];
+                if (v == null) return;
+                const text = ds._valueLabel(v, i);
+                ctx.save();
+                ctx.font = `600 11px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
+                ctx.fillStyle = ds._labelColor || 'rgba(255,255,255,0.85)';
+                if (horizontal) { ctx.textBaseline = 'middle'; ctx.fillText(text, bar.x + 6, bar.y); }
+                else { ctx.textAlign = 'center'; ctx.fillText(text, bar.x, bar.y - 6); }
+                ctx.restore();
+            });
+        });
+    }
+};
+
+const axisColor = 'rgba(255,255,255,0.6)';
+const gridColor = 'rgba(255,255,255,0.05)';
+function setSub(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
+function scopeToggle(containerId, current, onPick, labels) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = `<div class="baseline-toggle chart-toggle">${Object.entries(labels).map(([k, l]) =>
+        `<button class="baseline-btn ${k === current ? 'active' : ''}" aria-pressed="${k === current}" onclick="${onPick}('${k}')">${l}</button>`).join('')}</div>`;
+}
+
+// 1) Season chart: every season's same early weeks (fair for a season in progress) + full season
 function renderSeasonTrendChart() {
     renderWeekChart();
     const ctx = document.getElementById('seasonChart')?.getContext('2d');
-    if (!ctx || !state.trends.bySeason) return;
-    
+    const sc = state.typeTrends?.seasonCompare;
+    if (!ctx || !sc?.length) return;
     if (state.charts.season) state.charts.season.destroy();
-    
+    const wk = state.typeTrends.throughWeek;
+    const cur = sc.find(x => !x.complete);
+    setSub('seasonChartSub', `Regular season. ${cur ? `${cur.season} is only ${wk} weeks in, so compare the <strong class="y">yellow</strong> bars: every season's Weeks 1–${wk}. ` : ''}` +
+        `Gray bars are full seasons. Axis starts at zero.`);
     state.charts.season = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
+        plugins: [valueLabelPlugin],
         data: {
-            labels: state.trends.bySeason.map(s => s.season),
-            datasets: [{
-                label: 'Avg Penalties/Game',
-                data: state.trends.bySeason.map(s => s.avg_per_game),
-                borderColor: CONFIG.chartColors.flag,
-                backgroundColor: 'rgba(255, 196, 0, 0.08)',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 6,
-                pointHoverRadius: 8
-            }]
+            labels: sc.map(x => x.season),
+            datasets: [
+                { label: 'Full season', data: sc.map(x => x.complete ? x.fullSeason : null), backgroundColor: '#5c616a', borderRadius: 4,
+                  _valueLabel: v => fmtNum(v, 1), _labelColor: 'rgba(255,255,255,0.6)' },
+                { label: `Weeks 1–${wk}`, data: sc.map(x => x.early), backgroundColor: CONFIG.chartColors.flag, borderRadius: 4,
+                  _valueLabel: v => fmtNum(v, 1), _labelColor: CONFIG.chartColors.flag }
+            ]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } },
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } }
-            }
+            responsive: true, maintainAspectRatio: false, layout: { padding: { top: 18 } },
+            plugins: { legend: { position: 'top', align: 'end', labels: { color: axisColor, boxWidth: 12 } },
+                tooltip: { callbacks: { label: c => {
+                    const row = sc[c.dataIndex];
+                    return c.datasetIndex === 0 ? `Full season: ${fmtNum(c.raw, 2)} flags/game (${row.games} games)`
+                        : `Weeks 1–${wk}: ${fmtNum(c.raw, 2)} flags/game (${row.earlyGames} games)`;
+                } } } },
+            scales: { x: { grid: { display: false }, ticks: { color: axisColor } },
+                      y: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } } }
         }
     });
 }
 
+// 2) Type share: % of all flags, labeled, with "All other"; this season or since 2020
+function setTypeScope(k) { state.typeScope = k; renderPenaltyTypeChart(); }
 function renderPenaltyTypeChart() {
     const ctx = document.getElementById('typeChart')?.getContext('2d');
-    if (!ctx || !state.trends.byType) return;
-    
+    const ts = state.typeTrends?.typeShare;
+    if (!ctx || !ts) return;
     if (state.charts.type) state.charts.type.destroy();
-    
-    const colors = CONFIG.chartColors.categorical;
-    
+    const scope = state.typeScope || 'current';
+    const d = ts[scope];
+    scopeToggle('typeControls', scope, 'setTypeScope', state.typeTrends.scopeLabels);
+    setSub('typeChartSub', `What share of all accepted penalties each call makes up, regular season ` +
+        `(${fmtNum(d.total)} flags in ${fmtNum(d.games)} games, ${fmtNum(d.perGame, 1)} per game). ` +
+        `The top two calls alone are ${fmtNum((d.types[0]?.pct || 0) + (d.types[1]?.pct || 0), 0)}% of every flag.`);
+    const rows = d.types;
     state.charts.type = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: state.trends.byType.map(t => t.type),
-            datasets: [{
-                data: state.trends.byType.map(t => t.count),
-                backgroundColor: colors,
-                borderColor: '#16181b',
-                borderWidth: 2
-            }]
-        },
+        type: 'bar', plugins: [valueLabelPlugin],
+        data: { labels: rows.map(x => x.type), datasets: [{
+            data: rows.map(x => x.pct), borderRadius: 4,
+            backgroundColor: rows.map((x, i) => x.other ? '#3e434a' : i < 2 ? CONFIG.chartColors.flag : '#8b95a7'),
+            _valueLabel: (v, i) => `${fmtNum(v, 1)}%  ·  ${fmtNum(rows[i].perGame, 2)}/game`, _labelColor: 'rgba(255,255,255,0.75)' }] },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: { color: 'rgba(255,255,255,0.7)', padding: 10, font: { size: 10 } }
-                }
-            }
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 120 } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtNum(rows[c.dataIndex].count)} flags · ${fmtNum(c.raw, 1)}% of all` } } },
+            scales: { x: { beginAtZero: true, title: { display: true, text: '% of all flags', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor, callback: v => `${v}%` } },
+                      y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.8)', autoSkip: false } } }
         }
     });
 }
 
-// CHANGED: Now shows penalties by ref (sorted descending) instead of home bias
+// 3) Crew chiefs: every name shown, labeled, with the league average as a reference line
+function setCrewScope(k) { state.crewScope = k; renderPenaltiesByRefChart(); }
 function renderPenaltiesByRefChart() {
-    const ctx = document.getElementById('biasChart')?.getContext('2d');
-    if (!ctx || !state.referees.length) return;
-    
+    const canvas = document.getElementById('biasChart');
+    const sd = state.season;
+    if (!canvas || !sd?.crewChiefs?.length) return;
     if (state.charts.bias) state.charts.bias.destroy();
-    
-    // Sort referees by avg penalties descending
-    const sortedRefs = [...state.referees].sort((a, b) => b.avg_per_game - a.avg_per_game);
-    const topRefs = sortedRefs.slice(0, 12);
-    
-    // Calculate league average
-    const leagueAvg = state.referees.reduce((sum, r) => sum + r.avg_per_game, 0) / state.referees.length;
-    
-    state.charts.bias = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: topRefs.map(r => r.name.split(' ').pop()),
-            datasets: [{
-                label: 'Avg Penalties/Game',
-                data: topRefs.map(r => r.avg_per_game),
-                backgroundColor: topRefs.map(r => 
-                    r.avg_per_game > leagueAvg + 1 ? CONFIG.chartColors.red :
-                    r.avg_per_game < leagueAvg - 1 ? CONFIG.chartColors.green :
-                    CONFIG.chartColors.slate
-                ),
-                borderRadius: 4
-            }]
-        },
+    const scope = state.crewScope || 'all';
+    const cs = sd.currentSeason;
+    const allKey = sd.baselines?.find(b => b.key === 'all');
+    const labels = { all: allKey ? allKey.short.replace(' avg', '') : 'Past seasons', current: `${cs}` };
+    scopeToggle('crewControls', scope, 'setCrewScope', labels);
+    const pick = c => scope === 'current' ? c.current : c.baselines?.all;
+    const league = scope === 'current' ? sd.league.current?.perGame : sd.league.baselines?.all?.perGame;
+    const minGames = scope === 'current' ? 1 : 10;
+    const rows = sd.crewChiefs.map(c => ({ name: c.name, ...pick(c) })).filter(r => r.perGame != null && r.games >= minGames)
+        .sort((a, b) => b.perGame - a.perGame);   // most flags first
+    setSub('biasChartSub', `Accepted penalties per game in each crew chief's regular-season games ` +
+        `(${scope === 'current' ? `${cs} so far, small samples` : `${labels.all}, at least ${minGames} games`}). ` +
+        `Dashed line: league average ${fmtNum(league, 1)}. <span class="pct-up">Red</span> = 5%+ above, <span class="pct-down">green</span> = 5%+ below.`);
+    canvas.parentElement.style.height = `${Math.max(320, rows.length * 26 + 70)}px`;
+    const avgLine = { id: 'avgLine', afterDatasetsDraw(chart) {
+        const x = chart.scales.x.getPixelForValue(league), { top, bottom } = chart.chartArea, ctx = chart.ctx;
+        ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, bottom); ctx.stroke(); ctx.restore();
+    } };
+    state.charts.bias = new Chart(canvas.getContext('2d'), {
+        type: 'bar', plugins: [valueLabelPlugin, avgLine],
+        data: { labels: rows.map(r => r.name), datasets: [{
+            data: rows.map(r => r.perGame), borderRadius: 4,
+            backgroundColor: rows.map(r => r.perGame > league * 1.05 ? CONFIG.chartColors.red : r.perGame < league * 0.95 ? CONFIG.chartColors.green : '#8b95a7'),
+            _valueLabel: (v, i) => `${fmtNum(v, 1)}  (${rows[i].games} g)` }] },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y',
-            plugins: { 
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        line1: {
-                            type: 'line',
-                            xMin: leagueAvg,
-                            xMax: leagueAvg,
-                            borderColor: 'rgba(255,255,255,0.3)',
-                            borderWidth: 2,
-                            borderDash: [5, 5]
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: { 
-                    grid: { color: 'rgba(255,255,255,0.05)' }, 
-                    ticks: { color: 'rgba(255,255,255,0.5)' },
-                    title: { display: true, text: 'Avg Penalties/Game', color: 'rgba(255,255,255,0.5)' }
-                },
-                y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' } }
-            }
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false, layout: { padding: { right: 90 } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtNum(c.raw, 2)} flags/game in ${rows[c.dataIndex].games} games` } } },
+            scales: { x: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } },
+                      y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.85)', autoSkip: false } } }
         }
     });
 }
 
-// FIXED: Now shows actual counts, not percentages (which made equal height bars)
+// 4) Quarters: flags per game in each quarter, labeled; all penalties or one type
+function setQuarterScope(k) { state.quarterScope = k; renderQuarterChart(); }
+function setQuarterType(t) { state.quarterType = t; renderQuarterChart(); }
+function openQuarterTypeMenu(btn) {
+    const q = state.typeTrends.quarters[state.quarterScope || 'current'];
+    const opts = ['All penalties', ...Object.keys(q.types)];
+    showPopoverMenu(btn, opts.map(o => ({ label: o, value: o, selected: (state.quarterType || 'All penalties') === o })), setQuarterType);
+}
 function renderQuarterChart() {
     const ctx = document.getElementById('quarterChart')?.getContext('2d');
-    if (!ctx) return;
-    
+    const qs = state.typeTrends?.quarters;
+    if (!ctx || !qs) return;
     if (state.charts.quarter) state.charts.quarter.destroy();
-    
-    // Check for enhanced quarter-by-type data
-    const qtrTypeData = state.trends.byQuarterAndType;
-    const byQuarter = state.trends.byQuarter;
-    
-    if (qtrTypeData && qtrTypeData.types && byQuarter) {
-        // Get actual counts per quarter for scaling
-        const quarterTotals = {};
-        byQuarter.forEach(q => { quarterTotals[q.quarter] = q.count; });
-        
-        const colors = CONFIG.chartColors.categorical;
-        
-        // Convert percentages back to approximate counts for each type per quarter
-        const datasets = qtrTypeData.types.map((type, i) => {
-            const percentages = qtrTypeData.data[type] || [0, 0, 0, 0];
-            const counts = percentages.map((pct, qIdx) => {
-                const qtrTotal = quarterTotals[qIdx + 1] || 0;
-                return Math.round(qtrTotal * pct / 100);
-            });
-            
-            return {
-                label: type.replace('Offensive ', 'Off ').replace('Defensive ', 'Def '),
-                data: counts,
-                backgroundColor: colors[i % colors.length],
-                borderColor: '#16181b',
-                borderWidth: 1,
-                borderRadius: 2
-            };
-        });
-        
-        state.charts.quarter = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: { color: 'rgba(255,255,255,0.7)', font: { size: 9 }, boxWidth: 10 }
-                    }
-                },
-                scales: {
-                    x: { stacked: true, grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' } },
-                    y: { 
-                        stacked: true, 
-                        grid: { color: 'rgba(255,255,255,0.05)' }, 
-                        ticks: { color: 'rgba(255,255,255,0.5)' },
-                        title: { display: true, text: 'Penalty Count', color: 'rgba(255,255,255,0.5)' }
-                    }
-                }
-            }
-        });
-    } else if (byQuarter) {
-        // Fallback to simple quarter totals
-        state.charts.quarter = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: byQuarter.map(q => `Q${q.quarter}`),
-                datasets: [{
-                    label: 'Penalties',
-                    data: byQuarter.map(q => q.count),
-                    backgroundColor: CONFIG.chartColors.categorical.slice(0, 4),
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' } },
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } }
-                }
-            }
-        });
+    const scope = state.quarterScope || 'current';
+    const q = qs[scope];
+    const type = q.types[state.quarterType] ? state.quarterType : 'All penalties';
+    const vals = type === 'All penalties' ? q.total : q.types[type];
+    const ctl = document.getElementById('quarterControls');
+    if (ctl) {
+        scopeToggle('quarterControls', scope, 'setQuarterScope', state.typeTrends.scopeLabels);
+        ctl.insertAdjacentHTML('beforeend', `<button class="trend-pick" onclick="openQuarterTypeMenu(this)">${type}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`);
     }
+    const peak = vals.indexOf(Math.max(...vals));
+    setSub('quarterChartSub', `${type === 'All penalties' ? 'Accepted penalties' : type} per game in each quarter, regular season ` +
+        `(${state.typeTrends.scopeLabels[scope]}, ${fmtNum(q.games)} games, overtime excluded). Busiest: <strong class="y">Q${peak + 1}</strong>.` +
+        (type === 'All penalties' && peak === 1 ? ' The second quarter usually leads, partly because the two-minute drill packs in extra plays.' : ''));
+    state.charts.quarter = new Chart(ctx, {
+        type: 'bar', plugins: [valueLabelPlugin],
+        data: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], datasets: [{
+            data: vals, borderRadius: 6,
+            backgroundColor: vals.map((v, i) => i === peak ? CONFIG.chartColors.flag : '#8b95a7'),
+            _valueLabel: v => fmtNum(v, 2) }] },
+        options: {
+            responsive: true, maintainAspectRatio: false, layout: { padding: { top: 18 } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmtNum(c.raw, 2)} per game` } } },
+            scales: { x: { grid: { display: false }, ticks: { color: axisColor } },
+                      y: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } } }
+        }
+    });
 }
 
 // =============================================================================
@@ -3023,6 +2993,7 @@ function chartImage(canvas, ratio = 3) {
 
 async function composeChartCard(box) {
     const title = box.querySelector('.chart-title')?.textContent.trim() || 'Chart';
+    const subText = box.querySelector('.chart-sub')?.textContent.trim() || '';
     const section = box.closest('section');
     const kicker = section?.querySelector('.section-number')?.textContent.trim() || '';
     const img = chartImage(box.querySelector('canvas'));
@@ -3042,7 +3013,18 @@ async function composeChartCard(box) {
     m.font = `600 15px ${v('--font-body', 'sans-serif')}`; const leftW = 26 + m.measureText('nflobservatory.com').width;
     m.font = `400 13px ${v('--font-body', 'sans-serif')}`; const rightW = m.measureText(right).width;
     const footTwoLines = leftW + rightW + 24 > inner;
-    const headH = 58 + tSize + 12, footH = footTwoLines ? 82 : 60;
+    // wrap the context line to the card width
+    m.font = `400 14px ${v('--font-body', 'sans-serif')}`;
+    const subLines = [];
+    if (subText) {
+        let line = '';
+        for (const w of subText.split(' ')) {
+            const test = line ? `${line} ${w}` : w;
+            if (m.measureText(test).width > inner && line) { subLines.push(line); line = w; } else line = test;
+        }
+        if (line) subLines.push(line);
+    }
+    const headH = 58 + tSize + 12 + subLines.length * 20 + (subLines.length ? 8 : 0), footH = footTwoLines ? 82 : 60;
     const H = Math.round(headH + img.h + footH + 16);
 
     const c = document.createElement('canvas');
@@ -3056,6 +3038,9 @@ async function composeChartCard(box) {
     ctx.fillStyle = v('--text-primary', '#ecebe7');
     ctx.font = `700 ${tSize}px ${v('--font-display', 'sans-serif')}`;
     ctx.fillText(title, pad, pad + 14 + tSize);
+    ctx.fillStyle = v('--text-secondary', '#9a9ea4');
+    ctx.font = `400 14px ${v('--font-body', 'sans-serif')}`;
+    subLines.forEach((ln, k) => ctx.fillText(ln, pad, pad + 14 + tSize + 26 + k * 20));
 
     const im = new Image();
     await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = img.src; });
@@ -3279,6 +3264,10 @@ window.setScoreboardWeek = setScoreboardWeek;
 window.toggleScoreboardWeekMenu = toggleScoreboardWeekMenu;
 window.toggleWeekLayer = toggleWeekLayer;
 window.openTrendMenu = openTrendMenu;
+window.setTypeScope = setTypeScope;
+window.setCrewScope = setCrewScope;
+window.setQuarterScope = setQuarterScope;
+window.openQuarterTypeMenu = openQuarterTypeMenu;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;

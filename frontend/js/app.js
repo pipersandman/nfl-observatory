@@ -1196,10 +1196,15 @@ function renderDivisionTeams() {
     const div = idx?.divisions?.find(d => d.name === state.selectedDivision);
     if (!box || !div) return;
     const league = idx.leaguePerGame;
+    const bKey = teamBaselineKey(null);
+    const bDef = (idx.baselines || []).find(b => b.key === bKey);
     // Most penalties per game first
     const teams = [...div.teams].sort((a, b) => (b.perGame ?? 0) - (a.perGame ?? 0));
     box.innerHTML = `
-        <h3 class="preview-group-title">${div.name} <span class="modal-muted">${idx.season} · ranked by penalties per game</span></h3>
+        <div class="division-head">
+            <h3 class="preview-group-title">${div.name} <span class="modal-muted">${idx.season} · ranked by penalties per game</span></h3>
+            ${idx.baselines?.length ? teamToggleHtml(idx.baselines, bKey, 'setTeamBaseline') : ''}
+        </div>
         <div class="team-grid">${teams.map(t => `
             <div class="team-card" onclick="openTeamModal('${t.abbr}')">
                 <div class="team-card-head">
@@ -1218,7 +1223,7 @@ function renderDivisionTeams() {
                 </div>
                 <div class="cc-foot">
                     <span>Most-penalized rank <strong>${t.rank ? `#${t.rank}` : '—'}</strong></span>
-                    <span>Last season ${fmtNum(t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
+                    <span>${bDef ? bDef.short : 'Last season'} ${fmtNum(t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
                 </div>
             </div>`).join('')}
         </div>`;
@@ -1237,11 +1242,55 @@ async function openTeamModal(abbr) {
     const t = state.teamProfiles[abbr] || await fetchJSON(`teams/${abbr}.json`);
     if (!t) { body.innerHTML = '<p class="season-error">Team profile unavailable.</p>'; return; }
     state.teamProfiles[abbr] = t;
+    renderTeamProfile(t);
+}
 
-    const cs = t.season, cur = t.current, last = t.lastSeason, all = t.allPrior;
+// Which comparison the team views use (shared by the team cards and the team pop-up).
+// Default: last season through the same week as now, which moves forward every week.
+function teamBaselineKey(t) {
+    const keys = t?.baselines ? Object.keys(t.baselines) : (state.teamsIndex?.baselines || []).map(b => b.key);
+    if (state.teamBaseline && keys.includes(state.teamBaseline)) return state.teamBaseline;
+    return t?.defaultBaseline || state.teamsIndex?.defaultBaseline || keys[0];
+}
+
+function teamToggleHtml(baselines, active, onclickFn) {
+    const label = (b) => b.key === 'sameWeeks' ? b.label.replace(' through Week ', ' thru Wk ')
+        : b.key === 'lastSeason' ? b.label : b.key === 'last3' ? 'Last 3 seasons' : 'All seasons';
+    return `<div class="baseline-toggle team-toggle" role="group" aria-label="Compare against">${baselines.map(b => `
+        <button class="baseline-btn ${b.key === active ? 'active' : ''}" aria-pressed="${b.key === active}"
+                onclick="${onclickFn}('${b.key}')">${label(b)}</button>`).join('')}</div>`;
+}
+
+function setTeamBaseline(key) {
+    state.teamBaseline = key;
+    renderDivisionTeams();
+    const open = document.getElementById('modal')?.classList.contains('active') && location.hash.startsWith('#team=');
+    if (open) {
+        const abbr = decodeURIComponent(location.hash.split('=')[1] || '');
+        const scroller = document.querySelector('#modal .modal');
+        const y = scroller?.scrollTop || 0;
+        if (state.teamProfiles[abbr]) renderTeamProfile(state.teamProfiles[abbr]);
+        if (scroller) scroller.scrollTop = y;
+    }
+}
+
+function renderTeamProfile(t) {
+    const body = document.getElementById('modalBody');
+    if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
+    const cs = t.season, cur = t.current;
+    // Selected comparison (falls back to all prior seasons for profiles built before baselines existed)
+    const bKey = teamBaselineKey(t);
+    const base = t.baselines?.[bKey] || { ...(t.allPrior || {}), short: 'Prior avg', label: 'All prior seasons' };
+    const all = base;
     const ps = t.priorSeasons || [];
-    const allLabel = ps.length ? `${ps[0]}–${String(ps[ps.length - 1]).slice(2)}` : 'Prior';
+    const allLabel = base.short;
     const small = !cur || cur.games < MIN_GAMES_FOR_PCT;
+    const withBase = (rows, field) => (rows || []).map(r => ({ ...r, priorPerGame: base[field]?.[r.type] ?? r.priorPerGame }))
+        .sort((a, b) => (b.currentPerGame ?? 0) - (a.currentPerGame ?? 0) || (b.priorPerGame ?? 0) - (a.priorPerGame ?? 0));
+    const committedRows = t.baselines ? withBase(t.committedTypes, 'types') : t.committedTypes;
+    const drawnRows = t.baselines ? withBase(t.drawnTypes, 'drawnTypes') : t.drawnTypes;
+    const quarterRows = (t.quarters || []).map((q, i) => ({ ...q, priorPerGame: base.quarters?.[i] ?? q.priorPerGame }));
+    const toggle = t.baselines ? teamToggleHtml(Object.entries(t.baselines).map(([key, b]) => ({ key, ...b })), bKey, 'setTeamBaseline') : '';
 
     // Next game (links to its preview when one exists)
     const nextPv = t.nextGame && (state.previews || []).some(w => w.games?.some(g => g.gameId === t.nextGame.gameId));
@@ -1253,7 +1302,7 @@ async function openTeamModal(abbr) {
         `${t.division || ''} · ${cs} record ${t.record}${nextTxt ? ` · ${nextTxt}` : ''}`;
 
     // Rows: this season vs last vs all prior
-    const maxRate = Math.max(...[cur, last, all].filter(Boolean).map(b => b.perGame), 1);
+    const maxRate = Math.max(...[cur, base].filter(b => b && b.perGame != null).map(b => b.perGame), 1);
     const row = (cls, label, b) => b ? `
         <div class="cc-row ${cls}">
             <div class="cc-label">${label}<span>${b.games} g</span></div>
@@ -1291,18 +1340,21 @@ async function openTeamModal(abbr) {
     body.innerHTML = `
         ${nextPv ? `<div class="team-next"><button class="baseline-btn active" onclick="openPreviewModal('${t.nextGame.gameId}')">Preview next game: ${t.nextGame.home ? 'vs' : '@'} ${t.nextGame.opponent} →</button></div>` : ''}
 
+        ${toggle ? `<div class="modal-section team-toggle-wrap">${toggle}
+            <p class="modal-footnote">Comparing ${cs} with <strong>${base.label}</strong>. Every comparison below follows this choice.</p></div>` : ''}
+
         <div class="modal-section">
-            <h4>${cs} vs history</h4>
+            <h4>${cs} vs ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}</h4>
             <div class="cc-rows cc-rows-lg">
                 <div class="cc-row-head"><span></span><span></span><span>Pen/g</span><span>Yds/g</span><span>Drawn/g</span></div>
                 ${row('cc-current', cs, cur)}
-                ${row('cc-last', cs - 1, last)}
-                ${row('cc-all', allLabel, all)}
+                ${row('cc-last', allLabel, base.games ? base : null)}
             </div>
             ${cur ? `<div class="cc-changes">
-                <span>Pen/g vs ${cs - 1} ${pctBadge(cur.perGame, last?.perGame, { small })}</span>
-                <span>vs ${allLabel} ${pctBadge(cur.perGame, all?.perGame, { small })}</span>
-                <span>Yds/g vs ${cs - 1} ${pctBadge(cur.yardsPerGame, last?.yardsPerGame, { small })}</span>
+                <span>Pen/g ${pctBadge(cur.perGame, base?.perGame, { small })}</span>
+                <span>Yds/g ${pctBadge(cur.yardsPerGame, base?.yardsPerGame, { small })}</span>
+                <span>Drawn/g ${pctBadge(cur.drawnPerGame, base?.drawnPerGame, { small })}</span>
+                <span class="modal-muted">vs ${allLabel}</span>
             </div>` : ''}
             ${small && cur ? `<div class="cc-note">Only ${cur.games} games this season — early numbers swing a lot.</div>` : ''}
         </div>
@@ -1324,19 +1376,19 @@ async function openTeamModal(abbr) {
         ${t.committedTypes?.length ? `<div class="modal-section">
             <h4>What they get flagged for: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
-            ${renderPairedRows(t.committedTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
+            ${renderPairedRows(committedRows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
         </div>` : ''}
 
         ${t.drawnTypes?.length ? `<div class="modal-section">
             <h4>What they draw from opponents</h4>
             ${pairLegend(cs, allLabel)}
-            ${renderPairedRows(t.drawnTypes, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
+            ${renderPairedRows(drawnRows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
         </div>` : ''}
 
         <div class="modal-section">
             <h4>⏱️ When they get flagged</h4>
             ${pairLegend(cs, allLabel)}
-            ${renderPairedRows(t.quarters, cs, allLabel, small, q => `Q${q.quarter}`)}
+            ${renderPairedRows(quarterRows, cs, allLabel, small, q => `Q${q.quarter}`)}
         </div>
 
         ${crews ? `<div class="modal-section">
@@ -1345,7 +1397,7 @@ async function openTeamModal(abbr) {
                 <thead><tr><th>Crew chief</th><th>Games</th><th>${t.abbr} flags/g</th><th>Opp flags/g</th><th>Last worked</th></tr></thead>
                 <tbody>${crews}</tbody>
             </table></div>
-            <p class="modal-footnote">Sorted by flags on ${t.abbr} per game, most first. Badge compares with ${t.abbr}'s ${allLabel} average.</p>
+            <p class="modal-footnote">Sorted by flags on ${t.abbr} per game, most first. Badge compares with ${t.abbr}'s rate in ${base.label.charAt(0).toLowerCase() + base.label.slice(1)}.</p>
         </div>` : ''}
 
         ${t.players?.length ? `<div class="modal-section">
@@ -1378,7 +1430,7 @@ function renderTeamChart(t, priorAll) {
         borderRadius: 4, order: 2
     }];
     if (priorAll) datasets.push({
-        type: 'line', label: 'Prior-years avg', data: h.map(() => priorAll.perGame),
+        type: 'line', label: priorAll.short ? `${priorAll.short} rate` : 'Prior-years avg', data: h.map(() => priorAll.perGame),
         borderColor: 'rgba(255,255,255,0.45)', borderDash: [5, 5], borderWidth: 1.5, pointRadius: 0, order: 1
     });
     state.charts.modal = new Chart(ctx, {
@@ -1389,7 +1441,7 @@ function renderTeamChart(t, priorAll) {
                 legend: { display: !!priorAll, position: 'top', align: 'end',
                           labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, font: { size: 10 }, filter: (item) => item.text !== 'Penalties/game' } },
                 tooltip: { callbacks: { label: (c) => {
-                    if (c.dataset.type === 'line') return `Prior-years avg: ${fmtNum(c.raw, 1)}/g`;
+                    if (c.dataset.type === 'line') return `${c.dataset.label}: ${fmtNum(c.raw, 1)}/g`;
                     const s = h[c.dataIndex];
                     return `${fmtNum(s.perGame, 1)}/g · ${fmtNum(s.yardsPerGame)} yds/g · rank #${s.rank ?? '—'} · ${s.games} games`;
                 } } }
@@ -1951,7 +2003,7 @@ function renderPairedRows(rows, cs, allLabel, small, labelFn) {
 function pairLegend(cs, allLabel) {
     return `<div class="pair-legend">
         <span><i class="pair-swatch pair-current"></i>${cs}</span>
-        <span><i class="pair-swatch pair-prior"></i>${allLabel} avg</span>
+        <span><i class="pair-swatch pair-prior"></i>${/avg$/.test(allLabel) ? allLabel : `${allLabel} avg`}</span>
         <span class="modal-muted">per game</span>
     </div>`;
 }
@@ -2602,6 +2654,7 @@ document.addEventListener('DOMContentLoaded', init);
 window.openRefereeModal = openRefereeModal;
 window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
+window.setTeamBaseline = setTeamBaseline;
 window.openScorecardModal = openScorecardModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;

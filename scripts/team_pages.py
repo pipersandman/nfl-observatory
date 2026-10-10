@@ -119,6 +119,24 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     profiles, index = {}, {d: [] for d in DIVISION_ORDER}
     upcoming = reg[(reg['season'] == season) & reg['result'].isna()].sort_values(['gameday', 'gametime'])
 
+    # Comparison baselines (same choices as the home page toggle). "Same weeks" follows the
+    # latest week played this season, so it moves forward automatically every week.
+    played_cur = tg[tg['season'] == season]
+    through_week = int(played_cur['week'].max()) if len(played_cur) else 0
+    span = lambda ss: f"{ss[0]}" if len(ss) == 1 else f"{ss[0]}–{str(ss[-1])[2:]}"
+    last3 = prior_seasons[-3:]
+    baseline_defs = []
+    if (season - 1) in prior_seasons:
+        if through_week:
+            baseline_defs.append(('sameWeeks', f"{season - 1} through Week {through_week}", f"{season - 1} Wk 1–{through_week}",
+                                  lambda r: (r['season'] == season - 1) & (r['week'] <= through_week)))
+        baseline_defs.append(('lastSeason', f"All of {season - 1}", f"{season - 1}", lambda r: r['season'] == season - 1))
+    if len(last3) == 3:
+        baseline_defs.append(('last3', f"Last 3 seasons ({span(last3)})", f"{span(last3)} avg", lambda r: r['season'].isin(last3)))
+    if len(prior_seasons) > 3:
+        baseline_defs.append(('all', f"All seasons ({span(prior_seasons)})", f"{span(prior_seasons)} avg",
+                              lambda r: r['season'].isin(prior_seasons)))
+
     for team in current_teams:
         rows = tg[tg['team'] == team]
         cur = rows[rows['season'] == season]
@@ -157,6 +175,25 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'currentPerGame': _r((tp_cur['qtr'] == q).sum() / len(cur)) if len(cur) else None,
             'priorPerGame': _r((tp_prior['qtr'] == q).sum() / len(prior)) if len(prior) else None,
         } for q in (1, 2, 3, 4)]
+
+        # Each comparison baseline: overall rates + per-game rates by type (committed and
+        # drawn) and by quarter, so the site can switch comparisons without refetching
+        all_type_keys = set(t['type'] for t in committed_types)
+        all_drawn_keys = set(t['type'] for t in drawn_types)
+        baselines = {}
+        for key, label, short, mask in baseline_defs:
+            brows = rows[mask(rows)]
+            n = len(brows)
+            ids = set(brows['game_id'])
+            bp = pen[pen['game_id'].isin(ids)]
+            mine, theirs = bp[bp['penalty_team'] == team], bp[bp['penalty_team'] != team]
+            tvc, dvc = mine['penalty_type'].value_counts(), theirs['penalty_type'].value_counts()
+            baselines[key] = {
+                'label': label, 'short': short, **(block(brows) or {'games': 0}),
+                'types': {t: _r(tvc.get(t, 0) / n) if n else None for t in all_type_keys},
+                'drawnTypes': {t: _r(dvc.get(t, 0) / n) if n else None for t in all_drawn_keys},
+                'quarters': [_r((mine['qtr'] == q).sum() / n) if n else None for q in (1, 2, 3, 4)],
+            }
 
         # Players this season
         players = []
@@ -215,6 +252,9 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'division': division, 'season': season, 'record': f'{w}-{l}' + (f'-{t_}' if t_ else ''),
             'leaguePerGame': _r(league_pg),
             'current': cb, 'lastSeason': lb, 'allPrior': ab,
+            'throughWeek': through_week,
+            'baselines': baselines,
+            'defaultBaseline': 'sameWeeks' if 'sameWeeks' in baselines else next(iter(baselines), None),
             'priorSeasons': prior_seasons,
             'rank': {'current': rank_cur, 'lastSeason': rank_last, 'of': len(current_teams)},
             'committedTypes': committed_types, 'drawnTypes': drawn_types, 'quarters': quarters,
@@ -230,6 +270,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                 'perGame': cb['perGame'] if cb else None,
                 'yardsPerGame': cb['yardsPerGame'] if cb else None,
                 'lastSeasonPerGame': lb['perGame'] if lb else None,
+                'baselinePerGame': {k: v.get('perGame') for k, v in baselines.items()},
                 'rank': rank_cur,
             })
 
@@ -241,6 +282,9 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                  for d in DIVISION_ORDER]
     (out / 'index.json').write_text(safe_dumps({
         'season': season, 'leaguePerGame': _r(league_pg), 'divisions': divisions,
+        'throughWeek': through_week,
+        'baselines': [{'key': k, 'label': l, 'short': sh} for k, l, sh, _ in baseline_defs],
+        'defaultBaseline': 'sameWeeks' if any(k == 'sameWeeks' for k, *_ in baseline_defs) else (baseline_defs[0][0] if baseline_defs else None),
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }, indent=2))
     print(f"   ✓ {len(profiles)} team pages ({season}), 8 divisions")

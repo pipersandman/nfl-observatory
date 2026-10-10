@@ -180,7 +180,23 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
 
         # Each comparison baseline: overall rates + per-game rates by type (committed and
         # drawn) and by quarter, so the site can switch comparisons without refetching
-        all_type_keys = set(t['type'] for t in committed_types)
+        # Penalty-type trends for this team: its most common types since 2020 (+ this
+        # season's), per game in every season
+        team_all = pen[pen['penalty_team'] == team]
+        trend_keys = list(dict.fromkeys(list(team_all['penalty_type'].value_counts().head(12).index) +
+                                        [t['type'] for t in committed_types]))
+        games_by_season = rows.groupby('season').size()
+        type_trends = []
+        for t in trend_keys:
+            per = team_all[team_all['penalty_type'] == t].groupby('season').size()
+            type_trends.append({
+                'type': str(t),
+                'current': _r(per.get(season, 0) / len(cur)) if len(cur) else None,
+                'currentCount': int(per.get(season, 0)),
+                'bySeason': [{'season': int(sz), 'perGame': _r(per.get(sz, 0) / n)} for sz, n in games_by_season.items()],
+            })
+
+        all_type_keys = set(t['type'] for t in committed_types) | set(trend_keys)
         all_drawn_keys = set(t['type'] for t in drawn_types)
         baselines = {}
         team_week = max(through_week, int(cur['week'].max()) if len(cur) else 0)
@@ -288,6 +304,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'committedTypes': committed_types, 'drawnTypes': drawn_types, 'quarters': quarters,
             'players': players[:8], 'crews': crews, 'history': history, 'games': log,
             'opponents': opponents,
+            'typeTrends': type_trends,
             'nextGame': next_game,
             'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         }

@@ -1740,6 +1740,28 @@ function renderTeamProfile(t) {
             <td class="season-prev">${c.lastSeason}</td>
         </tr>`).join('');
 
+    // Is this team trending up or down on each penalty type? (follows the comparison toggle)
+    const tts = (t.typeTrends || []).map(r => ({ ...r, base: base.types?.[r.type] ?? null }))
+        .map(r => ({ ...r, diff: (r.current ?? 0) - (r.base ?? 0) }))
+        .sort((a, b) => b.diff - a.diff);
+    const typeTrendsHtml = tts.length ? `<div class="modal-section">
+        <h4>Which calls are rising for ${t.abbr}? <span class="modal-muted">${cs} vs ${allLabel}, biggest increases first</span></h4>
+        <div class="table-scroll"><table class="pv-table tt-table">
+            <thead><tr><th>Penalty</th><th>${cs}</th><th>${allLabel.replace(' avg', '')}</th><th>Change</th>
+                <th>${tts[0].bySeason[0]?.season}–${String(tts[0].bySeason.at(-1)?.season).slice(2)}</th></tr></thead>
+            <tbody>${tts.map(r => `
+                <tr>
+                    <td><strong>${r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. ')}</strong> <span class="modal-muted">(${r.currentCount})</span></td>
+                    <td><strong>${fmtNum(r.current, 2)}</strong></td>
+                    <td class="season-prev">${fmtNum(r.base, 2)}</td>
+                    <td><span class="season-delta ${r.diff > 0.005 ? 'pct-up' : r.diff < -0.005 ? 'pct-down' : ''}">${r.diff > 0 ? '+' : ''}${fmtNum(r.diff, 2)}</span>
+                        ${(r.current || r.base) ? pctBadge(r.current, r.base, { small }) : ''}</td>
+                    <td>${sparkline(r.bySeason)}</td>
+                </tr>`).join('')}
+            </tbody></table></div>
+        <p class="modal-footnote">Flags on ${t.abbr} per game (count this season in brackets). The comparison follows the buttons at the top. Trend line: each season, this season in yellow. ${cur ? `${cur.games} games in, so rarer penalties can swing.` : ''}</p>
+    </div>` : '';
+
     // Every opponent faced in the data, most flags on this team per game first
     const opp = t.opponents || [];
     const oppShown = state.showAllOpponents ? opp : opp.slice(0, 10);
@@ -1812,6 +1834,8 @@ function renderTeamProfile(t) {
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(committedRows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
         </div>` : ''}
+
+        ${typeTrendsHtml}
 
         ${t.drawnTypes?.length ? `<div class="modal-section">
             <h4>What they draw from opponents</h4>

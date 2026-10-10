@@ -1996,3 +1996,19 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .week-key .k-cur { background: var(--accent); height: 5px; }
 .week-key .k-avg { background: #cfd2d6; height: 3px; }
 .week-key .k-band { background: rgba(255, 255, 255, 0.14); height: 10px; }
+
+/* Week-of-season chart: season chips (this season always on; add any past season) */
+.week-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0 0 0.75rem; }
+.week-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.65rem; border-radius: 999px;
+    border: 1px solid var(--border-subtle); background: transparent; color: var(--text-muted);
+    font: 600 0.76rem var(--font-body); cursor: pointer; transition: all var(--transition-base);
+}
+.week-chip i { display: inline-block; width: 14px; height: 4px; border-radius: 2px; opacity: 0.35; }
+.week-chip.on { color: var(--text-primary); border-color: #3a3e44; background: var(--bg-glass); }
+.week-chip.on i { opacity: 1; }
+.week-chip:hover:not(.locked) { border-color: var(--border-glow); }
+.week-chip.locked { cursor: default; color: var(--accent); border-color: rgba(255, 196, 0, 0.45); }
+.week-chip.locked i { opacity: 1; height: 5px; }
+.week-chip-sep { width: 1px; height: 18px; background: var(--border-subtle); margin: 0 0.2rem; }
+.week-chip-link { border-style: dashed; }

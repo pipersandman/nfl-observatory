@@ -103,7 +103,8 @@ const EXPLAINERS = {
             <p>Average accepted penalties per game for each week of the regular season.</p>
             <p><strong>Yellow</strong> is this season. <strong>White</strong> is the average of past seasons for that
             week, and the <strong>shaded band</strong> shows the lowest-to-highest past season, so you can see what's normal.
-            Use "Show each past season" to draw every year.</p>
+            Add any past season with the season buttons above the chart (this season is always shown), switch the average or
+            range off, or pick "All seasons".</p>
             <p>Historically, flags run highest early and fade late, with the last two weeks lowest of all (resting starters
             and games with nothing at stake play a part). The data can't separate player discipline from officiating or
             game context. A week appears once all of its games are played.</p>
@@ -1325,8 +1326,23 @@ function renderScoreboard(animate = false) {
 // FLAGS PER GAME BY WEEK OF SEASON (League Trends)
 // =============================================================================
 
-function toggleWeekSeasons() {
-    state.weekShowSeasons = !state.weekShowSeasons;
+// Season chips: this season is always on; any past season can be added; the
+// all-seasons average and the range band can be switched on/off
+const SEASON_COLORS = ['#4DA3FF', '#FF8F3F', '#2EC4D6', '#F472B6', '#B07CFF', '#D2B48C', '#8B95A7', '#7C3AED'];
+function seasonColor(season, seasons) {
+    const past = seasons.filter(x => x !== state.typeTrends?.season);
+    return SEASON_COLORS[past.indexOf(season) % SEASON_COLORS.length] || '#8B95A7';
+}
+function toggleWeekLayer(key) {
+    if (!state.weekLayers) state.weekLayers = { avg: true, band: true, years: [] };
+    const L = state.weekLayers;
+    if (key === 'avg' || key === 'band') L[key] = !L[key];
+    else if (key === 'none') { L.years = []; }
+    else if (key === 'all') { L.years = (state.typeTrends?.weekly?.seasons || []).map(x => x.season).filter(x => x !== state.typeTrends.season); }
+    else {
+        const y = Number(key);
+        L.years = L.years.includes(y) ? L.years.filter(x => x !== y) : [...L.years, y].sort();
+    }
     renderWeekChart();
 }
 
@@ -1384,28 +1400,47 @@ function renderWeekChart() {
         take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fade ? ` (Weeks 15–18 average about ${fmtNum(fade, 0)}% fewer than Weeks 1–4)` : ''}. ` +
             `Through Week ${doneWeeks.at(-1).week}, ${cur} is averaging <strong class="y">${fmtNum(curAvg, 1)}</strong> per game, ` +
             `<strong>${fmtNum(Math.abs(pct), 0)}% ${pct >= 0 ? 'above' : 'below'}</strong> the usual ${fmtNum(usualAvg, 1)} for those weeks.` +
-            `<span class="week-key"><span><i class="k-cur"></i>${cur}</span><span><i class="k-avg"></i>${avgLabel}</span>` +
-            `<span><i class="k-band"></i>Range of past seasons (lowest to highest)</span></span>`;
+'';
     }
     const note = document.getElementById('weekNote');
     if (note) note.textContent = inProgress
         ? `Week ${inProgress.week} is added once all of its games are played (${inProgress.games} played so far).` : '';
-    const tgl = document.getElementById('weekSeasonsToggle');
-    if (tgl) tgl.textContent = state.weekShowSeasons ? 'Hide each past season' : 'Show each past season';
+    if (!state.weekLayers) state.weekLayers = { avg: true, band: true, years: [] };
+    const L = state.weekLayers;
+    const allSeasons = wk.seasons.map(x => x.season);
+    const pastSeasons = allSeasons.filter(x => x !== cur);
 
-    const past = state.weekShowSeasons ? wk.seasons.filter(s => s.season !== cur).map(s => ({
-        label: String(s.season), data: series(s.weeks), borderColor: 'rgba(255,255,255,0.28)', borderWidth: 1.2,
-        pointRadius: 0, tension: 0.3, spanGaps: true, order: 4, _past: true,
-        _endLabel: String(s.season), _labelColor: 'rgba(255,255,255,0.45)', _labelDy: 4
-    })) : [];
+    // Chips: this season (always on) · each past season · all-seasons average · range
+    const chips = document.getElementById('weekChips');
+    if (chips) {
+        const chip = (key, label, on, color, locked = false, extra = '') =>
+            `<button class="week-chip ${on ? 'on' : ''} ${locked ? 'locked' : ''} ${extra}" ${locked ? 'disabled aria-disabled="true" title="Always shown"' : ''}
+                aria-pressed="${on}" onclick="toggleWeekLayer('${key}')"><i style="${color}"></i>${label}</button>`;
+        chips.innerHTML =
+            chip('cur', `${cur}`, true, `background:${CONFIG.chartColors.flag}`, true) +
+            pastSeasons.slice().reverse().map(y => chip(String(y), String(y), L.years.includes(y), `background:${seasonColor(y, allSeasons)}`)).join('') +
+            `<span class="week-chip-sep"></span>` +
+            chip('avg', `${(wk.priorLabel || 'Past').replace(' avg', '')} average`, L.avg, 'background:#cfd2d6;height:3px') +
+            chip('band', 'Range', L.band, 'background:rgba(255,255,255,0.18);height:10px') +
+            (L.years.length < pastSeasons.length
+                ? `<button class="week-chip week-chip-link" onclick="toggleWeekLayer('all')">All seasons</button>`
+                : `<button class="week-chip week-chip-link" onclick="toggleWeekLayer('none')">Clear seasons</button>`);
+    }
+
+    const past = wk.seasons.filter(x => L.years.includes(x.season)).map(x => {
+        const color = seasonColor(x.season, allSeasons);
+        return { label: String(x.season), data: series(x.weeks), borderColor: color, backgroundColor: color, borderWidth: 2,
+                 pointRadius: 0, pointHoverRadius: 4, tension: 0.3, spanGaps: true, order: 3,
+                 _endLabel: String(x.season), _labelColor: color, _labelDy: 4 };
+    });
     const datasets = [
         // shaded band: lowest to highest past season for each week
-        { label: 'range-low', data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.low ?? null),
+        L.band && { label: 'range-low', data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.low ?? null),
           borderWidth: 0, pointRadius: 0, tension: 0.3, fill: false, order: 5, _band: true },
-        { label: `${wk.priorLabel ? wk.priorLabel.replace(' avg', '') : 'Past'} range`, data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.high ?? null),
+        L.band && { label: `${wk.priorLabel ? wk.priorLabel.replace(' avg', '') : 'Past'} range`, data: labels.map(n => wk.priorRange?.find(r => r.week === n)?.high ?? null),
           borderWidth: 0, pointRadius: 0, tension: 0.3, fill: '-1', backgroundColor: 'rgba(255,255,255,0.07)', order: 5, _band: true },
         ...past,
-        { label: avgLabel, data: series(wk.priorAverage), borderColor: '#cfd2d6', borderWidth: 2.5, pointRadius: 0,
+        L.avg && { label: avgLabel, data: series(wk.priorAverage), borderColor: '#cfd2d6', borderWidth: 2.5, pointRadius: 0,
           tension: 0.3, spanGaps: true, order: 2, _endLabel: avgLabel, _labelDy: 18 },
         doneWeeks.length && { label: String(cur), data: series(doneWeeks), borderColor: CONFIG.chartColors.flag,
           backgroundColor: CONFIG.chartColors.flag, borderWidth: 3.5, pointRadius: 5, pointHoverRadius: 7, tension: 0.25, order: 1,
@@ -1423,7 +1458,7 @@ function renderWeekChart() {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    filter: (it) => !it.dataset._past && it.raw != null && it.dataset.label !== 'range-low',
+                    filter: (it) => it.raw != null && it.dataset.label !== 'range-low',
                     callbacks: {
                         title: (items) => `Week ${items[0].label}`,
                         label: (c) => {
@@ -3125,7 +3160,7 @@ window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
 window.setScoreboardFrame = setScoreboardFrame;
 window.setScoreboardWeek = setScoreboardWeek;
-window.toggleWeekSeasons = toggleWeekSeasons;
+window.toggleWeekLayer = toggleWeekLayer;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;

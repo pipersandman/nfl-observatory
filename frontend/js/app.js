@@ -1183,6 +1183,23 @@ function openScorecardModal() {
 // SCOREBOARD (Data section): league running totals by timeframe + weekly log
 // =============================================================================
 
+// Week picker: the "Week N" option can be any week of this season (default: last completed)
+function setScoreboardWeek(week) {
+    state.scoreboardWeek = Number(week);
+    state.scoreboardFrame = 'latestWeek';
+    renderScoreboard(true);
+}
+
+function scoreboardFrame(sb) {
+    const key = sb.frames.some(f => f.key === state.scoreboardFrame) ? state.scoreboardFrame : sb.defaultFrame;
+    let f = sb.frames.find(x => x.key === key) || sb.frames[0];
+    if (key === 'latestWeek' && sb.weekFrames?.length) {
+        const wk = state.scoreboardWeek ?? sb.defaultWeek;
+        f = { ...(sb.weekFrames.find(w => w.week === wk) || f), key: 'latestWeek' };
+    }
+    return { key, f };
+}
+
 function setScoreboardFrame(key) {
     state.scoreboardFrame = key;
     renderScoreboard(true);
@@ -1206,8 +1223,20 @@ function renderScoreboard(animate = false) {
     const sb = state.scoreboard;
     if (!box) return;
     if (!sb?.frames?.length) { box.innerHTML = '<p class="season-error">Scoreboard data isn\'t available yet.</p>'; return; }
-    const key = sb.frames.some(f => f.key === state.scoreboardFrame) ? state.scoreboardFrame : sb.defaultFrame;
-    const f = sb.frames.find(x => x.key === key) || sb.frames[0];
+    const { key, f } = scoreboardFrame(sb);
+    const selWeek = state.scoreboardWeek ?? sb.defaultWeek;
+    const chevron = '<svg class="sb-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const weekButton = (x) => {
+        if (x.key !== 'latestWeek' || !sb.weekFrames?.length) return null;
+        const on = key === 'latestWeek';
+        return `<span class="baseline-btn sb-week ${on ? 'active' : ''}">
+            <button class="sb-week-label" aria-pressed="${on}" onclick="setScoreboardWeek(${selWeek})">Week ${selWeek}</button>
+            ${chevron}
+            <select class="sb-week-select" aria-label="Choose a week" onchange="setScoreboardWeek(this.value)">
+                ${sb.weekFrames.map(w => `<option value="${w.week}" ${w.week === selWeek ? 'selected' : ''}>Week ${w.week}${w.complete ? '' : ' (in progress)'}</option>`).join('')}
+            </select>
+        </span>`;
+    };
 
     const big = (id, label, v, d = 0, sub = '') =>
         `<div class="sb-cell sb-big"><div class="sb-label">${label}</div><div class="sb-num" data-to="${v ?? ''}" data-d="${d}" id="${id}">${animate ? '' : fmtNum(v, d)}</div>${sub ? `<div class="sb-sub">${sub}</div>` : ''}</div>`;
@@ -1240,7 +1269,7 @@ function renderScoreboard(animate = false) {
                 </div>
                 <div class="sb-desc">${f.description} · accepted penalties</div>
             </div>
-            <div class="baseline-toggle sb-toggle" role="group" aria-label="Timeframe">${sb.frames.map(x => `
+            <div class="baseline-toggle sb-toggle" role="group" aria-label="Timeframe">${sb.frames.map(x => weekButton(x) ?? `
                 <button class="baseline-btn ${x.key === key ? 'active' : ''}" aria-pressed="${x.key === key}"
                         onclick="setScoreboardFrame('${x.key}')">${x.label}</button>`).join('')}</div>
         </div>
@@ -2602,7 +2631,7 @@ async function exportBlock(id, format, btn) {
     try {
         const canvas = await renderBlockCanvas(el);
         const title = (el.querySelector('.table-title, .sb-title')?.textContent.trim() || id) +
-            (id === 'scoreboard' ? ` ${state.scoreboard?.frames?.find(f => f.key === (state.scoreboardFrame || state.scoreboard.defaultFrame))?.label || ''}` : '');
+            (id === 'scoreboard' && state.scoreboard ? ` ${scoreboardFrame(state.scoreboard).f.label || ''}` : '');
         const name = `nfl-observatory-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}.${format}`;
         if (format === 'png') {
             const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
@@ -3035,6 +3064,7 @@ window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
 window.setScoreboardFrame = setScoreboardFrame;
+window.setScoreboardWeek = setScoreboardWeek;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;

@@ -1188,8 +1188,23 @@ function openScorecardModal() {
 function setScoreboardWeek(week) {
     state.scoreboardWeek = Number(week);
     state.scoreboardFrame = 'latestWeek';
+    state.sbWeekMenuOpen = false;
     renderScoreboard(true);
 }
+
+// The arrow opens a list of every week (built into the page, so it works the same everywhere)
+function toggleScoreboardWeekMenu(e) {
+    e?.stopPropagation();
+    state.sbWeekMenuOpen = !state.sbWeekMenuOpen;
+    renderScoreboard(false);
+    if (state.sbWeekMenuOpen) document.querySelector('.sb-week-menu .sel')?.focus();
+}
+document.addEventListener('click', (e) => {
+    if (state.sbWeekMenuOpen && !e.target.closest('.sb-week')) { state.sbWeekMenuOpen = false; renderScoreboard(false); }
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && state.sbWeekMenuOpen) { state.sbWeekMenuOpen = false; renderScoreboard(false); }
+});
 
 function scoreboardFrame(sb) {
     const key = sb.frames.some(f => f.key === state.scoreboardFrame) ? state.scoreboardFrame : sb.defaultFrame;
@@ -1230,12 +1245,19 @@ function renderScoreboard(animate = false) {
     const weekButton = (x) => {
         if (x.key !== 'latestWeek' || !sb.weekFrames?.length) return null;
         const on = key === 'latestWeek';
-        return `<span class="baseline-btn sb-week ${on ? 'active' : ''}">
+        const open = !!state.sbWeekMenuOpen;
+        return `<span class="baseline-btn sb-week ${on ? 'active' : ''} ${open ? 'open' : ''}">
             <button class="sb-week-label" aria-pressed="${on}" onclick="setScoreboardWeek(${selWeek})">Week ${selWeek}</button>
-            ${chevron}
-            <select class="sb-week-select" aria-label="Choose a week" onchange="setScoreboardWeek(this.value)">
-                ${sb.weekFrames.map(w => `<option value="${w.week}" ${w.week === selWeek ? 'selected' : ''}>Week ${w.week}${w.complete ? '' : ' (in progress)'}</option>`).join('')}
-            </select>
+            <button class="sb-week-arrow" aria-label="Choose a week" aria-haspopup="listbox" aria-expanded="${open}"
+                    onclick="toggleScoreboardWeekMenu(event)">${chevron}</button>
+            ${open ? `<div class="sb-week-menu" role="listbox" aria-label="Weeks">
+                ${sb.weekFrames.slice().reverse().map(w => `
+                    <button role="option" aria-selected="${w.week === selWeek}" class="${w.week === selWeek ? 'sel' : ''}"
+                            onclick="setScoreboardWeek(${w.week})">
+                        <span>Week ${w.week}</span>
+                        <span class="sb-week-meta">${w.complete ? `${fmtNum(w.perGame, 1)} flags/game` : `in progress · ${w.games} of ${w.scheduled}`}</span>
+                    </button>`).join('')}
+            </div>` : ''}
         </span>`;
     };
 
@@ -3160,6 +3182,7 @@ window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
 window.setScoreboardFrame = setScoreboardFrame;
 window.setScoreboardWeek = setScoreboardWeek;
+window.toggleScoreboardWeekMenu = toggleScoreboardWeekMenu;
 window.toggleWeekLayer = toggleWeekLayer;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;

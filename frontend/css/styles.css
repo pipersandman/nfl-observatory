@@ -1973,16 +1973,40 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .charts-grid .chart-wide { grid-column: 1 / -1; }
 .chart-wide .chart-wrapper { height: 320px; }
 
-/* Scoreboard week picker: "Week N ▾" (label selects it; the arrow opens the list) */
-.sb-week { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; padding-right: 0.55rem; }
-.sb-week-label { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0; }
-.sb-chev { width: 12px; height: 12px; flex-shrink: 0; }
-.sb-week-select {
-    position: absolute; top: 0; bottom: 0; right: 0; width: 1.6rem;   /* invisible, sits over the arrow */
-    opacity: 0; cursor: pointer; font-size: 16px;                      /* 16px avoids iPhone zoom */
+/* Scoreboard week picker: "Week N" selects it; the arrow opens a list of weeks */
+.sb-toggle { overflow: visible; }
+.sb-week { position: relative; display: inline-flex; align-items: center; gap: 0; padding: 0 !important; }
+.sb-week-label { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0.5rem 0.35rem 0.5rem 1rem; }
+.sb-week-arrow {
+    display: inline-flex; align-items: center; justify-content: center; align-self: stretch;
+    min-width: 32px; padding: 0 0.6rem 0 0.25rem; background: none; border: 0; color: inherit; cursor: pointer;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
 }
-.sb-week:hover .sb-chev { color: var(--accent); }
-.sb-week.active:hover .sb-chev { color: inherit; }
+.sb-week.active .sb-week-arrow { border-left-color: rgba(0, 0, 0, 0.18); }
+.sb-chev { width: 12px; height: 12px; transition: transform 0.2s ease; }
+.sb-week.open .sb-chev { transform: rotate(180deg); }
+.sb-week-arrow:hover .sb-chev, .sb-week-arrow:focus-visible .sb-chev { color: var(--accent); }
+.sb-week.active .sb-week-arrow:hover .sb-chev { color: #111; }
+.sb-week-menu {
+    position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 220px; max-height: 320px; overflow-y: auto;
+    display: flex; flex-direction: column; padding: 0.35rem; text-align: left;
+    background: #0c0d0f; border: 1px solid var(--border-subtle); border-radius: 12px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+.sb-week-menu button {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; width: 100%;
+    padding: 0.6rem 0.75rem; border: 0; border-radius: 8px; background: none; color: var(--text-primary);
+    font: 600 0.88rem var(--font-body); cursor: pointer; text-align: left;
+}
+.sb-week-menu button:hover, .sb-week-menu button:focus-visible { background: var(--bg-glass); outline: none; }
+.sb-week-menu button.sel { color: var(--accent); }
+.sb-week-meta { font: 500 0.72rem var(--font-mono); color: var(--text-muted); white-space: nowrap; }
+.sb-week-menu button > span:first-child { white-space: nowrap; }
+@media (max-width: 640px) {
+    .sb-week { justify-content: center; }
+    .sb-week-label { padding: 0.45rem 0.25rem 0.45rem 0.6rem; }
+    .sb-week-arrow { min-width: 36px; }
+    .sb-week-menu { min-width: 200px; }
+}
 
 /* Week-of-season chart: takeaway line + footer */
 .week-takeaway { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin: -0.25rem 0 0.75rem; max-width: 900px; }

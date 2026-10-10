@@ -1221,6 +1221,11 @@ function renderScoreboard(animate = false) {
         <div class="sb-head">
             <div>
                 <div class="sb-title">The Scoreboard</div>
+                <div class="modal-actions block-actions">
+                    <button class="modal-share" onclick="copyBlockLink('scoreboard', this)">Copy link</button>
+                    <button class="modal-share" onclick="exportBlock('scoreboard', 'png', this)">Save PNG</button>
+                    <button class="modal-share" onclick="exportBlock('scoreboard', 'pdf', this)">Save PDF</button>
+                </div>
                 <div class="sb-desc">${f.description} · accepted penalties</div>
             </div>
             <div class="baseline-toggle sb-toggle" role="group" aria-label="Timeframe">${sb.frames.map(x => `
@@ -2480,13 +2485,23 @@ async function renderBlockCanvas(el) {
     await loadScriptOnce(EXPORT_LIBS.html2canvas);
     const id = el.id;
     return window.html2canvas(el, {
-        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-card').trim() || '#16181b',
+        // match the panel's own background so the export has no mismatched frame
+        backgroundColor: (() => { const c = getComputedStyle(el).backgroundColor; return c && c !== 'rgba(0, 0, 0, 0)' ? c : '#16181b'; })(),
         scale: 2, useCORS: true, logging: false,
         windowWidth: Math.max(document.documentElement.clientWidth, 1100),
         onclone: (doc) => {
             const b = doc.getElementById(id);
-            Object.assign(b.style, { width: '1000px', maxWidth: '1000px', margin: '0', transform: 'none', opacity: '1' });
-            b.querySelectorAll('.block-actions, .baseline-toggle').forEach(x => { x.style.display = 'none'; });
+            // boxShadow off: the export library draws inset shadows as a lighter frame
+            Object.assign(b.style, { width: '1000px', maxWidth: '1000px', margin: '0', transform: 'none', opacity: '1', boxShadow: 'none' });
+            b.querySelectorAll('.block-actions').forEach(x => { x.style.display = 'none'; });
+            b.querySelectorAll('.baseline-toggle').forEach(x => {
+                const active = x.querySelector('.baseline-btn.active');
+                if (x.classList.contains('sb-toggle') && active) {          // scoreboard: show which timeframe
+                    x.querySelectorAll('.baseline-btn:not(.active)').forEach(btn => { btn.style.display = 'none'; });
+                } else {
+                    x.style.display = 'none';
+                }
+            });
             b.querySelectorAll('.table-scroll').forEach(x => { x.style.overflow = 'visible'; });
             const foot = doc.createElement('div');
             foot.style.cssText = 'padding:16px 24px 22px;border-top:1px solid #262a2f;display:flex;justify-content:space-between;' +
@@ -2508,7 +2523,8 @@ async function exportBlock(id, format, btn) {
     if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
     try {
         const canvas = await renderBlockCanvas(el);
-        const title = el.querySelector('.table-title')?.textContent.trim() || id;
+        const title = (el.querySelector('.table-title, .sb-title')?.textContent.trim() || id) +
+            (id === 'scoreboard' ? ` ${state.scoreboard?.frames?.find(f => f.key === (state.scoreboardFrame || state.scoreboard.defaultFrame))?.label || ''}` : '');
         const name = `nfl-observatory-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}.${format}`;
         if (format === 'png') {
             const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));

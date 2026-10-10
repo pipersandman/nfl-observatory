@@ -66,23 +66,23 @@
       "homePerGame": 9.0,
       "awayPerGame": 8.5,
       "types": {
-        "Offensive Holding": 1.25,
-        "Offensive Pass Interference": 0.0,
-        "Illegal Formation": 0.5,
-        "Face Mask": 0.5,
         "Unnecessary Roughness": 0.5,
-        "Defensive Pass Interference": 0.5,
+        "Face Mask": 0.5,
+        "Illegal Formation": 0.5,
+        "Offensive Holding": 1.25,
         "Delay of Game": 0.5,
-        "False Start": 1.25,
-        "Defensive Offside": 0.5
+        "Defensive Offside": 0.5,
+        "Offensive Pass Interference": 0.0,
+        "Defensive Pass Interference": 0.5,
+        "False Start": 1.25
       },
       "drawnTypes": {
-        "Illegal Shift": 0.0,
-        "Offensive Holding": 1.75,
-        "Illegal Formation": 0.0,
-        "Defensive Pass Interference": 0.25,
         "Delay of Game": 0.75,
-        "False Start": 0.25
+        "Illegal Formation": 0.0,
+        "Offensive Holding": 1.75,
+        "False Start": 0.25,
+        "Defensive Pass Interference": 0.25,
+        "Illegal Shift": 0.0
       },
       "quarters": [
         1.75,
@@ -107,23 +107,23 @@
       "homePerGame": 8.11,
       "awayPerGame": 7.0,
       "types": {
-        "Offensive Holding": 1.59,
-        "Offensive Pass Interference": 0.06,
-        "Illegal Formation": 0.47,
-        "Face Mask": 0.35,
         "Unnecessary Roughness": 0.41,
-        "Defensive Pass Interference": 0.41,
+        "Face Mask": 0.35,
+        "Illegal Formation": 0.47,
+        "Offensive Holding": 1.59,
         "Delay of Game": 0.29,
-        "False Start": 1.18,
-        "Defensive Offside": 0.41
+        "Defensive Offside": 0.41,
+        "Offensive Pass Interference": 0.06,
+        "Defensive Pass Interference": 0.41,
+        "False Start": 1.18
       },
       "drawnTypes": {
-        "Illegal Shift": 0.06,
-        "Offensive Holding": 1.41,
-        "Illegal Formation": 0.06,
-        "Defensive Pass Interference": 0.41,
         "Delay of Game": 0.53,
-        "False Start": 1.65
+        "Illegal Formation": 0.06,
+        "Offensive Holding": 1.41,
+        "False Start": 1.65,
+        "Defensive Pass Interference": 0.41,
+        "Illegal Shift": 0.06
       },
       "quarters": [
         1.59,
@@ -148,23 +148,23 @@
       "homePerGame": 7.58,
       "awayPerGame": 6.88,
       "types": {
-        "Offensive Holding": 1.31,
-        "Offensive Pass Interference": 0.1,
-        "Illegal Formation": 0.37,
-        "Face Mask": 0.25,
         "Unnecessary Roughness": 0.29,
-        "Defensive Pass Interference": 0.59,
+        "Face Mask": 0.25,
+        "Illegal Formation": 0.37,
+        "Offensive Holding": 1.31,
         "Delay of Game": 0.27,
-        "False Start": 1.55,
-        "Defensive Offside": 0.29
+        "Defensive Offside": 0.29,
+        "Offensive Pass Interference": 0.1,
+        "Defensive Pass Interference": 0.59,
+        "False Start": 1.55
       },
       "drawnTypes": {
-        "Illegal Shift": 0.18,
-        "Offensive Holding": 1.18,
-        "Illegal Formation": 0.1,
-        "Defensive Pass Interference": 0.49,
         "Delay of Game": 0.43,
-        "False Start": 1.16
+        "Illegal Formation": 0.1,
+        "Offensive Holding": 1.18,
+        "False Start": 1.16,
+        "Defensive Pass Interference": 0.49,
+        "Illegal Shift": 0.18
       },
       "quarters": [
         1.57,
@@ -189,23 +189,23 @@
       "homePerGame": 6.71,
       "awayPerGame": 6.54,
       "types": {
-        "Offensive Holding": 1.25,
-        "Offensive Pass Interference": 0.1,
-        "Illegal Formation": 0.22,
-        "Face Mask": 0.28,
         "Unnecessary Roughness": 0.35,
-        "Defensive Pass Interference": 0.59,
+        "Face Mask": 0.28,
+        "Illegal Formation": 0.22,
+        "Offensive Holding": 1.25,
         "Delay of Game": 0.26,
-        "False Start": 1.32,
-        "Defensive Offside": 0.36
+        "Defensive Offside": 0.36,
+        "Offensive Pass Interference": 0.1,
+        "Defensive Pass Interference": 0.59,
+        "False Start": 1.32
       },
       "drawnTypes": {
-        "Illegal Shift": 0.12,
-        "Offensive Holding": 1.24,
-        "Illegal Formation": 0.09,
-        "Defensive Pass Interference": 0.48,
         "Delay of Game": 0.35,
-        "False Start": 1.32
+        "Illegal Formation": 0.09,
+        "Offensive Holding": 1.24,
+        "False Start": 1.32,
+        "Defensive Pass Interference": 0.48,
+        "Illegal Shift": 0.12
       },
       "quarters": [
         1.44,
@@ -707,6 +707,808 @@
       "crew": "Land Clark"
     }
   ],
+  "opponents": [
+    {
+      "opponent": "WAS",
+      "games": 2,
+      "seasons": [
+        2022,
+        2024
+      ],
+      "flagsPerGame": 10.0,
+      "oppFlagsPerGame": 8.0,
+      "yardsPerGame": 81.0,
+      "oppYardsPerGame": 68.0,
+      "netPerGame": -2.0,
+      "totalFlags": 20,
+      "totalOppFlags": 16,
+      "homeGames": 0,
+      "lastMet": {
+        "season": 2024,
+        "week": 13,
+        "home": false,
+        "score": "19-42",
+        "result": "L",
+        "flags": 12,
+        "oppFlags": 7
+      }
+    },
+    {
+      "opponent": "DAL",
+      "games": 1,
+      "seasons": [
+        2022
+      ],
+      "flagsPerGame": 10.0,
+      "oppFlagsPerGame": 3.0,
+      "yardsPerGame": 124.0,
+      "oppYardsPerGame": 35.0,
+      "netPerGame": -7.0,
+      "totalFlags": 10,
+      "totalOppFlags": 3,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2022,
+        "week": 17,
+        "home": true,
+        "score": "13-27",
+        "result": "L",
+        "flags": 10,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "DEN",
+      "games": 3,
+      "seasons": [
+        2020,
+        2022,
+        2025
+      ],
+      "flagsPerGame": 9.0,
+      "oppFlagsPerGame": 6.33,
+      "yardsPerGame": 76.0,
+      "oppYardsPerGame": 50.3,
+      "netPerGame": -2.67,
+      "totalFlags": 27,
+      "totalOppFlags": 19,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 1,
+        "home": false,
+        "score": "12-20",
+        "result": "L",
+        "flags": 13,
+        "oppFlags": 6
+      }
+    },
+    {
+      "opponent": "KC",
+      "games": 3,
+      "seasons": [
+        2021,
+        2022,
+        2025
+      ],
+      "flagsPerGame": 8.67,
+      "oppFlagsPerGame": 9.67,
+      "yardsPerGame": 54.7,
+      "oppYardsPerGame": 68.3,
+      "netPerGame": 1.0,
+      "totalFlags": 26,
+      "totalOppFlags": 29,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2025,
+        "week": 16,
+        "home": true,
+        "score": "26-9",
+        "result": "W",
+        "flags": 12,
+        "oppFlags": 10
+      }
+    },
+    {
+      "opponent": "SEA",
+      "games": 3,
+      "seasons": [
+        2021,
+        2023,
+        2025
+      ],
+      "flagsPerGame": 8.33,
+      "oppFlagsPerGame": 9.0,
+      "yardsPerGame": 68.3,
+      "oppYardsPerGame": 72.0,
+      "netPerGame": 0.67,
+      "totalFlags": 25,
+      "totalOppFlags": 27,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2025,
+        "week": 12,
+        "home": true,
+        "score": "24-30",
+        "result": "L",
+        "flags": 10,
+        "oppFlags": 11
+      }
+    },
+    {
+      "opponent": "CIN",
+      "games": 4,
+      "seasons": [
+        2020,
+        2022,
+        2023,
+        2024
+      ],
+      "flagsPerGame": 8.0,
+      "oppFlagsPerGame": 8.75,
+      "yardsPerGame": 65.5,
+      "oppYardsPerGame": 69.5,
+      "netPerGame": 0.75,
+      "totalFlags": 32,
+      "totalOppFlags": 35,
+      "homeGames": 3,
+      "lastMet": {
+        "season": 2024,
+        "week": 15,
+        "home": true,
+        "score": "27-37",
+        "result": "L",
+        "flags": 12,
+        "oppFlags": 14
+      }
+    },
+    {
+      "opponent": "CLE",
+      "games": 3,
+      "seasons": [
+        2020,
+        2023,
+        2025
+      ],
+      "flagsPerGame": 8.0,
+      "oppFlagsPerGame": 8.33,
+      "yardsPerGame": 72.3,
+      "oppYardsPerGame": 62.7,
+      "netPerGame": 0.33,
+      "totalFlags": 24,
+      "totalOppFlags": 25,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 14,
+        "home": false,
+        "score": "31-29",
+        "result": "W",
+        "flags": 11,
+        "oppFlags": 7
+      }
+    },
+    {
+      "opponent": "MIN",
+      "games": 2,
+      "seasons": [
+        2020,
+        2024
+      ],
+      "flagsPerGame": 8.0,
+      "oppFlagsPerGame": 3.0,
+      "yardsPerGame": 68.0,
+      "oppYardsPerGame": 27.5,
+      "netPerGame": -5.0,
+      "totalFlags": 16,
+      "totalOppFlags": 6,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2024,
+        "week": 11,
+        "home": true,
+        "score": "13-23",
+        "result": "L",
+        "flags": 12,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "CAR",
+      "games": 1,
+      "seasons": [
+        2023
+      ],
+      "flagsPerGame": 8.0,
+      "oppFlagsPerGame": 4.0,
+      "yardsPerGame": 53.0,
+      "oppYardsPerGame": 35.0,
+      "netPerGame": -4.0,
+      "totalFlags": 8,
+      "totalOppFlags": 4,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2023,
+        "week": 12,
+        "home": true,
+        "score": "17-10",
+        "result": "W",
+        "flags": 8,
+        "oppFlags": 4
+      }
+    },
+    {
+      "opponent": "MIA",
+      "games": 3,
+      "seasons": [
+        2021,
+        2023,
+        2024
+      ],
+      "flagsPerGame": 7.67,
+      "oppFlagsPerGame": 7.33,
+      "yardsPerGame": 66.0,
+      "oppYardsPerGame": 71.3,
+      "netPerGame": -0.33,
+      "totalFlags": 23,
+      "totalOppFlags": 22,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2024,
+        "week": 4,
+        "home": false,
+        "score": "31-12",
+        "result": "W",
+        "flags": 8,
+        "oppFlags": 10
+      }
+    },
+    {
+      "opponent": "BUF",
+      "games": 4,
+      "seasons": [
+        2020,
+        2021,
+        2022,
+        2024
+      ],
+      "flagsPerGame": 7.5,
+      "oppFlagsPerGame": 7.75,
+      "yardsPerGame": 69.0,
+      "oppYardsPerGame": 51.2,
+      "netPerGame": 0.25,
+      "totalFlags": 30,
+      "totalOppFlags": 31,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2024,
+        "week": 7,
+        "home": false,
+        "score": "10-34",
+        "result": "L",
+        "flags": 8,
+        "oppFlags": 5
+      }
+    },
+    {
+      "opponent": "LAC",
+      "games": 4,
+      "seasons": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "flagsPerGame": 7.25,
+      "oppFlagsPerGame": 3.75,
+      "yardsPerGame": 58.8,
+      "oppYardsPerGame": 28.2,
+      "netPerGame": -3.5,
+      "totalFlags": 29,
+      "totalOppFlags": 15,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2025,
+        "week": 9,
+        "home": true,
+        "score": "20-27",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "PIT",
+      "games": 3,
+      "seasons": [
+        2020,
+        2021,
+        2023
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 7.67,
+      "yardsPerGame": 64.0,
+      "oppYardsPerGame": 59.7,
+      "netPerGame": 0.67,
+      "totalFlags": 21,
+      "totalOppFlags": 23,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2023,
+        "week": 9,
+        "home": false,
+        "score": "16-20",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 10
+      }
+    },
+    {
+      "opponent": "CHI",
+      "games": 2,
+      "seasons": [
+        2020,
+        2024
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 6.0,
+      "yardsPerGame": 53.5,
+      "oppYardsPerGame": 45.0,
+      "netPerGame": -1.0,
+      "totalFlags": 14,
+      "totalOppFlags": 12,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2024,
+        "week": 1,
+        "home": false,
+        "score": "17-24",
+        "result": "L",
+        "flags": 8,
+        "oppFlags": 7
+      }
+    },
+    {
+      "opponent": "LA",
+      "games": 2,
+      "seasons": [
+        2021,
+        2025
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 8.0,
+      "yardsPerGame": 40.5,
+      "oppYardsPerGame": 72.0,
+      "netPerGame": 1.0,
+      "totalFlags": 14,
+      "totalOppFlags": 16,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 2,
+        "home": true,
+        "score": "19-33",
+        "result": "L",
+        "flags": 10,
+        "oppFlags": 4
+      }
+    },
+    {
+      "opponent": "LV",
+      "games": 2,
+      "seasons": [
+        2022,
+        2025
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 6.0,
+      "yardsPerGame": 59.5,
+      "oppYardsPerGame": 35.5,
+      "netPerGame": -1.0,
+      "totalFlags": 14,
+      "totalOppFlags": 12,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 6,
+        "home": false,
+        "score": "10-20",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 6
+      }
+    },
+    {
+      "opponent": "NYG",
+      "games": 2,
+      "seasons": [
+        2022,
+        2026
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 9.0,
+      "yardsPerGame": 56.5,
+      "oppYardsPerGame": 66.5,
+      "netPerGame": 2.0,
+      "totalFlags": 14,
+      "totalOppFlags": 18,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2026,
+        "week": 3,
+        "home": false,
+        "score": "7-12",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 10
+      }
+    },
+    {
+      "opponent": "PHI",
+      "games": 2,
+      "seasons": [
+        2022,
+        2026
+      ],
+      "flagsPerGame": 7.0,
+      "oppFlagsPerGame": 8.0,
+      "yardsPerGame": 63.5,
+      "oppYardsPerGame": 57.5,
+      "netPerGame": 1.0,
+      "totalFlags": 14,
+      "totalOppFlags": 16,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2026,
+        "week": 2,
+        "home": true,
+        "score": "20-24",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 4
+      }
+    },
+    {
+      "opponent": "ARI",
+      "games": 2,
+      "seasons": [
+        2021,
+        2025
+      ],
+      "flagsPerGame": 6.5,
+      "oppFlagsPerGame": 8.0,
+      "yardsPerGame": 46.0,
+      "oppYardsPerGame": 53.0,
+      "netPerGame": 1.5,
+      "totalFlags": 13,
+      "totalOppFlags": 16,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 5,
+        "home": false,
+        "score": "22-21",
+        "result": "W",
+        "flags": 6,
+        "oppFlags": 8
+      }
+    },
+    {
+      "opponent": "SF",
+      "games": 2,
+      "seasons": [
+        2021,
+        2025
+      ],
+      "flagsPerGame": 6.5,
+      "oppFlagsPerGame": 5.5,
+      "yardsPerGame": 57.0,
+      "oppYardsPerGame": 35.5,
+      "netPerGame": -1.0,
+      "totalFlags": 13,
+      "totalOppFlags": 11,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2025,
+        "week": 15,
+        "home": false,
+        "score": "24-37",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 6
+      }
+    },
+    {
+      "opponent": "IND",
+      "games": 12,
+      "seasons": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "flagsPerGame": 6.17,
+      "oppFlagsPerGame": 5.75,
+      "yardsPerGame": 59.6,
+      "oppYardsPerGame": 47.2,
+      "netPerGame": -0.42,
+      "totalFlags": 74,
+      "totalOppFlags": 69,
+      "homeGames": 6,
+      "lastMet": {
+        "season": 2025,
+        "week": 8,
+        "home": false,
+        "score": "14-38",
+        "result": "L",
+        "flags": 3,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "NE",
+      "games": 3,
+      "seasons": [
+        2021,
+        2024,
+        2025
+      ],
+      "flagsPerGame": 6.0,
+      "oppFlagsPerGame": 5.67,
+      "yardsPerGame": 44.0,
+      "oppYardsPerGame": 43.0,
+      "netPerGame": -0.33,
+      "totalFlags": 18,
+      "totalOppFlags": 17,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2025,
+        "week": 7,
+        "home": true,
+        "score": "13-31",
+        "result": "L",
+        "flags": 3,
+        "oppFlags": 5
+      }
+    },
+    {
+      "opponent": "NO",
+      "games": 3,
+      "seasons": [
+        2021,
+        2023,
+        2025
+      ],
+      "flagsPerGame": 6.0,
+      "oppFlagsPerGame": 7.33,
+      "yardsPerGame": 43.0,
+      "oppYardsPerGame": 64.7,
+      "netPerGame": 1.33,
+      "totalFlags": 18,
+      "totalOppFlags": 22,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2025,
+        "week": 17,
+        "home": true,
+        "score": "26-34",
+        "result": "L",
+        "flags": 4,
+        "oppFlags": 6
+      }
+    },
+    {
+      "opponent": "ATL",
+      "games": 1,
+      "seasons": [
+        2023
+      ],
+      "flagsPerGame": 6.0,
+      "oppFlagsPerGame": 3.0,
+      "yardsPerGame": 53.0,
+      "oppYardsPerGame": 15.0,
+      "netPerGame": -3.0,
+      "totalFlags": 6,
+      "totalOppFlags": 3,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2023,
+        "week": 8,
+        "home": true,
+        "score": "28-23",
+        "result": "W",
+        "flags": 6,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "HOU",
+      "games": 12,
+      "seasons": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "flagsPerGame": 5.67,
+      "oppFlagsPerGame": 5.67,
+      "yardsPerGame": 45.6,
+      "oppYardsPerGame": 49.2,
+      "netPerGame": 0.0,
+      "totalFlags": 68,
+      "totalOppFlags": 68,
+      "homeGames": 6,
+      "lastMet": {
+        "season": 2025,
+        "week": 11,
+        "home": true,
+        "score": "13-16",
+        "result": "L",
+        "flags": 9,
+        "oppFlags": 5
+      }
+    },
+    {
+      "opponent": "NYJ",
+      "games": 3,
+      "seasons": [
+        2021,
+        2024,
+        2026
+      ],
+      "flagsPerGame": 5.67,
+      "oppFlagsPerGame": 7.0,
+      "yardsPerGame": 56.0,
+      "oppYardsPerGame": 61.0,
+      "netPerGame": 1.33,
+      "totalFlags": 17,
+      "totalOppFlags": 21,
+      "homeGames": 2,
+      "lastMet": {
+        "season": 2026,
+        "week": 1,
+        "home": true,
+        "score": "10-23",
+        "result": "L",
+        "flags": 4,
+        "oppFlags": 8
+      }
+    },
+    {
+      "opponent": "JAX",
+      "games": 12,
+      "seasons": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "flagsPerGame": 5.58,
+      "oppFlagsPerGame": 6.83,
+      "yardsPerGame": 44.9,
+      "oppYardsPerGame": 51.9,
+      "netPerGame": 1.25,
+      "totalFlags": 67,
+      "totalOppFlags": 82,
+      "homeGames": 6,
+      "lastMet": {
+        "season": 2025,
+        "week": 18,
+        "home": false,
+        "score": "7-41",
+        "result": "L",
+        "flags": 5,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "BAL",
+      "games": 3,
+      "seasons": [
+        2020,
+        2023,
+        2026
+      ],
+      "flagsPerGame": 5.0,
+      "oppFlagsPerGame": 9.33,
+      "yardsPerGame": 40.3,
+      "oppYardsPerGame": 100.0,
+      "netPerGame": 4.33,
+      "totalFlags": 15,
+      "totalOppFlags": 28,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2026,
+        "week": 4,
+        "home": false,
+        "score": "18-24",
+        "result": "L",
+        "flags": 5,
+        "oppFlags": 13
+      }
+    },
+    {
+      "opponent": "DET",
+      "games": 2,
+      "seasons": [
+        2020,
+        2024
+      ],
+      "flagsPerGame": 5.0,
+      "oppFlagsPerGame": 3.0,
+      "yardsPerGame": 38.5,
+      "oppYardsPerGame": 31.0,
+      "netPerGame": -2.0,
+      "totalFlags": 10,
+      "totalOppFlags": 6,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2024,
+        "week": 8,
+        "home": false,
+        "score": "14-52",
+        "result": "L",
+        "flags": 7,
+        "oppFlags": 3
+      }
+    },
+    {
+      "opponent": "TB",
+      "games": 1,
+      "seasons": [
+        2023
+      ],
+      "flagsPerGame": 5.0,
+      "oppFlagsPerGame": 7.0,
+      "yardsPerGame": 35.0,
+      "oppYardsPerGame": 50.0,
+      "netPerGame": 2.0,
+      "totalFlags": 5,
+      "totalOppFlags": 7,
+      "homeGames": 0,
+      "lastMet": {
+        "season": 2023,
+        "week": 10,
+        "home": false,
+        "score": "6-20",
+        "result": "L",
+        "flags": 5,
+        "oppFlags": 7
+      }
+    },
+    {
+      "opponent": "GB",
+      "games": 3,
+      "seasons": [
+        2020,
+        2022,
+        2024
+      ],
+      "flagsPerGame": 2.33,
+      "oppFlagsPerGame": 5.0,
+      "yardsPerGame": 16.3,
+      "oppYardsPerGame": 38.3,
+      "netPerGame": 2.67,
+      "totalFlags": 7,
+      "totalOppFlags": 15,
+      "homeGames": 1,
+      "lastMet": {
+        "season": 2024,
+        "week": 3,
+        "home": true,
+        "score": "14-30",
+        "result": "L",
+        "flags": 2,
+        "oppFlags": 10
+      }
+    }
+  ],
   "nextGame": {
     "gameId": "2026_05_HOU_TEN",
     "week": 5,
@@ -714,5 +1516,5 @@
     "opponent": "HOU",
     "home": true
   },
-  "generatedAt": "2026-10-10T02:15:58+00:00"
+  "generatedAt": "2026-10-10T02:31:02+00:00"
 }

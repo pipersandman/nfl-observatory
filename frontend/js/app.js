@@ -180,6 +180,8 @@ let state = {
     stats: null,
     previews: null,
     scorecard: null,
+    scoreboard: null,
+    scoreboardFrame: null,
     teamsIndex: null,
     selectedDivision: null,
     teamProfiles: {},
@@ -225,6 +227,7 @@ async function loadAllData() {
     // Next week's previews (latest.json points at the current week's file)
     state.teamsIndex = await fetchJSON('teams/index.json');
     state.scorecard = await fetchJSON('scorecard/public.json');
+    state.scoreboard = await fetchJSON('scoreboard.json');
 
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
@@ -1158,6 +1161,114 @@ function openScorecardModal() {
             <p class="modal-footnote">${Object.values(sc.definitions || {}).join(' · ')}</p>
         </div>`;
     modal.classList.add('active');
+}
+
+// =============================================================================
+// SCOREBOARD (Data section): league running totals by timeframe + weekly log
+// =============================================================================
+
+function setScoreboardFrame(key) {
+    state.scoreboardFrame = key;
+    renderScoreboard(true);
+}
+
+function countUp(el, to, decimals, ms = 700) {
+    if (to == null || isNaN(to)) { el.textContent = '—'; return; }
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { el.textContent = fmtNum(to, decimals); return; }
+    const from = parseFloat((el.dataset.v ?? '0')) || 0;
+    const t0 = performance.now();
+    const step = (t) => {
+        const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = fmtNum(from + (to - from) * e, decimals);
+        if (k < 1) requestAnimationFrame(step); else el.dataset.v = String(to);
+    };
+    requestAnimationFrame(step);
+}
+
+function renderScoreboard(animate = false) {
+    const box = document.getElementById('scoreboard');
+    const sb = state.scoreboard;
+    if (!box) return;
+    if (!sb?.frames?.length) { box.innerHTML = '<p class="season-error">Scoreboard data isn\'t available yet.</p>'; return; }
+    const key = sb.frames.some(f => f.key === state.scoreboardFrame) ? state.scoreboardFrame : sb.defaultFrame;
+    const f = sb.frames.find(x => x.key === key) || sb.frames[0];
+
+    const big = (id, label, v, d = 0, sub = '') =>
+        `<div class="sb-cell sb-big"><div class="sb-label">${label}</div><div class="sb-num" data-to="${v ?? ''}" data-d="${d}" id="${id}">${animate ? '' : fmtNum(v, d)}</div>${sub ? `<div class="sb-sub">${sub}</div>` : ''}</div>`;
+    const cell = (id, label, v, d = 1, unit = '', sub = '') =>
+        `<div class="sb-cell"><div class="sb-label">${label}</div><div class="sb-val"><span class="sb-num" data-to="${v ?? ''}" data-d="${d}" id="${id}">${animate ? '' : fmtNum(v, d)}</span>${unit}</div>${sub ? `<div class="sb-sub">${sub}</div>` : ''}</div>`;
+    const split = (label, aLabel, aPct, bLabel) => `
+        <div class="sb-cell sb-split">
+            <div class="sb-label">${label}</div>
+            <div class="sb-split-bar"><i style="width:${aPct ?? 0}%"></i></div>
+            <div class="sb-split-legend"><span><strong>${fmtNum(aPct, 0)}%</strong> ${aLabel}</span><span>${bLabel} <strong>${fmtNum(100 - (aPct ?? 0), 0)}%</strong></span></div>
+        </div>`;
+
+    const log = (sb.weeklyLog || []).slice().reverse().map(w => `
+        <tr>
+            <td><strong>Wk ${w.week}</strong>${w.complete ? '' : ` <span class="sb-live">in progress · ${w.games} of ${w.scheduled}</span>`}</td>
+            <td>${w.games}</td><td>${fmtNum(w.plays)}</td><td><strong>${fmtNum(w.penalties)}</strong></td><td>${fmtNum(w.yards)}</td>
+            <td>${fmtNum(w.pctPlays, 1)}%</td>
+            <td><span class="sb-mini"><i style="width:${Math.min(100, (w.perGame || 0) / 22 * 100)}%"></i></span>${fmtNum(w.perGame, 1)}</td>
+            <td>${fmtNum(w.firstDowns)}</td>
+        </tr>`).join('');
+
+    box.innerHTML = `
+        <div class="sb-head">
+            <div>
+                <div class="sb-title">The Scoreboard</div>
+                <div class="sb-desc">${f.description} · accepted penalties</div>
+            </div>
+            <div class="baseline-toggle sb-toggle" role="group" aria-label="Timeframe">${sb.frames.map(x => `
+                <button class="baseline-btn ${x.key === key ? 'active' : ''}" aria-pressed="${x.key === key}"
+                        onclick="setScoreboardFrame('${x.key}')">${x.label}</button>`).join('')}</div>
+        </div>
+
+        <div class="sb-grid sb-grid-4">
+            ${big('sbGames', 'Games', f.games)}
+            ${big('sbPlays', 'Plays', f.plays)}
+            ${big('sbFlags', 'Flags', f.penalties, 0, 'accepted penalties')}
+            ${big('sbYards', 'Penalty yards', f.yards)}
+        </div>
+
+        <div class="sb-grid sb-grid-4">
+            ${cell('sbPct', 'Plays with a flag', f.pctPlays, 1, '<span class="sb-unit">%</span>', `a flag every <strong>${fmtNum(f.flagEveryPlays, 1)}</strong> plays`)}
+            ${cell('sbPerGame', 'Flags per game', f.perGame, 1, '', `one every <strong>${fmtNum(f.minutesPerFlag, 1)}</strong> min of game clock`)}
+            ${cell('sbYpg', 'Penalty yards per game', f.yardsPerGame, 1, '', `<strong>${fmtNum(f.yardsPerPenalty, 1)}</strong> yards per flag`)}
+            ${cell('sbFd', 'First downs by penalty', f.firstDowns, 0, '', `<strong>${fmtNum(f.firstDownsPerGame, 1)}</strong> per game handed over`)}
+        </div>
+
+        <div class="sb-grid sb-grid-3">
+            ${split('Who gets flagged', 'offense', f.offenseShare, 'defense')}
+            ${split('Before or after the snap', 'pre-snap', f.preSnapShare, 'live ball')}
+            ${split('Home or road', 'home team', f.homeShare, 'road team')}
+        </div>
+
+        <div class="sb-grid sb-grid-4 sb-leaders">
+            <div class="sb-cell"><div class="sb-label">Most common call</div><div class="sb-lead">${f.mostCommon?.type ?? '—'}</div>
+                <div class="sb-sub"><strong>${fmtNum(f.mostCommon?.count)}</strong> calls · ${fmtNum(f.mostCommon?.pct, 0)}% of all flags</div></div>
+            <div class="sb-cell"><div class="sb-label">Most flagged team</div><div class="sb-lead">${f.mostFlaggedTeam?.team ?? '—'}</div>
+                <div class="sb-sub"><strong>${fmtNum(f.mostFlaggedTeam?.perGame, 1)}</strong> flags per game</div></div>
+            <div class="sb-cell"><div class="sb-label">Cleanest team</div><div class="sb-lead">${f.cleanestTeam?.team ?? '—'}</div>
+                <div class="sb-sub"><strong>${fmtNum(f.cleanestTeam?.perGame, 1)}</strong> flags per game</div></div>
+            <div class="sb-cell"><div class="sb-label">Flag-heaviest crew</div><div class="sb-lead">${f.topCrew?.name ?? '—'}</div>
+                <div class="sb-sub"><strong>${fmtNum(f.topCrew?.perGame, 1)}</strong> flags per game</div></div>
+        </div>
+
+        ${log ? `<div class="sb-log">
+            <div class="sb-label" style="margin-bottom:0.6rem">${sb.season} running log</div>
+            <div class="table-scroll"><table class="pv-table">
+                <thead><tr><th>Week</th><th>Games</th><th>Plays</th><th>Flags</th><th>Yards</th><th>% of plays</th><th>Flags / game</th><th>1st downs</th></tr></thead>
+                <tbody>${log}</tbody>
+            </table></div>
+        </div>` : ''}
+        <p class="modal-footnote" style="margin-top:0.75rem">${sb.notes}</p>`;
+
+    if (animate) box.querySelectorAll('.sb-num').forEach(el => {
+        const to = el.dataset.to === '' ? null : parseFloat(el.dataset.to);
+        countUp(el, to, parseInt(el.dataset.d || '0', 10));
+    });
+    else box.querySelectorAll('.sb-num').forEach(el => { el.dataset.v = el.dataset.to; });
 }
 
 // =============================================================================
@@ -2614,6 +2725,7 @@ async function init() {
     renderCharts();
     renderRefereeCards();   // uses state.season, so render after it loads
     renderTeams();
+    renderScoreboard();
     renderDataTable();
     renderInsightsCarousel();
     
@@ -2657,6 +2769,7 @@ window.openRefereeModal = openRefereeModal;
 window.openPreviewModal = openPreviewModal;
 window.openTeamModal = openTeamModal;
 window.setTeamBaseline = setTeamBaseline;
+window.setScoreboardFrame = setScoreboardFrame;
 window.openScorecardModal = openScorecardModal;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;

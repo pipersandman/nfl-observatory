@@ -80,6 +80,8 @@ NFL_TEAMS = {
 }
 
 # Known name inconsistencies in the data
+SNAP_TYPES = {'run', 'pass', 'punt', 'field_goal', 'kickoff', 'extra_point', 'qb_kneel', 'qb_spike'}
+
 NAME_FIXES = {
     'Ronald Torbert': 'Ron Torbert',
     'Adrian Hall': 'Adrian Hill',
@@ -175,16 +177,22 @@ def load_all_data(seasons: list[int]) -> dict:
         'quarter_seconds_remaining', 'penalty', 'penalty_team',
         'penalty_type', 'penalty_yards', 'penalty_player_name',
         'home_team', 'away_team', 'posteam', 'score_differential',
-        'down', 'ydstogo', 'play_type', 'season_type'
+        'down', 'ydstogo', 'play_type', 'season_type', 'first_down_penalty'
     ]
     
     all_pbp = []
+    plays_per_game = []
     for season in seasons:
         try:
             # Load full PBP then select columns (nflreadpy doesn't support column filtering on load)
             season_pbp = nfl.load_pbp(season).to_pandas()
             # Select only the columns we need (that exist in the data)
             available_cols = [c for c in cols if c in season_pbp.columns]
+            # Play counts per game (for "% of plays with a flag"): real snaps plus
+            # pre-snap penalty plays that never became a snap
+            snaps = season_pbp['play_type'].isin(SNAP_TYPES) | (
+                (season_pbp['play_type'] == 'no_play') & (season_pbp['penalty'] == 1))
+            plays_per_game.append(season_pbp[snaps].groupby('game_id').size().rename('plays'))
             season_pbp = season_pbp[available_cols]
             all_pbp.append(season_pbp)
             print(f"      {season}: ✓ {len(season_pbp)} plays")
@@ -198,11 +206,13 @@ def load_all_data(seasons: list[int]) -> dict:
         # Every game with play-by-play (including any with zero accepted penalties)
         game_cols = [c for c in ['game_id', 'season', 'week', 'season_type'] if c in pbp.columns]
         data['games_played'] = pbp[game_cols].drop_duplicates('game_id')
+        data['plays'] = pd.concat(plays_per_game).reset_index()
         print(f"   ✓ {len(data['penalties'])} total penalties")
     else:
         print(f"   ✗ No play-by-play data loaded")
         data['penalties'] = pd.DataFrame()
         data['games_played'] = pd.DataFrame()
+        data['plays'] = pd.DataFrame(columns=['game_id', 'plays'])
     
     return data
 
@@ -925,6 +935,15 @@ def main():
     
     # Individual profiles (with penalty type breakdown)
     generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'])
+
+    # Scoreboard (league totals by timeframe + weekly running log)
+    try:
+        from scoreboard import build_scoreboard
+        save_json(build_scoreboard(data), 'scoreboard.json')
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Scoreboard failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
 
     # Team pages (all 32 teams, by division)
     try:

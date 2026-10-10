@@ -97,6 +97,18 @@ def build_scoreboard(data: dict) -> dict:
         if st:
             out_frames.append({'key': key, 'label': label, 'description': desc, **st})
 
+    # Every week of this season as its own frame (the Week picker), incl. a week in progress
+    week_frames = []
+    for wk in sorted(games.loc[games['season'] == season, 'week'].unique()):
+        st = stats(games[(games['season'] == season) & (games['week'] == wk)])
+        sched_n = int(((reg['season'] == season) & (reg['week'] == wk)).sum())
+        if st:
+            complete = st['games'] >= sched_n
+            week_frames.append({'key': f'week-{int(wk)}', 'week': int(wk), 'complete': complete, 'scheduled': sched_n,
+                                'label': f'Week {int(wk)}',
+                                'description': f'{season} Week {int(wk)}' + ('' if complete else f" (in progress: {st['games']} of {sched_n} games)"),
+                                **st})
+
     log = []
     cur = games[games['season'] == season]
     for wk in sorted(cur['week'].unique()):
@@ -109,6 +121,7 @@ def build_scoreboard(data: dict) -> dict:
     return {
         'season': season, 'throughWeek': done_week, 'partialWeek': partial,
         'defaultFrame': 'season', 'frames': out_frames, 'weeklyLog': log,
+        'weekFrames': week_frames, 'defaultWeek': done_week or (week_frames[-1]['week'] if week_frames else None),
         'notes': 'Regular season. Accepted penalties. Plays = snaps plus pre-snap penalty plays.',
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }

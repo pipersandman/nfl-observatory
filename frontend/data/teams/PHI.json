@@ -48,48 +48,48 @@
     "homePerGame": 6.28,
     "awayPerGame": 5.96
   },
-  "throughWeek": 5,
+  "throughWeek": 4,
   "baselines": {
     "sameWeeks": {
-      "label": "2025 through Week 5",
-      "short": "2025 Wk 1\u20135",
-      "games": 5,
-      "penalties": 37,
-      "yards": 346,
-      "perGame": 7.4,
-      "yardsPerGame": 69.2,
-      "offensePerGame": 3.2,
-      "defensePerGame": 4.2,
-      "drawnPerGame": 6.2,
-      "drawnYardsPerGame": 57.8,
-      "netPerGame": -1.2,
-      "homePerGame": 7.67,
+      "label": "2025 through Week 4",
+      "short": "2025 Wk 1\u20134",
+      "games": 4,
+      "penalties": 28,
+      "yards": 291,
+      "perGame": 7.0,
+      "yardsPerGame": 72.8,
+      "offensePerGame": 2.5,
+      "defensePerGame": 4.5,
+      "drawnPerGame": 4.75,
+      "drawnYardsPerGame": 42.0,
+      "netPerGame": -2.25,
+      "homePerGame": 7.0,
       "awayPerGame": 7.0,
       "types": {
-        "Illegal Formation": 0.0,
         "Defensive Too Many Men on Field": 0.0,
-        "Unnecessary Roughness": 0.6,
+        "Unnecessary Roughness": 0.5,
+        "Defensive Holding": 0.0,
+        "False Start": 0.75,
+        "Defensive Pass Interference": 1.5,
+        "Delay of Game": 0.5,
         "Defensive Offside": 0.0,
-        "False Start": 1.2,
-        "Defensive Pass Interference": 1.2,
         "Illegal Contact": 0.0,
-        "Delay of Game": 0.4,
-        "Offensive Holding": 1.0,
-        "Defensive Holding": 0.2
+        "Illegal Formation": 0.0,
+        "Offensive Holding": 1.0
       },
       "drawnTypes": {
-        "Unnecessary Roughness": 0.6,
+        "Unnecessary Roughness": 0.75,
+        "False Start": 0.5,
+        "Defensive Pass Interference": 0.25,
+        "Delay of Game": 0.0,
         "Kickoff Short of Landing Zone": 0.0,
-        "False Start": 1.0,
-        "Defensive Pass Interference": 0.8,
-        "Delay of Game": 0.2,
-        "Offensive Holding": 1.6
+        "Offensive Holding": 1.5
       },
       "quarters": [
-        1.4,
-        2.6,
+        1.5,
+        2.75,
         1.0,
-        2.4
+        1.75
       ]
     },
     "lastSeason": {
@@ -108,23 +108,23 @@
       "homePerGame": 7.0,
       "awayPerGame": 6.78,
       "types": {
-        "Illegal Formation": 0.18,
         "Defensive Too Many Men on Field": 0.0,
         "Unnecessary Roughness": 0.29,
-        "Defensive Offside": 0.06,
+        "Defensive Holding": 0.29,
         "False Start": 1.41,
         "Defensive Pass Interference": 1.06,
-        "Illegal Contact": 0.12,
         "Delay of Game": 0.47,
-        "Offensive Holding": 1.18,
-        "Defensive Holding": 0.29
+        "Defensive Offside": 0.06,
+        "Illegal Contact": 0.12,
+        "Illegal Formation": 0.18,
+        "Offensive Holding": 1.18
       },
       "drawnTypes": {
         "Unnecessary Roughness": 0.29,
-        "Kickoff Short of Landing Zone": 0.06,
         "False Start": 1.12,
         "Defensive Pass Interference": 0.65,
         "Delay of Game": 0.24,
+        "Kickoff Short of Landing Zone": 0.06,
         "Offensive Holding": 1.06
       },
       "quarters": [
@@ -150,23 +150,23 @@
       "homePerGame": 6.4,
       "awayPerGame": 5.92,
       "types": {
-        "Illegal Formation": 0.16,
         "Defensive Too Many Men on Field": 0.04,
         "Unnecessary Roughness": 0.29,
-        "Defensive Offside": 0.25,
+        "Defensive Holding": 0.27,
         "False Start": 1.33,
         "Defensive Pass Interference": 0.76,
-        "Illegal Contact": 0.12,
         "Delay of Game": 0.33,
-        "Offensive Holding": 0.88,
-        "Defensive Holding": 0.27
+        "Defensive Offside": 0.25,
+        "Illegal Contact": 0.12,
+        "Illegal Formation": 0.16,
+        "Offensive Holding": 0.88
       },
       "drawnTypes": {
         "Unnecessary Roughness": 0.24,
-        "Kickoff Short of Landing Zone": 0.02,
         "False Start": 1.04,
         "Defensive Pass Interference": 0.39,
         "Delay of Game": 0.24,
+        "Kickoff Short of Landing Zone": 0.02,
         "Offensive Holding": 0.96
       },
       "quarters": [
@@ -192,23 +192,23 @@
       "homePerGame": 6.28,
       "awayPerGame": 5.96,
       "types": {
-        "Illegal Formation": 0.11,
         "Defensive Too Many Men on Field": 0.05,
         "Unnecessary Roughness": 0.36,
-        "Defensive Offside": 0.25,
+        "Defensive Holding": 0.29,
         "False Start": 1.28,
         "Defensive Pass Interference": 0.62,
-        "Illegal Contact": 0.12,
         "Delay of Game": 0.28,
-        "Offensive Holding": 0.96,
-        "Defensive Holding": 0.29
+        "Defensive Offside": 0.25,
+        "Illegal Contact": 0.12,
+        "Illegal Formation": 0.11,
+        "Offensive Holding": 0.96
       },
       "drawnTypes": {
         "Unnecessary Roughness": 0.28,
-        "Kickoff Short of Landing Zone": 0.01,
         "False Start": 1.04,
         "Defensive Pass Interference": 0.49,
         "Delay of Game": 0.27,
+        "Kickoff Short of Landing Zone": 0.01,
         "Offensive Holding": 1.02
       },
       "quarters": [
@@ -728,5 +728,5 @@
     "opponent": "JAX",
     "home": false
   },
-  "generatedAt": "2026-10-10T00:24:37+00:00"
+  "generatedAt": "2026-10-10T00:35:15+00:00"
 }

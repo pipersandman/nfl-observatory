@@ -1880,3 +1880,40 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
     .team-toggle { display: grid; grid-template-columns: 1fr 1fr; border-radius: 14px; width: 100%; }
     .team-toggle .baseline-btn { font-size: 0.78rem; padding: 0.5rem 0.4rem; }
 }
+
+/* -----------------------------------------------------------------------------
+   Scoreboard (Data section)
+   ----------------------------------------------------------------------------- */
+.scoreboard { background: #101114; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 1.5rem; margin-bottom: var(--gap-lg);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
+.sb-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.sb-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+.sb-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+.sb-toggle { margin-top: 0; }
+.sb-grid { display: grid; gap: 0.75rem; margin-bottom: 0.75rem; }
+.sb-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.sb-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.sb-cell { background: #0a0b0d; border: 1px solid #1f2226; border-radius: 14px; padding: 1rem 1.1rem; min-width: 0; }
+.sb-label { font: 600 0.7rem var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.sb-big .sb-num { display: block; font: 700 clamp(2rem, 4vw, 2.9rem)/1.1 var(--font-mono); color: var(--accent);
+    letter-spacing: -0.02em; margin-top: 0.4rem; font-variant-numeric: tabular-nums; text-shadow: 0 0 18px rgba(255, 196, 0, 0.18); }
+.sb-val { margin-top: 0.35rem; font: 700 clamp(1.6rem, 3vw, 2.1rem)/1.1 var(--font-mono); color: var(--data); font-variant-numeric: tabular-nums; }
+.sb-unit { font-size: 0.6em; color: var(--text-secondary); margin-left: 0.1em; }
+.sb-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem; }
+.sb-sub strong { color: var(--text-secondary); }
+.sb-split-bar { height: 10px; border-radius: 999px; background: var(--bar-hist, #5c616a); overflow: hidden; margin: 0.75rem 0 0.5rem; }
+.sb-split-bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px 0 0 999px; transition: width 0.6s ease; }
+.sb-split-legend { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); }
+.sb-split-legend strong { color: var(--text-primary); font-family: var(--font-mono); }
+.sb-lead { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin-top: 0.4rem; line-height: 1.2; }
+.sb-log { margin-top: 1.25rem; }
+.sb-live { font: 600 0.65rem var(--font-mono); color: var(--accent); margin-left: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.sb-mini { display: inline-block; width: 60px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.06); margin-right: 0.5rem; vertical-align: middle; overflow: hidden; }
+.sb-mini i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+@media (max-width: 900px) { .sb-grid-4 { grid-template-columns: repeat(2, 1fr); } .sb-grid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+    .scoreboard { padding: 1rem; border-radius: 16px; }
+    .sb-toggle { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; border-radius: 14px; }
+    .sb-toggle .baseline-btn { font-size: 0.74rem; padding: 0.45rem 0.3rem; }
+    .sb-cell { padding: 0.8rem; }
+}

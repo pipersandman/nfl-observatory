@@ -1511,6 +1511,65 @@ function setTypeTrendsCompare(key) {
     renderTypeTrends();
 }
 
+// Trend-line timeframe ("Since 2020", "Since 2023"...): shared by the league and team tables
+function trendPoints(bySeason) {
+    const start = state.trendStart;
+    const pts = start ? bySeason.filter(p => p.season >= start) : bySeason;
+    return pts.length >= 2 ? pts : bySeason.slice(-2);
+}
+
+function trendHeader(bySeason) {
+    const seasons = bySeason.map(p => p.season);
+    const start = state.trendStart && seasons.includes(state.trendStart) ? state.trendStart : seasons[0];
+    return `<button class="trend-pick" onclick="openTrendMenu(this, [${seasons.slice(0, -1).join(',')}])"
+        aria-haspopup="listbox">Since ${start}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none"
+        stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+}
+
+function openTrendMenu(btn, starts) {
+    const cur = state.trendStart || starts[0];
+    showPopoverMenu(btn, starts.map(y => ({ label: `Since ${y}`, meta: `${starts.at(-1) + 1 - y + 1} seasons`, value: y, selected: y === cur })),
+        (y) => { state.trendStart = y; rerenderTrendTables(); });
+}
+
+function rerenderTrendTables() {
+    renderTypeTrends();
+    const open = document.getElementById('modal')?.classList.contains('active') && location.hash.startsWith('#team=');
+    if (open) {
+        const abbr = decodeURIComponent(location.hash.split('=')[1] || '');
+        const scroller = document.querySelector('#modal .modal');
+        const y = scroller?.scrollTop || 0;
+        if (state.teamProfiles[abbr]) renderTeamProfile(state.teamProfiles[abbr]);
+        if (scroller) scroller.scrollTop = y;
+    }
+}
+
+function showPopoverMenu(anchor, items, onPick) {
+    document.getElementById('popMenu')?.remove();
+    const r = anchor.getBoundingClientRect();
+    const menu = document.createElement('div');
+    menu.id = 'popMenu';
+    menu.className = 'pop-menu';
+    menu.setAttribute('role', 'listbox');
+    menu.innerHTML = items.map((it, i) => `<button role="option" aria-selected="${it.selected}" class="${it.selected ? 'sel' : ''}" data-i="${i}">
+        <span>${it.label}</span>${it.meta ? `<span class="pop-meta">${it.meta}</span>` : ''}</button>`).join('');
+    document.body.appendChild(menu);
+    const mw = menu.offsetWidth, mh = menu.offsetHeight;
+    const left = Math.min(Math.max(8, r.right - mw), window.innerWidth - mw - 8);
+    const top = r.bottom + 6 + mh > window.innerHeight ? Math.max(8, r.top - mh - 6) : r.bottom + 6;
+    Object.assign(menu.style, { left: `${left}px`, top: `${top}px` });
+    const close = () => { menu.remove(); document.removeEventListener('click', outside, true); window.removeEventListener('scroll', close, true); document.removeEventListener('keydown', esc); };
+    const outside = (e) => { if (!menu.contains(e.target) && e.target !== anchor && !anchor.contains(e.target)) close(); };
+    const esc = (e) => { if (e.key === 'Escape') close(); };
+    menu.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { const it = items[Number(b.dataset.i)]; close(); onPick(it.value); }));
+    setTimeout(() => {
+        document.addEventListener('click', outside, true);
+        window.addEventListener('scroll', close, true);
+        document.addEventListener('keydown', esc);
+    }, 0);
+    menu.querySelector('.sel')?.focus();
+}
+
 function sparkline(points, w = 120, h = 30) {
     const vals = points.map(p => p.perGame ?? 0);
     const max = Math.max(...vals, 0.01), min = Math.min(...vals) * 0.9;   // scale to the data so changes are visible
@@ -1551,19 +1610,19 @@ function renderTypeTrends() {
         </div>
         <div class="table-scroll">
             <table class="tt-table">
-                <thead><tr><th>Penalty</th><th>${tt.season} / game</th><th>${comp.short} / game</th><th>Change</th><th>${first}–${String(last).slice(2)} trend</th></tr></thead>
+                <thead><tr><th>Penalty</th><th>${tt.season} / game</th><th>${comp.short} / game</th><th>Change</th><th>${trendHeader(tt.types[0].bySeason)}</th></tr></thead>
                 <tbody>${rows.map(r => `
                     <tr>
                         <td><strong>${r.type}</strong> <span class="modal-muted">${fmtNum(r.currentCount)} this season</span></td>
                         <td><strong>${fmtNum(r.current, 2)}</strong></td>
                         <td class="season-prev">${fmtNum(r.base, 2)}</td>
                         <td><span class="season-delta ${r.diff > 0.005 ? 'pct-up' : r.diff < -0.005 ? 'pct-down' : ''}">${r.diff > 0 ? '+' : ''}${fmtNum(r.diff, 2)}</span> ${pctBadge(r.current, r.base)}</td>
-                        <td>${sparkline(r.bySeason)}</td>
+                        <td>${sparkline(trendPoints(r.bySeason))}</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
         </div>
-        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">${tt.notes} Trend line: each season ${first}–${last}, this season in yellow. ${tt.season} is ${tt.currentGames} games in, so rare penalties can swing.</p>`;
+        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">${tt.notes} Trend line: each season since ${state.trendStart || first} (pick the start in the column header), this season in yellow. ${tt.season} is ${tt.currentGames} games in, so rare penalties can swing.</p>`;
 }
 
 function toggleAllOpponents() {
@@ -1748,7 +1807,7 @@ function renderTeamProfile(t) {
         <h4>Which calls are rising for ${t.abbr}? <span class="modal-muted">${cs} vs ${allLabel}, biggest increases first</span></h4>
         <div class="table-scroll"><table class="pv-table tt-table">
             <thead><tr><th>Penalty</th><th>${cs}</th><th>${allLabel.replace(' avg', '')}</th><th>Change</th>
-                <th>${tts[0].bySeason[0]?.season}–${String(tts[0].bySeason.at(-1)?.season).slice(2)}</th></tr></thead>
+                <th>${trendHeader(tts[0].bySeason)}</th></tr></thead>
             <tbody>${tts.map(r => `
                 <tr>
                     <td><strong>${r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. ')}</strong> <span class="modal-muted">(${r.currentCount})</span></td>
@@ -1756,10 +1815,10 @@ function renderTeamProfile(t) {
                     <td class="season-prev">${fmtNum(r.base, 2)}</td>
                     <td><span class="season-delta ${r.diff > 0.005 ? 'pct-up' : r.diff < -0.005 ? 'pct-down' : ''}">${r.diff > 0 ? '+' : ''}${fmtNum(r.diff, 2)}</span>
                         ${(r.current || r.base) ? pctBadge(r.current, r.base, { small }) : ''}</td>
-                    <td>${sparkline(r.bySeason)}</td>
+                    <td>${sparkline(trendPoints(r.bySeason))}</td>
                 </tr>`).join('')}
             </tbody></table></div>
-        <p class="modal-footnote">Flags on ${t.abbr} per game (count this season in brackets). The comparison follows the buttons at the top. Trend line: each season, this season in yellow. ${cur ? `${cur.games} games in, so rarer penalties can swing.` : ''}</p>
+        <p class="modal-footnote">Flags on ${t.abbr} per game (count this season in brackets). The comparison follows the buttons at the top. Trend line: each season since ${state.trendStart || (t.typeTrends?.[0]?.bySeason?.[0]?.season ?? '')} (pick the start in the column header), this season in yellow. ${cur ? `${cur.games} games in, so rarer penalties can swing.` : ''}</p>
     </div>` : '';
 
     // Every opponent faced in the data, most flags on this team per game first
@@ -3207,6 +3266,7 @@ window.setScoreboardFrame = setScoreboardFrame;
 window.setScoreboardWeek = setScoreboardWeek;
 window.toggleScoreboardWeekMenu = toggleScoreboardWeekMenu;
 window.toggleWeekLayer = toggleWeekLayer;
+window.openTrendMenu = openTrendMenu;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;

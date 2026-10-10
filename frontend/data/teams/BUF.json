@@ -66,23 +66,27 @@
       "homePerGame": 6.33,
       "awayPerGame": 6.0,
       "types": {
+        "Defensive Holding": 0.5,
+        "Neutral Zone Infraction": 0.0,
+        "Illegal Blindside Block": 0.25,
         "False Start": 1.0,
         "Offensive Holding": 2.25,
-        "Unnecessary Roughness": 0.5,
-        "Defensive Pass Interference": 0.0,
         "Face Mask": 0.0,
-        "Defensive Holding": 0.5,
-        "Illegal Blindside Block": 0.25,
+        "Delay of Game": 0.0,
+        "Offensive Pass Interference": 0.5,
+        "Illegal Contact": 0.0,
+        "Defensive Pass Interference": 0.0,
         "Roughing the Passer": 0.0,
-        "Defensive Offside": 0.0
+        "Defensive Offside": 0.0,
+        "Unnecessary Roughness": 0.5
       },
       "drawnTypes": {
-        "False Start": 0.75,
-        "Offensive Holding": 0.25,
         "Chop Block": 0.0,
-        "Defensive Pass Interference": 0.75,
+        "Defensive Holding": 0.75,
+        "Offensive Holding": 0.25,
+        "False Start": 0.75,
         "Face Mask": 0.0,
-        "Defensive Holding": 0.75
+        "Defensive Pass Interference": 0.75
       },
       "quarters": [
         1.0,
@@ -107,23 +111,27 @@
       "homePerGame": 6.0,
       "awayPerGame": 5.88,
       "types": {
+        "Defensive Holding": 0.53,
+        "Neutral Zone Infraction": 0.06,
+        "Illegal Blindside Block": 0.12,
         "False Start": 0.88,
         "Offensive Holding": 1.82,
-        "Unnecessary Roughness": 0.47,
-        "Defensive Pass Interference": 0.24,
         "Face Mask": 0.18,
-        "Defensive Holding": 0.53,
-        "Illegal Blindside Block": 0.12,
+        "Delay of Game": 0.06,
+        "Offensive Pass Interference": 0.18,
+        "Illegal Contact": 0.12,
+        "Defensive Pass Interference": 0.24,
         "Roughing the Passer": 0.06,
-        "Defensive Offside": 0.12
+        "Defensive Offside": 0.12,
+        "Unnecessary Roughness": 0.47
       },
       "drawnTypes": {
-        "False Start": 0.94,
-        "Offensive Holding": 0.59,
         "Chop Block": 0.0,
-        "Defensive Pass Interference": 0.47,
+        "Defensive Holding": 0.59,
+        "Offensive Holding": 0.59,
+        "False Start": 0.94,
         "Face Mask": 0.24,
-        "Defensive Holding": 0.59
+        "Defensive Pass Interference": 0.47
       },
       "quarters": [
         1.53,
@@ -148,23 +156,27 @@
       "homePerGame": 6.12,
       "awayPerGame": 6.4,
       "types": {
+        "Defensive Holding": 0.31,
+        "Neutral Zone Infraction": 0.08,
+        "Illegal Blindside Block": 0.06,
         "False Start": 1.12,
         "Offensive Holding": 1.55,
-        "Unnecessary Roughness": 0.55,
-        "Defensive Pass Interference": 0.49,
         "Face Mask": 0.14,
-        "Defensive Holding": 0.31,
-        "Illegal Blindside Block": 0.06,
+        "Delay of Game": 0.16,
+        "Offensive Pass Interference": 0.18,
+        "Illegal Contact": 0.24,
+        "Defensive Pass Interference": 0.49,
         "Roughing the Passer": 0.08,
-        "Defensive Offside": 0.25
+        "Defensive Offside": 0.25,
+        "Unnecessary Roughness": 0.55
       },
       "drawnTypes": {
-        "False Start": 1.33,
-        "Offensive Holding": 0.92,
         "Chop Block": 0.0,
-        "Defensive Pass Interference": 0.41,
+        "Defensive Holding": 0.41,
+        "Offensive Holding": 0.92,
+        "False Start": 1.33,
         "Face Mask": 0.1,
-        "Defensive Holding": 0.41
+        "Defensive Pass Interference": 0.41
       },
       "quarters": [
         1.51,
@@ -189,23 +201,27 @@
       "homePerGame": 5.98,
       "awayPerGame": 6.55,
       "types": {
+        "Defensive Holding": 0.4,
+        "Neutral Zone Infraction": 0.19,
+        "Illegal Blindside Block": 0.04,
         "False Start": 1.11,
         "Offensive Holding": 1.45,
-        "Unnecessary Roughness": 0.47,
-        "Defensive Pass Interference": 0.49,
         "Face Mask": 0.13,
-        "Defensive Holding": 0.4,
-        "Illegal Blindside Block": 0.04,
+        "Delay of Game": 0.14,
+        "Offensive Pass Interference": 0.14,
+        "Illegal Contact": 0.16,
+        "Defensive Pass Interference": 0.49,
         "Roughing the Passer": 0.19,
-        "Defensive Offside": 0.29
+        "Defensive Offside": 0.29,
+        "Unnecessary Roughness": 0.47
       },
       "drawnTypes": {
-        "False Start": 1.19,
-        "Offensive Holding": 0.92,
         "Chop Block": 0.0,
-        "Defensive Pass Interference": 0.45,
+        "Defensive Holding": 0.29,
+        "Offensive Holding": 0.92,
+        "False Start": 1.19,
         "Face Mask": 0.13,
-        "Defensive Holding": 0.29
+        "Defensive Pass Interference": 0.45
       },
       "quarters": [
         1.33,
@@ -1524,6 +1540,463 @@
       }
     }
   ],
+  "typeTrends": [
+    {
+      "type": "Offensive Holding",
+      "current": 2.0,
+      "currentCount": 8,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 1.44
+        },
+        {
+          "season": 2021,
+          "perGame": 1.35
+        },
+        {
+          "season": 2022,
+          "perGame": 1.25
+        },
+        {
+          "season": 2023,
+          "perGame": 1.41
+        },
+        {
+          "season": 2024,
+          "perGame": 1.41
+        },
+        {
+          "season": 2025,
+          "perGame": 1.82
+        },
+        {
+          "season": 2026,
+          "perGame": 2.0
+        }
+      ]
+    },
+    {
+      "type": "False Start",
+      "current": 0.5,
+      "currentCount": 2,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 1.31
+        },
+        {
+          "season": 2021,
+          "perGame": 1.0
+        },
+        {
+          "season": 2022,
+          "perGame": 1.0
+        },
+        {
+          "season": 2023,
+          "perGame": 0.82
+        },
+        {
+          "season": 2024,
+          "perGame": 1.65
+        },
+        {
+          "season": 2025,
+          "perGame": 0.88
+        },
+        {
+          "season": 2026,
+          "perGame": 0.5
+        }
+      ]
+    },
+    {
+      "type": "Defensive Pass Interference",
+      "current": 0.5,
+      "currentCount": 2,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.69
+        },
+        {
+          "season": 2021,
+          "perGame": 0.47
+        },
+        {
+          "season": 2022,
+          "perGame": 0.31
+        },
+        {
+          "season": 2023,
+          "perGame": 0.53
+        },
+        {
+          "season": 2024,
+          "perGame": 0.71
+        },
+        {
+          "season": 2025,
+          "perGame": 0.24
+        },
+        {
+          "season": 2026,
+          "perGame": 0.5
+        }
+      ]
+    },
+    {
+      "type": "Defensive Holding",
+      "current": 1.75,
+      "currentCount": 7,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.12
+        },
+        {
+          "season": 2021,
+          "perGame": 0.65
+        },
+        {
+          "season": 2022,
+          "perGame": 0.69
+        },
+        {
+          "season": 2023,
+          "perGame": 0.35
+        },
+        {
+          "season": 2024,
+          "perGame": 0.06
+        },
+        {
+          "season": 2025,
+          "perGame": 0.53
+        },
+        {
+          "season": 2026,
+          "perGame": 1.75
+        }
+      ]
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "current": 0.0,
+      "currentCount": 0,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.44
+        },
+        {
+          "season": 2021,
+          "perGame": 0.47
+        },
+        {
+          "season": 2022,
+          "perGame": 0.25
+        },
+        {
+          "season": 2023,
+          "perGame": 0.53
+        },
+        {
+          "season": 2024,
+          "perGame": 0.65
+        },
+        {
+          "season": 2025,
+          "perGame": 0.47
+        },
+        {
+          "season": 2026,
+          "perGame": 0.0
+        }
+      ]
+    },
+    {
+      "type": "Defensive Offside",
+      "current": 0.25,
+      "currentCount": 1,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.06
+        },
+        {
+          "season": 2021,
+          "perGame": 0.35
+        },
+        {
+          "season": 2022,
+          "perGame": 0.56
+        },
+        {
+          "season": 2023,
+          "perGame": 0.41
+        },
+        {
+          "season": 2024,
+          "perGame": 0.24
+        },
+        {
+          "season": 2025,
+          "perGame": 0.12
+        },
+        {
+          "season": 2026,
+          "perGame": 0.25
+        }
+      ]
+    },
+    {
+      "type": "Roughing the Passer",
+      "current": 0.5,
+      "currentCount": 2,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.38
+        },
+        {
+          "season": 2021,
+          "perGame": 0.41
+        },
+        {
+          "season": 2022,
+          "perGame": 0.12
+        },
+        {
+          "season": 2023,
+          "perGame": 0.18
+        },
+        {
+          "season": 2024,
+          "perGame": 0.0
+        },
+        {
+          "season": 2025,
+          "perGame": 0.06
+        },
+        {
+          "season": 2026,
+          "perGame": 0.5
+        }
+      ]
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "current": 0.0,
+      "currentCount": 0,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.5
+        },
+        {
+          "season": 2021,
+          "perGame": 0.18
+        },
+        {
+          "season": 2022,
+          "perGame": 0.25
+        },
+        {
+          "season": 2023,
+          "perGame": 0.06
+        },
+        {
+          "season": 2024,
+          "perGame": 0.12
+        },
+        {
+          "season": 2025,
+          "perGame": 0.06
+        },
+        {
+          "season": 2026,
+          "perGame": 0.0
+        }
+      ]
+    },
+    {
+      "type": "Illegal Contact",
+      "current": 0.0,
+      "currentCount": 0,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.06
+        },
+        {
+          "season": 2021,
+          "perGame": 0.12
+        },
+        {
+          "season": 2022,
+          "perGame": 0.06
+        },
+        {
+          "season": 2023,
+          "perGame": 0.24
+        },
+        {
+          "season": 2024,
+          "perGame": 0.35
+        },
+        {
+          "season": 2025,
+          "perGame": 0.12
+        },
+        {
+          "season": 2026,
+          "perGame": 0.0
+        }
+      ]
+    },
+    {
+      "type": "Face Mask",
+      "current": 0.25,
+      "currentCount": 1,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.19
+        },
+        {
+          "season": 2021,
+          "perGame": 0.0
+        },
+        {
+          "season": 2022,
+          "perGame": 0.19
+        },
+        {
+          "season": 2023,
+          "perGame": 0.12
+        },
+        {
+          "season": 2024,
+          "perGame": 0.12
+        },
+        {
+          "season": 2025,
+          "perGame": 0.18
+        },
+        {
+          "season": 2026,
+          "perGame": 0.25
+        }
+      ]
+    },
+    {
+      "type": "Offensive Pass Interference",
+      "current": 0.0,
+      "currentCount": 0,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.19
+        },
+        {
+          "season": 2021,
+          "perGame": 0.06
+        },
+        {
+          "season": 2022,
+          "perGame": 0.06
+        },
+        {
+          "season": 2023,
+          "perGame": 0.18
+        },
+        {
+          "season": 2024,
+          "perGame": 0.18
+        },
+        {
+          "season": 2025,
+          "perGame": 0.18
+        },
+        {
+          "season": 2026,
+          "perGame": 0.0
+        }
+      ]
+    },
+    {
+      "type": "Delay of Game",
+      "current": 0.0,
+      "currentCount": 0,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.12
+        },
+        {
+          "season": 2021,
+          "perGame": 0.18
+        },
+        {
+          "season": 2022,
+          "perGame": 0.06
+        },
+        {
+          "season": 2023,
+          "perGame": 0.29
+        },
+        {
+          "season": 2024,
+          "perGame": 0.12
+        },
+        {
+          "season": 2025,
+          "perGame": 0.06
+        },
+        {
+          "season": 2026,
+          "perGame": 0.0
+        }
+      ]
+    },
+    {
+      "type": "Illegal Blindside Block",
+      "current": 0.25,
+      "currentCount": 1,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.06
+        },
+        {
+          "season": 2021,
+          "perGame": 0.0
+        },
+        {
+          "season": 2022,
+          "perGame": 0.0
+        },
+        {
+          "season": 2023,
+          "perGame": 0.0
+        },
+        {
+          "season": 2024,
+          "perGame": 0.06
+        },
+        {
+          "season": 2025,
+          "perGame": 0.12
+        },
+        {
+          "season": 2026,
+          "perGame": 0.25
+        }
+      ]
+    }
+  ],
   "nextGame": {
     "gameId": "2026_05_BUF_LA",
     "week": 5,
@@ -1531,5 +2004,5 @@
     "opponent": "LA",
     "home": false
   },
-  "generatedAt": "2026-10-10T07:04:35+00:00"
+  "generatedAt": "2026-10-10T07:09:25+00:00"
 }

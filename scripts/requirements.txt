@@ -1,6 +1,7 @@
-nflreadpy
-pandas>=2.0.0
-numpy>=1.24.0
-pyarrow
-requests
-beautifulsoup4
+# Bounded to the current major versions (Dependabot proposes upgrades weekly)
+nflreadpy>=0.1.5,<0.2
+pandas>=2.0.0,<4
+numpy>=1.24.0,<3
+pyarrow>=14,<26
+requests>=2.32.3,<3
+beautifulsoup4>=4.12,<5

@@ -815,7 +815,7 @@ function previewCard(g, pv, maxTotal, todayET) {
         <div class="pv-head">
             <div class="pv-matchup">${teamChip(g.awayTeam)}<span class="pv-at">@</span>${teamChip(g.homeTeam, true)}
                 ${isToday ? '<span class="pv-today">Today</span>' : ''}</div>
-            <div class="pv-when">${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''}</div>
+            <div class="pv-when">${fmtKickoff(g)}${g.network ? ` · ${esc(g.network)}` : ''}</div>
         </div>
         <div class="pv-main">
             <div>
@@ -899,7 +899,7 @@ function openPreviewModal(gameId) {
 
     document.getElementById('modalTitle').textContent = `${A.abbr} @ ${H.abbr}`;
     document.getElementById('modalSubtitle').textContent =
-        `Week ${pv.week} · ${fmtKickoff(g)}${g.network ? ` · ${g.network}` : ''} · ${g.crew ? `Crew: ${g.crew.name}` : 'Crew TBA'}`;
+        `Week ${pv.week} · ${fmtKickoff(g)}${g.network ? ` · ${esc(g.network)}` : ''} · ${g.crew ? `Crew: ${g.crew.name}` : 'Crew TBA'}`;
 
     // Drivers (+/- flags vs a league-average matchup)
     const maxDrv = Math.max(...p.drivers.map(d => Math.abs(d.value)), 0.5);
@@ -2759,10 +2759,21 @@ function handleDeepLink() {
 // Libraries load only when someone clicks Export (pinned versions on cdnjs).
 // =============================================================================
 
+// Pinned versions + integrity hashes: the browser refuses the file if the CDN copy is ever altered
 const EXPORT_LIBS = {
-    html2canvas: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
-    jspdf: 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+    html2canvas: 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+    jspdf: 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'
 };
+const EXPORT_SRI = {
+    [EXPORT_LIBS.html2canvas]: 'sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H',
+    [EXPORT_LIBS.jspdf]: 'sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk'
+};
+
+// Escape text that originates outside this site (scraped or user-supplied) before
+// it goes into HTML
+function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 const _scriptPromises = {};
 
 function loadScriptOnce(src) {
@@ -2770,6 +2781,7 @@ function loadScriptOnce(src) {
         _scriptPromises[src] = new Promise((resolve, reject) => {
             const el = document.createElement('script');
             el.src = src;
+            if (EXPORT_SRI[src]) { el.integrity = EXPORT_SRI[src]; el.crossOrigin = 'anonymous'; }
             el.onload = resolve;
             el.onerror = () => { delete _scriptPromises[src]; reject(new Error('Could not load ' + src)); };
             document.head.appendChild(el);
@@ -2894,7 +2906,7 @@ async function renderModalCanvas() {
             foot.innerHTML = `<span style="display:flex;align-items:center;gap:10px;color:#ecebe7;font-weight:600">` +
                 `<span style="width:22px;height:22px;border-radius:5px;background:#16181b;border:1px solid #2a2d32;display:inline-flex;align-items:center;justify-content:center">` +
                 `<span style="width:11px;height:11px;background:#ffc400;transform:rotate(-18deg);display:block;border-radius:1px"></span></span>` +
-                `nflobservatory.com</span><span>${when} · ${location.host}${location.pathname}${location.hash}</span>`;
+                `nflobservatory.com</span><span>${when} · ${esc(location.host + location.pathname + location.hash)}</span>`;
             m.appendChild(foot);
         }
     });

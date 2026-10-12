@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-12T00:35:12+00:00",
+  "generatedAt": "2026-10-12T17:28:25+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 14,
-      "avgMiss": 3.24,
-      "hitRate": 92.9,
-      "within3": 57.1,
-      "baselineAvgMiss": 3.74,
-      "skillPct": 13.5
+      "games": 15,
+      "avgMiss": 3.09,
+      "hitRate": 93.3,
+      "within3": 60.0,
+      "baselineAvgMiss": 3.65,
+      "skillPct": 15.4
     },
     "byWeek": [
       {
@@ -31,12 +31,12 @@
       {
         "season": 2026,
         "week": 5,
-        "games": 13,
-        "avgMiss": 3.25,
-        "hitRate": 92.3,
-        "within3": 53.8,
-        "baselineAvgMiss": 3.85,
-        "skillPct": 15.6
+        "games": 14,
+        "avgMiss": 3.09,
+        "hitRate": 92.9,
+        "within3": 57.1,
+        "baselineAvgMiss": 3.74,
+        "skillPct": 17.4
       }
     ],
     "games": [
@@ -299,6 +299,26 @@
         "awayProjected": 6.9,
         "homeActual": 4,
         "awayActual": 3
+      },
+      {
+        "gameId": "2026_05_BAL_ATL",
+        "season": 2026,
+        "week": 5,
+        "away": "BAL",
+        "home": "ATL",
+        "crew": "Brad Allen",
+        "source": "live",
+        "projected": 13.0,
+        "low": 8,
+        "high": 19,
+        "actual": 12,
+        "miss": -1.0,
+        "inRange": true,
+        "baselineMiss": 2.3,
+        "homeProjected": 6.0,
+        "awayProjected": 7.0,
+        "homeActual": 7,
+        "awayActual": 5
       },
       {
         "gameId": "2026_04_ATL_NO",

@@ -976,6 +976,14 @@ def main():
             import traceback
             print(f"   ⚠️  Scorecard failed: {type(e).__name__}: {e}")
             traceback.print_exc()
+        # History ledger: permanent week-by-week record of predictions and outcomes
+        try:
+            from history import build_history
+            build_history(data, DATA_DIR)
+        except Exception as e:
+            import traceback
+            print(f"   ⚠️  History ledger failed: {type(e).__name__}: {e}")
+            traceback.print_exc()
     except Exception as e:
         # Previews must never block the main data update
         import traceback

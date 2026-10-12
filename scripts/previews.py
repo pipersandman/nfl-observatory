@@ -74,6 +74,10 @@ def _clamp(v):
     return float(min(FACTOR_CLAMP[1], max(FACTOR_CLAMP[0], v)))
 
 
+# Bump whenever the projection math changes, so every stored projection says which model made it
+MODEL_VERSION = 'v1.0'
+
+
 def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: Path, as_of=None) -> dict:
     """as_of=(season, week): backtest mode. Rebuild the projection for every game of that
     week using ONLY data from before it (and the crew that actually worked it, since crews
@@ -442,6 +446,7 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
             'assignments': {'assigned': sum(1 for g in week_games['game_id'] if g in assignments), 'games': len(week_games),
                             'source': assign_meta or None},
             'model': {
+                'version': MODEL_VERSION,
                 'seasons': seasons, 'seasonWeights': {str(k): v for k, v in weights.items()},
                 'leagueAveragePerGame': round(league_game, 1), 'dispersion': round(phi, 2),
                 'regularSeasonOnly': True,

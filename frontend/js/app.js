@@ -1160,6 +1160,10 @@ function openScorecardModal() {
         <tr><td>Wk ${w.week}</td><td>${w.games}</td><td>${fmtNum(w.avgMiss, 1)}</td><td>${fmtNum(w.hitRate, 0)}%</td></tr>`).join('');
 
     body.innerHTML = `
+        <div class="modal-section">
+            <h4>Week by week</h4>
+            <div id="historyWeek"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
         ${block('Published before kickoff', sc.live?.summary, 'Projections exactly as they appeared on the site before each game. Grows every week.')}
         <div class="modal-section">
             <h4>Every published projection</h4>
@@ -1180,6 +1184,67 @@ function openScorecardModal() {
             <p class="modal-footnote">${Object.values(sc.definitions || {}).join(' · ')}</p>
         </div>`;
     modal.classList.add('active');
+    loadHistory();
+}
+
+// ---- History ledger: every completed week, every game, prediction vs what happened ----
+async function loadHistory() {
+    if (!state.historyIndex) state.historyIndex = await fetchJSON('history/index.json');
+    const idx = state.historyIndex;
+    if (!idx?.weeks?.length) { setHtml('historyWeek', '<p class="modal-footnote">The weekly history starts once the first tracked week is complete.</p>'); return; }
+    const pick = state.historyPick || idx.weeks[0];
+    renderHistoryWeek(pick.season, pick.week);
+}
+function setHtml(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+function openHistoryMenu(btn) {
+    const weeks = state.historyIndex?.weeks || [];
+    const cur = state.historyPick || weeks[0];
+    showPopoverMenu(btn, weeks.map(w => ({
+        label: `${w.season} Week ${w.week}`, value: w,
+        meta: w.graded ? `${fmtNum(w.avgMiss, 1)} avg miss · ${fmtNum(w.hitRate, 0)}% in range` : `${w.games} games`,
+        selected: cur && w.season === cur.season && w.week === cur.week })),
+        (w) => { state.historyPick = w; renderHistoryWeek(w.season, w.week); });
+}
+
+async function renderHistoryWeek(season, week) {
+    const key = `${season}-${week}`;
+    state.historyWeeks = state.historyWeeks || {};
+    if (!state.historyWeeks[key]) {
+        setHtml('historyWeek', '<div class="loading"><div class="spinner"></div></div>');
+        state.historyWeeks[key] = await fetchJSON(`history/games/${season}-week-${String(week).padStart(2, '0')}.json`);
+    }
+    const wk = state.historyWeeks[key];
+    if (!wk) { setHtml('historyWeek', '<p class="modal-footnote">That week could not be loaded.</p>'); return; }
+    const sm = wk.summary || {};
+    const allBacktest = sm.graded && !sm.live;
+    const rows = wk.games.slice().sort((a, b) => (b.grade?.absMiss ?? -1) - (a.grade?.absMiss ?? -1));
+    const chev = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    setHtml('historyWeek', `
+        <div class="hist-head">
+            <button class="trend-pick hist-pick" onclick="openHistoryMenu(this)">${season} Week ${week}${chev}</button>
+            ${sm.graded ? `<span class="hist-stat"><strong>${fmtNum(sm.avgMiss, 1)}</strong> avg miss</span>
+            <span class="hist-stat"><strong>${fmtNum(sm.hitRate, 0)}%</strong> in range</span>
+            <span class="hist-stat"><strong>${sm.over}</strong> over · <strong>${sm.under}</strong> under</span>
+            <span class="hist-stat"><strong>${fmtNum(sm.flagsPerGame, 1)}</strong> flags/game</span>` : ''}
+        </div>
+        ${allBacktest ? `<p class="modal-footnote">This week predates live tracking: projections were reconstructed afterward using only data from before the week.</p>` : ''}
+        <div class="table-scroll"><table class="pv-table hist-table">
+            <thead><tr><th>Game</th><th>Final</th><th>Crew</th><th>Projected</th><th>Actual flags</th><th>Miss</th><th></th></tr></thead>
+            <tbody>${rows.map(g => {
+                const o = g.outcome, p = g.prediction, gr = g.grade;
+                const final = o.homeScore == null ? '—' : `${g.away} ${o.awayScore}–${o.homeScore} ${g.home}`;
+                return `<tr>
+                    <td><strong>${g.away} @ ${g.home}</strong>${p && p.source !== 'backtest' ? ' <span class="hist-live">published</span>' : ''}</td>
+                    <td class="season-prev">${final}</td>
+                    <td class="season-prev">${esc(o.crew || '—')}</td>
+                    <td>${p ? `${fmtNum(p.total, 1)} <span class="modal-muted">(${p.range[0]}–${p.range[1]})</span>` : '—'}</td>
+                    <td><strong>${o.total}</strong> <span class="modal-muted">${g.away} ${o.away.flags} · ${g.home} ${o.home.flags}</span></td>
+                    <td>${gr ? `<span class="season-delta ${gr.miss > 0 ? 'pct-up' : gr.miss < 0 ? 'pct-down' : ''}">${gr.miss > 0 ? '+' : ''}${fmtNum(gr.miss, 1)}</span>` : '—'}</td>
+                    <td>${gr ? (gr.inRange ? '✓' : '✗') : ''}</td>
+                </tr>`; }).join('')}
+            </tbody></table></div>
+        <p class="modal-footnote">Biggest misses first. Miss = actual − projected (<span class="pct-up">red</span>: more flags than projected). Games marked "published" were projected live before kickoff; the rest were reconstructed.</p>`);
 }
 
 // =============================================================================
@@ -3319,6 +3384,7 @@ window.openQuarterTypeMenu = openQuarterTypeMenu;
 window.setTypeTrendsCompare = setTypeTrendsCompare;
 window.toggleAllOpponents = toggleAllOpponents;
 window.openScorecardModal = openScorecardModal;
+window.openHistoryMenu = openHistoryMenu;
 window.selectDivision = selectDivision;
 window.closeModal = closeModal;
 window.copyModalLink = copyModalLink;

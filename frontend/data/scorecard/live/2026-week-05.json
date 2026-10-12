@@ -456,28 +456,197 @@
     ],
     "leagueAverage": 14.3,
     "byType": {
-      "Offensive Holding": 3.24,
+      "Offensive Holding": 3.22,
       "False Start": 2.07,
-      "Defensive Pass Interference": 1.0,
+      "Defensive Pass Interference": 0.99,
       "Defensive Holding": 0.94,
-      "Unnecessary Roughness": 0.8,
+      "Unnecessary Roughness": 0.81,
+      "Illegal Formation": 0.44,
       "Delay of Game": 0.43,
-      "Illegal Formation": 0.43,
       "Defensive Offside": 0.35,
-      "Roughing the Passer": 0.31,
+      "Roughing the Passer": 0.32,
       "Face Mask": 0.28,
-      "Other": 3.12
+      "Other": 3.16
+    },
+    "byTypeTeams": {
+      "Offensive Holding": {
+        "home": 1.38,
+        "away": 1.84
+      },
+      "False Start": {
+        "home": 0.97,
+        "away": 1.1
+      },
+      "Defensive Pass Interference": {
+        "home": 0.5,
+        "away": 0.49
+      },
+      "Defensive Holding": {
+        "home": 0.36,
+        "away": 0.58
+      },
+      "Unnecessary Roughness": {
+        "home": 0.31,
+        "away": 0.5
+      },
+      "Illegal Formation": {
+        "home": 0.08,
+        "away": 0.36
+      },
+      "Delay of Game": {
+        "home": 0.24,
+        "away": 0.19
+      },
+      "Defensive Offside": {
+        "home": 0.15,
+        "away": 0.2
+      },
+      "Roughing the Passer": {
+        "home": 0.24,
+        "away": 0.07
+      },
+      "Face Mask": {
+        "home": 0.15,
+        "away": 0.14
+      },
+      "Other": {
+        "home": 1.35,
+        "away": 1.81
+      }
+    },
+    "byTypeFactors": {
+      "Offensive Holding": {
+        "homeCommit": 0.94,
+        "awayCommit": 1.23,
+        "homeDraw": 0.94,
+        "awayDraw": 0.79,
+        "crew": 1.2
+      },
+      "False Start": {
+        "homeCommit": 0.7,
+        "awayCommit": 0.85,
+        "homeDraw": 1.05,
+        "awayDraw": 1.07,
+        "crew": 0.93
+      },
+      "Defensive Pass Interference": {
+        "homeCommit": 1.05,
+        "awayCommit": 0.83,
+        "homeDraw": 1.14,
+        "awayDraw": 0.91,
+        "crew": 0.92
+      },
+      "Defensive Holding": {
+        "homeCommit": 0.73,
+        "awayCommit": 1.74,
+        "homeDraw": 1.0,
+        "awayDraw": 1.75,
+        "crew": 0.84
+      },
+      "Unnecessary Roughness": {
+        "homeCommit": 0.75,
+        "awayCommit": 1.21,
+        "homeDraw": 0.99,
+        "awayDraw": 0.99,
+        "crew": 1.22
+      },
+      "Illegal Formation": {
+        "homeCommit": 0.57,
+        "awayCommit": 0.9,
+        "homeDraw": 1.41,
+        "awayDraw": 0.62,
+        "crew": 1.08
+      },
+      "Delay of Game": {
+        "homeCommit": 1.0,
+        "awayCommit": 0.5,
+        "homeDraw": 0.72,
+        "awayDraw": 0.65,
+        "crew": 1.14
+      },
+      "Defensive Offside": {
+        "homeCommit": 0.82,
+        "awayCommit": 0.73,
+        "homeDraw": 0.9,
+        "awayDraw": 0.56,
+        "crew": 1.06
+      },
+      "Roughing the Passer": {
+        "homeCommit": 1.06,
+        "awayCommit": 0.81,
+        "homeDraw": 0.58,
+        "awayDraw": 1.41,
+        "crew": 0.84
+      },
+      "Face Mask": {
+        "homeCommit": 0.92,
+        "awayCommit": 1.01,
+        "homeDraw": 0.85,
+        "awayDraw": 1.26,
+        "crew": 0.74
+      },
+      "Other": {
+        "homeCommit": 0.88,
+        "awayCommit": 0.92,
+        "homeDraw": 1.01,
+        "awayDraw": 0.87,
+        "crew": 1.06
+      }
     },
     "byQuarter": [
-      2.88,
-      3.74,
+      2.91,
+      3.75,
       3.08,
-      3.27
+      3.28
     ],
+    "homeRange": [
+      2,
+      10
+    ],
+    "awayRange": [
+      3,
+      12
+    ],
+    "yards": 107.0,
+    "probOver": 0.343,
+    "overThreshold": 14,
+    "drivers": [
+      {
+        "label": "Crew chief",
+        "value": 0.55
+      },
+      {
+        "label": "LA discipline & what it draws",
+        "value": -1.12
+      },
+      {
+        "label": "BUF discipline & what it draws",
+        "value": -0.71
+      }
+    ],
+    "context": {
+      "primetime": true,
+      "divisionGame": false,
+      "neutralSite": false,
+      "roof": "dome",
+      "surface": "matrixturf",
+      "temp": null,
+      "wind": null,
+      "homeRest": 8,
+      "awayRest": 8,
+      "spread": 3.5,
+      "total": 54.5,
+      "stadium": "SoFi Stadium",
+      "homeQB": "Matthew Stafford",
+      "awayQB": "Josh Allen",
+      "homeCoach": "Sean McVay",
+      "awayCoach": "Sean McDermott"
+    },
     "crew": "Scott Novak",
     "crewKnown": true,
+    "modelVersion": "v1.0",
     "source": "live",
-    "frozenAt": "2026-10-10T16:53:52+00:00"
+    "frozenAt": "2026-10-12T00:35:11+00:00"
   },
   "2026_05_SF_SEA": {
     "gameId": "2026_05_SF_SEA",

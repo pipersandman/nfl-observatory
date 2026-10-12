@@ -1,0 +1,2152 @@
+{
+  "season": 2025,
+  "week": 18,
+  "summary": {
+    "games": 16,
+    "graded": 16,
+    "live": 0,
+    "avgMiss": 3.21,
+    "bias": -2.64,
+    "hitRate": 81.2,
+    "over": 2,
+    "under": 13,
+    "exact": 1,
+    "flagsPerGame": 10.25
+  },
+  "games": [
+    {
+      "gameId": "2025_18_CAR_TB",
+      "season": 2025,
+      "week": 18,
+      "away": "CAR",
+      "home": "TB",
+      "prediction": {
+        "gameId": "2025_18_CAR_TB",
+        "season": 2025,
+        "week": 18,
+        "away": "CAR",
+        "home": "TB",
+        "gameday": "2026-01-03",
+        "gametime": "16:30",
+        "total": 11.5,
+        "home_proj": 5.7,
+        "away_proj": 5.8,
+        "range": [
+          7,
+          17
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 2.36,
+          "False Start": 2.3,
+          "Defensive Pass Interference": 0.89,
+          "Defensive Offside": 0.65,
+          "Roughing the Passer": 0.64,
+          "Delay of Game": 0.62,
+          "Defensive Holding": 0.59,
+          "Unnecessary Roughness": 0.44,
+          "Face Mask": 0.21,
+          "Illegal Formation": 0.2,
+          "Other": 2.58
+        },
+        "byQuarter": [
+          2.29,
+          3.23,
+          2.62,
+          3.35
+        ],
+        "crew": "Brad Allen",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 16,
+        "awayScore": 14,
+        "crew": "Brad Allen",
+        "total": 11,
+        "yards": 91,
+        "home": {
+          "flags": 6,
+          "yards": 45,
+          "types": {
+            "Delay of Game": 2,
+            "Unnecessary Roughness": 1,
+            "Illegal Block Above the Waist": 1,
+            "Illegal Contact": 1,
+            "False Start": 1
+          },
+          "quarters": [
+            1,
+            1,
+            2,
+            2,
+            0
+          ]
+        },
+        "away": {
+          "flags": 5,
+          "yards": 46,
+          "types": {
+            "Taunting": 1,
+            "False Start": 1,
+            "Delay of Game": 1,
+            "Offensive Pass Interference": 1,
+            "Defensive Pass Interference": 1
+          },
+          "quarters": [
+            2,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-03",
+          "weekday": "Saturday",
+          "gametime": "16:30",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 3.0,
+          "closingTotal": 43.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 69.0,
+          "wind": 11.0,
+          "homeRest": 6.0,
+          "awayRest": 6.0,
+          "stadium": "Raymond James Stadium"
+        },
+        "hash": "a52a11cef4d0"
+      },
+      "grade": {
+        "miss": -0.5,
+        "absMiss": 0.5,
+        "inRange": true,
+        "homeMiss": 0.3,
+        "awayMiss": -0.8,
+        "typeErrors": {
+          "Offensive Holding": -2.36,
+          "False Start": -0.3,
+          "Defensive Pass Interference": 0.11,
+          "Defensive Offside": -0.65,
+          "Roughing the Passer": -0.64,
+          "Delay of Game": 2.38,
+          "Defensive Holding": -0.59,
+          "Unnecessary Roughness": 0.56,
+          "Face Mask": -0.21,
+          "Illegal Formation": -0.2,
+          "Other": 1.42
+        },
+        "quarterErrors": [
+          0.71,
+          -1.23,
+          1.38,
+          -1.35
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_SEA_SF",
+      "season": 2025,
+      "week": 18,
+      "away": "SEA",
+      "home": "SF",
+      "prediction": {
+        "gameId": "2025_18_SEA_SF",
+        "season": 2025,
+        "week": 18,
+        "away": "SEA",
+        "home": "SF",
+        "gameday": "2026-01-03",
+        "gametime": "20:00",
+        "total": 12.4,
+        "home_proj": 6.3,
+        "away_proj": 6.0,
+        "range": [
+          7,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.39,
+          "Offensive Holding": 1.94,
+          "Defensive Pass Interference": 0.93,
+          "Unnecessary Roughness": 0.75,
+          "Defensive Offside": 0.62,
+          "Defensive Holding": 0.51,
+          "Delay of Game": 0.48,
+          "Face Mask": 0.36,
+          "Illegal Formation": 0.33,
+          "Roughing the Passer": 0.25,
+          "Other": 3.79
+        },
+        "byQuarter": [
+          2.79,
+          3.78,
+          2.89,
+          2.9
+        ],
+        "crew": "Bill Vinovich",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 3,
+        "awayScore": 13,
+        "crew": "Bill Vinovich",
+        "total": 8,
+        "yards": 56,
+        "home": {
+          "flags": 3,
+          "yards": 31,
+          "types": {
+            "Defensive Pass Interference": 2,
+            "Face Mask": 1
+          },
+          "quarters": [
+            2,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 5,
+          "yards": 25,
+          "types": {
+            "Illegal Formation": 1,
+            "False Start": 1,
+            "Offensive Holding": 1,
+            "Kickoff Out of Bounds": 1,
+            "Delay of Game": 1
+          },
+          "quarters": [
+            2,
+            2,
+            0,
+            1,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-03",
+          "weekday": "Saturday",
+          "gametime": "20:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": -2.5,
+          "closingTotal": 47.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 57.0,
+          "wind": 8.0,
+          "homeRest": 6.0,
+          "awayRest": 6.0,
+          "stadium": "Levi's Stadium"
+        },
+        "hash": "6aaaeca3357b"
+      },
+      "grade": {
+        "miss": -4.4,
+        "absMiss": 4.4,
+        "inRange": true,
+        "homeMiss": -3.3,
+        "awayMiss": -1.0,
+        "typeErrors": {
+          "False Start": -1.39,
+          "Offensive Holding": -0.94,
+          "Defensive Pass Interference": 1.07,
+          "Unnecessary Roughness": -0.75,
+          "Defensive Offside": -0.62,
+          "Defensive Holding": -0.51,
+          "Delay of Game": 0.52,
+          "Face Mask": 0.64,
+          "Illegal Formation": 0.67,
+          "Roughing the Passer": -0.25,
+          "Other": -2.79
+        },
+        "quarterErrors": [
+          1.21,
+          -1.78,
+          -1.89,
+          -1.9
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_CLE_CIN",
+      "season": 2025,
+      "week": 18,
+      "away": "CLE",
+      "home": "CIN",
+      "prediction": {
+        "gameId": "2025_18_CLE_CIN",
+        "season": 2025,
+        "week": 18,
+        "away": "CLE",
+        "home": "CIN",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 13.0,
+        "home_proj": 6.3,
+        "away_proj": 6.6,
+        "range": [
+          8,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.42,
+          "Offensive Holding": 2.2,
+          "Delay of Game": 1.14,
+          "Defensive Pass Interference": 1.13,
+          "Defensive Holding": 0.73,
+          "Roughing the Passer": 0.59,
+          "Defensive Offside": 0.55,
+          "Unnecessary Roughness": 0.44,
+          "Face Mask": 0.4,
+          "Illegal Formation": 0.22,
+          "Other": 3.12
+        },
+        "byQuarter": [
+          2.77,
+          3.98,
+          3.01,
+          3.2
+        ],
+        "crew": "Alex Kemp",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 18,
+        "awayScore": 20,
+        "crew": "Alex Kemp",
+        "total": 10,
+        "yards": 80,
+        "home": {
+          "flags": 6,
+          "yards": 40,
+          "types": {
+            "False Start": 4,
+            "Delay of Game": 1,
+            "Roughing the Passer": 1
+          },
+          "quarters": [
+            2,
+            3,
+            1,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 4,
+          "yards": 40,
+          "types": {
+            "Unsportsmanlike Conduct": 2,
+            "Defensive Offside": 1,
+            "Delay of Game": 1
+          },
+          "quarters": [
+            2,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 9.5,
+          "closingTotal": 47.5,
+          "roof": "outdoors",
+          "surface": "fieldturf",
+          "temp": 37.0,
+          "wind": 0.0,
+          "homeRest": 7.0,
+          "awayRest": 7.0,
+          "stadium": "Paycor Stadium"
+        },
+        "hash": "557361a28fa9"
+      },
+      "grade": {
+        "miss": -3.0,
+        "absMiss": 3.0,
+        "inRange": true,
+        "homeMiss": -0.3,
+        "awayMiss": -2.6,
+        "typeErrors": {
+          "False Start": 1.58,
+          "Offensive Holding": -2.2,
+          "Delay of Game": 0.86,
+          "Defensive Pass Interference": -1.13,
+          "Defensive Holding": -0.73,
+          "Roughing the Passer": 0.41,
+          "Defensive Offside": 0.45,
+          "Unnecessary Roughness": -0.44,
+          "Face Mask": -0.4,
+          "Illegal Formation": -0.22,
+          "Other": -1.12
+        },
+        "quarterErrors": [
+          1.23,
+          0.02,
+          -1.01,
+          -3.2
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_DAL_NYG",
+      "season": 2025,
+      "week": 18,
+      "away": "DAL",
+      "home": "NYG",
+      "prediction": {
+        "gameId": "2025_18_DAL_NYG",
+        "season": 2025,
+        "week": 18,
+        "away": "DAL",
+        "home": "NYG",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 16.9,
+        "home_proj": 8.4,
+        "away_proj": 8.5,
+        "range": [
+          11,
+          23
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 3.37,
+          "Offensive Holding": 3.36,
+          "Defensive Pass Interference": 1.97,
+          "Delay of Game": 0.95,
+          "Defensive Offside": 0.9,
+          "Defensive Holding": 0.73,
+          "Roughing the Passer": 0.67,
+          "Unnecessary Roughness": 0.55,
+          "Illegal Formation": 0.41,
+          "Face Mask": 0.4,
+          "Other": 3.62
+        },
+        "byQuarter": [
+          3.58,
+          4.63,
+          4.07,
+          4.65
+        ],
+        "crew": "Adrian Hill",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 34,
+        "awayScore": 17,
+        "crew": "Adrian Hill",
+        "total": 16,
+        "yards": 157,
+        "home": {
+          "flags": 7,
+          "yards": 63,
+          "types": {
+            "False Start": 2,
+            "Tripping": 1,
+            "Illegal Shift": 1,
+            "Defensive Pass Interference": 1,
+            "Offensive Pass Interference": 1,
+            "Offensive Holding": 1
+          },
+          "quarters": [
+            0,
+            2,
+            2,
+            3,
+            0
+          ]
+        },
+        "away": {
+          "flags": 9,
+          "yards": 94,
+          "types": {
+            "Neutral Zone Infraction": 2,
+            "Unnecessary Roughness": 2,
+            "Kickoff Short of Landing Zone": 1,
+            "Offensive Holding": 1,
+            "Illegal Block Above the Waist": 1,
+            "Disqualification": 1,
+            "Defensive Pass Interference": 1
+          },
+          "quarters": [
+            1,
+            3,
+            3,
+            2,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": -3.0,
+          "closingTotal": 50.5,
+          "roof": "outdoors",
+          "surface": "fieldturf",
+          "temp": 33.0,
+          "wind": 7.0,
+          "homeRest": 7.0,
+          "awayRest": 10.0,
+          "stadium": "MetLife Stadium"
+        },
+        "hash": "7271462d286e"
+      },
+      "grade": {
+        "miss": -0.9,
+        "absMiss": 0.9,
+        "inRange": true,
+        "homeMiss": -1.4,
+        "awayMiss": 0.5,
+        "typeErrors": {
+          "False Start": -1.37,
+          "Offensive Holding": -1.36,
+          "Defensive Pass Interference": 0.03,
+          "Delay of Game": -0.95,
+          "Defensive Offside": -0.9,
+          "Defensive Holding": -0.73,
+          "Roughing the Passer": -0.67,
+          "Unnecessary Roughness": 1.45,
+          "Illegal Formation": -0.41,
+          "Face Mask": -0.4,
+          "Other": 4.38
+        },
+        "quarterErrors": [
+          -2.58,
+          0.37,
+          0.93,
+          0.35
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_GB_MIN",
+      "season": 2025,
+      "week": 18,
+      "away": "GB",
+      "home": "MIN",
+      "prediction": {
+        "gameId": "2025_18_GB_MIN",
+        "season": 2025,
+        "week": 18,
+        "away": "GB",
+        "home": "MIN",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 13.0,
+        "home_proj": 6.0,
+        "away_proj": 6.9,
+        "range": [
+          8,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 3.08,
+          "Offensive Holding": 2.4,
+          "Defensive Pass Interference": 1.1,
+          "Defensive Holding": 0.83,
+          "Delay of Game": 0.67,
+          "Illegal Formation": 0.64,
+          "Defensive Offside": 0.6,
+          "Unnecessary Roughness": 0.59,
+          "Face Mask": 0.31,
+          "Roughing the Passer": 0.19,
+          "Other": 2.54
+        },
+        "byQuarter": [
+          2.83,
+          3.55,
+          3.31,
+          3.27
+        ],
+        "crew": "John Hussey",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 16,
+        "awayScore": 3,
+        "crew": "John Hussey",
+        "total": 6,
+        "yards": 67,
+        "home": {
+          "flags": 2,
+          "yards": 20,
+          "types": {
+            "Taunting": 1,
+            "Illegal Use of Hands": 1
+          },
+          "quarters": [
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 4,
+          "yards": 47,
+          "types": {
+            "Defensive Offside": 2,
+            "False Start": 1,
+            "Defensive Pass Interference": 1
+          },
+          "quarters": [
+            1,
+            0,
+            1,
+            2,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 12.5,
+          "closingTotal": 37.5,
+          "roof": "dome",
+          "surface": "sportturf",
+          "temp": null,
+          "wind": null,
+          "homeRest": 10.0,
+          "awayRest": 8.0,
+          "stadium": "U.S. Bank Stadium"
+        },
+        "hash": "6e343f4fc2a9"
+      },
+      "grade": {
+        "miss": -7.0,
+        "absMiss": 7.0,
+        "inRange": false,
+        "homeMiss": -4.0,
+        "awayMiss": -2.9,
+        "typeErrors": {
+          "False Start": -2.08,
+          "Offensive Holding": -2.4,
+          "Defensive Pass Interference": -0.1,
+          "Defensive Holding": -0.83,
+          "Delay of Game": -0.67,
+          "Illegal Formation": -0.64,
+          "Defensive Offside": 1.4,
+          "Unnecessary Roughness": -0.59,
+          "Face Mask": -0.31,
+          "Roughing the Passer": -0.19,
+          "Other": -0.54
+        },
+        "quarterErrors": [
+          0.17,
+          -3.55,
+          -2.31,
+          -1.27
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_IND_HOU",
+      "season": 2025,
+      "week": 18,
+      "away": "IND",
+      "home": "HOU",
+      "prediction": {
+        "gameId": "2025_18_IND_HOU",
+        "season": 2025,
+        "week": 18,
+        "away": "IND",
+        "home": "HOU",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 11.4,
+        "home_proj": 5.9,
+        "away_proj": 5.5,
+        "range": [
+          7,
+          16
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 1.91,
+          "False Start": 1.85,
+          "Defensive Pass Interference": 0.86,
+          "Illegal Formation": 0.68,
+          "Defensive Holding": 0.66,
+          "Unnecessary Roughness": 0.52,
+          "Delay of Game": 0.5,
+          "Defensive Offside": 0.49,
+          "Face Mask": 0.38,
+          "Roughing the Passer": 0.25,
+          "Other": 3.25
+        },
+        "byQuarter": [
+          2.11,
+          3.61,
+          2.67,
+          2.95
+        ],
+        "crew": "Land Clark",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 38,
+        "awayScore": 30,
+        "crew": "Land Clark",
+        "total": 14,
+        "yards": 158,
+        "home": {
+          "flags": 7,
+          "yards": 77,
+          "types": {
+            "Offensive Holding": 2,
+            "Intentional Grounding": 1,
+            "Ineligible Downfield Pass": 1,
+            "Defensive Too Many Men on Field": 1,
+            "Defensive Pass Interference": 1,
+            "Defensive Offside": 1
+          },
+          "quarters": [
+            4,
+            2,
+            0,
+            1,
+            0
+          ]
+        },
+        "away": {
+          "flags": 7,
+          "yards": 81,
+          "types": {
+            "Unnecessary Roughness": 1,
+            "Illegal Use of Hands": 1,
+            "Defensive Holding": 1,
+            "Defensive Offside": 1,
+            "Kick Catch Interference": 1,
+            "Defensive Pass Interference": 1,
+            "Disqualification": 1
+          },
+          "quarters": [
+            2,
+            4,
+            1,
+            0,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 9.5,
+          "closingTotal": 37.5,
+          "roof": "closed",
+          "surface": "astroturf",
+          "temp": null,
+          "wind": null,
+          "homeRest": 8.0,
+          "awayRest": 7.0,
+          "stadium": "NRG Stadium"
+        },
+        "hash": "dde028edec5c"
+      },
+      "grade": {
+        "miss": 2.6,
+        "absMiss": 2.6,
+        "inRange": true,
+        "homeMiss": 1.1,
+        "awayMiss": 1.5,
+        "typeErrors": {
+          "Offensive Holding": 0.09,
+          "False Start": -1.85,
+          "Defensive Pass Interference": 1.14,
+          "Illegal Formation": -0.68,
+          "Defensive Holding": 0.34,
+          "Unnecessary Roughness": 0.48,
+          "Delay of Game": -0.5,
+          "Defensive Offside": 1.51,
+          "Face Mask": -0.38,
+          "Roughing the Passer": -0.25,
+          "Other": 2.75
+        },
+        "quarterErrors": [
+          3.89,
+          2.39,
+          -1.67,
+          -1.95
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_NO_ATL",
+      "season": 2025,
+      "week": 18,
+      "away": "NO",
+      "home": "ATL",
+      "prediction": {
+        "gameId": "2025_18_NO_ATL",
+        "season": 2025,
+        "week": 18,
+        "away": "NO",
+        "home": "ATL",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 13.6,
+        "home_proj": 6.8,
+        "away_proj": 6.8,
+        "range": [
+          8,
+          19
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 3.37,
+          "Offensive Holding": 3.26,
+          "Defensive Holding": 0.78,
+          "Defensive Pass Interference": 0.76,
+          "Unnecessary Roughness": 0.71,
+          "Delay of Game": 0.54,
+          "Defensive Offside": 0.45,
+          "Illegal Formation": 0.3,
+          "Roughing the Passer": 0.28,
+          "Face Mask": 0.27,
+          "Other": 2.87
+        },
+        "byQuarter": [
+          3.08,
+          3.94,
+          3.36,
+          3.23
+        ],
+        "crew": "Ron Torbert",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 19,
+        "awayScore": 17,
+        "crew": "Ron Torbert",
+        "total": 11,
+        "yards": 82,
+        "home": {
+          "flags": 5,
+          "yards": 42,
+          "types": {
+            "Offensive Holding": 1,
+            "Defensive Pass Interference": 1,
+            "Delay of Game": 1,
+            "Kickoff Short of Landing Zone": 1,
+            "Illegal Formation": 1
+          },
+          "quarters": [
+            1,
+            2,
+            2,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 6,
+          "yards": 40,
+          "types": {
+            "False Start": 3,
+            "Defensive Holding": 1,
+            "Offensive Holding": 1,
+            "Offensive Pass Interference": 1
+          },
+          "quarters": [
+            1,
+            4,
+            1,
+            0,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 4.5,
+          "closingTotal": 43.5,
+          "roof": "closed",
+          "surface": "fieldturf",
+          "temp": null,
+          "wind": null,
+          "homeRest": 6.0,
+          "awayRest": 7.0,
+          "stadium": "Mercedes-Benz Stadium"
+        },
+        "hash": "841adade9564"
+      },
+      "grade": {
+        "miss": -2.6,
+        "absMiss": 2.6,
+        "inRange": true,
+        "homeMiss": -1.8,
+        "awayMiss": -0.8,
+        "typeErrors": {
+          "False Start": -0.37,
+          "Offensive Holding": -1.26,
+          "Defensive Holding": 0.22,
+          "Defensive Pass Interference": 0.24,
+          "Unnecessary Roughness": -0.71,
+          "Delay of Game": 0.46,
+          "Defensive Offside": -0.45,
+          "Illegal Formation": 0.7,
+          "Roughing the Passer": -0.28,
+          "Face Mask": -0.27,
+          "Other": -0.87
+        },
+        "quarterErrors": [
+          -1.08,
+          2.06,
+          -0.36,
+          -3.23
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_TEN_JAX",
+      "season": 2025,
+      "week": 18,
+      "away": "TEN",
+      "home": "JAX",
+      "prediction": {
+        "gameId": "2025_18_TEN_JAX",
+        "season": 2025,
+        "week": 18,
+        "away": "TEN",
+        "home": "JAX",
+        "gameday": "2026-01-04",
+        "gametime": "13:00",
+        "total": 13.9,
+        "home_proj": 6.4,
+        "away_proj": 7.4,
+        "range": [
+          9,
+          19
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.61,
+          "Offensive Holding": 2.53,
+          "Defensive Pass Interference": 1.13,
+          "Illegal Formation": 0.88,
+          "Delay of Game": 0.66,
+          "Unnecessary Roughness": 0.62,
+          "Defensive Holding": 0.52,
+          "Defensive Offside": 0.5,
+          "Face Mask": 0.34,
+          "Roughing the Passer": 0.18,
+          "Other": 3.89
+        },
+        "byQuarter": [
+          2.94,
+          4.29,
+          3.15,
+          3.49
+        ],
+        "crew": "Scott Novak",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 41,
+        "awayScore": 7,
+        "crew": "Scott Novak",
+        "total": 8,
+        "yards": 62,
+        "home": {
+          "flags": 3,
+          "yards": 20,
+          "types": {
+            "False Start": 2,
+            "Offensive Holding": 1
+          },
+          "quarters": [
+            1,
+            0,
+            2,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 5,
+          "yards": 42,
+          "types": {
+            "False Start": 1,
+            "Defensive Offside": 1,
+            "Defensive Pass Interference": 1,
+            "Offensive Holding": 1,
+            "Illegal Blindside Block": 1
+          },
+          "quarters": [
+            2,
+            2,
+            0,
+            1,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "13:00",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 12.5,
+          "closingTotal": 46.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 55.0,
+          "wind": 8.0,
+          "homeRest": 7.0,
+          "awayRest": 7.0,
+          "stadium": "TIAA Bank Stadium"
+        },
+        "hash": "1df946490ad9"
+      },
+      "grade": {
+        "miss": -5.9,
+        "absMiss": 5.9,
+        "inRange": false,
+        "homeMiss": -3.4,
+        "awayMiss": -2.4,
+        "typeErrors": {
+          "False Start": 0.39,
+          "Offensive Holding": -0.53,
+          "Defensive Pass Interference": -0.13,
+          "Illegal Formation": -0.88,
+          "Delay of Game": -0.66,
+          "Unnecessary Roughness": -0.62,
+          "Defensive Holding": -0.52,
+          "Defensive Offside": 0.5,
+          "Face Mask": -0.34,
+          "Roughing the Passer": -0.18,
+          "Other": -2.89
+        },
+        "quarterErrors": [
+          0.06,
+          -2.29,
+          -1.15,
+          -2.49
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_ARI_LA",
+      "season": 2025,
+      "week": 18,
+      "away": "ARI",
+      "home": "LA",
+      "prediction": {
+        "gameId": "2025_18_ARI_LA",
+        "season": 2025,
+        "week": 18,
+        "away": "ARI",
+        "home": "LA",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 12.0,
+        "home_proj": 4.9,
+        "away_proj": 7.0,
+        "range": [
+          7,
+          17
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 2.85,
+          "False Start": 1.7,
+          "Defensive Pass Interference": 1.15,
+          "Defensive Holding": 1.1,
+          "Face Mask": 0.55,
+          "Delay of Game": 0.5,
+          "Defensive Offside": 0.4,
+          "Unnecessary Roughness": 0.33,
+          "Illegal Formation": 0.32,
+          "Roughing the Passer": 0.16,
+          "Other": 2.89
+        },
+        "byQuarter": [
+          2.35,
+          3.38,
+          2.81,
+          3.43
+        ],
+        "crew": "Carl Cheffers",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 37,
+        "awayScore": 20,
+        "crew": "Carl Cheffers",
+        "total": 10,
+        "yards": 65,
+        "home": {
+          "flags": 4,
+          "yards": 20,
+          "types": {
+            "False Start": 2,
+            "Illegal Shift": 1,
+            "Neutral Zone Infraction": 1
+          },
+          "quarters": [
+            1,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 6,
+          "yards": 45,
+          "types": {
+            "False Start": 2,
+            "Offensive Pass Interference": 1,
+            "Defensive Offside": 1,
+            "Offensive Holding": 1,
+            "Illegal Blindside Block": 1
+          },
+          "quarters": [
+            2,
+            1,
+            2,
+            1,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 14.5,
+          "closingTotal": 49.5,
+          "roof": "dome",
+          "surface": "matrixturf",
+          "temp": null,
+          "wind": null,
+          "homeRest": 6.0,
+          "awayRest": 7.0,
+          "stadium": "SoFi Stadium"
+        },
+        "hash": "0be86031bc7a"
+      },
+      "grade": {
+        "miss": -2.0,
+        "absMiss": 2.0,
+        "inRange": true,
+        "homeMiss": -0.9,
+        "awayMiss": -1.0,
+        "typeErrors": {
+          "Offensive Holding": -1.85,
+          "False Start": 2.3,
+          "Defensive Pass Interference": -1.15,
+          "Defensive Holding": -1.1,
+          "Face Mask": -0.55,
+          "Delay of Game": -0.5,
+          "Defensive Offside": 0.6,
+          "Unnecessary Roughness": -0.33,
+          "Illegal Formation": -0.32,
+          "Roughing the Passer": -0.16,
+          "Other": 1.11
+        },
+        "quarterErrors": [
+          0.65,
+          -1.38,
+          1.19,
+          -2.43
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_DET_CHI",
+      "season": 2025,
+      "week": 18,
+      "away": "DET",
+      "home": "CHI",
+      "prediction": {
+        "gameId": "2025_18_DET_CHI",
+        "season": 2025,
+        "week": 18,
+        "away": "DET",
+        "home": "CHI",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 12.9,
+        "home_proj": 6.8,
+        "away_proj": 6.2,
+        "range": [
+          8,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.76,
+          "Offensive Holding": 2.27,
+          "Defensive Holding": 0.98,
+          "Defensive Pass Interference": 0.7,
+          "Delay of Game": 0.56,
+          "Roughing the Passer": 0.4,
+          "Unnecessary Roughness": 0.39,
+          "Illegal Formation": 0.34,
+          "Defensive Offside": 0.3,
+          "Face Mask": 0.2,
+          "Other": 4.04
+        },
+        "byQuarter": [
+          2.53,
+          3.95,
+          3.23,
+          3.24
+        ],
+        "crew": "Brad Rogers",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 16,
+        "awayScore": 19,
+        "crew": "Brad Rogers",
+        "total": 10,
+        "yards": 60,
+        "home": {
+          "flags": 4,
+          "yards": 25,
+          "types": {
+            "Encroachment": 2,
+            "False Start": 1,
+            "Intentional Grounding": 1
+          },
+          "quarters": [
+            0,
+            1,
+            1,
+            2,
+            0
+          ]
+        },
+        "away": {
+          "flags": 6,
+          "yards": 35,
+          "types": {
+            "Offensive Holding": 1,
+            "Delay of Game": 1,
+            "Defensive Offside": 1,
+            "Neutral Zone Infraction": 1,
+            "Defensive Holding": 1,
+            "Intentional Grounding": 1
+          },
+          "quarters": [
+            0,
+            1,
+            2,
+            3,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 3.5,
+          "closingTotal": 51.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 33.0,
+          "wind": 4.0,
+          "homeRest": 7.0,
+          "awayRest": 10.0,
+          "stadium": "Soldier Field"
+        },
+        "hash": "8472987b1d88"
+      },
+      "grade": {
+        "miss": -2.9,
+        "absMiss": 2.9,
+        "inRange": true,
+        "homeMiss": -2.8,
+        "awayMiss": -0.2,
+        "typeErrors": {
+          "False Start": -1.76,
+          "Offensive Holding": -1.27,
+          "Defensive Holding": 0.02,
+          "Defensive Pass Interference": -0.7,
+          "Delay of Game": 0.44,
+          "Roughing the Passer": -0.4,
+          "Unnecessary Roughness": -0.39,
+          "Illegal Formation": -0.34,
+          "Defensive Offside": 0.7,
+          "Face Mask": -0.2,
+          "Other": 0.96
+        },
+        "quarterErrors": [
+          -2.53,
+          -1.95,
+          -0.23,
+          1.76
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_KC_LV",
+      "season": 2025,
+      "week": 18,
+      "away": "KC",
+      "home": "LV",
+      "prediction": {
+        "gameId": "2025_18_KC_LV",
+        "season": 2025,
+        "week": 18,
+        "away": "KC",
+        "home": "LV",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 12.6,
+        "home_proj": 5.9,
+        "away_proj": 6.7,
+        "range": [
+          8,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 2.79,
+          "False Start": 1.7,
+          "Defensive Pass Interference": 1.15,
+          "Delay of Game": 0.84,
+          "Defensive Offside": 0.72,
+          "Unnecessary Roughness": 0.48,
+          "Defensive Holding": 0.39,
+          "Face Mask": 0.37,
+          "Roughing the Passer": 0.33,
+          "Illegal Formation": 0.26,
+          "Other": 3.6
+        },
+        "byQuarter": [
+          2.58,
+          3.76,
+          2.77,
+          3.53
+        ],
+        "crew": "Craig Wrolstad",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 14,
+        "awayScore": 12,
+        "crew": "Craig Wrolstad",
+        "total": 9,
+        "yards": 55,
+        "home": {
+          "flags": 2,
+          "yards": 10,
+          "types": {
+            "False Start": 2
+          },
+          "quarters": [
+            0,
+            0,
+            2,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 7,
+          "yards": 45,
+          "types": {
+            "False Start": 2,
+            "Defensive Holding": 2,
+            "Ineligible Downfield Pass": 1,
+            "Unsportsmanlike Conduct": 1,
+            "Offensive Holding": 1
+          },
+          "quarters": [
+            2,
+            4,
+            0,
+            1,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": -3.5,
+          "closingTotal": 36.5,
+          "roof": "dome",
+          "surface": "grass",
+          "temp": null,
+          "wind": null,
+          "homeRest": 7.0,
+          "awayRest": 10.0,
+          "stadium": "Allegiant Stadium"
+        },
+        "hash": "fd1d3d1fd4d0"
+      },
+      "grade": {
+        "miss": -3.6,
+        "absMiss": 3.6,
+        "inRange": true,
+        "homeMiss": -3.9,
+        "awayMiss": 0.3,
+        "typeErrors": {
+          "Offensive Holding": -1.79,
+          "False Start": 2.3,
+          "Defensive Pass Interference": -1.15,
+          "Delay of Game": -0.84,
+          "Defensive Offside": -0.72,
+          "Unnecessary Roughness": -0.48,
+          "Defensive Holding": 1.61,
+          "Face Mask": -0.37,
+          "Roughing the Passer": -0.33,
+          "Illegal Formation": -0.26,
+          "Other": -1.6
+        },
+        "quarterErrors": [
+          -0.58,
+          0.24,
+          -0.77,
+          -2.53
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_LAC_DEN",
+      "season": 2025,
+      "week": 18,
+      "away": "LAC",
+      "home": "DEN",
+      "prediction": {
+        "gameId": "2025_18_LAC_DEN",
+        "season": 2025,
+        "week": 18,
+        "away": "LAC",
+        "home": "DEN",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 13.8,
+        "home_proj": 7.2,
+        "away_proj": 6.6,
+        "range": [
+          9,
+          19
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 2.9,
+          "False Start": 2.02,
+          "Defensive Offside": 1.35,
+          "Defensive Pass Interference": 1.22,
+          "Unnecessary Roughness": 1.02,
+          "Defensive Holding": 0.61,
+          "Delay of Game": 0.58,
+          "Illegal Formation": 0.51,
+          "Face Mask": 0.36,
+          "Roughing the Passer": 0.19,
+          "Other": 3.03
+        },
+        "byQuarter": [
+          3.19,
+          3.91,
+          3.33,
+          3.37
+        ],
+        "crew": "Clete Blakeman",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 19,
+        "awayScore": 3,
+        "crew": "Clete Blakeman",
+        "total": 6,
+        "yards": 30,
+        "home": {
+          "flags": 1,
+          "yards": 5,
+          "types": {
+            "Illegal Shift": 1
+          },
+          "quarters": [
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 5,
+          "yards": 25,
+          "types": {
+            "False Start": 2,
+            "Delay of Game": 1,
+            "Ineligible Downfield Pass": 1,
+            "Illegal Formation": 1
+          },
+          "quarters": [
+            0,
+            2,
+            0,
+            3,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 14.5,
+          "closingTotal": 37.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 66.0,
+          "wind": 8.0,
+          "homeRest": 10.0,
+          "awayRest": 8.0,
+          "stadium": "Empower Field at Mile High"
+        },
+        "hash": "ffd24613e376"
+      },
+      "grade": {
+        "miss": -7.8,
+        "absMiss": 7.8,
+        "inRange": false,
+        "homeMiss": -6.2,
+        "awayMiss": -1.6,
+        "typeErrors": {
+          "Offensive Holding": -2.9,
+          "False Start": -0.02,
+          "Defensive Offside": -1.35,
+          "Defensive Pass Interference": -1.22,
+          "Unnecessary Roughness": -1.02,
+          "Defensive Holding": -0.61,
+          "Delay of Game": 0.42,
+          "Illegal Formation": 0.49,
+          "Face Mask": -0.36,
+          "Roughing the Passer": -0.19,
+          "Other": -1.03
+        },
+        "quarterErrors": [
+          -3.19,
+          -0.91,
+          -3.33,
+          -0.37
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_MIA_NE",
+      "season": 2025,
+      "week": 18,
+      "away": "MIA",
+      "home": "NE",
+      "prediction": {
+        "gameId": "2025_18_MIA_NE",
+        "season": 2025,
+        "week": 18,
+        "away": "MIA",
+        "home": "NE",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 12.0,
+        "home_proj": 6.2,
+        "away_proj": 5.9,
+        "range": [
+          7,
+          17
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 3.19,
+          "False Start": 2.36,
+          "Defensive Pass Interference": 0.74,
+          "Illegal Formation": 0.65,
+          "Defensive Holding": 0.62,
+          "Delay of Game": 0.52,
+          "Unnecessary Roughness": 0.48,
+          "Defensive Offside": 0.39,
+          "Roughing the Passer": 0.21,
+          "Face Mask": 0.11,
+          "Other": 2.74
+        },
+        "byQuarter": [
+          2.66,
+          3.7,
+          2.73,
+          2.9
+        ],
+        "crew": "Clay Martin",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 38,
+        "awayScore": 10,
+        "crew": "Clay Martin",
+        "total": 11,
+        "yards": 104,
+        "home": {
+          "flags": 4,
+          "yards": 52,
+          "types": {
+            "False Start": 1,
+            "Offensive Holding": 1,
+            "Offensive Pass Interference": 1,
+            "Defensive Pass Interference": 1
+          },
+          "quarters": [
+            0,
+            3,
+            1,
+            0,
+            0
+          ]
+        },
+        "away": {
+          "flags": 7,
+          "yards": 52,
+          "types": {
+            "Offensive Holding": 2,
+            "Face Mask": 1,
+            "Neutral Zone Infraction": 1,
+            "False Start": 1,
+            "Illegal Touch Kick": 1,
+            "Roughing the Passer": 1
+          },
+          "quarters": [
+            1,
+            2,
+            2,
+            2,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 14.0,
+          "closingTotal": 44.5,
+          "roof": "outdoors",
+          "surface": "fieldturf",
+          "temp": 29.0,
+          "wind": 6.0,
+          "homeRest": 7.0,
+          "awayRest": 7.0,
+          "stadium": "Gillette Stadium"
+        },
+        "hash": "ac261b0f77bd"
+      },
+      "grade": {
+        "miss": -1.0,
+        "absMiss": 1.0,
+        "inRange": true,
+        "homeMiss": -2.2,
+        "awayMiss": 1.1,
+        "typeErrors": {
+          "Offensive Holding": -0.19,
+          "False Start": -0.36,
+          "Defensive Pass Interference": 0.26,
+          "Illegal Formation": -0.65,
+          "Defensive Holding": -0.62,
+          "Delay of Game": -0.52,
+          "Unnecessary Roughness": -0.48,
+          "Defensive Offside": -0.39,
+          "Roughing the Passer": 0.79,
+          "Face Mask": 0.89,
+          "Other": 0.26
+        },
+        "quarterErrors": [
+          -1.66,
+          1.3,
+          0.27,
+          -0.9
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_NYJ_BUF",
+      "season": 2025,
+      "week": 18,
+      "away": "NYJ",
+      "home": "BUF",
+      "prediction": {
+        "gameId": "2025_18_NYJ_BUF",
+        "season": 2025,
+        "week": 18,
+        "away": "NYJ",
+        "home": "BUF",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 12.2,
+        "home_proj": 5.6,
+        "away_proj": 6.6,
+        "range": [
+          7,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "Offensive Holding": 2.47,
+          "False Start": 2.09,
+          "Unnecessary Roughness": 1.5,
+          "Defensive Pass Interference": 0.95,
+          "Defensive Holding": 0.61,
+          "Roughing the Passer": 0.55,
+          "Delay of Game": 0.41,
+          "Defensive Offside": 0.32,
+          "Illegal Formation": 0.19,
+          "Face Mask": 0.19,
+          "Other": 2.95
+        },
+        "byQuarter": [
+          2.59,
+          3.83,
+          2.91,
+          2.9
+        ],
+        "crew": "Alan Eck",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 35,
+        "awayScore": 8,
+        "crew": "Alan Eck",
+        "total": 7,
+        "yards": 55,
+        "home": {
+          "flags": 3,
+          "yards": 28,
+          "types": {
+            "Offensive Holding": 1,
+            "Unsportsmanlike Conduct": 1,
+            "Unnecessary Roughness": 1
+          },
+          "quarters": [
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        "away": {
+          "flags": 4,
+          "yards": 27,
+          "types": {
+            "Offensive Too Many Men on Field": 1,
+            "Face Mask": 1,
+            "False Start": 1,
+            "Delay of Game": 1
+          },
+          "quarters": [
+            1,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 12.5,
+          "closingTotal": 39.5,
+          "roof": "outdoors",
+          "surface": "a_turf",
+          "temp": 27.0,
+          "wind": 13.0,
+          "homeRest": 7.0,
+          "awayRest": 7.0,
+          "stadium": "New Era Field"
+        },
+        "hash": "53954b39a5dd"
+      },
+      "grade": {
+        "miss": -5.2,
+        "absMiss": 5.2,
+        "inRange": true,
+        "homeMiss": -2.6,
+        "awayMiss": -2.6,
+        "typeErrors": {
+          "Offensive Holding": -1.47,
+          "False Start": -1.09,
+          "Unnecessary Roughness": -0.5,
+          "Defensive Pass Interference": -0.95,
+          "Defensive Holding": -0.61,
+          "Roughing the Passer": -0.55,
+          "Delay of Game": 0.59,
+          "Defensive Offside": -0.32,
+          "Illegal Formation": -0.19,
+          "Face Mask": 0.81,
+          "Other": -0.95
+        },
+        "quarterErrors": [
+          -1.59,
+          -1.83,
+          0.09,
+          -1.9
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_WAS_PHI",
+      "season": 2025,
+      "week": 18,
+      "away": "WAS",
+      "home": "PHI",
+      "prediction": {
+        "gameId": "2025_18_WAS_PHI",
+        "season": 2025,
+        "week": 18,
+        "away": "WAS",
+        "home": "PHI",
+        "gameday": "2026-01-04",
+        "gametime": "16:25",
+        "total": 13.0,
+        "home_proj": 6.7,
+        "away_proj": 6.2,
+        "range": [
+          8,
+          18
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.97,
+          "Offensive Holding": 2.08,
+          "Defensive Pass Interference": 1.35,
+          "Unnecessary Roughness": 0.72,
+          "Defensive Holding": 0.59,
+          "Roughing the Passer": 0.58,
+          "Defensive Offside": 0.47,
+          "Delay of Game": 0.43,
+          "Illegal Formation": 0.41,
+          "Face Mask": 0.32,
+          "Other": 3.02
+        },
+        "byQuarter": [
+          2.92,
+          3.83,
+          2.78,
+          3.42
+        ],
+        "crew": "Shawn Hochuli",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 17,
+        "awayScore": 24,
+        "crew": "Shawn Hochuli",
+        "total": 13,
+        "yards": 142,
+        "home": {
+          "flags": 9,
+          "yards": 123,
+          "types": {
+            "Defensive Pass Interference": 4,
+            "False Start": 2,
+            "Defensive Holding": 2,
+            "Taunting": 1
+          },
+          "quarters": [
+            2,
+            2,
+            2,
+            3,
+            0
+          ]
+        },
+        "away": {
+          "flags": 4,
+          "yards": 19,
+          "types": {
+            "False Start": 3,
+            "Defensive Offside": 1
+          },
+          "quarters": [
+            0,
+            1,
+            1,
+            2,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "16:25",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": 3.0,
+          "closingTotal": 38.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 35.0,
+          "wind": 9.0,
+          "homeRest": 7.0,
+          "awayRest": 10.0,
+          "stadium": "Lincoln Financial Field"
+        },
+        "hash": "c417a6605069"
+      },
+      "grade": {
+        "miss": 0.0,
+        "absMiss": 0.0,
+        "inRange": true,
+        "homeMiss": 2.3,
+        "awayMiss": -2.2,
+        "typeErrors": {
+          "False Start": 2.03,
+          "Offensive Holding": -2.08,
+          "Defensive Pass Interference": 2.65,
+          "Unnecessary Roughness": -0.72,
+          "Defensive Holding": 1.41,
+          "Roughing the Passer": -0.58,
+          "Defensive Offside": 0.53,
+          "Delay of Game": -0.43,
+          "Illegal Formation": -0.41,
+          "Face Mask": -0.32,
+          "Other": -2.02
+        },
+        "quarterErrors": [
+          -0.92,
+          -0.83,
+          0.22,
+          1.58
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    },
+    {
+      "gameId": "2025_18_BAL_PIT",
+      "season": 2025,
+      "week": 18,
+      "away": "BAL",
+      "home": "PIT",
+      "prediction": {
+        "gameId": "2025_18_BAL_PIT",
+        "season": 2025,
+        "week": 18,
+        "away": "BAL",
+        "home": "PIT",
+        "gameday": "2026-01-04",
+        "gametime": "20:20",
+        "total": 12.1,
+        "home_proj": 5.5,
+        "away_proj": 6.6,
+        "range": [
+          7,
+          17
+        ],
+        "leagueAverage": 12.8,
+        "byType": {
+          "False Start": 2.34,
+          "Offensive Holding": 1.7,
+          "Defensive Pass Interference": 1.16,
+          "Defensive Holding": 0.76,
+          "Delay of Game": 0.73,
+          "Unnecessary Roughness": 0.71,
+          "Face Mask": 0.58,
+          "Defensive Offside": 0.36,
+          "Illegal Formation": 0.33,
+          "Roughing the Passer": 0.21,
+          "Other": 3.19
+        },
+        "byQuarter": [
+          2.53,
+          3.69,
+          2.81,
+          3.06
+        ],
+        "crew": "Shawn Smith",
+        "crewKnown": true,
+        "source": "backtest",
+        "frozenAt": "2026-10-09T06:07:08+00:00"
+      },
+      "outcome": {
+        "homeScore": 26,
+        "awayScore": 24,
+        "crew": "Shawn Smith",
+        "total": 14,
+        "yards": 123,
+        "home": {
+          "flags": 5,
+          "yards": 45,
+          "types": {
+            "Roughing the Passer": 1,
+            "Offensive Holding": 1,
+            "Illegal Motion": 1,
+            "Offensive Pass Interference": 1,
+            "False Start": 1
+          },
+          "quarters": [
+            1,
+            2,
+            0,
+            2,
+            0
+          ]
+        },
+        "away": {
+          "flags": 9,
+          "yards": 78,
+          "types": {
+            "Offensive Holding": 3,
+            "Illegal Blindside Block": 1,
+            "Face Mask": 1,
+            "Defensive Pass Interference": 1,
+            "False Start": 1,
+            "Kickoff Out of Bounds": 1,
+            "Illegal Formation": 1
+          },
+          "quarters": [
+            3,
+            3,
+            1,
+            2,
+            0
+          ]
+        },
+        "context": {
+          "gameday": "2026-01-04",
+          "weekday": "Sunday",
+          "gametime": "20:20",
+          "divisionGame": true,
+          "overtime": false,
+          "closingSpread": -4.5,
+          "closingTotal": 41.5,
+          "roof": "outdoors",
+          "surface": "grass",
+          "temp": 25.0,
+          "wind": 3.0,
+          "homeRest": 7.0,
+          "awayRest": 8.0,
+          "stadium": "Acrisure Stadium"
+        },
+        "hash": "03191534330b"
+      },
+      "grade": {
+        "miss": 1.9,
+        "absMiss": 1.9,
+        "inRange": true,
+        "homeMiss": -0.5,
+        "awayMiss": 2.4,
+        "typeErrors": {
+          "False Start": -0.34,
+          "Offensive Holding": 2.3,
+          "Defensive Pass Interference": -0.16,
+          "Defensive Holding": -0.76,
+          "Delay of Game": -0.73,
+          "Unnecessary Roughness": -0.71,
+          "Face Mask": 0.42,
+          "Defensive Offside": -0.36,
+          "Illegal Formation": 0.67,
+          "Roughing the Passer": 0.79,
+          "Other": 0.81
+        },
+        "quarterErrors": [
+          1.47,
+          1.31,
+          -1.81,
+          0.94
+        ]
+      },
+      "corrections": [],
+      "recordedAt": "2026-10-12T00:35:12+00:00"
+    }
+  ],
+  "notes": "prediction.source: live = published before kickoff; backtest = reconstructed afterward."
+}

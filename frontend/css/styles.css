@@ -2067,3 +2067,11 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .chart-toggle { margin-top: 0; padding: 0.15rem; }
 .chart-toggle .baseline-btn { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
 .chart-controls .trend-pick { font: 600 0.75rem var(--font-body); padding: 0.35rem 0.7rem; }
+
+/* Track Record: week-by-week history */
+.hist-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.1rem; margin-bottom: 0.75rem; }
+.hist-pick { font: 600 0.85rem var(--font-body); padding: 0.4rem 0.8rem; }
+.hist-stat { font-size: 0.82rem; color: var(--text-secondary); }
+.hist-stat strong { color: var(--text-primary); font-family: var(--font-mono); }
+.hist-live { font: 600 0.62rem var(--font-mono); color: var(--accent); border: 1px solid rgba(255,196,0,0.4); border-radius: 999px; padding: 0.05rem 0.4rem; margin-left: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.hist-table td { white-space: nowrap; }

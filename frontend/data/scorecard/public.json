@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-12T17:28:25+00:00",
+  "generatedAt": "2026-10-13T06:17:13+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 15,
-      "avgMiss": 3.09,
-      "hitRate": 93.3,
-      "within3": 60.0,
-      "baselineAvgMiss": 3.65,
-      "skillPct": 15.4
+      "games": 16,
+      "avgMiss": 3.58,
+      "hitRate": 87.5,
+      "within3": 56.2,
+      "baselineAvgMiss": 4.03,
+      "skillPct": 11.2
     },
     "byWeek": [
       {
@@ -31,12 +31,12 @@
       {
         "season": 2026,
         "week": 5,
-        "games": 14,
-        "avgMiss": 3.09,
-        "hitRate": 92.9,
-        "within3": 57.1,
-        "baselineAvgMiss": 3.74,
-        "skillPct": 17.4
+        "games": 15,
+        "avgMiss": 3.62,
+        "hitRate": 86.7,
+        "within3": 53.3,
+        "baselineAvgMiss": 4.15,
+        "skillPct": 12.7
       }
     ],
     "games": [
@@ -54,7 +54,7 @@
         "actual": 21,
         "miss": 2.9,
         "inRange": true,
-        "baselineMiss": 6.7,
+        "baselineMiss": 6.8,
         "homeProjected": 9.4,
         "awayProjected": 8.8,
         "homeActual": 7,
@@ -301,6 +301,26 @@
         "awayActual": 3
       },
       {
+        "gameId": "2026_05_BUF_LA",
+        "season": 2026,
+        "week": 5,
+        "away": "BUF",
+        "home": "LA",
+        "crew": "Scott Novak",
+        "source": "live",
+        "projected": 13.0,
+        "low": 8,
+        "high": 19,
+        "actual": 24,
+        "miss": 11.0,
+        "inRange": false,
+        "baselineMiss": 9.7,
+        "homeProjected": 5.7,
+        "awayProjected": 7.3,
+        "homeActual": 11,
+        "awayActual": 13
+      },
+      {
         "gameId": "2026_05_BAL_ATL",
         "season": 2026,
         "week": 5,
@@ -346,12 +366,12 @@
     "currentSeason": {
       "season": 2026,
       "summary": {
-        "games": 64,
-        "avgMiss": 3.51,
-        "hitRate": 85.9,
-        "within3": 56.2,
-        "baselineAvgMiss": 3.57,
-        "skillPct": 1.7
+        "games": 79,
+        "avgMiss": 3.56,
+        "hitRate": 84.8,
+        "within3": 55.7,
+        "baselineAvgMiss": 3.68,
+        "skillPct": 3.3
       },
       "byWeek": [
         {
@@ -393,6 +413,16 @@
           "within3": 31.2,
           "baselineAvgMiss": 4.78,
           "skillPct": 7.6
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "games": 15,
+          "avgMiss": 3.79,
+          "hitRate": 80.0,
+          "within3": 53.3,
+          "baselineAvgMiss": 4.16,
+          "skillPct": 9.0
         }
       ]
     },

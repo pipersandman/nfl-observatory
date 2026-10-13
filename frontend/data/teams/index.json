@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "leaguePerGame": 7.46,
+  "leaguePerGame": 7.52,
   "divisions": [
     {
       "name": "AFC East",
@@ -24,6 +24,24 @@
           "rank": 2
         },
         {
+          "abbr": "BUF",
+          "name": "Buffalo Bills",
+          "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+          "record": "4-1",
+          "games": 5,
+          "perGame": 8.6,
+          "yardsPerGame": 72.4,
+          "lastSeasonPerGame": 5.94,
+          "baselinePerGame": {
+            "sameWeeks": 7.2,
+            "lastSeason": 5.94,
+            "last3": 6.25,
+            "all": 6.26
+          },
+          "throughWeek": 5,
+          "rank": 7
+        },
+        {
           "abbr": "NE",
           "name": "New England Patriots",
           "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
@@ -39,7 +57,7 @@
             "all": 5.54
           },
           "throughWeek": 5,
-          "rank": 12
+          "rank": 14
         },
         {
           "abbr": "MIA",
@@ -57,24 +75,6 @@
             "all": 5.96
           },
           "throughWeek": 5,
-          "rank": 16
-        },
-        {
-          "abbr": "BUF",
-          "name": "Buffalo Bills",
-          "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
-          "record": "3-1",
-          "games": 4,
-          "perGame": 7.5,
-          "yardsPerGame": 62.5,
-          "lastSeasonPerGame": 5.94,
-          "baselinePerGame": {
-            "sameWeeks": 6.25,
-            "lastSeason": 5.94,
-            "last3": 6.25,
-            "all": 6.26
-          },
-          "throughWeek": 4,
           "rank": 17
         }
       ]
@@ -134,7 +134,7 @@
             "all": 5.01
           },
           "throughWeek": 5,
-          "rank": 8
+          "rank": 10
         },
         {
           "abbr": "PIT",
@@ -175,7 +175,7 @@
             "all": 6.27
           },
           "throughWeek": 5,
-          "rank": 7
+          "rank": 8
         },
         {
           "abbr": "JAX",
@@ -193,7 +193,7 @@
             "all": 6.04
           },
           "throughWeek": 5,
-          "rank": 8
+          "rank": 10
         },
         {
           "abbr": "TEN",
@@ -264,13 +264,13 @@
           "yardsPerGame": 63.8,
           "lastSeasonPerGame": 7.0,
           "baselinePerGame": {
-            "sameWeeks": 7.25,
+            "sameWeeks": 8.4,
             "lastSeason": 7.0,
             "last3": 6.06,
             "all": 6.05
           },
-          "throughWeek": 4,
-          "rank": 14
+          "throughWeek": 5,
+          "rank": 16
         },
         {
           "abbr": "DEN",
@@ -329,7 +329,7 @@
             "all": 5.68
           },
           "throughWeek": 5,
-          "rank": 12
+          "rank": 14
         },
         {
           "abbr": "NYG",
@@ -477,12 +477,12 @@
           "yardsPerGame": 67.5,
           "lastSeasonPerGame": 5.59,
           "baselinePerGame": {
-            "sameWeeks": 5.5,
+            "sameWeeks": 6.0,
             "lastSeason": 5.59,
             "last3": 6.2,
             "all": 6.16
           },
-          "throughWeek": 4,
+          "throughWeek": 5,
           "rank": 6
         },
         {
@@ -501,7 +501,7 @@
             "all": 5.76
           },
           "throughWeek": 5,
-          "rank": 8
+          "rank": 10
         },
         {
           "abbr": "ATL",
@@ -545,6 +545,24 @@
       "name": "NFC West",
       "teams": [
         {
+          "abbr": "LA",
+          "name": "Los Angeles Rams",
+          "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+          "record": "2-3",
+          "games": 5,
+          "perGame": 8.4,
+          "yardsPerGame": 73.6,
+          "lastSeasonPerGame": 4.41,
+          "baselinePerGame": {
+            "sameWeeks": 5.4,
+            "lastSeason": 4.41,
+            "last3": 5.0,
+            "all": 4.73
+          },
+          "throughWeek": 5,
+          "rank": 8
+        },
+        {
           "abbr": "SEA",
           "name": "Seattle Seahawks",
           "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
@@ -560,25 +578,7 @@
             "all": 6.1
           },
           "throughWeek": 5,
-          "rank": 8
-        },
-        {
-          "abbr": "LA",
-          "name": "Los Angeles Rams",
-          "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
-          "record": "2-2",
-          "games": 4,
-          "perGame": 7.75,
-          "yardsPerGame": 71.0,
-          "lastSeasonPerGame": 4.41,
-          "baselinePerGame": {
-            "sameWeeks": 5.5,
-            "lastSeason": 4.41,
-            "last3": 5.0,
-            "all": 4.73
-          },
-          "throughWeek": 4,
-          "rank": 14
+          "rank": 10
         },
         {
           "abbr": "ARI",
@@ -619,12 +619,12 @@
       ]
     }
   ],
-  "throughWeek": 4,
+  "throughWeek": 5,
   "baselines": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 4",
-      "short": "2025 Wk 1\u20134"
+      "label": "2025 through Week 5",
+      "short": "2025 Wk 1\u20135"
     },
     {
       "key": "lastSeason",
@@ -643,5 +643,5 @@
     }
   ],
   "defaultBaseline": "sameWeeks",
-  "generatedAt": "2026-10-12T17:28:22+00:00"
+  "generatedAt": "2026-10-13T06:17:09+00:00"
 }

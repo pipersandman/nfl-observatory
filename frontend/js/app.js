@@ -1237,7 +1237,7 @@ async function renderHistoryWeek(season, week) {
                 return `<tr>
                     <td><strong>${g.away} @ ${g.home}</strong>${p && p.source !== 'backtest' ? ' <span class="hist-live">published</span>' : ''}</td>
                     <td class="season-prev">${final}</td>
-                    <td class="season-prev">${esc(o.crew || '—')}</td>
+                    <td class="season-prev">${esc(o.crew || p?.crew || '—')}</td>
                     <td>${p ? `${fmtNum(p.total, 1)} <span class="modal-muted">(${p.range[0]}–${p.range[1]})</span>` : '—'}</td>
                     <td><strong>${o.total}</strong> <span class="modal-muted">${g.away} ${o.away.flags} · ${g.home} ${o.home.flags}</span></td>
                     <td>${gr ? `<span class="season-delta ${gr.miss > 0 ? 'pct-up' : gr.miss < 0 ? 'pct-down' : ''}">${gr.miss > 0 ? '+' : ''}${fmtNum(gr.miss, 1)}</span>` : '—'}</td>

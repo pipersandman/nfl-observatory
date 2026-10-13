@@ -158,6 +158,12 @@ def build_history(data: dict, data_dir: Path) -> dict:
                 pred = (old or {}).get('prediction') or live.get(gid) or bt.get(gid)
                 if pred and old is None:
                     pred = {**pred, 'source': pred.get('source', 'live')}
+                # Crew: the official record when nflverse has it (it lags games by a few days);
+                # until then, the assignment published before kickoff
+                if out['crew']:
+                    out['crewSource'] = 'official'
+                elif pred and pred.get('crew'):
+                    out['crew'], out['crewSource'] = pred['crew'], 'assignment'
                 entry = {'gameId': gid, 'season': s, 'week': wk, 'away': g['away_team'], 'home': g['home_team'],
                          'prediction': pred, 'outcome': out, 'grade': _grade(pred, out) if pred else None,
                          'corrections': (old or {}).get('corrections', []), 'recordedAt': (old or {}).get('recordedAt')
@@ -169,6 +175,11 @@ def build_history(data: dict, data_dir: Path) -> dict:
                     changed, corrected = True, corrected + 1
                 elif old:
                     entry = old                                # unchanged: keep exactly as recorded
+                    # ...except fill in the crew once it's known (not a data correction)
+                    if out.get('crew') and (not old['outcome'].get('crew') or
+                                            (old['outcome'].get('crewSource') != 'official' and out.get('crewSource') == 'official')):
+                        entry = {**old, 'outcome': {**old['outcome'], 'crew': out['crew'], 'crewSource': out['crewSource']}}
+                        changed = True
                 games.append(entry)
             if changed:
                 _save(path, {'season': s, 'week': wk, 'summary': _summary(games), 'games': games,

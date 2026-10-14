@@ -1843,10 +1843,13 @@ function renderStyleMap() {
         const v = scope === 'current' ? c.current : c;
         return v && v.perGame != null ? { x: v.perGame, y: v.yardsPerFlag, name: c.name, slug: c.slug, games: v.games ?? c.games } : null;
     }).filter(Boolean);
+    // half-width of each axis: the farthest crew from average, plus room for its label
+    const xSpan = Math.max(...pts.map(p => Math.abs(p.x - lg.perGame))) * 1.15 || 1;
+    const ySpan = Math.max(...pts.map(p => Math.abs(p.y - lg.yardsPerFlag))) * 1.35 || 0.1;   // room for corner labels
     const quadColor = p => p.x > lg.perGame ? (p.y > lg.yardsPerFlag ? '#f0605d' : '#ffc400') : (p.y > lg.yardsPerFlag ? '#4DA3FF' : '#3fb98a');
     setSub('styleMapSub', scope === 'current'
         ? `${cs.season} so far: only a few games per crew, so expect big swings. Tap a crew for its profile.`
-        : `Each active crew chief's ${span} regular seasons. Note the narrow yardage range. Tap a crew for its profile.`);
+        : `Each active crew chief's ${span} regular seasons. Note the narrow yardage range. ${window.innerWidth < 640 ? 'Tap a dot for the crew\'s name, tap again for its profile.' : 'Tap a crew for its profile.'}`);
     const quadPlugin = { id: 'quads', beforeDatasetsDraw(chart) {
         const { ctx, chartArea: a, scales: { x, y } } = chart;
         const ax = x.getPixelForValue(lg.perGame), ay = y.getPixelForValue(lg.yardsPerFlag);
@@ -1856,7 +1859,8 @@ function renderStyleMap() {
         fill(a.left, ay, ax, a.bottom, 'rgba(63,185,138,0.07)'); fill(ax, ay, a.right, a.bottom, 'rgba(255,196,0,0.06)');
         ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.setLineDash([6, 5]);
         ctx.beginPath(); ctx.moveTo(ax, a.top); ctx.lineTo(ax, a.bottom); ctx.moveTo(a.left, ay); ctx.lineTo(a.right, ay); ctx.stroke();
-        ctx.setLineDash([]); ctx.font = `800 13px ${getComputedStyle(document.documentElement).getPropertyValue('--font-display') || 'sans-serif'}`;
+        const narrow = (a.right - a.left) < 420;
+        ctx.setLineDash([]); ctx.font = `800 ${narrow ? 10 : 13}px ${getComputedStyle(document.documentElement).getPropertyValue('--font-display') || 'sans-serif'}`;
         const lab = (t, xx, yy, al, c) => { ctx.fillStyle = c; ctx.textAlign = al; ctx.fillText(t, xx, yy); };
         lab('FEW BUT COSTLY', a.left + 8, a.top + 16, 'left', '#4DA3FF'); lab('GAME-CHANGERS', a.right - 8, a.top + 16, 'right', '#f0605d');
         lab('LET THEM PLAY', a.left + 8, a.bottom - 8, 'left', '#3fb98a'); lab('STOP-AND-START', a.right - 8, a.bottom - 8, 'right', '#ffc400');
@@ -1871,11 +1875,12 @@ function renderStyleMap() {
         meta.data.forEach((e, i) => {
             const t = pts[i].name.split(' ').pop(), w = ctx.measureText(t).width, h = 12;
             const opts = [[9, 0], [-9 - w, 0], [-w / 2, -14], [-w / 2, 14], [9, -12], [9, 12], [-9 - w, -12], [-9 - w, 12]];
-            let pick = opts[0];
+            let pick = null;
             for (const [ox, oy] of opts) {
                 const b = { x0: e.x + ox, y0: e.y + oy - h / 2, x1: e.x + ox + w, y1: e.y + oy + h / 2 };
-                if (b.x0 > a.left && b.x1 < a.right && !hit(b)) { pick = [ox, oy]; break; }
+                if (b.x0 > a.left && b.x1 < a.right && b.y0 > a.top + 18 && b.y1 < a.bottom - 16 && !hit(b)) { pick = [ox, oy]; break; }
             }
+            if (!pick) return;   // no clear spot (crowded, e.g. on phones): tap the dot for its name
             const b = { x0: e.x + pick[0], y0: e.y + pick[1] - h / 2, x1: e.x + pick[0] + w, y1: e.y + pick[1] + h / 2 };
             boxes.push(b); ctx.fillText(t, b.x0, e.y + pick[1]);
         });
@@ -1886,13 +1891,25 @@ function renderStyleMap() {
         data: { datasets: [{ data: pts, pointRadius: 6, pointHoverRadius: 8, backgroundColor: pts.map(quadColor), borderColor: '#0c0d0f', borderWidth: 2 }] },
         options: {
             responsive: true, maintainAspectRatio: false, layout: { padding: { top: 6, right: 12 } },
-            onClick: (evt, els) => { if (els.length) openRefereeModal(pts[els[0].index].slug); },
+            onClick: (evt, els) => {
+                if (!els.length) { state.styleTapped = null; return; }
+                const i = els[0].index;
+                // phones: first tap shows the name (tooltip), second tap on the same dot opens the profile
+                if (window.innerWidth < 640 && state.styleTapped !== i) { state.styleTapped = i; return; }
+                state.styleTapped = null;
+                openRefereeModal(pts[i].slug);
+            },
             onHover: (evt, els) => { evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
             plugins: { legend: { display: false }, tooltip: { callbacks: {
                 label: c => `${c.raw.name}: ${fmtNum(c.raw.x, 1)} flags/game · ${fmtNum(c.raw.y, 2)} yds/flag (${c.raw.games} games)` } } },
+            // Axes centered on the league averages, so the four style quadrants are the same size
             scales: {
-                x: { title: { display: true, text: 'Flags per game →', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } },
-                y: { title: { display: true, text: 'Yards per flag (bigger calls) →', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } }
+                x: { min: lg.perGame - xSpan, max: lg.perGame + xSpan,
+                     title: { display: true, text: 'Flags per game →', color: axisColor }, grid: { color: gridColor },
+                     ticks: { color: axisColor, callback: v => Math.abs(v - Math.round(v)) < 1e-6 ? fmtNum(v, 0) : '' } },
+                y: { min: lg.yardsPerFlag - ySpan, max: lg.yardsPerFlag + ySpan,
+                     title: { display: true, text: 'Yards per flag (bigger calls) →', color: axisColor }, grid: { color: gridColor },
+                     ticks: { color: axisColor, callback: v => Math.abs(v * 10 - Math.round(v * 10)) < 1e-6 ? fmtNum(v, 1) : '' } }
             }
         }
     });

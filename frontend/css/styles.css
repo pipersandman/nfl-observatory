@@ -2116,3 +2116,6 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .cs-preview a { color: var(--accent); white-space: nowrap; }
 .style-map .chart-wrapper { height: 460px; }
 @media (max-width: 640px) { .cs-row { grid-template-columns: 120px 1fr 46px; } .style-map .chart-wrapper { height: 380px; } }
+
+/* Even spacing between League Trends blocks */
+.style-map-grid { margin-top: var(--gap-md); }

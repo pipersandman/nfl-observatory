@@ -197,6 +197,8 @@ let state = {
     scorecard: null,
     scoreboard: null,
     typeTrends: null,
+    flagImpact: null,
+    flagScope: 'current',
     typeTrendsCompare: null,
     showAllOpponents: false,
     scoreboardFrame: null,
@@ -247,6 +249,7 @@ async function loadAllData() {
     state.scorecard = await fetchJSON('scorecard/public.json');
     state.scoreboard = await fetchJSON('scoreboard.json');
     state.typeTrends = await fetchJSON('type_trends.json');
+    state.flagImpact = await fetchJSON('flag_impact.json');
 
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
@@ -1692,6 +1695,96 @@ function renderTypeTrends() {
         <p class="modal-footnote" style="padding: 0 1.25rem 1rem">${tt.notes} Trend line: each season since ${state.trendStart || first} (pick the start in the column header), this season in yellow. ${tt.season} is ${tt.currentGames} games in, so rare penalties can swing.</p>`;
 }
 
+// =============================================================================
+// WHAT FLAGS COST (League Trends + team profiles)
+// =============================================================================
+
+function flagLabelsHtml(labels) {
+    return (labels || []).map(l => `<span class="fc-tag">${l}</span>`).join('');
+}
+
+function costliestHtml(list, showTeamGame = true) {
+    return `<div class="fc-list">${list.map((f, i) => `
+        <div class="fc-item">
+            <div class="fc-rank">${i + 1}</div>
+            <div class="fc-main">
+                <div><strong>${esc(f.type)}</strong> <span class="modal-muted">${f.player ? esc(f.player) + ' · ' : ''}${f.team}${showTeamGame ? ` · ${f.away} @ ${f.home}, Wk ${f.week}` : `, Wk ${f.week} ${f.team === f.home ? 'vs ' + f.away : '@ ' + f.home}`} · Q${f.qtr} ${f.time || ''}</span></div>
+                <div class="fc-tags">${flagLabelsHtml(f.labels)}${f.gainErased && f.gainErased >= 15 ? `<span class="fc-tag">${f.gainErased}-yd gain erased</span>` : ''}</div>
+            </div>
+            <div class="fc-pts"><strong>${fmtNum(f.pointsCost, 1)}</strong><span>pts</span></div>
+        </div>`).join('')}</div>`;
+}
+
+function setFlagScope(k) { state.flagScope = k; renderFlagCost(); }
+
+function renderFlagCost() {
+    const box = document.getElementById('flagCost');
+    const fi = state.flagImpact;
+    if (!box) return;
+    if (!fi?.scopes) { box.innerHTML = '<p class="season-error">Flag cost data isn\'t available yet.</p>'; return; }
+    const key = fi.scopes[state.flagScope] ? state.flagScope : 'current';
+    const sc = fi.scopes[key];
+    const labels = { current: `${fi.scopes.current.season}`, lastSeason: `${fi.scopes.lastSeason.season}` };
+    const rows = sc.teams;   // most costly first
+    const maxCost = Math.max(...rows.map(x => x.pointsCostPerGame || 0), 1);
+    box.innerHTML = `
+        <div class="table-header tt-head">
+            <div>
+                <div class="table-title">What Flags Cost</div>
+                <div class="modal-actions block-actions">
+                    <button class="modal-share" onclick="copyBlockLink('flagCost', this)">Copy link</button>
+                    <button class="modal-share" onclick="exportBlock('flagCost', 'png', this)">Save PNG</button>
+                    <button class="modal-share" onclick="exportBlock('flagCost', 'pdf', this)">Save PDF</button>
+                </div>
+                <div class="tt-sub">Not every flag hurts the same. Expected points each team has given away to penalties, and what those flags did. Regular season ${sc.season}${key === 'current' ? `, through Week ${fi.throughWeek}` : ''}. Most costly first.</div>
+            </div>
+            <div class="baseline-toggle tt-toggle" role="group">${Object.entries(labels).map(([k, l]) =>
+                `<button class="baseline-btn ${k === key ? 'active' : ''}" onclick="setFlagScope('${k}')">${l}</button>`).join('')}</div>
+        </div>
+        <div class="table-scroll">
+            <table class="tt-table fc-table">
+                <thead><tr><th>#</th><th>Team</th><th>Points given away / game</th><th>Season total</th><th>Flags</th>
+                    <th title="Defensive flags that gave a first down on 3rd or 4th down">Key 1st downs given</th>
+                    <th title="Offensive flags inside the opponent 40 on drives that then didn't score">Drives stalled</th>
+                    <th title="Offensive flags that wiped out a 15+ yard gain or a touchdown">Big plays erased</th>
+                    <th title="Defensive flags that wiped out their own interception or fumble recovery">Own turnovers erased</th></tr></thead>
+                <tbody>${rows.map(t => `
+                    <tr onclick="openTeamModal('${t.team}')" style="cursor:pointer">
+                        <td class="season-prev">${t.rank}</td>
+                        <td><strong>${t.team}</strong></td>
+                        <td><span class="fc-bar"><i style="width:${Math.min(100, (t.pointsCostPerGame / maxCost) * 100)}%"></i></span><strong>${fmtNum(t.pointsCostPerGame, 2)}</strong></td>
+                        <td class="season-prev">${fmtNum(t.pointsCost, 1)} <span class="modal-muted">(${t.games} g)</span></td>
+                        <td class="season-prev">${t.flags}</td>
+                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${t.turnoversErased}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+        </div>
+        ${key === 'current' && fi.week?.costliest?.length
+            ? `<div class="fc-week"><div class="table-title" style="font-size:1rem">Costliest flags of Week ${fi.week.week}</div>${costliestHtml(fi.week.costliest.slice(0, 8))}</div>`
+            : `<div class="fc-week"><div class="table-title" style="font-size:1rem">Costliest flags of ${sc.season}</div>${costliestHtml(sc.costliest.slice(0, 8))}</div>`}
+        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">How it's valued: when a flag erases the play, its cost is the change in expected points (nflverse's model). When a flag is added on top of a play that counts, only the penalty yards are charged (about 0.06 points per yard). Two-point tries use the 46.8% conversion rate. "Drives stalled" shows flags on drives that came up empty, not proof the flag caused it. Click a team for its profile.</p>`;
+}
+
+function teamFlagCostHtml(abbr) {
+    const fi = state.flagImpact;
+    const t = fi?.scopes?.current?.teams?.find(x => x.team === abbr);
+    if (!t) return '';
+    const n = fi.scopes.current.teams.length;
+    const league = fi.scopes.current.league.pointsCostPerTeamGame;
+    const tile = (l, v, sub) => `<div class="season-stat"><div class="season-stat-label">${l}</div><div class="season-stat-value">${v}</div><div class="season-stat-compare">${sub}</div></div>`;
+    return `<div class="modal-section">
+        <h4>What flags cost ${abbr} <span class="modal-muted">(${fi.scopes.current.season})</span></h4>
+        <div class="season-league team-tiles">
+            ${tile('Points given away / game', fmtNum(t.pointsCostPerGame, 2), `#${t.rank} of ${n} most costly · league ${fmtNum(league, 2)} ${pctBadge(t.pointsCostPerGame, league)}`)}
+            ${tile('Key 1st downs given', t.keyFirstDownsGiven, '3rd/4th-down flags that moved the chains')}
+            ${tile('Drives stalled / big plays erased', `${t.drivesKilled} / ${t.bigPlaysErased}`, 'offensive flags in scoring range / on 15+ yd gains or TDs')}
+            ${tile('Own turnovers erased', t.turnoversErased, 'defensive flags that wiped out a takeaway')}
+        </div>
+        ${fi.teamCostliest?.[abbr]?.length ? `<div class="fc-sub">Costliest ${abbr} flags this season</div>${costliestHtml(fi.teamCostliest[abbr], false)}` : ''}
+    </div>`;
+}
+
 function toggleAllOpponents() {
     state.showAllOpponents = !state.showAllOpponents;
     setTeamBaseline(state.teamBaseline || teamBaselineKey(null));
@@ -1962,6 +2055,8 @@ function renderTeamProfile(t) {
         </div>` : ''}
 
         ${typeTrendsHtml}
+
+        ${teamFlagCostHtml(t.abbr)}
 
         ${t.drawnTypes?.length ? `<div class="modal-section">
             <h4>What they draw from opponents</h4>
@@ -3324,6 +3419,7 @@ async function init() {
     renderTeams();
     renderScoreboard();
     renderTypeTrends();
+    renderFlagCost();
     renderDataTable();
     renderInsightsCarousel();
     
@@ -3378,6 +3474,7 @@ window.toggleScoreboardWeekMenu = toggleScoreboardWeekMenu;
 window.toggleWeekLayer = toggleWeekLayer;
 window.openTrendMenu = openTrendMenu;
 window.setTypeScope = setTypeScope;
+window.setFlagScope = setFlagScope;
 window.setCrewScope = setCrewScope;
 window.setQuarterScope = setQuarterScope;
 window.openQuarterTypeMenu = openQuarterTypeMenu;

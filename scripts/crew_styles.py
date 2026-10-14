@@ -1,0 +1,183 @@
+"""
+Crew styles: each active crew chief's calling fingerprint
+=========================================================
+Career window: regular seasons before the current one (2020-25), so styles are
+stable (~95 games for most crews). Also a current-season view for the map.
+
+For each crew chief, compared with the league over the same games:
+  volume        flags per game
+  size          yards per flag, expected points per flag (from flag_impact)
+  timing        share pre-snap, share in the 4th quarter
+  side          share on the offense, share on the home team
+  mix           per-game rate of each common penalty type, shrunk toward the
+                league rate (SHRINK games of prior) so rare calls don't dominate
+
+Outputs the standout traits (largest differences across crews, in plain words),
+the two most similar crews (distance on the standardized fingerprint) and the
+style quadrant (flags per game x yards per flag, the Crew Style Map).
+
+Crews change around the chief every year, so these are crew-chief-level styles.
+"""
+import re
+from datetime import datetime, timezone
+
+import numpy as np
+import pandas as pd
+
+from flag_impact import classify
+
+SHRINK = 20          # games of league-average prior for per-type rates
+MIN_GAMES = 10
+TOP_TYPES = 10
+PRE_SNAP = {
+    'False Start', 'Delay of Game', 'Defensive Offside', 'Neutral Zone Infraction', 'Encroachment',
+    'Illegal Formation', 'Illegal Shift', 'Illegal Motion', 'Offensive Offside', 'Defensive Delay of Game',
+    'Illegal Substitution', 'Too Many Men on Field', 'Offside on Free Kick',
+}
+
+
+def _slug(name):
+    s = re.sub(r'[^a-z0-9\s-]', '', name.lower())
+    return re.sub(r'[\s_]+', '-', s).strip('-')
+
+
+def _r(x, d=2):
+    return None if x is None or pd.isna(x) else round(float(x), d)
+
+
+QUADS = {(True, True): ('game-changers', 'Game-changers', 'lots of flags, and big ones'),
+         (True, False): ('stop-and-start', 'Stop-and-start', 'lots of flags, mostly small calls'),
+         (False, True): ('few-but-costly', 'Few but costly', 'fewer flags, bigger yardage per call'),
+         (False, False): ('let-them-play', 'Let them play', 'fewer flags, smaller calls')}
+
+
+def _profiles(pen, games, crew_by_game):
+    """Per-crew stats for a set of games (pen already classified)."""
+    games = games.copy()
+    games['crew'] = games['game_id'].map(crew_by_game)
+    games = games.dropna(subset=['crew'])
+    p = pen[pen['game_id'].isin(games['game_id'])].copy()
+    p['crew'] = p['game_id'].map(crew_by_game)
+    n_league = len(games)
+    lg = {
+        'games': n_league, 'perGame': len(p) / n_league,
+        'yardsPerFlag': p['penalty_yards'].sum() / len(p), 'costPerFlag': p['cost_epa'].mean(),
+        'preSnapShare': p['penalty_type'].isin(PRE_SNAP).mean(), 'q4Share': (p['qtr'] == 4).mean(),
+        'offenseShare': (p['side'] == 'offense').mean(), 'homeShare': (p['penalty_team'] == p['home_team']).mean(),
+    }
+    types = list(p['penalty_type'].value_counts().head(TOP_TYPES).index)
+    lg_type = {t: (p['penalty_type'] == t).sum() / n_league for t in types}
+    rows = {}
+    for crew, gg in games.groupby('crew'):
+        n = len(gg)
+        q = p[p['crew'] == crew]
+        if n < 1 or not len(q):
+            continue
+        tr = {}
+        for t in types:
+            c = (q['penalty_type'] == t).sum()
+            shrunk = (c + SHRINK * lg_type[t]) / (n + SHRINK)
+            tr[t] = {'perGame': _r(shrunk, 3), 'league': _r(lg_type[t], 3), 'diffPct': _r((shrunk / lg_type[t] - 1) * 100, 0)}
+        rows[crew] = {
+            'games': n, 'flags': int(len(q)), 'perGame': len(q) / n,
+            'yardsPerFlag': q['penalty_yards'].sum() / len(q), 'costPerFlag': q['cost_epa'].mean(),
+            'preSnapShare': q['penalty_type'].isin(PRE_SNAP).mean(), 'q4Share': (q['qtr'] == 4).mean(),
+            'offenseShare': (q['side'] == 'offense').mean(), 'homeShare': (q['penalty_team'] == q['home_team']).mean(),
+            'types': tr,
+        }
+    return lg, types, rows
+
+
+# plain-English wording (up, down), value format, and the smallest difference worth calling a trait
+TRAIT_TEXT = {
+    'perGame':      ('More flags: {v} per game (league {l})', 'Fewer flags: {v} per game (league {l})', '{:.1f}', ('rel', 0.05)),
+    'yardsPerFlag': ('Bigger calls: {v} yards per flag (league {l})', 'Smaller calls: {v} yards per flag (league {l})', '{:.1f}', ('abs', 0.2)),
+    'costPerFlag':  ('Costlier flags: {v} points each (league {l})', 'Cheaper flags: {v} points each (league {l})', '{:.2f}', ('abs', 0.03)),
+    'preSnapShare': ('More pre-snap fouls: {v} of flags (league {l})', 'Fewer pre-snap fouls: {v} of flags (league {l})', '{:.0%}', ('abs', 0.03)),
+    'q4Share':      ('Busier 4th quarters: {v} of flags (league {l})', 'Quieter 4th quarters: {v} of flags (league {l})', '{:.0%}', ('abs', 0.03)),
+    'offenseShare': ('More flags on offenses: {v} (league {l})', 'More flags on defenses: {v} on offenses (league {l})', '{:.0%}', ('abs', 0.03)),
+    'homeShare':    ('More flags on home teams: {v} (league {l})', 'More flags on road teams: {v} on home teams (league {l})', '{:.0%}', ('abs', 0.03)),
+}
+TYPE_MIN_PCT = 15
+
+
+def _meaningful(m, v, l):
+    kind, t = TRAIT_TEXT[m][3]
+    return abs(v / l - 1) >= t if kind == 'rel' else abs(v - l) >= t
+
+
+def build_crew_styles(data: dict, active_names) -> dict:
+    print("\n🦓 Building crew styles...")
+    sched = data['schedules']
+    reg = sched[sched['game_type'] == 'REG']
+    season = int(reg['season'].max())
+    off = data['officials']
+    crew_by_game = (off[off['position'] == 'Referee'].dropna(subset=['game_id'])
+                    .drop_duplicates('game_id').set_index('game_id')['name'].to_dict())
+    gp = data['games_played']
+    if 'season_type' in gp.columns:
+        gp = gp[gp['season_type'] == 'REG']
+    games = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'home_team', 'away_team']], on='game_id')
+    pen = data['penalties']
+    if 'season_type' in pen.columns:
+        pen = pen[pen['season_type'] == 'REG']
+    pen = pen[pen['penalty_team'].notna()].copy()
+    pen['penalty_yards'] = pd.to_numeric(pen['penalty_yards'], errors='coerce').fillna(0).abs()
+    pen = classify(pen)
+
+    career_games = games[games['season'] < season]
+    lg, types, prof = _profiles(pen, career_games, crew_by_game)
+    lg_cur, _, prof_cur = _profiles(pen, games[games['season'] == season], crew_by_game)
+
+    active = [c for c in prof if c in set(active_names) and prof[c]['games'] >= MIN_GAMES]
+    metrics = list(TRAIT_TEXT)
+    # standardized fingerprint (metrics + type mix), across active crews
+    feats = pd.DataFrame({c: {**{m: prof[c][m] for m in metrics},
+                              **{f't:{t}': prof[c]['types'][t]['perGame'] for t in types}} for c in active}).T.astype(float)
+    z = (feats - feats.mean()) / feats.std(ddof=0).replace(0, 1)
+
+    crews = []
+    for c in active:
+        pc = prof[c]
+        # traits: biggest standardized differences, in plain words
+        cand = []
+        for m in metrics:
+            zz = z.loc[c, m]
+            if not _meaningful(m, pc[m], lg[m]):
+                continue
+            up, down, fmt, _ = TRAIT_TEXT[m]
+            txt = (up if pc[m] > lg[m] else down).format(v=fmt.format(pc[m]), l=fmt.format(lg[m]))
+            cand.append((abs(zz), txt, m, zz))
+        for t in types:
+            zz = z.loc[c, f't:{t}']
+            d = pc['types'][t]['diffPct']
+            if abs(d) < TYPE_MIN_PCT:
+                continue
+            cand.append((abs(zz), f"{'Calls more' if d > 0 else 'Calls fewer'} {t.lower()}: {abs(d):.0f}% {'above' if d > 0 else 'below'} the league rate",
+                         f't:{t}', zz))
+        traits = [{'text': txt, 'key': k, 'z': _r(zz, 2), 'direction': 'up' if zz > 0 else 'down'}
+                  for a, txt, k, zz in sorted(cand, key=lambda x: -x[0]) if a >= 1.0][:4]
+        dist = ((z.loc[active] - z.loc[c]) ** 2).sum(axis=1) ** 0.5
+        sims = [{'name': o, 'slug': _slug(o), 'distance': _r(dist[o], 2)} for o in dist.drop(c).sort_values().index[:2]]
+        key, title, desc = QUADS[(pc['perGame'] > lg['perGame'], pc['yardsPerFlag'] > lg['yardsPerFlag'])]
+        cur = prof_cur.get(c)
+        crews.append({
+            'name': c, 'slug': _slug(c), 'games': pc['games'],
+            **{m: _r(pc[m], 3 if 'Share' in m else 2) for m in metrics},
+            'types': pc['types'], 'traits': traits, 'similar': sims,
+            'archetype': {'key': key, 'title': title, 'description': desc},
+            'current': None if not cur else {'games': cur['games'], 'perGame': _r(cur['perGame'], 2),
+                                             'yardsPerFlag': _r(cur['yardsPerFlag'], 2), 'costPerFlag': _r(cur['costPerFlag'], 2)},
+        })
+    crews.sort(key=lambda x: -x['perGame'])
+    span = sorted(career_games['season'].unique())
+    print(f"   ✓ {len(crews)} crew styles ({span[0]}-{span[-1]}), {len(types)} penalty types in the fingerprint")
+    return {
+        'season': season, 'careerSeasons': [int(span[0]), int(span[-1])],
+        'league': {m: _r(lg[m], 3 if 'Share' in m else 2) for m in metrics},
+        'leagueCurrent': {m: _r(lg_cur[m], 3 if 'Share' in m else 2) for m in metrics} if lg_cur.get('games') else None,
+        'types': types, 'crews': crews,
+        'notes': 'Regular season. Career = seasons before the current one; per-type rates are shrunk toward the league rate. '
+                 'Crews change around the chief each year, so these are crew-chief-level styles. Patterns, not motives.',
+        'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+    }

@@ -97,6 +97,17 @@ const EXPLAINERS = {
             during the regular season, plus playoffs for top-rated officials.</p>
         `
     },
+    'crew-style-map': {
+        title: 'Crew Chief Style Map',
+        content: `
+            <p>Each active crew chief, placed by how many flags their games average (across) and how big those
+            calls are in yards (up). Dashed lines are the league averages, splitting four styles:
+            <strong>Game-changers</strong> (lots of flags, big ones), <strong>Stop-and-start</strong> (lots of flags, small ones),
+            <strong>Few but costly</strong> and <strong>Let them play</strong>.</p>
+            <p>Career view uses each crew's regular seasons before this one (about 95 games each). The yardage
+            range is narrow (under a yard per flag between crews), so the vertical axis is zoomed in. Tap a crew for its full style profile.</p>
+        `
+    },
     'week-of-season': {
         title: 'Penalties Per Game By Week Of Season',
         content: `
@@ -198,6 +209,7 @@ let state = {
     scoreboard: null,
     typeTrends: null,
     flagImpact: null,
+    crewStyles: null,
     flagScope: 'current',
     typeTrendsCompare: null,
     showAllOpponents: false,
@@ -250,6 +262,7 @@ async function loadAllData() {
     state.scoreboard = await fetchJSON('scoreboard.json');
     state.typeTrends = await fetchJSON('type_trends.json');
     state.flagImpact = await fetchJSON('flag_impact.json');
+    state.crewStyles = await fetchJSON('crew_styles.json');
 
     // Previews: remaining games this week (e.g. Monday night) + next week
     const latest = await fetchJSON('previews/latest.json');
@@ -966,6 +979,7 @@ function openPreviewModal(gameId) {
             <div class="pv-tilts">
                 ${g.crew.typeTilts.map(t => `<span class="pv-tilt">${t.type} ${pctBadge(t.factor, 1)}</span>`).join('')}
             </div>
+            ${previewCrewStyleHtml(g.crew.slug)}
             <p class="modal-footnote">Tilts compare how often this crew calls each type vs the league (last 3 seasons, ${g.crew.gamesInModel} games, shrunk toward average).</p>
         </div>` : `
         <div class="modal-section">
@@ -1783,6 +1797,115 @@ function teamFlagCostHtml(abbr) {
         </div>
         ${fi.teamCostliest?.[abbr]?.length ? `<div class="fc-sub">Costliest ${abbr} flags this season</div>${costliestHtml(fi.teamCostliest[abbr], false)}` : ''}
     </div>`;
+}
+
+// =============================================================================
+// CREW STYLES: fingerprint in crew profiles, style map in League Trends, game previews
+// =============================================================================
+
+function crewStyleBySlug(slug) { return state.crewStyles?.crews?.find(c => c.slug === slug); }
+
+function crewStyleHtml(slug) {
+    const cs = state.crewStyles, c = crewStyleBySlug(slug);
+    if (!c) return '';
+    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
+    const max = Math.max(60, ...Object.values(c.types).map(t => Math.abs(t.diffPct || 0)));
+    const bars = cs.types.map(t => {
+        const d = c.types[t]?.diffPct ?? 0;
+        const w = Math.min(50, Math.abs(d) / max * 50);
+        return `<div class="cs-row"><span class="cs-type">${esc(shortPenalty(t))}</span>
+            <span class="cs-track"><i class="${d >= 0 ? 'up' : 'down'}" style="${d >= 0 ? `left:50%` : `right:50%`};width:${w}%"></i><b></b></span>
+            <span class="cs-val ${d > 0 ? 'pct-up' : d < 0 ? 'pct-down' : ''}">${d > 0 ? '+' : ''}${fmtNum(d, 0)}%</span></div>`;
+    }).join('');
+    return `<div class="modal-section">
+        <h4>Crew style <span class="modal-muted">(${span}, ${c.games} games)</span></h4>
+        <div class="cs-head"><span class="cs-arch cs-${c.archetype.key}">${c.archetype.title}</span><span class="modal-muted">${c.archetype.description}</span></div>
+        ${c.traits.length ? `<ul class="cs-traits">${c.traits.map(t => `<li>${esc(t.text)}</li>`).join('')}</ul>`
+            : `<p class="modal-footnote" style="margin-top:0.5rem">Calls close to the league average on everything we track: volume, size of calls, timing, and the mix of penalty types.</p>`}
+        <div class="cs-similar">Calls most like: ${c.similar.map(s => `<a href="#" onclick="openRefereeModal('${s.slug}'); return false;">${esc(s.name)}</a>`).join(' · ')}</div>
+        <div class="cs-fp"><div class="cs-fp-title">How often they call each type vs the league</div>${bars}</div>
+        <p class="modal-footnote">Regular season, ${span}. Rates are pulled toward the league average so a few calls can't dominate. Crews change around the chief each year. Patterns, not motives.</p>
+    </div>`;
+}
+
+// League Trends: interactive Crew Chief Style Map (flags per game x yards per flag)
+function setStyleScope(k) { state.styleScope = k; renderStyleMap(); }
+function renderStyleMap() {
+    const canvas = document.getElementById('styleMap');
+    const cs = state.crewStyles;
+    if (!canvas || !cs?.crews?.length) return;
+    if (state.charts.style) state.charts.style.destroy();
+    const scope = state.styleScope === 'current' && cs.leagueCurrent ? 'current' : 'career';
+    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
+    scopeToggle('styleControls', scope, 'setStyleScope', { career: `Career ${span}`, ...(cs.leagueCurrent ? { current: `${cs.season}` } : {}) });
+    const lg = scope === 'current' ? cs.leagueCurrent : cs.league;
+    const pts = cs.crews.map(c => {
+        const v = scope === 'current' ? c.current : c;
+        return v && v.perGame != null ? { x: v.perGame, y: v.yardsPerFlag, name: c.name, slug: c.slug, games: v.games ?? c.games } : null;
+    }).filter(Boolean);
+    const quadColor = p => p.x > lg.perGame ? (p.y > lg.yardsPerFlag ? '#f0605d' : '#ffc400') : (p.y > lg.yardsPerFlag ? '#4DA3FF' : '#3fb98a');
+    setSub('styleMapSub', scope === 'current'
+        ? `${cs.season} so far: only a few games per crew, so expect big swings. Tap a crew for its profile.`
+        : `Each active crew chief's ${span} regular seasons. Note the narrow yardage range. Tap a crew for its profile.`);
+    const quadPlugin = { id: 'quads', beforeDatasetsDraw(chart) {
+        const { ctx, chartArea: a, scales: { x, y } } = chart;
+        const ax = x.getPixelForValue(lg.perGame), ay = y.getPixelForValue(lg.yardsPerFlag);
+        const fill = (x0, y0, x1, y1, c) => { ctx.fillStyle = c; ctx.fillRect(x0, y0, x1 - x0, y1 - y0); };
+        ctx.save();
+        fill(a.left, a.top, ax, ay, 'rgba(77,163,255,0.07)'); fill(ax, a.top, a.right, ay, 'rgba(240,96,93,0.07)');
+        fill(a.left, ay, ax, a.bottom, 'rgba(63,185,138,0.07)'); fill(ax, ay, a.right, a.bottom, 'rgba(255,196,0,0.06)');
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.moveTo(ax, a.top); ctx.lineTo(ax, a.bottom); ctx.moveTo(a.left, ay); ctx.lineTo(a.right, ay); ctx.stroke();
+        ctx.setLineDash([]); ctx.font = `800 13px ${getComputedStyle(document.documentElement).getPropertyValue('--font-display') || 'sans-serif'}`;
+        const lab = (t, xx, yy, al, c) => { ctx.fillStyle = c; ctx.textAlign = al; ctx.fillText(t, xx, yy); };
+        lab('FEW BUT COSTLY', a.left + 8, a.top + 16, 'left', '#4DA3FF'); lab('GAME-CHANGERS', a.right - 8, a.top + 16, 'right', '#f0605d');
+        lab('LET THEM PLAY', a.left + 8, a.bottom - 8, 'left', '#3fb98a'); lab('STOP-AND-START', a.right - 8, a.bottom - 8, 'right', '#ffc400');
+        ctx.restore();
+    } };
+    const namePlugin = { id: 'names', afterDatasetsDraw(chart) {
+        const { ctx, chartArea: a } = chart, meta = chart.getDatasetMeta(0);
+        ctx.save(); ctx.font = `600 11px ${getComputedStyle(document.documentElement).getPropertyValue('--font-body') || 'sans-serif'}`;
+        ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textBaseline = 'middle';
+        const boxes = meta.data.map(e => ({ x0: e.x - 6, y0: e.y - 6, x1: e.x + 6, y1: e.y + 6 }));
+        const hit = b => boxes.some(o => !(b.x1 < o.x0 || b.x0 > o.x1 || b.y1 < o.y0 || b.y0 > o.y1));
+        meta.data.forEach((e, i) => {
+            const t = pts[i].name.split(' ').pop(), w = ctx.measureText(t).width, h = 12;
+            const opts = [[9, 0], [-9 - w, 0], [-w / 2, -14], [-w / 2, 14], [9, -12], [9, 12], [-9 - w, -12], [-9 - w, 12]];
+            let pick = opts[0];
+            for (const [ox, oy] of opts) {
+                const b = { x0: e.x + ox, y0: e.y + oy - h / 2, x1: e.x + ox + w, y1: e.y + oy + h / 2 };
+                if (b.x0 > a.left && b.x1 < a.right && !hit(b)) { pick = [ox, oy]; break; }
+            }
+            const b = { x0: e.x + pick[0], y0: e.y + pick[1] - h / 2, x1: e.x + pick[0] + w, y1: e.y + pick[1] + h / 2 };
+            boxes.push(b); ctx.fillText(t, b.x0, e.y + pick[1]);
+        });
+        ctx.restore();
+    } };
+    state.charts.style = new Chart(canvas.getContext('2d'), {
+        type: 'scatter', plugins: [quadPlugin, namePlugin],
+        data: { datasets: [{ data: pts, pointRadius: 6, pointHoverRadius: 8, backgroundColor: pts.map(quadColor), borderColor: '#0c0d0f', borderWidth: 2 }] },
+        options: {
+            responsive: true, maintainAspectRatio: false, layout: { padding: { top: 6, right: 12 } },
+            onClick: (evt, els) => { if (els.length) openRefereeModal(pts[els[0].index].slug); },
+            onHover: (evt, els) => { evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+            plugins: { legend: { display: false }, tooltip: { callbacks: {
+                label: c => `${c.raw.name}: ${fmtNum(c.raw.x, 1)} flags/game · ${fmtNum(c.raw.y, 2)} yds/flag (${c.raw.games} games)` } } },
+            scales: {
+                x: { title: { display: true, text: 'Flags per game →', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } },
+                y: { title: { display: true, text: 'Yards per flag (bigger calls) →', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } }
+            }
+        }
+    });
+}
+
+// Game previews: one-line style note for the assigned crew
+function previewCrewStyleHtml(slug) {
+    const c = crewStyleBySlug(slug);
+    if (!c) return '';
+    const t = c.traits[0];
+    return `<p class="cs-preview"><span class="cs-arch cs-${c.archetype.key}">${c.archetype.title}</span>
+        ${esc(c.archetype.description)}${t ? `. ${esc(t.text)}.` : '. Otherwise close to league average.'}
+        <a href="#" onclick="openRefereeModal('${c.slug}'); return false;">Crew style →</a></p>`;
 }
 
 function toggleAllOpponents() {
@@ -2624,6 +2747,8 @@ async function openRefereeModal(slug) {
     modalBody.innerHTML = `
         ${comparisonHtml}
 
+        ${crewStyleHtml(profile.slug)}
+
         ${active ? `
         <div class="modal-tendency">
             <h4>${cs} so far</h4>
@@ -3420,6 +3545,7 @@ async function init() {
     renderScoreboard();
     renderTypeTrends();
     renderFlagCost();
+    renderStyleMap();
     renderDataTable();
     renderInsightsCarousel();
     
@@ -3475,6 +3601,7 @@ window.toggleWeekLayer = toggleWeekLayer;
 window.openTrendMenu = openTrendMenu;
 window.setTypeScope = setTypeScope;
 window.setFlagScope = setFlagScope;
+window.setStyleScope = setStyleScope;
 window.setCrewScope = setCrewScope;
 window.setQuarterScope = setQuarterScope;
 window.openQuarterTypeMenu = openQuarterTypeMenu;

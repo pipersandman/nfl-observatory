@@ -2092,3 +2092,27 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .fc-pts { text-align: right; } .fc-pts strong { font: 700 1.25rem var(--font-display); color: #f0605d; display: block; line-height: 1; }
 .fc-pts span { font: 500 0.68rem var(--font-mono); color: var(--text-muted); }
 .fc-sub { font: 600 0.8rem var(--font-body); color: var(--text-secondary); margin: 1rem 0 0.2rem; }
+
+/* Crew styles */
+.cs-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.2rem 0 0.6rem; }
+.cs-arch { display: inline-block; font: 700 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid; }
+.cs-game-changers { color: #f0605d; border-color: rgba(240,96,93,0.5); }
+.cs-stop-and-start { color: #ffc400; border-color: rgba(255,196,0,0.5); }
+.cs-few-but-costly { color: #4DA3FF; border-color: rgba(77,163,255,0.5); }
+.cs-let-them-play { color: #3fb98a; border-color: rgba(63,185,138,0.5); }
+.cs-traits { margin: 0.2rem 0 0.6rem 1.1rem; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
+.cs-similar { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem; }
+.cs-similar a { color: var(--accent); }
+.cs-fp-title { font: 600 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.4rem; }
+.cs-row { display: grid; grid-template-columns: 170px 1fr 52px; gap: 0.6rem; align-items: center; padding: 0.22rem 0; font-size: 0.82rem; }
+.cs-type { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-track { position: relative; height: 10px; background: rgba(255,255,255,0.05); border-radius: 99px; }
+.cs-track b { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: rgba(255,255,255,0.35); }
+.cs-track i { position: absolute; top: 0; bottom: 0; border-radius: 99px; }
+.cs-track i.up { background: #f0605d; } .cs-track i.down { background: #3fb98a; }
+.cs-val { font: 600 0.78rem var(--font-mono); text-align: right; }
+.cs-preview { margin: 0.6rem 0 0.2rem; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; }
+.cs-preview .cs-arch { margin-right: 0.4rem; }
+.cs-preview a { color: var(--accent); white-space: nowrap; }
+.style-map .chart-wrapper { height: 460px; }
+@media (max-width: 640px) { .cs-row { grid-template-columns: 120px 1fr 46px; } .style-map .chart-wrapper { height: 380px; } }

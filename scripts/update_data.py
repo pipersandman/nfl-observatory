@@ -966,6 +966,17 @@ def main():
         print(f"   ⚠️  Flag impact failed: {type(e).__name__}: {e}")
         traceback.print_exc()
 
+    # Crew styles: each active crew chief's calling fingerprint
+    try:
+        from crew_styles import build_crew_styles
+        sc_path = DATA_DIR / 'season_comparison.json'
+        active = [c['name'] for c in json.loads(sc_path.read_text()).get('crewChiefs', [])] if sc_path.exists() else []
+        save_json(build_crew_styles(data, active), 'crew_styles.json')
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Crew styles failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
     # Team pages (all 32 teams, by division)
     try:
         from team_pages import build_team_pages

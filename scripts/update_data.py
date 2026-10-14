@@ -177,7 +177,10 @@ def load_all_data(seasons: list[int]) -> dict:
         'quarter_seconds_remaining', 'penalty', 'penalty_team',
         'penalty_type', 'penalty_yards', 'penalty_player_name',
         'home_team', 'away_team', 'posteam', 'score_differential',
-        'down', 'ydstogo', 'play_type', 'season_type', 'first_down_penalty'
+        'down', 'ydstogo', 'play_type', 'season_type', 'first_down_penalty',
+        # flag impact: value of each flag and what it did to the drive
+        'defteam', 'epa', 'wpa', 'fixed_drive', 'fixed_drive_result', 'yardline_100',
+        'two_point_attempt', 'time', 'desc', 'game_seconds_remaining'
     ]
     
     all_pbp = []
@@ -952,6 +955,15 @@ def main():
     except Exception as e:
         import traceback
         print(f"   ⚠️  Type trends failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
+    # Flag impact: what each flag cost, drive killers / extenders, big plays erased
+    try:
+        from flag_impact import build_flag_impact
+        save_json(build_flag_impact(data), 'flag_impact.json')
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Flag impact failed: {type(e).__name__}: {e}")
         traceback.print_exc()
 
     # Team pages (all 32 teams, by division)

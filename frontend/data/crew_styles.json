@@ -1,0 +1,1821 @@
+{
+  "season": 2026,
+  "careerSeasons": [
+    2020,
+    2025
+  ],
+  "league": {
+    "perGame": 11.88,
+    "yardsPerFlag": 8.3,
+    "costPerFlag": 0.85,
+    "preSnapShare": 0.369,
+    "q4Share": 0.259,
+    "offenseShare": 0.559,
+    "homeShare": 0.487
+  },
+  "leagueCurrent": {
+    "perGame": 15.11,
+    "yardsPerFlag": 7.93,
+    "costPerFlag": 0.82,
+    "preSnapShare": 0.389,
+    "q4Share": 0.251,
+    "offenseShare": 0.596,
+    "homeShare": 0.492
+  },
+  "types": [
+    "Offensive Holding",
+    "False Start",
+    "Defensive Pass Interference",
+    "Defensive Holding",
+    "Unnecessary Roughness",
+    "Delay of Game",
+    "Defensive Offside",
+    "Roughing the Passer",
+    "Neutral Zone Infraction",
+    "Face Mask"
+  ],
+  "crews": [
+    {
+      "name": "Alex Moore",
+      "slug": "alex-moore",
+      "games": 16,
+      "perGame": 16.12,
+      "yardsPerFlag": 7.89,
+      "costPerFlag": 0.77,
+      "preSnapShare": 0.36,
+      "q4Share": 0.252,
+      "offenseShare": 0.523,
+      "homeShare": 0.477,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.635,
+          "league": 2.243,
+          "diffPct": 17.0
+        },
+        "False Start": {
+          "perGame": 2.544,
+          "league": 2.228,
+          "diffPct": 14.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.914,
+          "league": 1.045,
+          "diffPct": -13.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.699,
+          "league": 0.658,
+          "diffPct": 6.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.7,
+          "league": 0.61,
+          "diffPct": 15.0
+        },
+        "Delay of Game": {
+          "perGame": 0.684,
+          "league": 0.581,
+          "diffPct": 18.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.635,
+          "league": 0.544,
+          "diffPct": 17.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.639,
+          "league": 0.399,
+          "diffPct": 60.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.376,
+          "league": 0.376,
+          "diffPct": -0.0
+        },
+        "Face Mask": {
+          "perGame": 0.441,
+          "league": 0.294,
+          "diffPct": 50.0
+        }
+      },
+      "traits": [
+        {
+          "text": "More flags: 16.1 per game (league 11.9)",
+          "key": "perGame",
+          "z": 3.4,
+          "direction": "up"
+        },
+        {
+          "text": "Cheaper flags: 0.77 points each (league 0.85)",
+          "key": "costPerFlag",
+          "z": -3.31,
+          "direction": "down"
+        },
+        {
+          "text": "Calls more face mask: 50% above the league rate",
+          "key": "t:Face Mask",
+          "z": 2.21,
+          "direction": "up"
+        },
+        {
+          "text": "Calls more roughing the passer: 60% above the league rate",
+          "key": "t:Roughing the Passer",
+          "z": 2.21,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Clete Blakeman",
+          "slug": "clete-blakeman",
+          "distance": 7.19
+        },
+        {
+          "name": "Alex Kemp",
+          "slug": "alex-kemp",
+          "distance": 7.33
+        }
+      ],
+      "archetype": {
+        "key": "stop-and-start",
+        "title": "Stop-and-start",
+        "description": "lots of flags, mostly small calls"
+      },
+      "current": {
+        "games": 5,
+        "perGame": 18.6,
+        "yardsPerFlag": 8.48,
+        "costPerFlag": 0.86
+      }
+    },
+    {
+      "name": "Shawn Hochuli",
+      "slug": "shawn-hochuli",
+      "games": 94,
+      "perGame": 12.8,
+      "yardsPerFlag": 8.56,
+      "costPerFlag": 0.86,
+      "preSnapShare": 0.352,
+      "q4Share": 0.268,
+      "offenseShare": 0.571,
+      "homeShare": 0.494,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.604,
+          "league": 2.243,
+          "diffPct": 16.0
+        },
+        "False Start": {
+          "perGame": 2.452,
+          "league": 2.228,
+          "diffPct": 10.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.025,
+          "league": 1.045,
+          "diffPct": -2.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.694,
+          "league": 0.658,
+          "diffPct": 6.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.668,
+          "league": 0.61,
+          "diffPct": 10.0
+        },
+        "Delay of Game": {
+          "perGame": 0.514,
+          "league": 0.581,
+          "diffPct": -11.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.543,
+          "league": 0.544,
+          "diffPct": -0.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.57,
+          "league": 0.399,
+          "diffPct": 43.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.338,
+          "league": 0.376,
+          "diffPct": -10.0
+        },
+        "Face Mask": {
+          "perGame": 0.341,
+          "league": 0.294,
+          "diffPct": 16.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more roughing the passer: 43% above the league rate",
+          "key": "t:Roughing the Passer",
+          "z": 1.55,
+          "direction": "up"
+        },
+        {
+          "text": "Bigger calls: 8.6 yards per flag (league 8.3)",
+          "key": "yardsPerFlag",
+          "z": 1.36,
+          "direction": "up"
+        },
+        {
+          "text": "Calls more offensive holding: 16% above the league rate",
+          "key": "t:Offensive Holding",
+          "z": 1.19,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Ron Torbert",
+          "slug": "ron-torbert",
+          "distance": 3.38
+        },
+        {
+          "name": "Land Clark",
+          "slug": "land-clark",
+          "distance": 4.21
+        }
+      ],
+      "archetype": {
+        "key": "game-changers",
+        "title": "Game-changers",
+        "description": "lots of flags, and big ones"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 14.5,
+        "yardsPerFlag": 7.79,
+        "costPerFlag": 0.87
+      }
+    },
+    {
+      "name": "Alex Kemp",
+      "slug": "alex-kemp",
+      "games": 95,
+      "perGame": 12.65,
+      "yardsPerFlag": 8.55,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.339,
+      "q4Share": 0.256,
+      "offenseShare": 0.54,
+      "homeShare": 0.48,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.494,
+          "league": 2.243,
+          "diffPct": 11.0
+        },
+        "False Start": {
+          "perGame": 2.014,
+          "league": 2.228,
+          "diffPct": -10.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.069,
+          "league": 1.045,
+          "diffPct": 2.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.749,
+          "league": 0.658,
+          "diffPct": 14.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.628,
+          "league": 0.61,
+          "diffPct": 3.0
+        },
+        "Delay of Game": {
+          "perGame": 0.718,
+          "league": 0.581,
+          "diffPct": 24.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.59,
+          "league": 0.544,
+          "diffPct": 9.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.478,
+          "league": 0.399,
+          "diffPct": 20.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.431,
+          "league": 0.376,
+          "diffPct": 14.0
+        },
+        "Face Mask": {
+          "perGame": 0.434,
+          "league": 0.294,
+          "diffPct": 47.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more face mask: 47% above the league rate",
+          "key": "t:Face Mask",
+          "z": 2.1,
+          "direction": "up"
+        },
+        {
+          "text": "Fewer pre-snap fouls: 34% of flags (league 37%)",
+          "key": "preSnapShare",
+          "z": -1.72,
+          "direction": "down"
+        },
+        {
+          "text": "Calls more delay of game: 24% above the league rate",
+          "key": "t:Delay of Game",
+          "z": 1.48,
+          "direction": "up"
+        },
+        {
+          "text": "Bigger calls: 8.6 yards per flag (league 8.3)",
+          "key": "yardsPerFlag",
+          "z": 1.29,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Adrian Hill",
+          "slug": "adrian-hill",
+          "distance": 3.88
+        },
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 4.33
+        }
+      ],
+      "archetype": {
+        "key": "game-changers",
+        "title": "Game-changers",
+        "description": "lots of flags, and big ones"
+      },
+      "current": {
+        "games": 3,
+        "perGame": 12.0,
+        "yardsPerFlag": 7.58,
+        "costPerFlag": 0.84
+      }
+    },
+    {
+      "name": "Clete Blakeman",
+      "slug": "clete-blakeman",
+      "games": 95,
+      "perGame": 12.58,
+      "yardsPerFlag": 8.07,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.371,
+      "q4Share": 0.232,
+      "offenseShare": 0.543,
+      "homeShare": 0.488,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.338,
+          "league": 2.243,
+          "diffPct": 4.0
+        },
+        "False Start": {
+          "perGame": 2.222,
+          "league": 2.228,
+          "diffPct": -0.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.016,
+          "league": 1.045,
+          "diffPct": -3.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.819,
+          "league": 0.658,
+          "diffPct": 24.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.697,
+          "league": 0.61,
+          "diffPct": 14.0
+        },
+        "Delay of Game": {
+          "perGame": 0.649,
+          "league": 0.581,
+          "diffPct": 12.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.564,
+          "league": 0.544,
+          "diffPct": 4.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.383,
+          "league": 0.399,
+          "diffPct": -4.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.405,
+          "league": 0.376,
+          "diffPct": 7.0
+        },
+        "Face Mask": {
+          "perGame": 0.242,
+          "league": 0.294,
+          "diffPct": -18.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more defensive holding: 24% above the league rate",
+          "key": "t:Defensive Holding",
+          "z": 1.74,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 4.26
+        },
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 4.4
+        }
+      ],
+      "archetype": {
+        "key": "stop-and-start",
+        "title": "Stop-and-start",
+        "description": "lots of flags, mostly small calls"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 16.25,
+        "yardsPerFlag": 6.69,
+        "costPerFlag": 0.68
+      }
+    },
+    {
+      "name": "Carl Cheffers",
+      "slug": "carl-cheffers",
+      "games": 95,
+      "perGame": 12.55,
+      "yardsPerFlag": 8.41,
+      "costPerFlag": 0.88,
+      "preSnapShare": 0.367,
+      "q4Share": 0.277,
+      "offenseShare": 0.56,
+      "homeShare": 0.471,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.399,
+          "league": 2.243,
+          "diffPct": 7.0
+        },
+        "False Start": {
+          "perGame": 2.301,
+          "league": 2.228,
+          "diffPct": 3.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.164,
+          "league": 1.045,
+          "diffPct": 11.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.732,
+          "league": 0.658,
+          "diffPct": 11.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.61,
+          "league": 0.61,
+          "diffPct": 0.0
+        },
+        "Delay of Game": {
+          "perGame": 0.571,
+          "league": 0.581,
+          "diffPct": -2.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.625,
+          "league": 0.544,
+          "diffPct": 15.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.374,
+          "league": 0.399,
+          "diffPct": -6.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.379,
+          "league": 0.376,
+          "diffPct": 1.0
+        },
+        "Face Mask": {
+          "perGame": 0.286,
+          "league": 0.294,
+          "diffPct": -3.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more defensive offside: 15% above the league rate",
+          "key": "t:Defensive Offside",
+          "z": 1.36,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Adrian Hill",
+          "slug": "adrian-hill",
+          "distance": 3.49
+        },
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 3.8
+        }
+      ],
+      "archetype": {
+        "key": "game-changers",
+        "title": "Game-changers",
+        "description": "lots of flags, and big ones"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 15.75,
+        "yardsPerFlag": 8.08,
+        "costPerFlag": 0.82
+      }
+    },
+    {
+      "name": "Adrian Hill",
+      "slug": "adrian-hill",
+      "games": 94,
+      "perGame": 12.53,
+      "yardsPerFlag": 8.4,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.356,
+      "q4Share": 0.266,
+      "offenseShare": 0.553,
+      "homeShare": 0.474,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.569,
+          "league": 2.243,
+          "diffPct": 15.0
+        },
+        "False Start": {
+          "perGame": 2.172,
+          "league": 2.228,
+          "diffPct": -3.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.236,
+          "league": 1.045,
+          "diffPct": 18.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.686,
+          "league": 0.658,
+          "diffPct": 4.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.581,
+          "league": 0.61,
+          "diffPct": -5.0
+        },
+        "Delay of Game": {
+          "perGame": 0.663,
+          "league": 0.581,
+          "diffPct": 14.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.499,
+          "league": 0.544,
+          "diffPct": -8.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.482,
+          "league": 0.399,
+          "diffPct": 21.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.382,
+          "league": 0.376,
+          "diffPct": 1.0
+        },
+        "Face Mask": {
+          "perGame": 0.324,
+          "league": 0.294,
+          "diffPct": 10.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more defensive pass interference: 18% above the league rate",
+          "key": "t:Defensive Pass Interference",
+          "z": 2.06,
+          "direction": "up"
+        },
+        {
+          "text": "Calls more offensive holding: 15% above the league rate",
+          "key": "t:Offensive Holding",
+          "z": 1.06,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 3.35
+        },
+        {
+          "name": "Carl Cheffers",
+          "slug": "carl-cheffers",
+          "distance": 3.49
+        }
+      ],
+      "archetype": {
+        "key": "game-changers",
+        "title": "Game-changers",
+        "description": "lots of flags, and big ones"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 17.75,
+        "yardsPerFlag": 7.1,
+        "costPerFlag": 0.73
+      }
+    },
+    {
+      "name": "Brad Rogers",
+      "slug": "brad-rogers",
+      "games": 93,
+      "perGame": 12.17,
+      "yardsPerFlag": 8.29,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.343,
+      "q4Share": 0.267,
+      "offenseShare": 0.574,
+      "homeShare": 0.5,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.406,
+          "league": 2.243,
+          "diffPct": 7.0
+        },
+        "False Start": {
+          "perGame": 2.049,
+          "league": 2.228,
+          "diffPct": -8.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.096,
+          "league": 1.045,
+          "diffPct": 5.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.701,
+          "league": 0.658,
+          "diffPct": 6.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.604,
+          "league": 0.61,
+          "diffPct": -1.0
+        },
+        "Delay of Game": {
+          "perGame": 0.625,
+          "league": 0.581,
+          "diffPct": 8.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.521,
+          "league": 0.544,
+          "diffPct": -4.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.398,
+          "league": 0.399,
+          "diffPct": -0.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.368,
+          "league": 0.376,
+          "diffPct": -2.0
+        },
+        "Face Mask": {
+          "perGame": 0.291,
+          "league": 0.294,
+          "diffPct": -1.0
+        }
+      },
+      "traits": [],
+      "similar": [
+        {
+          "name": "Adrian Hill",
+          "slug": "adrian-hill",
+          "distance": 3.35
+        },
+        {
+          "name": "Ron Torbert",
+          "slug": "ron-torbert",
+          "distance": 3.61
+        }
+      ],
+      "archetype": {
+        "key": "stop-and-start",
+        "title": "Stop-and-start",
+        "description": "lots of flags, mostly small calls"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 12.5,
+        "yardsPerFlag": 8.4,
+        "costPerFlag": 0.81
+      }
+    },
+    {
+      "name": "Ron Torbert",
+      "slug": "ron-torbert",
+      "games": 96,
+      "perGame": 12.05,
+      "yardsPerFlag": 8.3,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.367,
+      "q4Share": 0.264,
+      "offenseShare": 0.585,
+      "homeShare": 0.512,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.464,
+          "league": 2.243,
+          "diffPct": 10.0
+        },
+        "False Start": {
+          "perGame": 2.401,
+          "league": 2.228,
+          "diffPct": 8.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.99,
+          "league": 1.045,
+          "diffPct": -5.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.622,
+          "league": 0.658,
+          "diffPct": -5.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.648,
+          "league": 0.61,
+          "diffPct": 6.0
+        },
+        "Delay of Game": {
+          "perGame": 0.583,
+          "league": 0.581,
+          "diffPct": 0.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.499,
+          "league": 0.544,
+          "diffPct": -8.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.388,
+          "league": 0.399,
+          "diffPct": -3.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.341,
+          "league": 0.376,
+          "diffPct": -9.0
+        },
+        "Face Mask": {
+          "perGame": 0.344,
+          "league": 0.294,
+          "diffPct": 17.0
+        }
+      },
+      "traits": [],
+      "similar": [
+        {
+          "name": "Shawn Hochuli",
+          "slug": "shawn-hochuli",
+          "distance": 3.38
+        },
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 3.61
+        }
+      ],
+      "archetype": {
+        "key": "stop-and-start",
+        "title": "Stop-and-start",
+        "description": "lots of flags, mostly small calls"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 11.5,
+        "yardsPerFlag": 8.33,
+        "costPerFlag": 0.88
+      }
+    },
+    {
+      "name": "Land Clark",
+      "slug": "land-clark",
+      "games": 95,
+      "perGame": 11.95,
+      "yardsPerFlag": 8.41,
+      "costPerFlag": 0.87,
+      "preSnapShare": 0.36,
+      "q4Share": 0.25,
+      "offenseShare": 0.595,
+      "homeShare": 0.502,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.286,
+          "league": 2.243,
+          "diffPct": 2.0
+        },
+        "False Start": {
+          "perGame": 2.222,
+          "league": 2.228,
+          "diffPct": -0.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.895,
+          "league": 1.045,
+          "diffPct": -14.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.549,
+          "league": 0.658,
+          "diffPct": -17.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.628,
+          "league": 0.61,
+          "diffPct": 3.0
+        },
+        "Delay of Game": {
+          "perGame": 0.492,
+          "league": 0.581,
+          "diffPct": -15.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.477,
+          "league": 0.544,
+          "diffPct": -12.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.53,
+          "league": 0.399,
+          "diffPct": 33.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.3,
+          "league": 0.376,
+          "diffPct": -20.0
+        },
+        "Face Mask": {
+          "perGame": 0.234,
+          "league": 0.294,
+          "diffPct": -21.0
+        }
+      },
+      "traits": [
+        {
+          "text": "More flags on offenses: 59% (league 56%)",
+          "key": "offenseShare",
+          "z": 1.69,
+          "direction": "up"
+        },
+        {
+          "text": "Calls fewer neutral zone infraction: 20% below the league rate",
+          "key": "t:Neutral Zone Infraction",
+          "z": -1.68,
+          "direction": "down"
+        },
+        {
+          "text": "Calls more roughing the passer: 33% above the league rate",
+          "key": "t:Roughing the Passer",
+          "z": 1.18,
+          "direction": "up"
+        },
+        {
+          "text": "Calls fewer delay of game: 15% below the league rate",
+          "key": "t:Delay of Game",
+          "z": -1.13,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Ron Torbert",
+          "slug": "ron-torbert",
+          "distance": 3.63
+        },
+        {
+          "name": "Shawn Hochuli",
+          "slug": "shawn-hochuli",
+          "distance": 4.21
+        }
+      ],
+      "archetype": {
+        "key": "game-changers",
+        "title": "Game-changers",
+        "description": "lots of flags, and big ones"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 14.5,
+        "yardsPerFlag": 7.28,
+        "costPerFlag": 0.88
+      }
+    },
+    {
+      "name": "Scott Novak",
+      "slug": "scott-novak",
+      "games": 97,
+      "perGame": 11.74,
+      "yardsPerFlag": 7.99,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.395,
+      "q4Share": 0.258,
+      "offenseShare": 0.567,
+      "homeShare": 0.502,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.221,
+          "league": 2.243,
+          "diffPct": -1.0
+        },
+        "False Start": {
+          "perGame": 2.21,
+          "league": 2.228,
+          "diffPct": -1.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.016,
+          "league": 1.045,
+          "diffPct": -3.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.66,
+          "league": 0.658,
+          "diffPct": 0.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.489,
+          "league": 0.61,
+          "diffPct": -20.0
+        },
+        "Delay of Game": {
+          "perGame": 0.689,
+          "league": 0.581,
+          "diffPct": 19.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.674,
+          "league": 0.544,
+          "diffPct": 24.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.299,
+          "league": 0.399,
+          "diffPct": -25.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.329,
+          "league": 0.376,
+          "diffPct": -13.0
+        },
+        "Face Mask": {
+          "perGame": 0.221,
+          "league": 0.294,
+          "diffPct": -25.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more defensive offside: 24% above the league rate",
+          "key": "t:Defensive Offside",
+          "z": 2.25,
+          "direction": "up"
+        },
+        {
+          "text": "Calls fewer unnecessary roughness: 20% below the league rate",
+          "key": "t:Unnecessary Roughness",
+          "z": -1.41,
+          "direction": "down"
+        },
+        {
+          "text": "Smaller calls: 8.0 yards per flag (league 8.3)",
+          "key": "yardsPerFlag",
+          "z": -1.4,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer face mask: 25% below the league rate",
+          "key": "t:Face Mask",
+          "z": -1.26,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Brad Allen",
+          "slug": "brad-allen",
+          "distance": 4.44
+        },
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 4.78
+        }
+      ],
+      "archetype": {
+        "key": "let-them-play",
+        "title": "Let them play",
+        "description": "fewer flags, smaller calls"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 22.0,
+        "yardsPerFlag": 9.77,
+        "costPerFlag": 0.85
+      }
+    },
+    {
+      "name": "Clay Martin",
+      "slug": "clay-martin",
+      "games": 94,
+      "perGame": 11.68,
+      "yardsPerFlag": 8.41,
+      "costPerFlag": 0.86,
+      "preSnapShare": 0.361,
+      "q4Share": 0.242,
+      "offenseShare": 0.572,
+      "homeShare": 0.476,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.534,
+          "league": 2.243,
+          "diffPct": 13.0
+        },
+        "False Start": {
+          "perGame": 2.128,
+          "league": 2.228,
+          "diffPct": -5.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.973,
+          "league": 1.045,
+          "diffPct": -7.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.747,
+          "league": 0.658,
+          "diffPct": 13.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.475,
+          "league": 0.61,
+          "diffPct": -22.0
+        },
+        "Delay of Game": {
+          "perGame": 0.435,
+          "league": 0.581,
+          "diffPct": -25.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.473,
+          "league": 0.544,
+          "diffPct": -13.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.333,
+          "league": 0.399,
+          "diffPct": -17.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.408,
+          "league": 0.376,
+          "diffPct": 8.0
+        },
+        "Face Mask": {
+          "perGame": 0.236,
+          "league": 0.294,
+          "diffPct": -20.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls fewer delay of game: 25% below the league rate",
+          "key": "t:Delay of Game",
+          "z": -1.78,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer unnecessary roughness: 22% below the league rate",
+          "key": "t:Unnecessary Roughness",
+          "z": -1.57,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer face mask: 20% below the league rate",
+          "key": "t:Face Mask",
+          "z": -1.02,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 4.41
+        },
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 4.55
+        }
+      ],
+      "archetype": {
+        "key": "few-but-costly",
+        "title": "Few but costly",
+        "description": "fewer flags, bigger yardage per call"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 13.25,
+        "yardsPerFlag": 7.47,
+        "costPerFlag": 0.77
+      }
+    },
+    {
+      "name": "Shawn Smith",
+      "slug": "shawn-smith",
+      "games": 95,
+      "perGame": 11.59,
+      "yardsPerFlag": 8.44,
+      "costPerFlag": 0.86,
+      "preSnapShare": 0.371,
+      "q4Share": 0.253,
+      "offenseShare": 0.527,
+      "homeShare": 0.473,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 1.816,
+          "league": 2.243,
+          "diffPct": -19.0
+        },
+        "False Start": {
+          "perGame": 2.257,
+          "league": 2.228,
+          "diffPct": 1.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.19,
+          "league": 1.045,
+          "diffPct": 14.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.636,
+          "league": 0.658,
+          "diffPct": -3.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.793,
+          "league": 0.61,
+          "diffPct": 30.0
+        },
+        "Delay of Game": {
+          "perGame": 0.562,
+          "league": 0.581,
+          "diffPct": -3.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.503,
+          "league": 0.544,
+          "diffPct": -7.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.383,
+          "league": 0.399,
+          "diffPct": -4.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.37,
+          "league": 0.376,
+          "diffPct": -2.0
+        },
+        "Face Mask": {
+          "perGame": 0.321,
+          "league": 0.294,
+          "diffPct": 9.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls more unnecessary roughness: 30% above the league rate",
+          "key": "t:Unnecessary Roughness",
+          "z": 1.91,
+          "direction": "up"
+        },
+        {
+          "text": "Calls fewer offensive holding: 19% below the league rate",
+          "key": "t:Offensive Holding",
+          "z": -1.71,
+          "direction": "down"
+        },
+        {
+          "text": "More flags on defenses: 53% on offenses (league 56%)",
+          "key": "offenseShare",
+          "z": -1.57,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "John Hussey",
+          "slug": "john-hussey",
+          "distance": 4.2
+        },
+        {
+          "name": "Adrian Hill",
+          "slug": "adrian-hill",
+          "distance": 4.49
+        }
+      ],
+      "archetype": {
+        "key": "few-but-costly",
+        "title": "Few but costly",
+        "description": "fewer flags, bigger yardage per call"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 12.5,
+        "yardsPerFlag": 8.8,
+        "costPerFlag": 0.9
+      }
+    },
+    {
+      "name": "Craig Wrolstad",
+      "slug": "craig-wrolstad",
+      "games": 97,
+      "perGame": 11.52,
+      "yardsPerFlag": 8.31,
+      "costPerFlag": 0.85,
+      "preSnapShare": 0.38,
+      "q4Share": 0.28,
+      "offenseShare": 0.557,
+      "homeShare": 0.482,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.247,
+          "league": 2.243,
+          "diffPct": 0.0
+        },
+        "False Start": {
+          "perGame": 2.184,
+          "league": 2.228,
+          "diffPct": -2.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.999,
+          "league": 1.045,
+          "diffPct": -4.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.634,
+          "league": 0.658,
+          "diffPct": -4.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.557,
+          "league": 0.61,
+          "diffPct": -9.0
+        },
+        "Delay of Game": {
+          "perGame": 0.672,
+          "league": 0.581,
+          "diffPct": 16.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.529,
+          "league": 0.544,
+          "diffPct": -3.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.359,
+          "league": 0.399,
+          "diffPct": -10.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.423,
+          "league": 0.376,
+          "diffPct": 12.0
+        },
+        "Face Mask": {
+          "perGame": 0.307,
+          "league": 0.294,
+          "diffPct": 4.0
+        }
+      },
+      "traits": [],
+      "similar": [
+        {
+          "name": "Brad Rogers",
+          "slug": "brad-rogers",
+          "distance": 3.69
+        },
+        {
+          "name": "Carl Cheffers",
+          "slug": "carl-cheffers",
+          "distance": 3.8
+        }
+      ],
+      "archetype": {
+        "key": "few-but-costly",
+        "title": "Few but costly",
+        "description": "fewer flags, bigger yardage per call"
+      },
+      "current": {
+        "games": 3,
+        "perGame": 15.33,
+        "yardsPerFlag": 8.11,
+        "costPerFlag": 0.7
+      }
+    },
+    {
+      "name": "Brad Allen",
+      "slug": "brad-allen",
+      "games": 94,
+      "perGame": 11.17,
+      "yardsPerFlag": 8.0,
+      "costPerFlag": 0.82,
+      "preSnapShare": 0.395,
+      "q4Share": 0.28,
+      "offenseShare": 0.534,
+      "homeShare": 0.47,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 1.806,
+          "league": 2.243,
+          "diffPct": -20.0
+        },
+        "False Start": {
+          "perGame": 2.198,
+          "league": 2.228,
+          "diffPct": -1.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.069,
+          "league": 1.045,
+          "diffPct": 2.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.694,
+          "league": 0.658,
+          "diffPct": 6.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.511,
+          "league": 0.61,
+          "diffPct": -16.0
+        },
+        "Delay of Game": {
+          "perGame": 0.663,
+          "league": 0.581,
+          "diffPct": 14.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.578,
+          "league": 0.544,
+          "diffPct": 6.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.386,
+          "league": 0.399,
+          "diffPct": -3.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.356,
+          "league": 0.376,
+          "diffPct": -6.0
+        },
+        "Face Mask": {
+          "perGame": 0.218,
+          "league": 0.294,
+          "diffPct": -26.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls fewer offensive holding: 20% below the league rate",
+          "key": "t:Offensive Holding",
+          "z": -1.75,
+          "direction": "down"
+        },
+        {
+          "text": "Smaller calls: 8.0 yards per flag (league 8.3)",
+          "key": "yardsPerFlag",
+          "z": -1.34,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer face mask: 26% below the league rate",
+          "key": "t:Face Mask",
+          "z": -1.31,
+          "direction": "down"
+        },
+        {
+          "text": "Cheaper flags: 0.82 points each (league 0.85)",
+          "key": "costPerFlag",
+          "z": -1.24,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 4.02
+        },
+        {
+          "name": "Scott Novak",
+          "slug": "scott-novak",
+          "distance": 4.44
+        }
+      ],
+      "archetype": {
+        "key": "let-them-play",
+        "title": "Let them play",
+        "description": "fewer flags, smaller calls"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 17.0,
+        "yardsPerFlag": 7.4,
+        "costPerFlag": 0.87
+      }
+    },
+    {
+      "name": "John Hussey",
+      "slug": "john-hussey",
+      "games": 93,
+      "perGame": 10.91,
+      "yardsPerFlag": 8.33,
+      "costPerFlag": 0.88,
+      "preSnapShare": 0.376,
+      "q4Share": 0.256,
+      "offenseShare": 0.563,
+      "homeShare": 0.485,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 1.99,
+          "league": 2.243,
+          "diffPct": -11.0
+        },
+        "False Start": {
+          "perGame": 2.271,
+          "league": 2.228,
+          "diffPct": 2.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 1.114,
+          "league": 1.045,
+          "diffPct": 7.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.541,
+          "league": 0.658,
+          "diffPct": -18.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.595,
+          "league": 0.61,
+          "diffPct": -2.0
+        },
+        "Delay of Game": {
+          "perGame": 0.466,
+          "league": 0.581,
+          "diffPct": -20.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.556,
+          "league": 0.544,
+          "diffPct": 2.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.23,
+          "league": 0.399,
+          "diffPct": -42.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.323,
+          "league": 0.376,
+          "diffPct": -14.0
+        },
+        "Face Mask": {
+          "perGame": 0.282,
+          "league": 0.294,
+          "diffPct": -4.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Calls fewer roughing the passer: 42% below the league rate",
+          "key": "t:Roughing the Passer",
+          "z": -1.66,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer delay of game: 20% below the league rate",
+          "key": "t:Delay of Game",
+          "z": -1.43,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer defensive holding: 18% below the league rate",
+          "key": "t:Defensive Holding",
+          "z": -1.17,
+          "direction": "down"
+        },
+        {
+          "text": "Fewer flags: 10.9 per game (league 11.9)",
+          "key": "perGame",
+          "z": -1.0,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Shawn Smith",
+          "slug": "shawn-smith",
+          "distance": 4.2
+        },
+        {
+          "name": "Carl Cheffers",
+          "slug": "carl-cheffers",
+          "distance": 4.3
+        }
+      ],
+      "archetype": {
+        "key": "few-but-costly",
+        "title": "Few but costly",
+        "description": "fewer flags, bigger yardage per call"
+      },
+      "current": {
+        "games": 3,
+        "perGame": 14.67,
+        "yardsPerFlag": 7.34,
+        "costPerFlag": 0.82
+      }
+    },
+    {
+      "name": "Alan Eck",
+      "slug": "alan-eck",
+      "games": 48,
+      "perGame": 10.88,
+      "yardsPerFlag": 8.44,
+      "costPerFlag": 0.86,
+      "preSnapShare": 0.37,
+      "q4Share": 0.218,
+      "offenseShare": 0.594,
+      "homeShare": 0.477,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 2.16,
+          "league": 2.243,
+          "diffPct": -4.0
+        },
+        "False Start": {
+          "perGame": 2.008,
+          "league": 2.228,
+          "diffPct": -10.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.895,
+          "league": 1.045,
+          "diffPct": -14.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.444,
+          "league": 0.658,
+          "diffPct": -33.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.797,
+          "league": 0.61,
+          "diffPct": 31.0
+        },
+        "Delay of Game": {
+          "perGame": 0.568,
+          "league": 0.581,
+          "diffPct": -2.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.557,
+          "league": 0.544,
+          "diffPct": 2.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.426,
+          "league": 0.399,
+          "diffPct": 7.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.317,
+          "league": 0.376,
+          "diffPct": -16.0
+        },
+        "Face Mask": {
+          "perGame": 0.307,
+          "league": 0.294,
+          "diffPct": 4.0
+        }
+      },
+      "traits": [
+        {
+          "text": "Quieter 4th quarters: 22% of flags (league 26%)",
+          "key": "q4Share",
+          "z": -2.23,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer defensive holding: 33% below the league rate",
+          "key": "t:Defensive Holding",
+          "z": -2.19,
+          "direction": "down"
+        },
+        {
+          "text": "Calls more unnecessary roughness: 31% above the league rate",
+          "key": "t:Unnecessary Roughness",
+          "z": 1.96,
+          "direction": "up"
+        },
+        {
+          "text": "More flags on offenses: 59% (league 56%)",
+          "key": "offenseShare",
+          "z": 1.64,
+          "direction": "up"
+        }
+      ],
+      "similar": [
+        {
+          "name": "Land Clark",
+          "slug": "land-clark",
+          "distance": 4.63
+        },
+        {
+          "name": "John Hussey",
+          "slug": "john-hussey",
+          "distance": 5.36
+        }
+      ],
+      "archetype": {
+        "key": "few-but-costly",
+        "title": "Few but costly",
+        "description": "fewer flags, bigger yardage per call"
+      },
+      "current": {
+        "games": 4,
+        "perGame": 12.75,
+        "yardsPerFlag": 8.39,
+        "costPerFlag": 0.82
+      }
+    },
+    {
+      "name": "Bill Vinovich",
+      "slug": "bill-vinovich",
+      "games": 96,
+      "perGame": 10.86,
+      "yardsPerFlag": 7.96,
+      "costPerFlag": 0.84,
+      "preSnapShare": 0.406,
+      "q4Share": 0.232,
+      "offenseShare": 0.555,
+      "homeShare": 0.486,
+      "types": {
+        "Offensive Holding": {
+          "perGame": 1.809,
+          "league": 2.243,
+          "diffPct": -19.0
+        },
+        "False Start": {
+          "perGame": 2.35,
+          "league": 2.228,
+          "diffPct": 5.0
+        },
+        "Defensive Pass Interference": {
+          "perGame": 0.982,
+          "league": 1.045,
+          "diffPct": -6.0
+        },
+        "Defensive Holding": {
+          "perGame": 0.493,
+          "league": 0.658,
+          "diffPct": -25.0
+        },
+        "Unnecessary Roughness": {
+          "perGame": 0.528,
+          "league": 0.61,
+          "diffPct": -13.0
+        },
+        "Delay of Game": {
+          "perGame": 0.471,
+          "league": 0.581,
+          "diffPct": -19.0
+        },
+        "Defensive Offside": {
+          "perGame": 0.533,
+          "league": 0.544,
+          "diffPct": -2.0
+        },
+        "Roughing the Passer": {
+          "perGame": 0.233,
+          "league": 0.399,
+          "diffPct": -42.0
+        },
+        "Neutral Zone Infraction": {
+          "perGame": 0.453,
+          "league": 0.376,
+          "diffPct": 20.0
+        },
+        "Face Mask": {
+          "perGame": 0.283,
+          "league": 0.294,
+          "diffPct": -4.0
+        }
+      },
+      "traits": [
+        {
+          "text": "More pre-snap fouls: 41% of flags (league 37%)",
+          "key": "preSnapShare",
+          "z": 2.11,
+          "direction": "up"
+        },
+        {
+          "text": "Calls more neutral zone infraction: 20% above the league rate",
+          "key": "t:Neutral Zone Infraction",
+          "z": 1.96,
+          "direction": "up"
+        },
+        {
+          "text": "Calls fewer offensive holding: 19% below the league rate",
+          "key": "t:Offensive Holding",
+          "z": -1.74,
+          "direction": "down"
+        },
+        {
+          "text": "Calls fewer defensive holding: 25% below the league rate",
+          "key": "t:Defensive Holding",
+          "z": -1.67,
+          "direction": "down"
+        }
+      ],
+      "similar": [
+        {
+          "name": "John Hussey",
+          "slug": "john-hussey",
+          "distance": 4.91
+        },
+        {
+          "name": "Craig Wrolstad",
+          "slug": "craig-wrolstad",
+          "distance": 5.26
+        }
+      ],
+      "archetype": {
+        "key": "let-them-play",
+        "title": "Let them play",
+        "description": "fewer flags, smaller calls"
+      },
+      "current": {
+        "games": 3,
+        "perGame": 14.0,
+        "yardsPerFlag": 6.6,
+        "costPerFlag": 0.89
+      }
+    }
+  ],
+  "notes": "Regular season. Career = seasons before the current one; per-type rates are shrunk toward the league rate. Crews change around the chief each year, so these are crew-chief-level styles. Patterns, not motives.",
+  "generatedAt": "2026-10-14T20:32:07+00:00"
+}

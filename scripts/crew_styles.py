@@ -51,7 +51,7 @@ QUADS = {(True, True): ('game-changers', 'Game-changers', 'lots of flags, and bi
          (False, False): ('let-them-play', 'Let them play', 'fewer flags, smaller calls')}
 
 
-def _profiles(pen, games, crew_by_game):
+def _profiles(pen, games, crew_by_game, types=None):
     """Per-crew stats for a set of games (pen already classified)."""
     games = games.copy()
     games['crew'] = games['game_id'].map(crew_by_game)
@@ -65,7 +65,7 @@ def _profiles(pen, games, crew_by_game):
         'preSnapShare': p['penalty_type'].isin(PRE_SNAP).mean(), 'q4Share': (p['qtr'] == 4).mean(),
         'offenseShare': (p['side'] == 'offense').mean(), 'homeShare': (p['penalty_team'] == p['home_team']).mean(),
     }
-    types = list(p['penalty_type'].value_counts().head(TOP_TYPES).index)
+    types = types or list(p['penalty_type'].value_counts().head(TOP_TYPES).index)
     lg_type = {t: (p['penalty_type'] == t).sum() / n_league for t in types}
     rows = {}
     for crew, gg in games.groupby('crew'):
@@ -126,48 +126,70 @@ def build_crew_styles(data: dict, active_names) -> dict:
     pen = classify(pen)
 
     career_games = games[games['season'] < season]
-    lg, types, prof = _profiles(pen, career_games, crew_by_game)
-    lg_cur, _, prof_cur = _profiles(pen, games[games['season'] == season], crew_by_game)
+    seasons_all = sorted(int(x) for x in games['season'].unique())
 
-    active = [c for c in prof if c in set(active_names) and prof[c]['games'] >= MIN_GAMES]
+    def styles_for(gset, min_games, types_fixed=None):
+        """Style per crew for one set of games: metrics vs that set's league, traits, archetype, fingerprint."""
+        lg, types_, prof = _profiles(pen, gset, crew_by_game, types_fixed)
+        names = [c for c in prof if c in set(active_names) and prof[c]['games'] >= min_games]
+        if not names:
+            return lg, types_, {}, None
+        feats = pd.DataFrame({c: {**{m: prof[c][m] for m in metrics},
+                                  **{f't:{t}': prof[c]['types'][t]['perGame'] for t in types_}} for c in names}).T.astype(float)
+        zz = (feats - feats.mean()) / feats.std(ddof=0).replace(0, 1) if len(names) > 1 else feats * 0
+        out = {}
+        for c in names:
+            pc = prof[c]
+            cand = []
+            for m in metrics:
+                if not _meaningful(m, pc[m], lg[m]):
+                    continue
+                up, down, fmt, _ = TRAIT_TEXT[m]
+                cand.append((abs(zz.loc[c, m]), (up if pc[m] > lg[m] else down).format(v=fmt.format(pc[m]), l=fmt.format(lg[m])), m, zz.loc[c, m]))
+            for t in types_:
+                d = pc['types'][t]['diffPct']
+                if abs(d) < TYPE_MIN_PCT:
+                    continue
+                cand.append((abs(zz.loc[c, f't:{t}']), f"{'Calls more' if d > 0 else 'Calls fewer'} {t.lower()}: {abs(d):.0f}% {'above' if d > 0 else 'below'} the league rate",
+                             f't:{t}', zz.loc[c, f't:{t}']))
+            traits = [{'text': txt, 'key': k, 'z': _r(z_, 2), 'direction': 'up' if z_ > 0 else 'down'}
+                      for a, txt, k, z_ in sorted(cand, key=lambda x: -x[0]) if a >= 1.0][:4]
+            key, title, desc = QUADS[(pc['perGame'] > lg['perGame'], pc['yardsPerFlag'] > lg['yardsPerFlag'])]
+            out[c] = {
+                'games': pc['games'], **{m: _r(pc[m], 3 if 'Share' in m else 2) for m in metrics},
+                # position vs that season's league (lets seasons be compared on one chart)
+                'vsLeague': {'perGamePct': _r((pc['perGame'] / lg['perGame'] - 1) * 100, 1),
+                             'yardsPerFlagDiff': _r(pc['yardsPerFlag'] - lg['yardsPerFlag'], 2)},
+                'types': pc['types'], 'traits': traits,
+                'archetype': {'key': key, 'title': title, 'description': desc},
+            }
+        return lg, types_, out, zz
+
     metrics = list(TRAIT_TEXT)
-    # standardized fingerprint (metrics + type mix), across active crews
-    feats = pd.DataFrame({c: {**{m: prof[c][m] for m in metrics},
-                              **{f't:{t}': prof[c]['types'][t]['perGame'] for t in types}} for c in active}).T.astype(float)
-    z = (feats - feats.mean()) / feats.std(ddof=0).replace(0, 1)
+    lg, types, career, z = styles_for(career_games, MIN_GAMES)
+    by_season = {}
+    league_by_season = {}
+    for s_ in seasons_all:
+        lg_s, _, st, _ = styles_for(games[games['season'] == s_], 1, types)   # same type list every season
+        league_by_season[s_] = {m: _r(lg_s[m], 3 if 'Share' in m else 2) for m in metrics} | {'games': int(lg_s['games'])}
+        for c, v in st.items():
+            by_season.setdefault(c, {})[str(s_)] = v
 
+    active = list(career)
     crews = []
     for c in active:
-        pc = prof[c]
-        # traits: biggest standardized differences, in plain words
-        cand = []
-        for m in metrics:
-            zz = z.loc[c, m]
-            if not _meaningful(m, pc[m], lg[m]):
-                continue
-            up, down, fmt, _ = TRAIT_TEXT[m]
-            txt = (up if pc[m] > lg[m] else down).format(v=fmt.format(pc[m]), l=fmt.format(lg[m]))
-            cand.append((abs(zz), txt, m, zz))
-        for t in types:
-            zz = z.loc[c, f't:{t}']
-            d = pc['types'][t]['diffPct']
-            if abs(d) < TYPE_MIN_PCT:
-                continue
-            cand.append((abs(zz), f"{'Calls more' if d > 0 else 'Calls fewer'} {t.lower()}: {abs(d):.0f}% {'above' if d > 0 else 'below'} the league rate",
-                         f't:{t}', zz))
-        traits = [{'text': txt, 'key': k, 'z': _r(zz, 2), 'direction': 'up' if zz > 0 else 'down'}
-                  for a, txt, k, zz in sorted(cand, key=lambda x: -x[0]) if a >= 1.0][:4]
         dist = ((z.loc[active] - z.loc[c]) ** 2).sum(axis=1) ** 0.5
         sims = [{'name': o, 'slug': _slug(o), 'distance': _r(dist[o], 2)} for o in dist.drop(c).sort_values().index[:2]]
-        key, title, desc = QUADS[(pc['perGame'] > lg['perGame'], pc['yardsPerFlag'] > lg['yardsPerFlag'])]
-        cur = prof_cur.get(c)
+        car = career[c]
+        cur = by_season.get(c, {}).get(str(season))
         crews.append({
-            'name': c, 'slug': _slug(c), 'games': pc['games'],
-            **{m: _r(pc[m], 3 if 'Share' in m else 2) for m in metrics},
-            'types': pc['types'], 'traits': traits, 'similar': sims,
-            'archetype': {'key': key, 'title': title, 'description': desc},
-            'current': None if not cur else {'games': cur['games'], 'perGame': _r(cur['perGame'], 2),
-                                             'yardsPerFlag': _r(cur['yardsPerFlag'], 2), 'costPerFlag': _r(cur['costPerFlag'], 2)},
+            'name': c, 'slug': _slug(c), 'games': car['games'],
+            **{m: car[m] for m in metrics},
+            'types': car['types'], 'traits': car['traits'], 'similar': sims, 'archetype': car['archetype'],
+            'vsLeague': car['vsLeague'],
+            'seasons': by_season.get(c, {}),      # every season this crew chief worked, same fields
+            'current': None if not cur else {'games': cur['games'], 'perGame': cur['perGame'],
+                                             'yardsPerFlag': cur['yardsPerFlag'], 'costPerFlag': cur['costPerFlag']},
         })
     crews.sort(key=lambda x: -x['perGame'])
     span = sorted(career_games['season'].unique())
@@ -175,7 +197,8 @@ def build_crew_styles(data: dict, active_names) -> dict:
     return {
         'season': season, 'careerSeasons': [int(span[0]), int(span[-1])],
         'league': {m: _r(lg[m], 3 if 'Share' in m else 2) for m in metrics},
-        'leagueCurrent': {m: _r(lg_cur[m], 3 if 'Share' in m else 2) for m in metrics} if lg_cur.get('games') else None,
+        'leagueCurrent': league_by_season.get(season),
+        'leagueBySeason': {str(k): v for k, v in league_by_season.items()},
         'types': types, 'crews': crews,
         'notes': 'Regular season. Career = seasons before the current one; per-type rates are shrunk toward the league rate. '
                  'Crews change around the chief each year, so these are crew-chief-level styles. Patterns, not motives.',

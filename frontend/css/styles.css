@@ -2119,3 +2119,18 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 
 /* Even spacing between League Trends blocks */
 .style-map-grid { margin-top: var(--gap-md); }
+
+/* Crew style tabs, metrics and year comparison */
+.cs-tabs { margin: 0.2rem 0 0.8rem; }
+.cs-small { font-size: 0.82rem; color: var(--accent); margin: 0 0 0.6rem; }
+.cs-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 0.5rem; margin: 0.4rem 0 0.8rem; }
+.cs-m { background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.55rem 0.7rem; }
+.cs-m span { display: block; font: 600 0.66rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+.cs-m b { display: block; font: 700 1.25rem var(--font-display); color: var(--text-primary); margin-top: 0.15rem; }
+.cs-m em { font: 500 0.7rem var(--font-mono); font-style: normal; color: var(--text-muted); }
+.cs-traj-wrap { position: relative; height: 340px; margin: 0.6rem 0 0.8rem; }
+.cs-cmp td, .cs-cmp th { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cs-cmp td:first-child { color: var(--text-secondary); }
+.cs-cmp .cs-arch { font-size: 0.6rem; padding: 0.1rem 0.4rem; }
+.cs-cmp .cs-sep td { font: 600 0.7rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding-top: 0.9rem; }
+@media (max-width: 640px) { .cs-traj-wrap { height: 300px; } .cs-metrics { grid-template-columns: repeat(2, 1fr); } }

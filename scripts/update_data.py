@@ -164,6 +164,26 @@ def load_all_data(seasons: list[int]) -> dict:
                 officials = pd.concat([officials, fill], ignore_index=True)
                 print(f"   ✓ Filled {len(fill)} crew chief assignments from schedule data")
 
+            # Second fallback: crew assignments published before kickoff (Football Zebras,
+            # saved weekly in frontend/data/assignments) for games already played that
+            # neither feed covers yet, so this week's games count right away
+            covered = set(officials.loc[officials['position'] == 'Referee', 'game_id'].dropna())
+            played_ids = set(sched.loc[sched['result'].notna(), 'game_id'])
+            rows = []
+            for f in sorted((DATA_DIR / 'assignments').glob('*.json')):
+                try:
+                    for g in json.loads(f.read_text()).get('games', []):
+                        if g.get('referee') and g['game_id'] in played_ids and g['game_id'] not in covered:
+                            rows.append({'game_id': g['game_id'], 'name': NAME_FIXES.get(g['referee'], g['referee']),
+                                         'position': 'Referee', 'season': int(g['game_id'][:4]),
+                                         'week': int(g['game_id'].split('_')[1])})
+                            covered.add(g['game_id'])
+                except Exception:
+                    continue
+            if rows:
+                officials = pd.concat([officials, pd.DataFrame(rows)], ignore_index=True)
+                print(f"   ✓ Filled {len(rows)} crew chief assignments from published assignments")
+
         data['officials'] = officials
         print(f"   ✓ {len(officials)} official assignments")
     except Exception as e:

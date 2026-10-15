@@ -1808,24 +1808,180 @@ function crewStyleBySlug(slug) { return state.crewStyles?.crews?.find(c => c.slu
 function crewStyleHtml(slug) {
     const cs = state.crewStyles, c = crewStyleBySlug(slug);
     if (!c) return '';
+    return `<div class="modal-section" id="crewStyle" data-slug="${slug}">${crewStyleInner(c)}</div>`;
+}
+
+function crewStyleView(c) {
+    state.crewStyleView = state.crewStyleView || {};
+    const cur = String(state.crewStyles.season);
+    return state.crewStyleView[c.slug] || (c.seasons?.[cur] ? cur : 'career');
+}
+
+function setCrewStyleView(slug, view) {
+    state.crewStyleView = state.crewStyleView || {};
+    state.crewStyleView[slug] = view;
+    const box = document.getElementById('crewStyle'), c = crewStyleBySlug(slug);
+    if (box && c) { box.innerHTML = crewStyleInner(c); drawCrewTrajectory(c); }
+}
+
+function toggleCrewYear(slug, y) {
+    state.crewYears = state.crewYears || {};
+    const c = crewStyleBySlug(slug);
+    const sel = new Set(state.crewYears[slug] || defaultCrewYears(c));
+    sel.has(y) ? sel.delete(y) : sel.add(y);
+    state.crewYears[slug] = [...sel];
+    setCrewStyleView(slug, 'compare');
+}
+
+function defaultCrewYears(c) { return [...Object.keys(c.seasons || {}), 'career']; }
+
+const STYLE_METRICS = [
+    ['perGame', 'Flags / game', v => fmtNum(v, 1)],
+    ['yardsPerFlag', 'Yards / flag', v => fmtNum(v, 1)],
+    ['costPerFlag', 'Points / flag', v => fmtNum(v, 2)],
+    ['preSnapShare', 'Pre-snap', v => `${fmtNum(v * 100, 0)}%`],
+    ['q4Share', '4th quarter', v => `${fmtNum(v * 100, 0)}%`],
+    ['offenseShare', 'On offense', v => `${fmtNum(v * 100, 0)}%`],
+    ['homeShare', 'On home team', v => `${fmtNum(v * 100, 0)}%`],
+];
+
+function crewStyleInner(c) {
+    const cs = state.crewStyles;
     const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
-    const max = Math.max(60, ...Object.values(c.types).map(t => Math.abs(t.diffPct || 0)));
+    const cur = String(cs.season);
+    const view = crewStyleView(c);
+    const tabs = [
+        ...(c.seasons?.[cur] ? [[cur, `${cur} style`]] : []),
+        ['career', `Career ${span}`],
+        ['compare', 'Compare years'],
+    ];
+    const tabHtml = `<div class="baseline-toggle cs-tabs" role="tablist">${tabs.map(([k, l]) =>
+        `<button class="baseline-btn ${k === view ? 'active' : ''}" role="tab" aria-selected="${k === view}" onclick="setCrewStyleView('${c.slug}', '${k}')">${l}</button>`).join('')}</div>`;
+    if (view === 'compare') return `<h4>Crew style</h4>${tabHtml}${crewStyleCompare(c, span)}`;
+
+    const isCareer = view === 'career';
+    const p = isCareer ? c : c.seasons[view];
+    const lg = isCareer ? cs.league : cs.leagueBySeason?.[view];
+    const label = isCareer ? `${span} regular seasons, ${c.games} games` : `${view} regular season, ${p.games} game${p.games === 1 ? '' : 's'}`;
+    const small = !isCareer && p.games < 8;
+    const max = Math.max(60, ...Object.values(p.types).map(t => Math.abs(t.diffPct || 0)));
     const bars = cs.types.map(t => {
-        const d = c.types[t]?.diffPct ?? 0;
-        const w = Math.min(50, Math.abs(d) / max * 50);
+        const d = Math.round(p.types[t]?.diffPct ?? 0) || 0, w = Math.min(50, Math.abs(d) / max * 50);
         return `<div class="cs-row"><span class="cs-type">${esc(shortPenalty(t))}</span>
-            <span class="cs-track"><i class="${d >= 0 ? 'up' : 'down'}" style="${d >= 0 ? `left:50%` : `right:50%`};width:${w}%"></i><b></b></span>
+            <span class="cs-track"><i class="${d >= 0 ? 'up' : 'down'}" style="${d >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i><b></b></span>
             <span class="cs-val ${d > 0 ? 'pct-up' : d < 0 ? 'pct-down' : ''}">${d > 0 ? '+' : ''}${fmtNum(d, 0)}%</span></div>`;
     }).join('');
-    return `<div class="modal-section">
-        <h4>Crew style <span class="modal-muted">(${span}, ${c.games} games)</span></h4>
-        <div class="cs-head"><span class="cs-arch cs-${c.archetype.key}">${c.archetype.title}</span><span class="modal-muted">${c.archetype.description}</span></div>
-        ${c.traits.length ? `<ul class="cs-traits">${c.traits.map(t => `<li>${esc(t.text)}</li>`).join('')}</ul>`
-            : `<p class="modal-footnote" style="margin-top:0.5rem">Calls close to the league average on everything we track: volume, size of calls, timing, and the mix of penalty types.</p>`}
-        <div class="cs-similar">Calls most like: ${c.similar.map(s => `<a href="#" onclick="openRefereeModal('${s.slug}'); return false;">${esc(s.name)}</a>`).join(' · ')}</div>
-        <div class="cs-fp"><div class="cs-fp-title">How often they call each type vs the league</div>${bars}</div>
-        <p class="modal-footnote">Regular season, ${span}. Rates are pulled toward the league average so a few calls can't dominate. Crews change around the chief each year. Patterns, not motives.</p>
-    </div>`;
+    return `<h4>Crew style <span class="modal-muted">(${label})</span></h4>${tabHtml}
+        <div class="cs-head"><span class="cs-arch cs-${p.archetype.key}">${p.archetype.title}</span><span class="modal-muted">${p.archetype.description}</span></div>
+        ${small ? `<p class="cs-small">Only ${p.games} games: an early read that can change a lot. Compare with the career tab.</p>` : ''}
+        <div class="cs-metrics">${STYLE_METRICS.map(([k, l, f]) => `<div class="cs-m"><span>${l}</span><b>${f(p[k])}</b><em>league ${f(lg?.[k])}</em></div>`).join('')}</div>
+        ${p.traits.length ? `<ul class="cs-traits">${p.traits.map(t => `<li>${esc(t.text)}</li>`).join('')}</ul>`
+            : `<p class="modal-footnote" style="margin-top:0.5rem">Close to the league average on everything we track${isCareer ? '' : ' this season'}.</p>`}
+        ${isCareer ? `<div class="cs-similar">Calls most like: ${c.similar.map(s => `<a href="#" onclick="openRefereeModal('${s.slug}'); return false;">${esc(s.name)}</a>`).join(' · ')}</div>` : ''}
+        <div class="cs-fp"><div class="cs-fp-title">How often they call each type vs the league${isCareer ? '' : ` (${view})`}</div>${bars}</div>
+        <p class="modal-footnote">Compared with the league in the same ${isCareer ? 'seasons' : 'season'}. Penalty-type rates are pulled toward the league average so a few calls can't dominate (strongest early in a season). Crews change around the chief each year. Patterns, not motives.</p>`;
+}
+
+function crewStyleCompare(c, span) {
+    const cs = state.crewStyles;
+    const all = defaultCrewYears(c);
+    const sel = (state.crewYears?.[c.slug] || all).filter(y => all.includes(y));
+    const ordered = all.filter(y => sel.includes(y));
+    const get = y => y === 'career' ? c : c.seasons[y];
+    const lgOf = y => y === 'career' ? cs.league : cs.leagueBySeason?.[y];
+    const name = y => y === 'career' ? `Career` : y;
+    const chips = all.map(y => `<button class="week-chip ${sel.includes(y) ? 'on' : ''}" aria-pressed="${sel.includes(y)}"
+        onclick="toggleCrewYear('${c.slug}', '${y}')"><i style="background:${yearColor(y, all)}"></i>${name(y)}</button>`).join('');
+    const rows = STYLE_METRICS.map(([k, l, f]) => `<tr><td>${l}</td>${ordered.map(y => {
+        const v = get(y)?.[k], lv = lgOf(y)?.[k];
+        const cls = v == null || lv == null ? '' : (k === 'perGame' ? (v > lv * 1.05 ? 'pct-up' : v < lv * 0.95 ? 'pct-down' : '')
+            : Math.abs(v - lv) >= (k.endsWith('Share') ? 0.03 : k === 'yardsPerFlag' ? 0.2 : 0.03) ? (v > lv ? 'pct-up' : 'pct-down') : '');
+        return `<td class="${cls}">${v == null ? '—' : f(v)}</td>`; }).join('')}</tr>`).join('');
+    const typeRows = cs.types.map(t => `<tr><td>${esc(shortPenalty(t))}</td>${ordered.map(y => {
+        const raw = get(y)?.types?.[t]?.diffPct, d = raw == null ? null : (Math.round(raw) || 0);
+        return `<td class="${d >= 15 ? 'pct-up' : d <= -15 ? 'pct-down' : ''}">${d == null ? '—' : `${d > 0 ? '+' : ''}${d}%`}</td>`; }).join('')}</tr>`).join('');
+    return `
+        <p class="modal-footnote" style="margin:0.4rem 0 0.6rem">Pick the seasons to compare. Each season is measured against that season's league average, so years with more flags league-wide line up fairly.</p>
+        <div class="week-chips">${chips}</div>
+        ${ordered.length ? `
+        <div class="cs-traj-wrap"><canvas id="crewStyleTraj"></canvas></div>
+        <div class="table-scroll"><table class="pv-table cs-cmp">
+            <thead><tr><th></th>${ordered.map(y => `<th>${name(y)}${y !== 'career' ? ` <span class="modal-muted">${get(y).games} g</span>` : ''}</th>`).join('')}</tr></thead>
+            <tbody>
+                <tr><td>Style</td>${ordered.map(y => `<td><span class="cs-arch cs-${get(y).archetype.key}">${get(y).archetype.title}</span></td>`).join('')}</tr>
+                ${rows}
+                <tr class="cs-sep"><td colspan="${ordered.length + 1}">Penalty types vs that season's league rate</td></tr>
+                ${typeRows}
+            </tbody></table></div>
+        <p class="modal-footnote"><span class="pct-up">Red</span> / <span class="pct-down">green</span> = meaningfully above / below that season's league average (5% for flags, 3 points for shares, 15% for a penalty type). The chart plots each season against its league average: right = more flags, up = bigger calls.</p>`
+        : '<p class="modal-footnote">Pick at least one season.</p>'}`;
+}
+
+const YEAR_COLORS = ['#4DA3FF', '#FF8F3F', '#2EC4D6', '#F472B6', '#B07CFF', '#D2B48C', '#8B95A7', '#7C3AED'];
+function yearColor(y, all) {
+    if (y === 'career') return '#cfd2d6';
+    if (y === String(state.crewStyles.season)) return CONFIG.chartColors.flag;
+    const seasons = all.filter(x => x !== 'career' && x !== String(state.crewStyles.season));
+    return YEAR_COLORS[seasons.indexOf(y) % YEAR_COLORS.length];
+}
+
+// Style over time: each season vs that season's league (right = more flags, up = bigger calls)
+function drawCrewTrajectory(c) {
+    const canvas = document.getElementById('crewStyleTraj');
+    if (state.charts.crewTraj) { state.charts.crewTraj.destroy(); state.charts.crewTraj = null; }
+    if (!canvas) return;
+    const all = defaultCrewYears(c);
+    const sel = (state.crewYears?.[c.slug] || all).filter(y => all.includes(y));
+    const yrs = all.filter(y => sel.includes(y) && y !== 'career');
+    const pt = y => { const v = (y === 'career' ? c : c.seasons[y]).vsLeague; return { x: v.perGamePct, y: v.yardsPerFlagDiff, label: y === 'career' ? 'Career' : y }; };
+    const pts = yrs.map(pt);
+    const ds = [];
+    if (pts.length > 1) ds.push({ type: 'line', data: pts, borderColor: 'rgba(255,255,255,0.25)', borderWidth: 1.5, pointRadius: 0, tension: 0, order: 3 });
+    ds.push({ type: 'scatter', data: pts, pointRadius: 7, pointHoverRadius: 9, backgroundColor: yrs.map(y => yearColor(y, all)),
+              borderColor: '#0c0d0f', borderWidth: 2, order: 1 });
+    if (sel.includes('career')) ds.push({ type: 'scatter', data: [pt('career')], pointRadius: 9, pointStyle: 'rectRot',
+              backgroundColor: 'rgba(0,0,0,0)', borderColor: '#cfd2d6', borderWidth: 2.5, order: 0 });
+    const allPts = [...pts, ...(sel.includes('career') ? [pt('career')] : [])];
+    const xs = Math.max(20, ...allPts.map(p => Math.abs(p.x))) * 1.25, ys = Math.max(0.6, ...allPts.map(p => Math.abs(p.y))) * 1.3;
+    const quad = { id: 'q', beforeDatasetsDraw(ch) {
+        const { ctx, chartArea: a, scales: { x, y } } = ch, x0 = x.getPixelForValue(0), y0 = y.getPixelForValue(0);
+        ctx.save();
+        [[a.left, a.top, x0, y0, 'rgba(77,163,255,0.07)'], [x0, a.top, a.right, y0, 'rgba(240,96,93,0.07)'],
+         [a.left, y0, x0, a.bottom, 'rgba(63,185,138,0.07)'], [x0, y0, a.right, a.bottom, 'rgba(255,196,0,0.06)']]
+            .forEach(([l, t, r, b, f]) => { ctx.fillStyle = f; ctx.fillRect(l, t, r - l, b - t); });
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.setLineDash([5, 4]);
+        ctx.beginPath(); ctx.moveTo(x0, a.top); ctx.lineTo(x0, a.bottom); ctx.moveTo(a.left, y0); ctx.lineTo(a.right, y0); ctx.stroke();
+        ctx.setLineDash([]); ctx.font = `800 10px ${getComputedStyle(document.documentElement).getPropertyValue('--font-display') || 'sans-serif'}`;
+        [['FEW BUT COSTLY', a.left + 6, a.top + 13, 'left', '#4DA3FF'], ['GAME-CHANGERS', a.right - 6, a.top + 13, 'right', '#f0605d'],
+         ['LET THEM PLAY', a.left + 6, a.bottom - 6, 'left', '#3fb98a'], ['STOP-AND-START', a.right - 6, a.bottom - 6, 'right', '#ffc400']]
+            .forEach(([t, xx, yy, al, col]) => { ctx.fillStyle = col; ctx.textAlign = al; ctx.fillText(t, xx, yy); });
+        ctx.restore();
+    }, afterDatasetsDraw(ch) {
+        const { ctx } = ch; ctx.save(); ctx.font = `700 11px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
+        ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textBaseline = 'middle';
+        const a = ch.chartArea, boxes = allPts.map(p => { const x = ch.scales.x.getPixelForValue(p.x), y = ch.scales.y.getPixelForValue(p.y); return { x0: x - 8, y0: y - 8, x1: x + 8, y1: y + 8 }; });
+        const hit = b => boxes.some(o => !(b.x1 < o.x0 || b.x0 > o.x1 || b.y1 < o.y0 || b.y0 > o.y1));
+        allPts.forEach(p => {
+            const x = ch.scales.x.getPixelForValue(p.x), y = ch.scales.y.getPixelForValue(p.y), w = ctx.measureText(p.label).width, h = 12;
+            const opts = [[10, 0], [-10 - w, 0], [-w / 2, -15], [-w / 2, 15], [10, -13], [10, 13], [-10 - w, -13], [-10 - w, 13], [-w / 2, -28], [-w / 2, 28]];
+            for (const [ox, oy] of opts) {
+                const b = { x0: x + ox, y0: y + oy - h / 2, x1: x + ox + w, y1: y + oy + h / 2 };
+                if (b.x0 > a.left && b.x1 < a.right && b.y0 > a.top && b.y1 < a.bottom && !hit(b)) { boxes.push(b); ctx.fillText(p.label, b.x0, y + oy); return; }
+            }
+        });
+        ctx.restore();
+    } };
+    state.charts.crewTraj = new Chart(canvas.getContext('2d'), {
+        data: { datasets: ds }, plugins: [quad],
+        options: { responsive: true, maintainAspectRatio: false, layout: { padding: { right: 28 } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.label}: ${ctx.raw.x > 0 ? '+' : ''}${fmtNum(ctx.raw.x, 0)}% flags vs league, ${ctx.raw.y > 0 ? '+' : ''}${fmtNum(ctx.raw.y, 2)} yds/flag` } } },
+            scales: {
+                x: { type: 'linear', min: -xs, max: xs, title: { display: true, text: 'Flags vs that season\'s league average →', color: axisColor },
+                     grid: { color: gridColor }, ticks: { color: axisColor, callback: v => Math.abs(v % 20) < 1e-6 ? `${v > 0 ? '+' : ''}${Math.round(v)}%` : '' } },
+                y: { min: -ys, max: ys, title: { display: true, text: 'Yards per flag vs league →', color: axisColor },
+                     grid: { color: gridColor }, ticks: { color: axisColor, callback: v => Math.abs((v * 2) - Math.round(v * 2)) < 1e-6 ? `${v > 0 ? '+' : ''}${fmtNum(v, 1)}` : '' } }
+            } }
+    });
 }
 
 // League Trends: interactive Crew Chief Style Map (flags per game x yards per flag)
@@ -2817,6 +2973,7 @@ async function openRefereeModal(slug) {
             </div>
         </div>
     `;
+    { const cst = crewStyleBySlug(profile.slug); if (cst && crewStyleView(cst) === 'compare') drawCrewTrajectory(cst); }
     
     setTimeout(() => renderModalChart(profile, all), 100);
 }
@@ -3619,6 +3776,8 @@ window.openTrendMenu = openTrendMenu;
 window.setTypeScope = setTypeScope;
 window.setFlagScope = setFlagScope;
 window.setStyleScope = setStyleScope;
+window.setCrewStyleView = setCrewStyleView;
+window.toggleCrewYear = toggleCrewYear;
 window.setCrewScope = setCrewScope;
 window.setQuarterScope = setQuarterScope;
 window.openQuarterTypeMenu = openQuarterTypeMenu;

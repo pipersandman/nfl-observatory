@@ -65,6 +65,11 @@ jobs:
             git push
           fi
 
+      - name: Build static pages for search engines and AI (deploy copy only, not committed)
+        # Pre-renders /crew/, /team/, /assignments/, /trends/, /guide/, /dataset/, sitemap.xml,
+        # llms.txt, CSV downloads and the home page summary from this run's data
+        run: python scripts/build_static.py
+
       - name: Cache-bust CSS/JS/icons (deploy copy only, not committed)
         # Browsers cache styles.css and app.js aggressively. Stamping each deploy's
         # commit into the URLs (styles.css?v=abc1234) forces every visitor to get
@@ -74,6 +79,7 @@ jobs:
           sed -i -E \
             -e "s#(href=\"css/styles\.css)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
             -e "s#(src=\"js/app\.js)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
+            -e "s#(href=\"css/static\.css)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
             -e "s#(favicon\.svg)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
             -e "s#(favicon\.ico)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
             -e "s#(favicon-32\.png)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \

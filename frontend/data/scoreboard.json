@@ -1,7 +1,10 @@
 {
   "season": 2026,
   "throughWeek": 5,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 6,
+    "games": 1
+  },
   "defaultFrame": "season",
   "frames": [
     {
@@ -45,24 +48,24 @@
       "key": "season",
       "label": "2026 season",
       "description": "2026 regular season so far",
-      "games": 79,
-      "plays": 12838,
-      "penalties": 1188,
-      "yards": 9483,
-      "pctPlays": 9.3,
+      "games": 80,
+      "plays": 13015,
+      "penalties": 1203,
+      "yards": 9600,
+      "pctPlays": 9.2,
       "flagEveryPlays": 10.8,
       "perGame": 15.0,
       "yardsPerGame": 120.0,
       "yardsPerPenalty": 8.0,
-      "firstDowns": 310,
+      "firstDowns": 313,
       "firstDownsPerGame": 3.9,
-      "offenseShare": 61.0,
+      "offenseShare": 60.0,
       "preSnapShare": 39.0,
       "homeShare": 50.0,
       "minutesPerFlag": 4.0,
       "mostCommon": {
         "type": "Offensive Holding",
-        "count": 260,
+        "count": 264,
         "pct": 22.0
       },
       "mostFlaggedTeam": {
@@ -156,16 +159,16 @@
       "key": "all",
       "label": "Since 2020",
       "description": "Every regular-season game since 2020",
-      "games": 1694,
-      "plays": 273701,
-      "penalties": 20369,
-      "yards": 168720,
+      "games": 1695,
+      "plays": 273878,
+      "penalties": 20384,
+      "yards": 168837,
       "pctPlays": 7.4,
       "flagEveryPlays": 13.4,
       "perGame": 12.0,
       "yardsPerGame": 99.6,
       "yardsPerPenalty": 8.3,
-      "firstDowns": 6038,
+      "firstDowns": 6041,
       "firstDownsPerGame": 3.6,
       "offenseShare": 56.0,
       "preSnapShare": 37.0,
@@ -173,7 +176,7 @@
       "minutesPerFlag": 5.0,
       "mostCommon": {
         "type": "Offensive Holding",
-        "count": 3883,
+        "count": 3887,
         "pct": 19.0
       },
       "mostFlaggedTeam": {
@@ -255,6 +258,19 @@
       "perGame": 15.1,
       "yardsPerGame": 123.0,
       "firstDowns": 52
+    },
+    {
+      "week": 6,
+      "complete": false,
+      "scheduled": 14,
+      "games": 1,
+      "plays": 177,
+      "penalties": 15,
+      "yards": 117,
+      "pctPlays": 8.5,
+      "perGame": 15.0,
+      "yardsPerGame": 117.0,
+      "firstDowns": 3
     }
   ],
   "weekFrames": [
@@ -457,9 +473,46 @@
         "name": "Alex Moore",
         "perGame": 21.0
       }
+    },
+    {
+      "key": "week-6",
+      "week": 6,
+      "complete": false,
+      "scheduled": 14,
+      "label": "Week 6",
+      "description": "2026 Week 6 (in progress: 1 of 14 games)",
+      "games": 1,
+      "plays": 177,
+      "penalties": 15,
+      "yards": 117,
+      "pctPlays": 8.5,
+      "flagEveryPlays": 11.8,
+      "perGame": 15.0,
+      "yardsPerGame": 117.0,
+      "yardsPerPenalty": 7.8,
+      "firstDowns": 3,
+      "firstDownsPerGame": 3.0,
+      "offenseShare": 47.0,
+      "preSnapShare": 33.0,
+      "homeShare": 53.0,
+      "minutesPerFlag": 4.0,
+      "mostCommon": {
+        "type": "Offensive Holding",
+        "count": 4,
+        "pct": 27.0
+      },
+      "mostFlaggedTeam": {
+        "team": "DEN",
+        "perGame": 8.0
+      },
+      "cleanestTeam": {
+        "team": "SEA",
+        "perGame": 7.0
+      },
+      "topCrew": null
     }
   ],
   "defaultWeek": 5,
   "notes": "Regular season. Accepted penalties. Plays = snaps plus pre-snap penalty plays.",
-  "generatedAt": "2026-10-15T17:53:17+00:00"
+  "generatedAt": "2026-10-16T22:33:49+00:00"
 }

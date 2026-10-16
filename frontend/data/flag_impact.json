@@ -4,11 +4,11 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 79,
-      "flags": 1188,
+      "games": 80,
+      "flags": 1203,
       "league": {
-        "pointsCostPerTeamGame": 6.16,
-        "keyFirstDownsGiven": 125,
+        "pointsCostPerTeamGame": 6.15,
+        "keyFirstDownsGiven": 126,
         "drivesKilled": 58,
         "bigPlaysErased": 43,
         "turnoversErased": 18
@@ -93,19 +93,6 @@
           "rank": 6
         },
         {
-          "team": "SEA",
-          "games": 5,
-          "flags": 40,
-          "pointsCost": 37.3,
-          "pointsCostPerGame": 7.46,
-          "firstDownsGiven": 12,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 0,
-          "bigPlaysErased": 1,
-          "turnoversErased": 0,
-          "rank": 7
-        },
-        {
           "team": "GB",
           "games": 5,
           "flags": 46,
@@ -116,7 +103,7 @@
           "drivesKilled": 2,
           "bigPlaysErased": 2,
           "turnoversErased": 1,
-          "rank": 8
+          "rank": 7
         },
         {
           "team": "CAR",
@@ -129,6 +116,19 @@
           "drivesKilled": 0,
           "bigPlaysErased": 5,
           "turnoversErased": 2,
+          "rank": 8
+        },
+        {
+          "team": "SEA",
+          "games": 6,
+          "flags": 47,
+          "pointsCost": 44.1,
+          "pointsCostPerGame": 7.34,
+          "firstDownsGiven": 14,
+          "keyFirstDownsGiven": 8,
+          "drivesKilled": 0,
+          "bigPlaysErased": 1,
+          "turnoversErased": 0,
           "rank": 9
         },
         {
@@ -340,19 +340,6 @@
           "rank": 25
         },
         {
-          "team": "DEN",
-          "games": 5,
-          "flags": 36,
-          "pointsCost": 24.6,
-          "pointsCostPerGame": 4.91,
-          "firstDownsGiven": 9,
-          "keyFirstDownsGiven": 4,
-          "drivesKilled": 1,
-          "bigPlaysErased": 1,
-          "turnoversErased": 2,
-          "rank": 26
-        },
-        {
           "team": "NO",
           "games": 5,
           "flags": 33,
@@ -363,6 +350,19 @@
           "drivesKilled": 0,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
+          "rank": 26
+        },
+        {
+          "team": "DEN",
+          "games": 6,
+          "flags": 44,
+          "pointsCost": 28.7,
+          "pointsCostPerGame": 4.78,
+          "firstDownsGiven": 10,
+          "keyFirstDownsGiven": 4,
+          "drivesKilled": 1,
+          "bigPlaysErased": 1,
+          "turnoversErased": 2,
           "rank": 27
         },
         {
@@ -4218,6 +4218,26 @@
         ]
       },
       {
+        "gameId": "2026_06_SEA_DEN",
+        "week": 6,
+        "away": "SEA",
+        "home": "DEN",
+        "team": "SEA",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "D.Witherspoon",
+        "qtr": 2,
+        "time": "05:23",
+        "yards": 20,
+        "pointsCost": 2.33,
+        "method": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "First down given"
+        ]
+      },
+      {
         "gameId": "2026_04_LAC_SEA",
         "week": 4,
         "away": "LAC",
@@ -4230,26 +4250,6 @@
         "time": "14:11",
         "yards": 15,
         "pointsCost": 1.94,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_03_SEA_WAS",
-        "week": 3,
-        "away": "SEA",
-        "home": "WAS",
-        "team": "SEA",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "J.Jobe",
-        "qtr": 1,
-        "time": "05:13",
-        "yards": 14,
-        "pointsCost": 1.67,
         "method": "play value",
         "gainErased": null,
         "twoPoint": false,
@@ -4665,5 +4665,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points are estimates from nflverse's expected-points model and 2020-25 league rates.",
-  "generatedAt": "2026-10-15T17:53:17+00:00"
+  "generatedAt": "2026-10-16T22:33:49+00:00"
 }

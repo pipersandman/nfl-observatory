@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-15T17:53:21+00:00",
+  "generatedAt": "2026-10-16T22:34:00+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 16,
-      "avgMiss": 3.58,
-      "hitRate": 87.5,
-      "within3": 56.2,
-      "baselineAvgMiss": 4.03,
-      "skillPct": 11.2
+      "games": 17,
+      "avgMiss": 3.38,
+      "hitRate": 88.2,
+      "within3": 58.8,
+      "baselineAvgMiss": 3.83,
+      "skillPct": 11.8
     },
     "byWeek": [
       {
@@ -37,9 +37,39 @@
         "within3": 53.3,
         "baselineAvgMiss": 4.15,
         "skillPct": 12.7
+      },
+      {
+        "season": 2026,
+        "week": 6,
+        "games": 1,
+        "avgMiss": 0.1,
+        "hitRate": 100.0,
+        "within3": 100.0,
+        "baselineAvgMiss": 0.6,
+        "skillPct": 83.3
       }
     ],
     "games": [
+      {
+        "gameId": "2026_06_SEA_DEN",
+        "season": 2026,
+        "week": 6,
+        "away": "SEA",
+        "home": "DEN",
+        "crew": "Brad Rogers",
+        "source": "live",
+        "projected": 15.1,
+        "low": 9,
+        "high": 21,
+        "actual": 15,
+        "miss": -0.1,
+        "inRange": true,
+        "baselineMiss": 0.6,
+        "homeProjected": 8.0,
+        "awayProjected": 7.2,
+        "homeActual": 8,
+        "awayActual": 7
+      },
       {
         "gameId": "2026_05_TB_DAL",
         "season": 2026,

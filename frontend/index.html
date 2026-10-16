@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A data-driven investigation into NFL officiating patterns, referee behavior, and current-season crew chief penalty and yardage trends.">
-    
-    <title>NFL Officiating Observatory | Crew Chief Analysis</title>
+    <meta name="description" content="NFL referee and penalty statistics, updated weekly: penalties per game by crew chief and team, this week's referee assignments, penalty trends and flag projections.">
+    <title>NFL Referee &amp; Penalty Stats | NFL Officiating Observatory</title>
+    <link rel="canonical" href="https://nflobservatory.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NFL Officiating Observatory">
+    <meta property="og:title" content="NFL Referee &amp; Penalty Stats | NFL Officiating Observatory">
+    <meta property="og:description" content="Penalties per game by crew chief and team, this week's referee assignments, penalty trends and flag projections. Updated weekly.">
+    <meta property="og:url" content="https://nflobservatory.com/">
+    <meta property="og:image" content="https://nflobservatory.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@NFLObservatory">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"NFL Officiating Observatory","url":"https://nflobservatory.com/","description":"NFL referee and penalty statistics, updated weekly.","publisher":{"@type":"Organization","name":"NFL Officiating Observatory","url":"https://nflobservatory.com/","logo":"https://nflobservatory.com/icon-512.png","sameAs":["https://x.com/NFLObservatory"]}}</script>
 
     <!-- Favicons -->
     <link rel="icon" href="favicon.ico" sizes="any">
@@ -26,6 +37,7 @@
     
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/static.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -47,6 +59,15 @@
             <svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span>
         </a>
     </nav>
+
+    <!-- This week in NFL officiating: plain text in the page source so search engines and AI
+         assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
+    <div class="container tldr-strip">
+        <!-- SEO:SUMMARY -->
+        <p class="tldr-text"><strong>NFL referee and penalty statistics, updated weekly:</strong> penalties per game by crew chief and team, this week's referee assignments and penalty trends. <a href="/guide/">FAQ and methodology</a></p>
+        <!-- /SEO:SUMMARY -->
+    </div>
+    <noscript><div class="container"><p>This dashboard needs JavaScript. Plain-text versions: <a href="/crew/">referee stats</a>, <a href="/team/">team penalty stats</a>, <a href="/assignments/">this week's assignments</a>, <a href="/trends/">penalty trends</a>, <a href="/guide/">guide and FAQ</a>, <a href="/dataset/">data downloads</a>.</p></div></noscript>
 
     <!-- This Season Section -->
     <section id="season">
@@ -338,8 +359,13 @@
                     Penalty data sourced from official NFL play-by-play via nflverse. Updated weekly during the season.
                 </div>
                 <div class="footer-links">
-                    <a href="#methodology">Methodology</a>
-                    <a href="#about">About</a>
+                    <a href="/guide/#methodology">Methodology</a>
+                    <a href="/guide/">FAQ</a>
+                    <a href="/crew/">Referee stats</a>
+                    <a href="/team/">Team stats</a>
+                    <a href="/assignments/">Assignments</a>
+                    <a href="/dataset/">Data</a>
+                    <a href="/guide/#about">About</a>
                 </div>
             </div>
             <div class="footer-follow">

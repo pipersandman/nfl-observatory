@@ -1,0 +1,56 @@
+/* =============================================================================
+   Static, crawlable pages (/crew/, /team/, /trends/, /guide/, /dataset/,
+   /assignments/). Built on the site's own tokens in styles.css.
+   ============================================================================= */
+.static-page { background: var(--bg-primary, #0c0d0f); }
+.st-header { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0.75rem 1.5rem; padding: 0.9rem 2rem; background: rgba(12, 13, 15, 0.94); border-bottom: 1px solid var(--border-subtle);
+    backdrop-filter: blur(10px); }
+.st-header .logo { text-decoration: none; color: var(--text-primary); }
+.st-nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
+.st-nav a { font: 500 0.82rem var(--font-body); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); text-decoration: none; }
+.st-nav a:hover, .st-nav a[aria-current] { color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent); }
+.st-main { padding-top: var(--gap-lg, 2.5rem); padding-bottom: var(--gap-lg, 2.5rem); max-width: 1040px; }
+.st-main h1.section-title { text-align: left; margin: 0.3rem 0 1rem; font-size: clamp(2rem, 4.2vw, 3.1rem); line-height: 1.05; }
+.st-main .section-number { text-align: left; }
+.st-main h2 { font: 700 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; color: var(--text-primary); margin: 2.2rem 0 0.8rem; }
+.st-main h3 { font: 600 1.05rem var(--font-body); color: var(--text-primary); margin: 1.4rem 0 0.4rem; }
+.st-main p, .st-main li, .st-main dd { color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem; }
+.st-main a { color: var(--accent); }
+.st-main strong { color: var(--text-primary); }
+.st-crumbs { font: 500 0.78rem var(--font-mono); color: var(--text-muted); margin-bottom: 1rem; }
+.st-crumbs a { color: var(--text-secondary); text-decoration: none; } .st-crumbs span { color: var(--text-muted); }
+.st-tldr { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent); border-radius: 14px; padding: 1.1rem 1.3rem; margin: 0 0 1.5rem; }
+.st-tldr-label { font: 700 0.72rem var(--font-mono); letter-spacing: 0.12em; color: var(--accent); padding-top: 0.25rem; }
+.st-tldr p { margin: 0; color: var(--text-primary); font-size: 1.02rem; }
+.st-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.75rem; margin: 0 0 1rem; }
+.st-stats > div { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 1rem 1.1rem; }
+.st-stats span { display: block; font: 600 0.7rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.st-stats b { display: block; font: 700 2rem var(--font-display); color: var(--text-primary); margin: 0.25rem 0 0.1rem; }
+.st-stats em { font-style: normal; font-size: 0.8rem; color: var(--text-muted); }
+.st-table { width: 100%; } .st-table td, .st-table th { white-space: nowrap; }
+.st-list { margin: 0.4rem 0 0.8rem 1.2rem; }
+.st-note { font-size: 0.82rem !important; color: var(--text-muted) !important; }
+.st-faq details { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 0.6rem; }
+.st-faq summary { cursor: pointer; list-style: none; } .st-faq summary::-webkit-details-marker { display: none; }
+.st-faq summary h3 { display: inline; margin: 0; font-size: 1rem; }
+.st-answer p { margin: 0.5rem 0 0; }
+.st-dl dt { font-weight: 600; color: var(--text-primary); margin-top: 0.8rem; } .st-dl dd { margin: 0.2rem 0 0; }
+.st-open { margin-top: 2rem; }
+.st-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.2rem; border-radius: 999px; background: var(--accent); color: #111 !important;
+    font: 600 0.9rem var(--font-body); text-decoration: none; }
+.st-btn:hover { box-shadow: 0 6px 20px rgba(255, 196, 0, 0.25); }
+@media (max-width: 640px) {
+    .st-header { padding: 0.8rem 1rem; }
+    .st-nav { gap: 0.2rem 0.8rem; } .st-nav a { font-size: 0.72rem; }
+    .st-tldr { grid-template-columns: 1fr; gap: 0.4rem; }
+    .st-stats b { font-size: 1.6rem; }
+}
+
+/* Home page: "This week in NFL officiating" summary (static text, readable without JavaScript) */
+.tldr-strip { padding-top: 5.2rem; padding-bottom: 0; }
+.tldr-strip .tldr-text { margin: 0; padding: 0.85rem 1.1rem; background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent); border-radius: 12px; font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); }
+.tldr-strip .tldr-text strong { color: var(--text-primary); }
+.tldr-strip a { color: var(--accent); }

@@ -586,6 +586,63 @@ def home_summary():
     idx.write_text(s[:i] + block + s[j:], encoding='utf-8')
 
 
+def home_prefill():
+    """Write real numbers into the home page sections the app fills with JavaScript, so the
+    page source isn't 'Loading...' and empty tables. The app replaces each block on load."""
+    idx = ROOT / 'index.html'
+    s = idx.read_text(encoding='utf-8')
+
+    def put(key, content):
+        nonlocal s
+        a, b = f'<!-- SEO:{key} -->', f'<!-- /SEO:{key} -->'
+        if a in s and b in s:
+            i, j = s.index(a) + len(a), s.index(b)
+            s = s[:i] + content + s[j:]
+
+    base = next((b for b in sc.get('baselines', []) if b['key'] == sc.get('defaultBaseline')), {})
+    lb = ((sc.get('league') or {}).get('baselines') or {}).get(base.get('key'), {}) or {}
+    pw = sc.get('partialWeek')
+    put('SEASON_SUB', e(f"Regular season through Week {THRU}" + (f" (plus {pw['games']} game{'s' if pw['games'] != 1 else ''} from Week {pw['week']})" if pw else '')
+                      + f", compared with {(base.get('label') or 'last season')[:1].lower() + (base.get('label') or 'last season')[1:]}."))
+
+    def tile(label, val, cmp):
+        return (f'<div class="season-stat"><div class="season-stat-label">{label}</div><div class="season-stat-value">{val}</div>'
+                f'<div class="season-stat-compare">{cmp}</div></div>')
+    put('SEASON_LEAGUE', ''.join([
+        tile(f'{SEASON} so far', f"{LG.get('penalties', 0):,}", f"penalties · {LG.get('yards', 0):,} yards in {LG.get('games', 0)} games"),
+        tile('Penalties per game', f1(LG.get('perGame')), f"{e(base.get('short', ''))}: {f1(lb.get('perGame'))}"),
+        tile('Penalty yards per game', f1(LG.get('yardsPerGame')), f"{e(base.get('short', ''))}: {f1(lb.get('yardsPerGame'))}"),
+        tile('Yards per penalty', f1(LG.get('yardsPerPenalty')), f"{e(base.get('short', ''))}: {f1(lb.get('yardsPerPenalty'))}"),
+    ]))
+    put('SEASON_TABLE', ''.join(
+        f"<tr><td><a href=\"/crew/{c['slug']}/\">{e(c['name'])}</a></td><td>{c['current']['games']}</td>"
+        f"<td>{c['current'].get('penalties', '')} / {c['current'].get('yards', '')}</td><td>{f1(c['current'].get('perGame'))}</td>"
+        f"<td>{f1(c['current'].get('yardsPerGame'))}</td><td>{f1(((c.get('baselines') or {}).get(base.get('key')) or {}).get('perGame'))} {e(base.get('short', ''))}</td></tr>"
+        for c in crews_now))
+    divs = ''
+    for d in teams_idx.get('divisions', []):
+        rows = ''.join(f'<li><a href="/team/{t["abbr"]}/">{e(team_name(t["abbr"]))}</a> {f1(t.get("perGame"))} flags/game</li>'
+                       for t in sorted(d['teams'], key=lambda t: -(t.get('perGame') or 0)))
+        divs += f'<div class="seo-prefill-col"><h3>{e(d["name"])}</h3><ul>{rows}</ul></div>'
+    put('DIVISIONS', f'<div class="seo-prefill">{divs}</div>')
+    if previews and previews.get('games'):
+        g_rows = ''.join(
+            f"<li>{e(g['awayTeam']['abbr'])} @ {e(g['homeTeam']['abbr'])}: "
+            + (f"crew chief {crew_link(g['crew']['name'])}, " if g.get('crew') else 'crew TBA, ')
+            + f"projected {f1((g.get('projection') or {}).get('total'))} flags</li>" for g in previews['games'])
+        put('PREVIEWS', f'<div class="seo-prefill"><div class="seo-prefill-col wide"><h3>Week {previews["week"]} games and referee assignments</h3>'
+                        f'<ul>{g_rows}</ul><p><a href="/assignments/">All Week {previews["week"]} referee assignments</a></p></div></div>')
+    put('REFEREES', '<div class="seo-prefill"><div class="seo-prefill-col wide"><h3>Crew chiefs</h3><ul>' + ''.join(
+        f"<li>{crew_link(c['name'])}: {f1(c['current']['perGame'])} flags/game in {SEASON}, "
+        f"{f1(((c.get('baselines') or {}).get('all') or {}).get('perGame'))} in 2020–25</li>" for c in crews_now) + '</ul></div></div>')
+    refs = load('referees.json') or []
+    put('DATA_TABLE', ''.join(
+        f"<tr><td>{crew_link(r['name'])}</td><td>{r.get('games')}</td><td>{f1(r.get('avg_per_game'))}</td>"
+        f"<td>{r.get('min_penalties')}–{r.get('max_penalties')}</td><td>{f1(r.get('home_bias_pct'))}%</td><td>{e(r.get('consistency', ''))}</td></tr>"
+        for r in refs))
+    idx.write_text(s, encoding='utf-8')
+
+
 def sitemap_and_llms():
     urls = ['/'] + [p for p in SITEMAP if p != '/']
     xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -625,5 +682,6 @@ if __name__ == '__main__':
     dataset_page()
     guide_page()
     home_summary()
+    home_prefill()
     sitemap_and_llms()
     print(f'✓ static pages: {len(SITEMAP)} · sitemap.xml · llms.txt · data/exports/*.csv · home summary')

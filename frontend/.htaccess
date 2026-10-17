@@ -14,6 +14,18 @@ Options -Indexes
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} ^www\. [NC]
     RewriteRule ^ https://nflobservatory.com%{REQUEST_URI} [L,R=301]
+    # Descriptive URLs that people and AI tools guess -> the real pages (permanent)
+    RewriteRule ^referee-stats/?(.*)$ https://nflobservatory.com/crew/$1 [R=301,L,NE]
+    RewriteRule ^referees/?(.*)$ https://nflobservatory.com/crew/$1 [R=301,L,NE]
+    RewriteRule ^crew-chiefs/?(.*)$ https://nflobservatory.com/crew/$1 [R=301,L,NE]
+    RewriteRule ^team-penalty-stats/?(.*)$ https://nflobservatory.com/team/$1 [R=301,L,NE]
+    RewriteRule ^teams/?(.*)$ https://nflobservatory.com/team/$1 [R=301,L,NE]
+    RewriteRule ^penalty-trends/?$ https://nflobservatory.com/trends/ [R=301,L]
+    RewriteRule ^full-data/?$ https://nflobservatory.com/dataset/ [R=301,L]
+    RewriteRule ^data-downloads/?$ https://nflobservatory.com/dataset/ [R=301,L]
+    RewriteRule ^referee-assignments/?$ https://nflobservatory.com/assignments/ [R=301,L]
+    RewriteRule ^faq/?$ https://nflobservatory.com/guide/ [R=301,L]
+    RewriteRule ^methodology/?$ https://nflobservatory.com/guide/#methodology [R=301,L,NE]
     # Hide dot-files (e.g. the deploy tool's .ftp-deploy-sync-state.json), keep .well-known
     RewriteRule (^|/)\.(?!well-known/) - [F,L]
 </IfModule>

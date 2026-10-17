@@ -119,7 +119,9 @@ These apply to every template in Phase 1 and Phase 2. A page that fails them is 
 
 ## 5. Phase 1: Build now (current static site)
 
-**Order:** 5.1 → 5.2 → (5.3, 5.4, 5.5, 5.6 in any order) → 5.7 → 5.8 → 5.9 → 5.10.
+**Order:** 5.1 → 5.2 → (5.3, 5.4, 5.5, 5.6 in any order) → 5.7 → 5.8 → 5.9 → 5.10. Step 5.11 (backlinks) runs alongside, from now on.
+
+**Already done (foundation, live):** static crawlable pages for every crew chief and team, assignments, trends, guide/FAQ and dataset; schema markup; robots.txt welcoming AI crawlers; sitemap; llms.txt; home page summary; home page sections pre-filled with real numbers in the HTML source (the app replaces them on load); permanent redirects from descriptive URLs that people and AI tools guess (`/referee-stats/`, `/team-penalty-stats/`, `/penalty-trends/`, `/full-data/`, `/faq/`, and others) to the real pages.
 
 ### 5.1 Workflow schedule and run modes
 
@@ -252,6 +254,23 @@ These apply to every template in Phase 1 and Phase 2. A page that fails them is 
    2. From the "Observatory engagement" list, reply under 3–5 relevant posts with the matching chart (e.g. a Bills beat writer's post → reply with the Bills preview card).
    3. Tag accounts only when the post is about their team or cites their work.
 4. **Done when:** the pack is in `social/output/` every Friday with captions and UTM links.
+
+### 5.11 Backlinks (ongoing, you + me)
+
+**Depends on:** nothing. The biggest lever against established sites, and the one code can't do.
+In order of payoff:
+
+1. **Dataset listings (one time, 45 min):**
+   1. **Kaggle:** kaggle.com → **Datasets** → **New Dataset** → upload the five CSVs from `nflobservatory.com/dataset/` → title "NFL Penalties by Referee (Crew Chief), Team and Week, 2020–2026" → in the description, link `https://nflobservatory.com/dataset/` and credit nflverse → **Create**. Update monthly (Kaggle → dataset → **New Version**).
+   2. **data.world:** same files and description.
+   3. **Done when:** both listings are public and link back.
+2. **nflverse community (one time, 15 min):** post in nflverse's GitHub Discussions ("Show and tell") and Discord: a short "built with nflverse" note with one chart and the `/dataset/` link. The data comes from them, so it's on-topic.
+3. **Story-driven outreach (when a story breaks, 15 min each):**
+   1. When a finding is newsworthy (e.g. Novak's crew, the pre-snap rise), send a 3-sentence note to 3–5 relevant writers: the finding, one number, the page that backs it up.
+   2. Officiating writers (Football Zebras), analytics writers, team beat writers for the teams involved.
+   3. Track who responds in a simple list so follow-ups go to warm contacts.
+4. **Reddit and X (weekly):** link the specific page (crew page, report card, preview) rather than the home page; r/nfl for league stories, team subreddits for team stories. Answer comments; link the guide when asked about methodology.
+5. **Measure:** Search Console → **Links** shows new referring sites; check monthly.
 
 ---
 

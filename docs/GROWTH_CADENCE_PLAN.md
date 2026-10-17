@@ -276,6 +276,8 @@ In order of payoff:
 
 ## 6. Phase 2: V2 buildout
 
+> The full V2 architecture, tool choices and migration sequence are in the [V2 Build Plan](V2_BUILD_PLAN.md). The items below are the growth-specific pieces of V2.
+
 **Depends on:** Phase 1 running for at least 4 weeks (so there's traffic data to prioritize with).
 
 ### 6.1 Clean URLs for the interactive app

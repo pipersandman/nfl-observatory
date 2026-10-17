@@ -54,3 +54,12 @@
     border-left: 3px solid var(--accent); border-radius: 12px; font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); }
 .tldr-strip .tldr-text strong { color: var(--text-primary); }
 .tldr-strip a { color: var(--accent); }
+
+/* Home page: plain-text versions of the interactive sections (replaced by the app on load) */
+.seo-prefill { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem 1.5rem; width: 100%;
+    padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; }
+.seo-prefill-col.wide { grid-column: 1 / -1; }
+.seo-prefill h3 { font: 600 0.8rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin: 0 0 0.4rem; }
+.seo-prefill ul { list-style: none; margin: 0; padding: 0; font-size: 0.86rem; line-height: 1.7; color: var(--text-secondary); }
+.seo-prefill a { color: var(--text-primary); text-decoration: none; } .seo-prefill a:hover { color: var(--accent); }
+.seo-prefill p { margin: 0.5rem 0 0; font-size: 0.86rem; } .seo-prefill p a { color: var(--accent); }

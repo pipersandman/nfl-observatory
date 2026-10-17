@@ -239,3 +239,7 @@ Every model change is judged here first.
 - **Public metric display:** keep "skill vs guessing the average" public while it's low, or show it once the model improves.
 - **Analytics tool for site behavior** (separate track): PostHog, Umami, or one of them plus Clarity.
 - **Data licensing:** nflverse data licenses apply to redistribution. Review before offering any dataset or API publicly.
+
+---
+
+**See also:** [Growth Cadence Plan](GROWTH_CADENCE_PLAN.md) for the weekly publishing and indexing schedule (Phase 1 on the current site, Phase 2 for V2).

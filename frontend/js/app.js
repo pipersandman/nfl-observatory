@@ -1642,13 +1642,14 @@ function showPopoverMenu(anchor, items, onPick) {
     const left = Math.min(Math.max(8, r.right - mw), window.innerWidth - mw - 8);
     const top = r.bottom + 6 + mh > window.innerHeight ? Math.max(8, r.top - mh - 6) : r.bottom + 6;
     Object.assign(menu.style, { left: `${left}px`, top: `${top}px` });
-    const close = () => { menu.remove(); document.removeEventListener('click', outside, true); window.removeEventListener('scroll', close, true); document.removeEventListener('keydown', esc); };
+    const close = () => { menu.remove(); document.removeEventListener('click', outside, true); window.removeEventListener('scroll', onScroll, true); document.removeEventListener('keydown', esc); };
+    const onScroll = (e) => { if (!menu.contains(e.target)) close(); };   // scrolling inside a long menu keeps it open
     const outside = (e) => { if (!menu.contains(e.target) && e.target !== anchor && !anchor.contains(e.target)) close(); };
     const esc = (e) => { if (e.key === 'Escape') close(); };
     menu.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { const it = items[Number(b.dataset.i)]; close(); onPick(it.value); }));
     setTimeout(() => {
         document.addEventListener('click', outside, true);
-        window.addEventListener('scroll', close, true);
+        window.addEventListener('scroll', onScroll, true);
         document.addEventListener('keydown', esc);
     }, 0);
     menu.querySelector('.sel')?.focus();
@@ -1985,27 +1986,77 @@ function drawCrewTrajectory(c) {
 }
 
 // League Trends: interactive Crew Chief Style Map (flags per game x yards per flag)
+// Style map periods: 'career', a season ('2024'), or this season week by week
+// ('through-5' = cumulative through Week 5, 'only-5' = Week 5's games alone)
 function setStyleScope(k) { state.styleScope = k; renderStyleMap(); }
+
+function stylePeriods(cs) {
+    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
+    const seasons = Object.keys(cs.leagueBySeason || {}).sort().reverse();
+    const wk = cs.weekly || {};
+    const items = [{ value: 'career', label: `Career ${span}`, meta: 'all prior seasons' }];
+    seasons.forEach(y => {
+        items.push({ value: y, label: y === String(cs.season) ? `${y} season so far` : `${y} season`, meta: `${cs.leagueBySeason[y].games} games` });
+        if (y === String(cs.season)) {
+            (wk.weeks || []).slice().reverse().forEach(w => {
+                const done = wk.complete?.[String(w)] !== false;
+                if (wk.through?.[String(w)]) items.push({ value: `through-${w}`, label: `↳ Through Week ${w}`, meta: done ? 'cumulative' : 'in progress' });
+            });
+            (wk.weeks || []).slice().reverse().forEach(w => {
+                const done = wk.complete?.[String(w)] !== false;
+                if (wk.only?.[String(w)]) items.push({ value: `only-${w}`, label: `↳ Week ${w} only`, meta: done ? '1 game per crew' : 'in progress' });
+            });
+        }
+    });
+    return items;
+}
+
+function openStylePeriodMenu(btn) {
+    const cs = state.crewStyles;
+    const cur = state.styleScope || 'career';
+    showPopoverMenu(btn, stylePeriods(cs).map(it => ({ ...it, selected: it.value === cur })), setStyleScope);
+}
+
+function stylePeriodData(cs, key) {
+    if (key === 'career') return { lg: cs.league, pts: cs.crews.map(c => ({ c, v: c })) };
+    const m = /^(through|only)-(\d+)$/.exec(key);
+    if (m) {
+        const blk = cs.weekly?.[m[1]]?.[m[2]];
+        if (!blk) return null;
+        return { lg: blk.league, pts: cs.crews.map(c => ({ c, v: blk.crews[c.name] })) };
+    }
+    const lg = cs.leagueBySeason?.[key];
+    return lg ? { lg, pts: cs.crews.map(c => ({ c, v: c.seasons?.[key] })) } : null;
+}
+
 function renderStyleMap() {
     const canvas = document.getElementById('styleMap');
     const cs = state.crewStyles;
     if (!canvas || !cs?.crews?.length) return;
     if (state.charts.style) state.charts.style.destroy();
-    const scope = state.styleScope === 'current' && cs.leagueCurrent ? 'current' : 'career';
-    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
-    scopeToggle('styleControls', scope, 'setStyleScope', { career: `Career ${span}`, ...(cs.leagueCurrent ? { current: `${cs.season}` } : {}) });
-    const lg = scope === 'current' ? cs.leagueCurrent : cs.league;
-    const pts = cs.crews.map(c => {
-        const v = scope === 'current' ? c.current : c;
-        return v && v.perGame != null ? { x: v.perGame, y: v.yardsPerFlag, name: c.name, slug: c.slug, games: v.games ?? c.games } : null;
-    }).filter(Boolean);
-    // half-width of each axis: the farthest crew from average, plus room for its label
+    const items = stylePeriods(cs);
+    const key = items.some(i => i.value === state.styleScope) ? state.styleScope : 'career';
+    const item = items.find(i => i.value === key);
+    const chev = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const ctl = document.getElementById('styleControls');
+    if (ctl) ctl.innerHTML = `<button class="trend-pick" onclick="openStylePeriodMenu(this)" aria-haspopup="listbox">${item.label.replace('↳ ', `${cs.season} · `)}${chev}</button>`;
+    const pd = stylePeriodData(cs, key);
+    if (!pd) return;
+    const lg = pd.lg;
+    const pts = pd.pts.filter(p => p.v && p.v.perGame != null && p.v.yardsPerFlag != null)
+        .map(({ c, v }) => ({ x: v.perGame, y: v.yardsPerFlag, name: c.name, slug: c.slug, games: v.games ?? c.games }));
+    const m = /^(through|only)-(\d+)$/.exec(key);
+    const tap = window.innerWidth < 640 ? 'Tap a dot for the crew\'s name, tap again for its profile.' : 'Tap a crew for its profile.';
+    setSub('styleMapSub',
+        key === 'career' ? `Each active crew chief's ${cs.careerSeasons[0]}–${cs.careerSeasons[1]} regular seasons, against the league average for those seasons. Note the narrow yardage range. ${tap}`
+        : m && m[1] === 'only' ? `${cs.season} Week ${m[2]} only: one game per crew, so this is a snapshot, not a style. Lines are that week's league averages. ${tap}`
+        : m ? `${cs.season} through Week ${m[2]}, against the league average over the same games. Early weeks have only a few games per crew. ${tap}`
+        : key === String(cs.season) ? `${cs.season} so far: only a few games per crew, so expect big swings. Lines are this season's league averages. ${tap}`
+        : `${key} regular season (about 17 games per crew), against that season's league averages. ${tap}`);
+    // axes centered on the period's league averages so the four quadrants are the same size
     const xSpan = Math.max(...pts.map(p => Math.abs(p.x - lg.perGame))) * 1.15 || 1;
-    const ySpan = Math.max(...pts.map(p => Math.abs(p.y - lg.yardsPerFlag))) * 1.35 || 0.1;   // room for corner labels
+    const ySpan = Math.max(...pts.map(p => Math.abs(p.y - lg.yardsPerFlag))) * 1.35 || 0.1;
     const quadColor = p => p.x > lg.perGame ? (p.y > lg.yardsPerFlag ? '#f0605d' : '#ffc400') : (p.y > lg.yardsPerFlag ? '#4DA3FF' : '#3fb98a');
-    setSub('styleMapSub', scope === 'current'
-        ? `${cs.season} so far: only a few games per crew, so expect big swings. Tap a crew for its profile.`
-        : `Each active crew chief's ${span} regular seasons. Note the narrow yardage range. ${window.innerWidth < 640 ? 'Tap a dot for the crew\'s name, tap again for its profile.' : 'Tap a crew for its profile.'}`);
     const quadPlugin = { id: 'quads', beforeDatasetsDraw(chart) {
         const { ctx, chartArea: a, scales: { x, y } } = chart;
         const ax = x.getPixelForValue(lg.perGame), ay = y.getPixelForValue(lg.yardsPerFlag);
@@ -3776,6 +3827,7 @@ window.openTrendMenu = openTrendMenu;
 window.setTypeScope = setTypeScope;
 window.setFlagScope = setFlagScope;
 window.setStyleScope = setStyleScope;
+window.openStylePeriodMenu = openStylePeriodMenu;
 window.setCrewStyleView = setCrewStyleView;
 window.toggleCrewYear = toggleCrewYear;
 window.setCrewScope = setCrewScope;

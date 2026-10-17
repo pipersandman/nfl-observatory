@@ -117,7 +117,7 @@ def build_crew_styles(data: dict, active_names) -> dict:
     gp = data['games_played']
     if 'season_type' in gp.columns:
         gp = gp[gp['season_type'] == 'REG']
-    games = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'home_team', 'away_team']], on='game_id')
+    games = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'week', 'home_team', 'away_team']], on='game_id')
     pen = data['penalties']
     if 'season_type' in pen.columns:
         pen = pen[pen['season_type'] == 'REG']
@@ -192,6 +192,44 @@ def build_crew_styles(data: dict, active_names) -> dict:
                                              'yardsPerFlag': cur['yardsPerFlag'], 'costPerFlag': cur['costPerFlag']},
         })
     crews.sort(key=lambda x: -x['perGame'])
+
+    # Current season, week by week, for the style map: cumulative ("through week N")
+    # and single-week ("week N only") flags per game and yards per flag
+    cur_games = games[games['season'] == season].copy()
+    cur_games['crew'] = cur_games['game_id'].map(crew_by_game)
+    cur_pen = pen[pen['game_id'].isin(cur_games['game_id'])].copy()
+    cur_pen['crew'] = cur_pen['game_id'].map(crew_by_game)
+    if 'week' not in cur_pen.columns:
+        cur_pen = cur_pen.merge(cur_games[['game_id', 'week']], on='game_id', how='left')
+
+    def period(gmask, pmask):
+        g, p = cur_games[gmask], cur_pen[pmask]
+        if not len(g) or not len(p):
+            return None
+        out = {'league': {'games': int(len(g)), 'perGame': _r(len(p) / len(g), 2),
+                          'yardsPerFlag': _r(p['penalty_yards'].sum() / len(p), 2)}, 'crews': {}}
+        for c, gg in g.dropna(subset=['crew']).groupby('crew'):
+            if c not in set(active_names):
+                continue
+            q = p[p['crew'] == c]
+            if not len(q):
+                continue
+            out['crews'][c] = {'games': int(len(gg)), 'perGame': _r(len(q) / len(gg), 2),
+                               'yardsPerFlag': _r(q['penalty_yards'].sum() / len(q), 2)}
+        return out
+
+    weeks_played = sorted(int(w) for w in cur_games['week'].unique())
+    sched_n = reg[reg['season'] == season].groupby('week').size()
+    played_n = cur_games.groupby('week').size()
+    weekly = {'season': season, 'weeks': weeks_played, 'through': {}, 'only': {},
+              'complete': {str(w): bool(played_n.get(w, 0) >= sched_n.get(w, 0)) for w in weeks_played}}
+    for w in weeks_played:
+        t = period(cur_games['week'] <= w, cur_pen['week'] <= w)
+        o = period(cur_games['week'] == w, cur_pen['week'] == w)
+        if t:
+            weekly['through'][str(w)] = t
+        if o:
+            weekly['only'][str(w)] = o
     span = sorted(career_games['season'].unique())
     print(f"   ✓ {len(crews)} crew styles ({span[0]}-{span[-1]}), {len(types)} penalty types in the fingerprint")
     return {
@@ -199,6 +237,7 @@ def build_crew_styles(data: dict, active_names) -> dict:
         'league': {m: _r(lg[m], 3 if 'Share' in m else 2) for m in metrics},
         'leagueCurrent': league_by_season.get(season),
         'leagueBySeason': {str(k): v for k, v in league_by_season.items()},
+        'weekly': weekly,
         'types': types, 'crews': crews,
         'notes': 'Regular season. Career = seasons before the current one; per-type rates are shrunk toward the league rate. '
                  'Crews change around the chief each year, so these are crew-chief-level styles. Patterns, not motives.',

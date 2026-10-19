@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-19T04:00:42+00:00",
+  "generatedAt": "2026-10-19T15:33:56+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 28,
-      "avgMiss": 3.39,
-      "hitRate": 89.3,
-      "within3": 53.6,
-      "baselineAvgMiss": 3.62,
-      "skillPct": 6.4
+      "games": 29,
+      "avgMiss": 3.46,
+      "hitRate": 89.7,
+      "within3": 51.7,
+      "baselineAvgMiss": 3.76,
+      "skillPct": 7.9
     },
     "byWeek": [
       {
@@ -41,12 +41,12 @@
       {
         "season": 2026,
         "week": 6,
-        "games": 12,
-        "avgMiss": 3.12,
-        "hitRate": 91.7,
-        "within3": 50.0,
-        "baselineAvgMiss": 3.07,
-        "skillPct": -1.9
+        "games": 13,
+        "avgMiss": 3.31,
+        "hitRate": 92.3,
+        "within3": 46.2,
+        "baselineAvgMiss": 3.42,
+        "skillPct": 3.2
       }
     ],
     "games": [
@@ -189,6 +189,26 @@
         "awayProjected": 8.8,
         "homeActual": 6,
         "awayActual": 6
+      },
+      {
+        "gameId": "2026_06_DAL_GB",
+        "season": 2026,
+        "week": 6,
+        "away": "DAL",
+        "home": "GB",
+        "crew": "Craig Wrolstad",
+        "source": "live",
+        "projected": 16.5,
+        "low": 10,
+        "high": 23,
+        "actual": 22,
+        "miss": 5.5,
+        "inRange": true,
+        "baselineMiss": 7.6,
+        "homeProjected": 9.0,
+        "awayProjected": 7.5,
+        "homeActual": 11,
+        "awayActual": 11
       },
       {
         "gameId": "2026_06_CHI_ATL",

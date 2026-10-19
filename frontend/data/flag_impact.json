@@ -4,14 +4,14 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 91,
-      "flags": 1354,
+      "games": 92,
+      "flags": 1376,
       "league": {
-        "pointsCostPerTeamGame": 6.16,
-        "keyFirstDownsGiven": 146,
-        "drivesKilled": 68,
-        "bigPlaysErased": 51,
-        "turnoversErased": 19
+        "pointsCostPerTeamGame": 6.2,
+        "keyFirstDownsGiven": 149,
+        "drivesKilled": 70,
+        "bigPlaysErased": 52,
+        "turnoversErased": 20
       },
       "teams": [
         {
@@ -41,6 +41,19 @@
           "rank": 2
         },
         {
+          "team": "GB",
+          "games": 6,
+          "flags": 57,
+          "pointsCost": 46.5,
+          "pointsCostPerGame": 7.76,
+          "firstDownsGiven": 17,
+          "keyFirstDownsGiven": 10,
+          "drivesKilled": 2,
+          "bigPlaysErased": 2,
+          "turnoversErased": 2,
+          "rank": 3
+        },
+        {
           "team": "NYJ",
           "games": 6,
           "flags": 52,
@@ -51,7 +64,7 @@
           "drivesKilled": 1,
           "bigPlaysErased": 2,
           "turnoversErased": 3,
-          "rank": 3
+          "rank": 4
         },
         {
           "team": "BUF",
@@ -63,19 +76,6 @@
           "keyFirstDownsGiven": 7,
           "drivesKilled": 0,
           "bigPlaysErased": 3,
-          "turnoversErased": 1,
-          "rank": 4
-        },
-        {
-          "team": "GB",
-          "games": 5,
-          "flags": 46,
-          "pointsCost": 37.2,
-          "pointsCostPerGame": 7.45,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 9,
-          "drivesKilled": 2,
-          "bigPlaysErased": 2,
           "turnoversErased": 1,
           "rank": 5
         },
@@ -145,6 +145,19 @@
           "rank": 10
         },
         {
+          "team": "DAL",
+          "games": 6,
+          "flags": 45,
+          "pointsCost": 40.1,
+          "pointsCostPerGame": 6.68,
+          "firstDownsGiven": 16,
+          "keyFirstDownsGiven": 6,
+          "drivesKilled": 2,
+          "bigPlaysErased": 2,
+          "turnoversErased": 0,
+          "rank": 11
+        },
+        {
           "team": "CLE",
           "games": 6,
           "flags": 55,
@@ -155,7 +168,7 @@
           "drivesKilled": 7,
           "bigPlaysErased": 1,
           "turnoversErased": 1,
-          "rank": 11
+          "rank": 12
         },
         {
           "team": "LA",
@@ -168,7 +181,7 @@
           "drivesKilled": 6,
           "bigPlaysErased": 2,
           "turnoversErased": 1,
-          "rank": 12
+          "rank": 13
         },
         {
           "team": "NYG",
@@ -181,7 +194,7 @@
           "drivesKilled": 5,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "rank": 13
+          "rank": 14
         },
         {
           "team": "KC",
@@ -194,7 +207,7 @@
           "drivesKilled": 0,
           "bigPlaysErased": 2,
           "turnoversErased": 2,
-          "rank": 14
+          "rank": 15
         },
         {
           "team": "ARI",
@@ -207,7 +220,7 @@
           "drivesKilled": 1,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "rank": 15
+          "rank": 16
         },
         {
           "team": "PHI",
@@ -219,19 +232,6 @@
           "keyFirstDownsGiven": 7,
           "drivesKilled": 2,
           "bigPlaysErased": 4,
-          "turnoversErased": 0,
-          "rank": 16
-        },
-        {
-          "team": "DAL",
-          "games": 5,
-          "flags": 34,
-          "pointsCost": 30.5,
-          "pointsCostPerGame": 6.09,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 4,
-          "drivesKilled": 0,
-          "bigPlaysErased": 1,
           "turnoversErased": 0,
           "rank": 17
         },
@@ -2296,6 +2296,26 @@
         ]
       },
       {
+        "gameId": "2026_06_DAL_GB",
+        "week": 6,
+        "away": "DAL",
+        "home": "GB",
+        "team": "DAL",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "J.Porter",
+        "qtr": 2,
+        "time": "01:01",
+        "yards": 37,
+        "pointsCost": 2.88,
+        "method": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
         "gameId": "2026_05_TB_DAL",
         "week": 5,
         "away": "TB",
@@ -2351,26 +2371,6 @@
         "twoPoint": false,
         "labels": [
           "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_03_BAL_DAL",
-        "week": 3,
-        "away": "BAL",
-        "home": "DAL",
-        "team": "DAL",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "D.Bland",
-        "qtr": 2,
-        "time": "14:15",
-        "yards": 19,
-        "pointsCost": 1.41,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
         ]
       }
     ],
@@ -2656,24 +2656,23 @@
         ]
       },
       {
-        "gameId": "2026_01_GB_MIN",
-        "week": 1,
-        "away": "GB",
-        "home": "MIN",
+        "gameId": "2026_06_DAL_GB",
+        "week": 6,
+        "away": "DAL",
+        "home": "GB",
         "team": "GB",
         "side": "defense",
-        "type": "Defensive Holding",
-        "player": "X.McKinney",
+        "type": "Illegal Contact",
+        "player": "T.Hopper",
         "qtr": 4,
-        "time": "06:49",
-        "yards": 3,
-        "pointsCost": 1.73,
+        "time": "09:17",
+        "yards": 5,
+        "pointsCost": 1.82,
         "method": "play value",
         "gainErased": null,
         "twoPoint": false,
         "labels": [
-          "Key first down given",
-          "Turnover erased"
+          "Key first down given"
         ]
       }
     ],
@@ -4694,5 +4693,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points are estimates from nflverse's expected-points model and 2020-25 league rates.",
-  "generatedAt": "2026-10-19T04:00:37+00:00"
+  "generatedAt": "2026-10-19T15:33:45+00:00"
 }

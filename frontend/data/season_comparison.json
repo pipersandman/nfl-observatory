@@ -4,7 +4,7 @@
   "throughWeek": 5,
   "partialWeek": {
     "week": 6,
-    "games": 1
+    "games": 12
   },
   "regularSeasonOnly": true,
   "baselines": [
@@ -51,12 +51,12 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 80,
-      "penalties": 1203,
-      "yards": 9600,
-      "perGame": 15.04,
-      "yardsPerGame": 120.0,
-      "yardsPerPenalty": 8.0
+      "games": 91,
+      "penalties": 1354,
+      "yards": 10973,
+      "perGame": 14.88,
+      "yardsPerGame": 120.6,
+      "yardsPerPenalty": 8.1
     },
     "baselines": {
       "sameWeeks": {
@@ -98,14 +98,14 @@
       "name": "Scott Novak",
       "slug": "scott-novak",
       "current": {
-        "games": 5,
-        "penalties": 112,
-        "yards": 1056,
-        "perGame": 22.4,
-        "yardsPerGame": 211.2,
-        "yardsPerPenalty": 9.4
+        "games": 6,
+        "penalties": 128,
+        "yards": 1220,
+        "perGame": 21.33,
+        "yardsPerGame": 203.3,
+        "yardsPerPenalty": 9.5
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
           "games": 5,
@@ -283,53 +283,6 @@
       }
     },
     {
-      "name": "Clete Blakeman",
-      "slug": "clete-blakeman",
-      "current": {
-        "games": 5,
-        "penalties": 81,
-        "yards": 539,
-        "perGame": 16.2,
-        "yardsPerGame": 107.8,
-        "yardsPerPenalty": 6.7
-      },
-      "throughWeek": 5,
-      "baselines": {
-        "sameWeeks": {
-          "games": 4,
-          "penalties": 54,
-          "yards": 441,
-          "perGame": 13.5,
-          "yardsPerGame": 110.2,
-          "yardsPerPenalty": 8.2
-        },
-        "lastSeason": {
-          "games": 16,
-          "penalties": 205,
-          "yards": 1602,
-          "perGame": 12.81,
-          "yardsPerGame": 100.1,
-          "yardsPerPenalty": 7.8
-        },
-        "last3": {
-          "games": 48,
-          "penalties": 630,
-          "yards": 5064,
-          "perGame": 13.12,
-          "yardsPerGame": 105.5,
-          "yardsPerPenalty": 8.0
-        },
-        "all": {
-          "games": 95,
-          "penalties": 1195,
-          "yards": 9649,
-          "perGame": 12.58,
-          "yardsPerGame": 101.6,
-          "yardsPerPenalty": 8.1
-        }
-      }
-    },
-    {
       "name": "Brad Allen",
       "slug": "brad-allen",
       "current": {
@@ -377,25 +330,119 @@
       }
     },
     {
-      "name": "Shawn Hochuli",
-      "slug": "shawn-hochuli",
+      "name": "John Hussey",
+      "slug": "john-hussey",
       "current": {
         "games": 5,
-        "penalties": 74,
-        "yards": 585,
-        "perGame": 14.8,
-        "yardsPerGame": 117.0,
-        "yardsPerPenalty": 7.9
+        "penalties": 78,
+        "yards": 627,
+        "perGame": 15.6,
+        "yardsPerGame": 125.4,
+        "yardsPerPenalty": 8.0
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
           "games": 5,
-          "penalties": 80,
-          "yards": 622,
-          "perGame": 16.0,
-          "yardsPerGame": 124.4,
+          "penalties": 65,
+          "yards": 506,
+          "perGame": 13.0,
+          "yardsPerGame": 101.2,
           "yardsPerPenalty": 7.8
+        },
+        "lastSeason": {
+          "games": 16,
+          "penalties": 185,
+          "yards": 1526,
+          "perGame": 11.56,
+          "yardsPerGame": 95.4,
+          "yardsPerPenalty": 8.2
+        },
+        "last3": {
+          "games": 47,
+          "penalties": 551,
+          "yards": 4668,
+          "perGame": 11.72,
+          "yardsPerGame": 99.3,
+          "yardsPerPenalty": 8.5
+        },
+        "all": {
+          "games": 93,
+          "penalties": 1015,
+          "yards": 8456,
+          "perGame": 10.91,
+          "yardsPerGame": 90.9,
+          "yardsPerPenalty": 8.3
+        }
+      }
+    },
+    {
+      "name": "Clete Blakeman",
+      "slug": "clete-blakeman",
+      "current": {
+        "games": 6,
+        "penalties": 91,
+        "yards": 631,
+        "perGame": 15.17,
+        "yardsPerGame": 105.2,
+        "yardsPerPenalty": 6.9
+      },
+      "throughWeek": 6,
+      "baselines": {
+        "sameWeeks": {
+          "games": 5,
+          "penalties": 64,
+          "yards": 542,
+          "perGame": 12.8,
+          "yardsPerGame": 108.4,
+          "yardsPerPenalty": 8.5
+        },
+        "lastSeason": {
+          "games": 16,
+          "penalties": 205,
+          "yards": 1602,
+          "perGame": 12.81,
+          "yardsPerGame": 100.1,
+          "yardsPerPenalty": 7.8
+        },
+        "last3": {
+          "games": 48,
+          "penalties": 630,
+          "yards": 5064,
+          "perGame": 13.12,
+          "yardsPerGame": 105.5,
+          "yardsPerPenalty": 8.0
+        },
+        "all": {
+          "games": 95,
+          "penalties": 1195,
+          "yards": 9649,
+          "perGame": 12.58,
+          "yardsPerGame": 101.6,
+          "yardsPerPenalty": 8.1
+        }
+      }
+    },
+    {
+      "name": "Shawn Hochuli",
+      "slug": "shawn-hochuli",
+      "current": {
+        "games": 6,
+        "penalties": 86,
+        "yards": 691,
+        "perGame": 14.33,
+        "yardsPerGame": 115.2,
+        "yardsPerPenalty": 8.0
+      },
+      "throughWeek": 6,
+      "baselines": {
+        "sameWeeks": {
+          "games": 6,
+          "penalties": 92,
+          "yards": 727,
+          "perGame": 15.33,
+          "yardsPerGame": 121.2,
+          "yardsPerPenalty": 7.9
         },
         "lastSeason": {
           "games": 16,
@@ -424,24 +471,71 @@
       }
     },
     {
+      "name": "Alex Kemp",
+      "slug": "alex-kemp",
+      "current": {
+        "games": 5,
+        "penalties": 71,
+        "yards": 576,
+        "perGame": 14.2,
+        "yardsPerGame": 115.2,
+        "yardsPerPenalty": 8.1
+      },
+      "throughWeek": 6,
+      "baselines": {
+        "sameWeeks": {
+          "games": 6,
+          "penalties": 87,
+          "yards": 781,
+          "perGame": 14.5,
+          "yardsPerGame": 130.2,
+          "yardsPerPenalty": 9.0
+        },
+        "lastSeason": {
+          "games": 16,
+          "penalties": 206,
+          "yards": 1835,
+          "perGame": 12.88,
+          "yardsPerGame": 114.7,
+          "yardsPerPenalty": 8.9
+        },
+        "last3": {
+          "games": 48,
+          "penalties": 634,
+          "yards": 5304,
+          "perGame": 13.21,
+          "yardsPerGame": 110.5,
+          "yardsPerPenalty": 8.4
+        },
+        "all": {
+          "games": 95,
+          "penalties": 1202,
+          "yards": 10278,
+          "perGame": 12.65,
+          "yardsPerGame": 108.2,
+          "yardsPerPenalty": 8.6
+        }
+      }
+    },
+    {
       "name": "Bill Vinovich",
       "slug": "bill-vinovich",
       "current": {
-        "games": 4,
-        "penalties": 58,
-        "yards": 409,
-        "perGame": 14.5,
-        "yardsPerGame": 102.2,
-        "yardsPerPenalty": 7.1
+        "games": 5,
+        "penalties": 71,
+        "yards": 524,
+        "perGame": 14.2,
+        "yardsPerGame": 104.8,
+        "yardsPerPenalty": 7.4
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
-          "games": 5,
-          "penalties": 73,
-          "yards": 607,
-          "perGame": 14.6,
-          "yardsPerGame": 121.4,
+          "games": 6,
+          "penalties": 84,
+          "yards": 697,
+          "perGame": 14.0,
+          "yardsPerGame": 116.2,
           "yardsPerPenalty": 8.3
         },
         "lastSeason": {
@@ -474,22 +568,22 @@
       "name": "Carl Cheffers",
       "slug": "carl-cheffers",
       "current": {
-        "games": 5,
-        "penalties": 72,
-        "yards": 585,
-        "perGame": 14.4,
-        "yardsPerGame": 117.0,
-        "yardsPerPenalty": 8.1
+        "games": 6,
+        "penalties": 84,
+        "yards": 659,
+        "perGame": 14.0,
+        "yardsPerGame": 109.8,
+        "yardsPerPenalty": 7.8
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
-          "games": 4,
-          "penalties": 70,
-          "yards": 522,
-          "perGame": 17.5,
-          "yardsPerGame": 130.5,
-          "yardsPerPenalty": 7.5
+          "games": 5,
+          "penalties": 83,
+          "yards": 583,
+          "perGame": 16.6,
+          "yardsPerGame": 116.6,
+          "yardsPerPenalty": 7.0
         },
         "lastSeason": {
           "games": 16,
@@ -521,22 +615,22 @@
       "name": "Land Clark",
       "slug": "land-clark",
       "current": {
-        "games": 5,
-        "penalties": 71,
-        "yards": 538,
-        "perGame": 14.2,
-        "yardsPerGame": 107.6,
-        "yardsPerPenalty": 7.6
+        "games": 6,
+        "penalties": 80,
+        "yards": 638,
+        "perGame": 13.33,
+        "yardsPerGame": 106.3,
+        "yardsPerPenalty": 8.0
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
-          "games": 5,
-          "penalties": 67,
-          "yards": 531,
-          "perGame": 13.4,
-          "yardsPerGame": 106.2,
-          "yardsPerPenalty": 7.9
+          "games": 6,
+          "penalties": 75,
+          "yards": 583,
+          "perGame": 12.5,
+          "yardsPerGame": 97.2,
+          "yardsPerPenalty": 7.8
         },
         "lastSeason": {
           "games": 16,
@@ -565,96 +659,49 @@
       }
     },
     {
-      "name": "Alex Kemp",
-      "slug": "alex-kemp",
+      "name": "Alan Eck",
+      "slug": "alan-eck",
       "current": {
-        "games": 4,
-        "penalties": 54,
-        "yards": 451,
-        "perGame": 13.5,
-        "yardsPerGame": 112.8,
-        "yardsPerPenalty": 8.4
+        "games": 5,
+        "penalties": 66,
+        "yards": 576,
+        "perGame": 13.2,
+        "yardsPerGame": 115.2,
+        "yardsPerPenalty": 8.7
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
           "games": 5,
-          "penalties": 74,
-          "yards": 661,
-          "perGame": 14.8,
-          "yardsPerGame": 132.2,
-          "yardsPerPenalty": 8.9
+          "penalties": 66,
+          "yards": 614,
+          "perGame": 13.2,
+          "yardsPerGame": 122.8,
+          "yardsPerPenalty": 9.3
         },
         "lastSeason": {
           "games": 16,
-          "penalties": 206,
-          "yards": 1835,
-          "perGame": 12.88,
-          "yardsPerGame": 114.7,
-          "yardsPerPenalty": 8.9
-        },
-        "last3": {
-          "games": 48,
-          "penalties": 634,
-          "yards": 5304,
-          "perGame": 13.21,
-          "yardsPerGame": 110.5,
-          "yardsPerPenalty": 8.4
-        },
-        "all": {
-          "games": 95,
-          "penalties": 1202,
-          "yards": 10278,
-          "perGame": 12.65,
-          "yardsPerGame": 108.2,
-          "yardsPerPenalty": 8.6
-        }
-      }
-    },
-    {
-      "name": "John Hussey",
-      "slug": "john-hussey",
-      "current": {
-        "games": 4,
-        "penalties": 54,
-        "yards": 394,
-        "perGame": 13.5,
-        "yardsPerGame": 98.5,
-        "yardsPerPenalty": 7.3
-      },
-      "throughWeek": 5,
-      "baselines": {
-        "sameWeeks": {
-          "games": 4,
-          "penalties": 53,
-          "yards": 412,
-          "perGame": 13.25,
-          "yardsPerGame": 103.0,
-          "yardsPerPenalty": 7.8
-        },
-        "lastSeason": {
-          "games": 16,
-          "penalties": 185,
-          "yards": 1526,
-          "perGame": 11.56,
-          "yardsPerGame": 95.4,
+          "penalties": 175,
+          "yards": 1434,
+          "perGame": 10.94,
+          "yardsPerGame": 89.6,
           "yardsPerPenalty": 8.2
         },
         "last3": {
-          "games": 47,
-          "penalties": 551,
-          "yards": 4668,
-          "perGame": 11.72,
-          "yardsPerGame": 99.3,
-          "yardsPerPenalty": 8.5
+          "games": 48,
+          "penalties": 522,
+          "yards": 4406,
+          "perGame": 10.88,
+          "yardsPerGame": 91.8,
+          "yardsPerPenalty": 8.4
         },
         "all": {
-          "games": 93,
-          "penalties": 1015,
-          "yards": 8456,
-          "perGame": 10.91,
-          "yardsPerGame": 90.9,
-          "yardsPerPenalty": 8.3
+          "games": 48,
+          "penalties": 522,
+          "yards": 4406,
+          "perGame": 10.88,
+          "yardsPerGame": 91.8,
+          "yardsPerPenalty": 8.4
         }
       }
     },
@@ -709,22 +756,22 @@
       "name": "Shawn Smith",
       "slug": "shawn-smith",
       "current": {
-        "games": 5,
-        "penalties": 65,
-        "yards": 549,
-        "perGame": 13.0,
-        "yardsPerGame": 109.8,
-        "yardsPerPenalty": 8.4
+        "games": 6,
+        "penalties": 79,
+        "yards": 683,
+        "perGame": 13.17,
+        "yardsPerGame": 113.8,
+        "yardsPerPenalty": 8.6
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
-          "games": 5,
-          "penalties": 64,
-          "yards": 513,
-          "perGame": 12.8,
-          "yardsPerGame": 102.6,
-          "yardsPerPenalty": 8.0
+          "games": 6,
+          "penalties": 78,
+          "yards": 612,
+          "perGame": 13.0,
+          "yardsPerGame": 102.0,
+          "yardsPerPenalty": 7.8
         },
         "lastSeason": {
           "games": 16,
@@ -748,53 +795,6 @@
           "yards": 9296,
           "perGame": 11.59,
           "yardsPerGame": 97.9,
-          "yardsPerPenalty": 8.4
-        }
-      }
-    },
-    {
-      "name": "Alan Eck",
-      "slug": "alan-eck",
-      "current": {
-        "games": 4,
-        "penalties": 51,
-        "yards": 428,
-        "perGame": 12.75,
-        "yardsPerGame": 107.0,
-        "yardsPerPenalty": 8.4
-      },
-      "throughWeek": 5,
-      "baselines": {
-        "sameWeeks": {
-          "games": 5,
-          "penalties": 66,
-          "yards": 614,
-          "perGame": 13.2,
-          "yardsPerGame": 122.8,
-          "yardsPerPenalty": 9.3
-        },
-        "lastSeason": {
-          "games": 16,
-          "penalties": 175,
-          "yards": 1434,
-          "perGame": 10.94,
-          "yardsPerGame": 89.6,
-          "yardsPerPenalty": 8.2
-        },
-        "last3": {
-          "games": 48,
-          "penalties": 522,
-          "yards": 4406,
-          "perGame": 10.88,
-          "yardsPerGame": 91.8,
-          "yardsPerPenalty": 8.4
-        },
-        "all": {
-          "games": 48,
-          "penalties": 522,
-          "yards": 4406,
-          "perGame": 10.88,
-          "yardsPerGame": 91.8,
           "yardsPerPenalty": 8.4
         }
       }
@@ -850,22 +850,22 @@
       "name": "Clay Martin",
       "slug": "clay-martin",
       "current": {
-        "games": 5,
-        "penalties": 60,
-        "yards": 441,
-        "perGame": 12.0,
-        "yardsPerGame": 88.2,
-        "yardsPerPenalty": 7.4
+        "games": 6,
+        "penalties": 69,
+        "yards": 523,
+        "perGame": 11.5,
+        "yardsPerGame": 87.2,
+        "yardsPerPenalty": 7.6
       },
-      "throughWeek": 5,
+      "throughWeek": 6,
       "baselines": {
         "sameWeeks": {
-          "games": 5,
-          "penalties": 67,
-          "yards": 476,
-          "perGame": 13.4,
-          "yardsPerGame": 95.2,
-          "yardsPerPenalty": 7.1
+          "games": 6,
+          "penalties": 84,
+          "yards": 608,
+          "perGame": 14.0,
+          "yardsPerGame": 101.3,
+          "yardsPerPenalty": 7.2
         },
         "lastSeason": {
           "games": 16,
@@ -957,5 +957,5 @@
       }
     }
   ],
-  "generatedAt": "2026-10-17T05:55:18.003168Z"
+  "generatedAt": "2026-10-19T00:54:16.031920Z"
 }

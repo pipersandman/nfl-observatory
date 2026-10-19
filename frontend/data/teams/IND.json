@@ -4,19 +4,19 @@
   "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
   "division": "AFC South",
   "season": 2026,
-  "record": "2-3",
-  "leaguePerGame": 7.52,
+  "record": "2-4",
+  "leaguePerGame": 7.44,
   "current": {
-    "games": 5,
-    "penalties": 25,
-    "yards": 164,
+    "games": 6,
+    "penalties": 30,
+    "yards": 225,
     "perGame": 5.0,
-    "yardsPerGame": 32.8,
-    "offensePerGame": 3.0,
-    "defensePerGame": 2.0,
-    "drawnPerGame": 7.2,
-    "drawnYardsPerGame": 64.0,
-    "netPerGame": 2.2,
+    "yardsPerGame": 37.5,
+    "offensePerGame": 3.17,
+    "defensePerGame": 1.83,
+    "drawnPerGame": 7.33,
+    "drawnYardsPerGame": 62.3,
+    "netPerGame": 2.33,
     "homePerGame": 5.0,
     "awayPerGame": 5.0
   },
@@ -48,52 +48,52 @@
     "homePerGame": 5.08,
     "awayPerGame": 5.76
   },
-  "throughWeek": 5,
+  "throughWeek": 6,
   "baselines": {
     "sameWeeks": {
-      "label": "2025 through Week 5",
-      "short": "2025 Wk 1\u20135",
-      "games": 5,
-      "penalties": 37,
-      "yards": 289,
-      "perGame": 7.4,
-      "yardsPerGame": 57.8,
-      "offensePerGame": 4.0,
-      "defensePerGame": 3.4,
-      "drawnPerGame": 6.4,
-      "drawnYardsPerGame": 58.8,
-      "netPerGame": -1.0,
-      "homePerGame": 7.33,
+      "label": "2025 through Week 6",
+      "short": "2025 Wk 1\u20136",
+      "games": 6,
+      "penalties": 42,
+      "yards": 329,
+      "perGame": 7.0,
+      "yardsPerGame": 54.8,
+      "offensePerGame": 3.5,
+      "defensePerGame": 3.5,
+      "drawnPerGame": 6.5,
+      "drawnYardsPerGame": 59.8,
+      "netPerGame": -0.5,
+      "homePerGame": 6.75,
       "awayPerGame": 7.5,
       "types": {
+        "Defensive Offside": 0.17,
+        "Face Mask": 0.0,
+        "Roughing the Passer": 0.17,
+        "Neutral Zone Infraction": 0.0,
+        "Defensive Holding": 0.67,
+        "Offensive Holding": 2.0,
+        "Illegal Formation": 0.33,
+        "False Start": 0.5,
+        "Offensive Pass Interference": 0.5,
         "Ineligible Downfield Pass": 0.0,
-        "Illegal Formation": 0.4,
-        "Unnecessary Roughness": 0.4,
+        "Delay of Game": 0.33,
+        "Unnecessary Roughness": 0.5,
         "Illegal Block Above the Waist": 0.0,
-        "Defensive Offside": 0.2,
-        "Offensive Holding": 2.4,
-        "Delay of Game": 0.2,
-        "Offensive Pass Interference": 0.6,
-        "False Start": 0.6,
-        "Roughing the Passer": 0.2,
-        "Defensive Pass Interference": 0.8,
-        "Encroachment": 0.0,
-        "Defensive Holding": 0.8,
-        "Neutral Zone Infraction": 0.0
+        "Defensive Pass Interference": 0.67
       },
       "drawnTypes": {
-        "Illegal Block Above the Waist": 0.0,
-        "Delay of Game": 0.4,
-        "Offensive Holding": 1.2,
-        "False Start": 0.4,
-        "Illegal Shift": 0.2,
-        "Defensive Pass Interference": 1.0
+        "Defensive Offside": 0.5,
+        "Delay of Game": 0.33,
+        "Illegal Shift": 0.17,
+        "Offensive Holding": 1.17,
+        "Defensive Pass Interference": 0.83,
+        "False Start": 0.67
       },
       "quarters": [
-        1.2,
-        2.0,
-        2.0,
-        2.2
+        1.0,
+        2.17,
+        1.83,
+        2.0
       ]
     },
     "lastSeason": {
@@ -112,28 +112,28 @@
       "homePerGame": 5.89,
       "awayPerGame": 6.12,
       "types": {
-        "Ineligible Downfield Pass": 0.06,
+        "Defensive Offside": 0.12,
+        "Face Mask": 0.29,
+        "Roughing the Passer": 0.18,
+        "Neutral Zone Infraction": 0.06,
+        "Defensive Holding": 0.41,
+        "Offensive Holding": 1.29,
         "Illegal Formation": 0.35,
+        "False Start": 0.65,
+        "Offensive Pass Interference": 0.24,
+        "Ineligible Downfield Pass": 0.06,
+        "Delay of Game": 0.47,
         "Unnecessary Roughness": 0.35,
         "Illegal Block Above the Waist": 0.0,
-        "Defensive Offside": 0.12,
-        "Offensive Holding": 1.29,
-        "Delay of Game": 0.47,
-        "Offensive Pass Interference": 0.24,
-        "False Start": 0.65,
-        "Roughing the Passer": 0.18,
-        "Defensive Pass Interference": 0.53,
-        "Encroachment": 0.12,
-        "Defensive Holding": 0.41,
-        "Neutral Zone Infraction": 0.06
+        "Defensive Pass Interference": 0.53
       },
       "drawnTypes": {
-        "Illegal Block Above the Waist": 0.12,
+        "Defensive Offside": 0.29,
         "Delay of Game": 0.24,
-        "Offensive Holding": 0.82,
-        "False Start": 0.82,
         "Illegal Shift": 0.12,
-        "Defensive Pass Interference": 0.82
+        "Offensive Holding": 0.82,
+        "Defensive Pass Interference": 0.82,
+        "False Start": 0.82
       },
       "quarters": [
         1.24,
@@ -158,28 +158,28 @@
       "homePerGame": 5.65,
       "awayPerGame": 5.68,
       "types": {
-        "Ineligible Downfield Pass": 0.12,
+        "Defensive Offside": 0.29,
+        "Face Mask": 0.14,
+        "Roughing the Passer": 0.16,
+        "Neutral Zone Infraction": 0.2,
+        "Defensive Holding": 0.41,
+        "Offensive Holding": 1.0,
         "Illegal Formation": 0.24,
+        "False Start": 0.96,
+        "Offensive Pass Interference": 0.18,
+        "Ineligible Downfield Pass": 0.12,
+        "Delay of Game": 0.35,
         "Unnecessary Roughness": 0.25,
         "Illegal Block Above the Waist": 0.04,
-        "Defensive Offside": 0.29,
-        "Offensive Holding": 1.0,
-        "Delay of Game": 0.35,
-        "Offensive Pass Interference": 0.18,
-        "False Start": 0.96,
-        "Roughing the Passer": 0.16,
-        "Defensive Pass Interference": 0.43,
-        "Encroachment": 0.12,
-        "Defensive Holding": 0.41,
-        "Neutral Zone Infraction": 0.2
+        "Defensive Pass Interference": 0.43
       },
       "drawnTypes": {
-        "Illegal Block Above the Waist": 0.06,
+        "Defensive Offside": 0.25,
         "Delay of Game": 0.22,
-        "Offensive Holding": 0.9,
-        "False Start": 1.33,
         "Illegal Shift": 0.1,
-        "Defensive Pass Interference": 0.65
+        "Offensive Holding": 0.9,
+        "Defensive Pass Interference": 0.65,
+        "False Start": 1.33
       },
       "quarters": [
         1.08,
@@ -204,28 +204,28 @@
       "homePerGame": 5.08,
       "awayPerGame": 5.76,
       "types": {
-        "Ineligible Downfield Pass": 0.13,
+        "Defensive Offside": 0.26,
+        "Face Mask": 0.11,
+        "Roughing the Passer": 0.17,
+        "Neutral Zone Infraction": 0.21,
+        "Defensive Holding": 0.37,
+        "Offensive Holding": 1.1,
         "Illegal Formation": 0.16,
+        "False Start": 0.91,
+        "Offensive Pass Interference": 0.16,
+        "Ineligible Downfield Pass": 0.13,
+        "Delay of Game": 0.28,
         "Unnecessary Roughness": 0.24,
         "Illegal Block Above the Waist": 0.07,
-        "Defensive Offside": 0.26,
-        "Offensive Holding": 1.1,
-        "Delay of Game": 0.28,
-        "Offensive Pass Interference": 0.16,
-        "False Start": 0.91,
-        "Roughing the Passer": 0.17,
-        "Defensive Pass Interference": 0.48,
-        "Encroachment": 0.07,
-        "Defensive Holding": 0.37,
-        "Neutral Zone Infraction": 0.21
+        "Defensive Pass Interference": 0.48
       },
       "drawnTypes": {
-        "Illegal Block Above the Waist": 0.09,
+        "Defensive Offside": 0.31,
         "Delay of Game": 0.16,
-        "Offensive Holding": 0.95,
-        "False Start": 1.25,
         "Illegal Shift": 0.07,
-        "Defensive Pass Interference": 0.63
+        "Offensive Holding": 0.95,
+        "Defensive Pass Interference": 0.63,
+        "False Start": 1.25
       },
       "quarters": [
         0.86,
@@ -252,104 +252,104 @@
   "committedTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 1.2,
-      "currentCount": 6,
+      "currentPerGame": 1.17,
+      "currentCount": 7,
       "priorPerGame": 1.1
     },
     {
+      "type": "False Start",
+      "currentPerGame": 0.83,
+      "currentCount": 5,
+      "priorPerGame": 0.91
+    },
+    {
       "type": "Delay of Game",
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.83,
       "currentCount": 5,
       "priorPerGame": 0.28
     },
     {
-      "type": "False Start",
-      "currentPerGame": 0.8,
-      "currentCount": 4,
-      "priorPerGame": 0.91
-    },
-    {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.4,
-      "currentCount": 2,
+      "currentPerGame": 0.5,
+      "currentCount": 3,
       "priorPerGame": 0.48
     },
     {
       "type": "Defensive Offside",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.33,
       "currentCount": 2,
       "priorPerGame": 0.26
     },
     {
       "type": "Illegal Block Above the Waist",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.33,
       "currentCount": 2,
       "priorPerGame": 0.07
     },
     {
       "type": "Defensive Holding",
-      "currentPerGame": 0.2,
+      "currentPerGame": 0.17,
       "currentCount": 1,
       "priorPerGame": 0.37
     },
     {
-      "type": "Encroachment",
-      "currentPerGame": 0.2,
+      "type": "Face Mask",
+      "currentPerGame": 0.17,
       "currentCount": 1,
-      "priorPerGame": 0.07
+      "priorPerGame": 0.11
     }
   ],
   "drawnTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 2.4,
+      "currentPerGame": 2.33,
       "priorPerGame": 0.95
     },
     {
       "type": "False Start",
-      "currentPerGame": 1.2,
+      "currentPerGame": 1.0,
       "priorPerGame": 1.25
     },
     {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.6,
+      "currentPerGame": 0.5,
       "priorPerGame": 0.63
     },
     {
       "type": "Delay of Game",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.5,
       "priorPerGame": 0.16
     },
     {
-      "type": "Illegal Block Above the Waist",
-      "currentPerGame": 0.4,
-      "priorPerGame": 0.09
+      "type": "Defensive Offside",
+      "currentPerGame": 0.33,
+      "priorPerGame": 0.31
     },
     {
       "type": "Illegal Shift",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.33,
       "priorPerGame": 0.07
     }
   ],
   "quarters": [
     {
       "quarter": 1,
-      "currentPerGame": 1.2,
+      "currentPerGame": 1.17,
       "priorPerGame": 0.86
     },
     {
       "quarter": 2,
-      "currentPerGame": 2.2,
+      "currentPerGame": 1.83,
       "priorPerGame": 1.76
     },
     {
       "quarter": 3,
-      "currentPerGame": 0.6,
+      "currentPerGame": 0.83,
       "priorPerGame": 1.25
     },
     {
       "quarter": 4,
-      "currentPerGame": 0.8,
+      "currentPerGame": 1.0,
       "priorPerGame": 1.5
     }
   ],
@@ -381,6 +381,17 @@
         {
           "type": "Defensive Pass Interference",
           "count": 1
+        }
+      ]
+    },
+    {
+      "player": "T.Bortolini",
+      "count": 2,
+      "yards": 20,
+      "types": [
+        {
+          "type": "Offensive Holding",
+          "count": 2
         }
       ]
     },
@@ -430,34 +441,23 @@
       ]
     },
     {
+      "player": "C.Taylor-Britt",
+      "count": 1,
+      "yards": 36,
+      "types": [
+        {
+          "type": "Defensive Pass Interference",
+          "count": 1
+        }
+      ]
+    },
+    {
       "player": "A.Ogletree",
       "count": 1,
       "yards": 10,
       "types": [
         {
           "type": "Illegal Block Above the Waist",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "T.Bortolini",
-      "count": 1,
-      "yards": 10,
-      "types": [
-        {
-          "type": "Offensive Holding",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "player": "J.Taylor",
-      "count": 1,
-      "yards": 5,
-      "types": [
-        {
-          "type": "False Start",
           "count": 1
         }
       ]
@@ -585,20 +585,20 @@
       "lastSeason": 2025
     },
     {
+      "name": "Bill Vinovich",
+      "slug": "bill-vinovich",
+      "games": 7,
+      "perGame": 3.71,
+      "opponentPerGame": 6.86,
+      "lastSeason": 2026
+    },
+    {
       "name": "Jerome Boger",
       "slug": "jerome-boger",
       "games": 3,
       "perGame": 3.67,
       "opponentPerGame": 5.0,
       "lastSeason": 2022
-    },
-    {
-      "name": "Bill Vinovich",
-      "slug": "bill-vinovich",
-      "games": 6,
-      "perGame": 3.5,
-      "opponentPerGame": 6.67,
-      "lastSeason": 2024
     },
     {
       "name": "Clay Martin",
@@ -668,14 +668,27 @@
     },
     {
       "season": 2026,
-      "games": 5,
+      "games": 6,
       "perGame": 5.0,
-      "yardsPerGame": 32.8,
-      "drawnPerGame": 7.2,
+      "yardsPerGame": 37.5,
+      "drawnPerGame": 7.33,
       "rank": 31
     }
   ],
   "games": [
+    {
+      "gameId": "2026_06_TEN_IND",
+      "week": 6,
+      "date": "2026-10-18",
+      "opponent": "TEN",
+      "home": true,
+      "score": "20-26",
+      "result": "L",
+      "flags": 5,
+      "yards": 61,
+      "opponentFlags": 8,
+      "crew": "Bill Vinovich"
+    },
     {
       "gameId": "2026_05_IND_PIT",
       "week": 5,
@@ -1046,31 +1059,32 @@
     },
     {
       "opponent": "TEN",
-      "games": 12,
+      "games": 13,
       "seasons": [
         2020,
         2021,
         2022,
         2023,
         2024,
-        2025
+        2025,
+        2026
       ],
-      "flagsPerGame": 5.75,
-      "oppFlagsPerGame": 6.17,
-      "yardsPerGame": 47.2,
-      "oppYardsPerGame": 59.6,
-      "netPerGame": 0.42,
-      "totalFlags": 69,
-      "totalOppFlags": 74,
-      "homeGames": 6,
+      "flagsPerGame": 5.69,
+      "oppFlagsPerGame": 6.31,
+      "yardsPerGame": 48.3,
+      "oppYardsPerGame": 59.2,
+      "netPerGame": 0.62,
+      "totalFlags": 74,
+      "totalOppFlags": 82,
+      "homeGames": 7,
       "lastMet": {
-        "season": 2025,
-        "week": 8,
+        "season": 2026,
+        "week": 6,
         "home": true,
-        "score": "38-14",
-        "result": "W",
-        "flags": 3,
-        "oppFlags": 3
+        "score": "20-26",
+        "result": "L",
+        "flags": 5,
+        "oppFlags": 8
       }
     },
     {
@@ -1548,8 +1562,8 @@
   "typeTrends": [
     {
       "type": "Offensive Holding",
-      "current": 1.2,
-      "currentCount": 6,
+      "current": 1.17,
+      "currentCount": 7,
       "bySeason": [
         {
           "season": 2020,
@@ -1577,14 +1591,14 @@
         },
         {
           "season": 2026,
-          "perGame": 1.2
+          "perGame": 1.17
         }
       ]
     },
     {
       "type": "False Start",
-      "current": 0.8,
-      "currentCount": 4,
+      "current": 0.83,
+      "currentCount": 5,
       "bySeason": [
         {
           "season": 2020,
@@ -1612,14 +1626,14 @@
         },
         {
           "season": 2026,
-          "perGame": 0.8
+          "perGame": 0.83
         }
       ]
     },
     {
       "type": "Defensive Pass Interference",
-      "current": 0.4,
-      "currentCount": 2,
+      "current": 0.5,
+      "currentCount": 3,
       "bySeason": [
         {
           "season": 2020,
@@ -1647,13 +1661,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.4
+          "perGame": 0.5
         }
       ]
     },
     {
       "type": "Defensive Holding",
-      "current": 0.2,
+      "current": 0.17,
       "currentCount": 1,
       "bySeason": [
         {
@@ -1682,13 +1696,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.2
+          "perGame": 0.17
         }
       ]
     },
     {
       "type": "Delay of Game",
-      "current": 1.0,
+      "current": 0.83,
       "currentCount": 5,
       "bySeason": [
         {
@@ -1717,13 +1731,13 @@
         },
         {
           "season": 2026,
-          "perGame": 1.0
+          "perGame": 0.83
         }
       ]
     },
     {
       "type": "Defensive Offside",
-      "current": 0.4,
+      "current": 0.33,
       "currentCount": 2,
       "bySeason": [
         {
@@ -1752,7 +1766,7 @@
         },
         {
           "season": 2026,
-          "perGame": 0.4
+          "perGame": 0.33
         }
       ]
     },
@@ -1827,6 +1841,41 @@
       ]
     },
     {
+      "type": "Illegal Formation",
+      "current": 0.17,
+      "currentCount": 1,
+      "bySeason": [
+        {
+          "season": 2020,
+          "perGame": 0.06
+        },
+        {
+          "season": 2021,
+          "perGame": 0.18
+        },
+        {
+          "season": 2022,
+          "perGame": 0.0
+        },
+        {
+          "season": 2023,
+          "perGame": 0.06
+        },
+        {
+          "season": 2024,
+          "perGame": 0.29
+        },
+        {
+          "season": 2025,
+          "perGame": 0.35
+        },
+        {
+          "season": 2026,
+          "perGame": 0.17
+        }
+      ]
+    },
+    {
       "type": "Roughing the Passer",
       "current": 0.0,
       "currentCount": 0,
@@ -1854,41 +1903,6 @@
         {
           "season": 2025,
           "perGame": 0.18
-        },
-        {
-          "season": 2026,
-          "perGame": 0.0
-        }
-      ]
-    },
-    {
-      "type": "Illegal Formation",
-      "current": 0.0,
-      "currentCount": 0,
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.06
-        },
-        {
-          "season": 2021,
-          "perGame": 0.18
-        },
-        {
-          "season": 2022,
-          "perGame": 0.0
-        },
-        {
-          "season": 2023,
-          "perGame": 0.06
-        },
-        {
-          "season": 2024,
-          "perGame": 0.29
-        },
-        {
-          "season": 2025,
-          "perGame": 0.35
         },
         {
           "season": 2026,
@@ -1968,7 +1982,7 @@
     },
     {
       "type": "Illegal Block Above the Waist",
-      "current": 0.4,
+      "current": 0.33,
       "currentCount": 2,
       "bySeason": [
         {
@@ -1997,13 +2011,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.4
+          "perGame": 0.33
         }
       ]
     },
     {
-      "type": "Encroachment",
-      "current": 0.2,
+      "type": "Face Mask",
+      "current": 0.17,
       "currentCount": 1,
       "bySeason": [
         {
@@ -2012,37 +2026,37 @@
         },
         {
           "season": 2021,
-          "perGame": 0.0
-        },
-        {
-          "season": 2022,
-          "perGame": 0.0
-        },
-        {
-          "season": 2023,
-          "perGame": 0.06
-        },
-        {
-          "season": 2024,
-          "perGame": 0.18
-        },
-        {
-          "season": 2025,
           "perGame": 0.12
         },
         {
+          "season": 2022,
+          "perGame": 0.06
+        },
+        {
+          "season": 2023,
+          "perGame": 0.0
+        },
+        {
+          "season": 2024,
+          "perGame": 0.12
+        },
+        {
+          "season": 2025,
+          "perGame": 0.29
+        },
+        {
           "season": 2026,
-          "perGame": 0.2
+          "perGame": 0.17
         }
       ]
     }
   ],
   "nextGame": {
-    "gameId": "2026_06_TEN_IND",
-    "week": 6,
-    "date": "2026-10-18",
-    "opponent": "TEN",
-    "home": true
+    "gameId": "2026_07_IND_MIN",
+    "week": 7,
+    "date": "2026-10-25",
+    "opponent": "MIN",
+    "home": false
   },
-  "generatedAt": "2026-10-17T05:55:22+00:00"
+  "generatedAt": "2026-10-19T00:54:20+00:00"
 }

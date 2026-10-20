@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-20T04:28:04+00:00",
+  "generatedAt": "2026-10-20T05:27:59+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 29,
-      "avgMiss": 3.46,
-      "hitRate": 89.7,
-      "within3": 51.7,
-      "baselineAvgMiss": 3.76,
-      "skillPct": 7.9
+      "games": 30,
+      "avgMiss": 3.49,
+      "hitRate": 90.0,
+      "within3": 50.0,
+      "baselineAvgMiss": 3.75,
+      "skillPct": 7.0
     },
     "byWeek": [
       {
@@ -41,15 +41,35 @@
       {
         "season": 2026,
         "week": 6,
-        "games": 13,
-        "avgMiss": 3.31,
-        "hitRate": 92.3,
-        "within3": 46.2,
-        "baselineAvgMiss": 3.42,
-        "skillPct": 3.2
+        "games": 14,
+        "avgMiss": 3.38,
+        "hitRate": 92.9,
+        "within3": 42.9,
+        "baselineAvgMiss": 3.43,
+        "skillPct": 1.5
       }
     ],
     "games": [
+      {
+        "gameId": "2026_06_WAS_SF",
+        "season": 2026,
+        "week": 6,
+        "away": "WAS",
+        "home": "SF",
+        "crew": "Adrian Hill",
+        "source": "live",
+        "projected": 13.7,
+        "low": 8,
+        "high": 20,
+        "actual": 18,
+        "miss": 4.3,
+        "inRange": true,
+        "baselineMiss": 3.6,
+        "homeProjected": 6.2,
+        "awayProjected": 7.5,
+        "homeActual": 11,
+        "awayActual": 7
+      },
       {
         "gameId": "2026_06_TEN_IND",
         "season": 2026,
@@ -636,12 +656,12 @@
     "currentSeason": {
       "season": 2026,
       "summary": {
-        "games": 79,
-        "avgMiss": 3.56,
-        "hitRate": 84.8,
-        "within3": 55.7,
-        "baselineAvgMiss": 3.68,
-        "skillPct": 3.3
+        "games": 93,
+        "avgMiss": 3.54,
+        "hitRate": 86.0,
+        "within3": 53.8,
+        "baselineAvgMiss": 3.65,
+        "skillPct": 3.0
       },
       "byWeek": [
         {
@@ -693,6 +713,16 @@
           "within3": 53.3,
           "baselineAvgMiss": 4.16,
           "skillPct": 9.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "games": 14,
+          "avgMiss": 3.39,
+          "hitRate": 92.9,
+          "within3": 42.9,
+          "baselineAvgMiss": 3.43,
+          "skillPct": 1.0
         }
       ]
     },

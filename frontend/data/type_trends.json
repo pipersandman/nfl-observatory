@@ -17,9 +17,9 @@
     },
     {
       "key": "allPrior",
-      "label": "All seasons (2020\u201325)",
-      "short": "2020\u201325 avg",
-      "games": 1615
+      "label": "All seasons (2015\u201325)",
+      "short": "2015\u201325 avg",
+      "games": 2895
     }
   ],
   "defaultComparison": "sameWeeks",
@@ -31,9 +31,29 @@
       "compare": {
         "sameWeeks": 2.89,
         "lastSeason": 2.47,
-        "allPrior": 2.24
+        "allPrior": 2.46
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 2.79
+        },
+        {
+          "season": 2016,
+          "perGame": 2.74
+        },
+        {
+          "season": 2017,
+          "perGame": 2.59
+        },
+        {
+          "season": 2018,
+          "perGame": 2.78
+        },
+        {
+          "season": 2019,
+          "perGame": 2.81
+        },
         {
           "season": 2020,
           "perGame": 1.79
@@ -71,9 +91,29 @@
       "compare": {
         "sameWeeks": 2.43,
         "lastSeason": 2.42,
-        "allPrior": 2.23
+        "allPrior": 2.2
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 2.21
+        },
+        {
+          "season": 2016,
+          "perGame": 2.3
+        },
+        {
+          "season": 2017,
+          "perGame": 2.01
+        },
+        {
+          "season": 2018,
+          "perGame": 2.21
+        },
+        {
+          "season": 2019,
+          "perGame": 2.14
+        },
         {
           "season": 2020,
           "perGame": 1.94
@@ -111,9 +151,29 @@
       "compare": {
         "sameWeeks": 1.1,
         "lastSeason": 1.03,
-        "allPrior": 1.04
+        "allPrior": 1.03
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.9
+        },
+        {
+          "season": 2016,
+          "perGame": 1.09
+        },
+        {
+          "season": 2017,
+          "perGame": 1.04
+        },
+        {
+          "season": 2018,
+          "perGame": 0.93
+        },
+        {
+          "season": 2019,
+          "perGame": 1.05
+        },
         {
           "season": 2020,
           "perGame": 1.2
@@ -151,9 +211,29 @@
       "compare": {
         "sameWeeks": 0.8,
         "lastSeason": 0.65,
-        "allPrior": 0.66
+        "allPrior": 0.76
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.85
+        },
+        {
+          "season": 2016,
+          "perGame": 0.8
+        },
+        {
+          "season": 2017,
+          "perGame": 0.93
+        },
+        {
+          "season": 2018,
+          "perGame": 0.93
+        },
+        {
+          "season": 2019,
+          "perGame": 0.95
+        },
         {
           "season": 2020,
           "perGame": 0.66
@@ -191,9 +271,29 @@
       "compare": {
         "sameWeeks": 0.74,
         "lastSeason": 0.64,
-        "allPrior": 0.61
+        "allPrior": 0.68
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.89
+        },
+        {
+          "season": 2016,
+          "perGame": 0.76
+        },
+        {
+          "season": 2017,
+          "perGame": 0.78
+        },
+        {
+          "season": 2018,
+          "perGame": 0.8
+        },
+        {
+          "season": 2019,
+          "perGame": 0.61
+        },
         {
           "season": 2020,
           "perGame": 0.62
@@ -225,55 +325,35 @@
       ]
     },
     {
-      "type": "Delay of Game",
-      "current": 1.05,
-      "currentCount": 98,
-      "compare": {
-        "sameWeeks": 0.76,
-        "lastSeason": 0.64,
-        "allPrior": 0.58
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.46
-        },
-        {
-          "season": 2021,
-          "perGame": 0.59
-        },
-        {
-          "season": 2022,
-          "perGame": 0.58
-        },
-        {
-          "season": 2023,
-          "perGame": 0.58
-        },
-        {
-          "season": 2024,
-          "perGame": 0.62
-        },
-        {
-          "season": 2025,
-          "perGame": 0.64
-        },
-        {
-          "season": 2026,
-          "perGame": 1.05
-        }
-      ]
-    },
-    {
       "type": "Defensive Offside",
       "current": 0.58,
       "currentCount": 54,
       "compare": {
         "sameWeeks": 0.63,
         "lastSeason": 0.52,
-        "allPrior": 0.54
+        "allPrior": 0.58
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.64
+        },
+        {
+          "season": 2016,
+          "perGame": 0.65
+        },
+        {
+          "season": 2017,
+          "perGame": 0.7
+        },
+        {
+          "season": 2018,
+          "perGame": 0.56
+        },
+        {
+          "season": 2019,
+          "perGame": 0.56
+        },
         {
           "season": 2020,
           "perGame": 0.57
@@ -305,42 +385,62 @@
       ]
     },
     {
-      "type": "Roughing the Passer",
-      "current": 0.48,
-      "currentCount": 45,
+      "type": "Delay of Game",
+      "current": 1.05,
+      "currentCount": 98,
       "compare": {
-        "sameWeeks": 0.42,
-        "lastSeason": 0.34,
-        "allPrior": 0.4
+        "sameWeeks": 0.76,
+        "lastSeason": 0.64,
+        "allPrior": 0.55
       },
       "bySeason": [
         {
+          "season": 2015,
+          "perGame": 0.57
+        },
+        {
+          "season": 2016,
+          "perGame": 0.54
+        },
+        {
+          "season": 2017,
+          "perGame": 0.49
+        },
+        {
+          "season": 2018,
+          "perGame": 0.45
+        },
+        {
+          "season": 2019,
+          "perGame": 0.47
+        },
+        {
           "season": 2020,
-          "perGame": 0.48
+          "perGame": 0.46
         },
         {
           "season": 2021,
-          "perGame": 0.55
+          "perGame": 0.59
         },
         {
           "season": 2022,
-          "perGame": 0.34
+          "perGame": 0.58
         },
         {
           "season": 2023,
-          "perGame": 0.34
+          "perGame": 0.58
         },
         {
           "season": 2024,
-          "perGame": 0.36
+          "perGame": 0.62
         },
         {
           "season": 2025,
-          "perGame": 0.34
+          "perGame": 0.64
         },
         {
           "season": 2026,
-          "perGame": 0.48
+          "perGame": 1.05
         }
       ]
     },
@@ -351,9 +451,29 @@
       "compare": {
         "sameWeeks": 0.27,
         "lastSeason": 0.28,
-        "allPrior": 0.38
+        "allPrior": 0.46
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.64
+        },
+        {
+          "season": 2016,
+          "perGame": 0.46
+        },
+        {
+          "season": 2017,
+          "perGame": 0.49
+        },
+        {
+          "season": 2018,
+          "perGame": 0.56
+        },
+        {
+          "season": 2019,
+          "perGame": 0.63
+        },
         {
           "season": 2020,
           "perGame": 0.6
@@ -385,15 +505,155 @@
       ]
     },
     {
+      "type": "Roughing the Passer",
+      "current": 0.48,
+      "currentCount": 45,
+      "compare": {
+        "sameWeeks": 0.42,
+        "lastSeason": 0.34,
+        "allPrior": 0.41
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.39
+        },
+        {
+          "season": 2016,
+          "perGame": 0.33
+        },
+        {
+          "season": 2017,
+          "perGame": 0.41
+        },
+        {
+          "season": 2018,
+          "perGame": 0.45
+        },
+        {
+          "season": 2019,
+          "perGame": 0.52
+        },
+        {
+          "season": 2020,
+          "perGame": 0.48
+        },
+        {
+          "season": 2021,
+          "perGame": 0.55
+        },
+        {
+          "season": 2022,
+          "perGame": 0.34
+        },
+        {
+          "season": 2023,
+          "perGame": 0.34
+        },
+        {
+          "season": 2024,
+          "perGame": 0.36
+        },
+        {
+          "season": 2025,
+          "perGame": 0.34
+        },
+        {
+          "season": 2026,
+          "perGame": 0.48
+        }
+      ]
+    },
+    {
+      "type": "Illegal Block Above the Waist",
+      "current": 0.35,
+      "currentCount": 33,
+      "compare": {
+        "sameWeeks": 0.22,
+        "lastSeason": 0.19,
+        "allPrior": 0.39
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.48
+        },
+        {
+          "season": 2016,
+          "perGame": 0.48
+        },
+        {
+          "season": 2017,
+          "perGame": 0.65
+        },
+        {
+          "season": 2018,
+          "perGame": 0.72
+        },
+        {
+          "season": 2019,
+          "perGame": 0.61
+        },
+        {
+          "season": 2020,
+          "perGame": 0.35
+        },
+        {
+          "season": 2021,
+          "perGame": 0.25
+        },
+        {
+          "season": 2022,
+          "perGame": 0.25
+        },
+        {
+          "season": 2023,
+          "perGame": 0.13
+        },
+        {
+          "season": 2024,
+          "perGame": 0.19
+        },
+        {
+          "season": 2025,
+          "perGame": 0.19
+        },
+        {
+          "season": 2026,
+          "perGame": 0.35
+        }
+      ]
+    },
+    {
       "type": "Face Mask",
       "current": 0.43,
       "currentCount": 40,
       "compare": {
         "sameWeeks": 0.41,
         "lastSeason": 0.35,
-        "allPrior": 0.29
+        "allPrior": 0.32
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.37
+        },
+        {
+          "season": 2016,
+          "perGame": 0.39
+        },
+        {
+          "season": 2017,
+          "perGame": 0.35
+        },
+        {
+          "season": 2018,
+          "perGame": 0.35
+        },
+        {
+          "season": 2019,
+          "perGame": 0.28
+        },
         {
           "season": 2020,
           "perGame": 0.27
@@ -425,55 +685,35 @@
       ]
     },
     {
-      "type": "Illegal Formation",
-      "current": 0.42,
-      "currentCount": 39,
-      "compare": {
-        "sameWeeks": 0.51,
-        "lastSeason": 0.41,
-        "allPrior": 0.28
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.18
-        },
-        {
-          "season": 2021,
-          "perGame": 0.24
-        },
-        {
-          "season": 2022,
-          "perGame": 0.18
-        },
-        {
-          "season": 2023,
-          "perGame": 0.21
-        },
-        {
-          "season": 2024,
-          "perGame": 0.47
-        },
-        {
-          "season": 2025,
-          "perGame": 0.41
-        },
-        {
-          "season": 2026,
-          "perGame": 0.42
-        }
-      ]
-    },
-    {
       "type": "Offensive Pass Interference",
       "current": 0.27,
       "currentCount": 25,
       "compare": {
         "sameWeeks": 0.25,
         "lastSeason": 0.26,
-        "allPrior": 0.26
+        "allPrior": 0.31
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.4
+        },
+        {
+          "season": 2016,
+          "perGame": 0.34
+        },
+        {
+          "season": 2017,
+          "perGame": 0.45
+        },
+        {
+          "season": 2018,
+          "perGame": 0.33
+        },
+        {
+          "season": 2019,
+          "perGame": 0.38
+        },
         {
           "season": 2020,
           "perGame": 0.24
@@ -505,95 +745,35 @@
       ]
     },
     {
-      "type": "Illegal Contact",
-      "current": 0.32,
-      "currentCount": 30,
-      "compare": {
-        "sameWeeks": 0.44,
-        "lastSeason": 0.35,
-        "allPrior": 0.24
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.23
-        },
-        {
-          "season": 2021,
-          "perGame": 0.1
-        },
-        {
-          "season": 2022,
-          "perGame": 0.24
-        },
-        {
-          "season": 2023,
-          "perGame": 0.33
-        },
-        {
-          "season": 2024,
-          "perGame": 0.21
-        },
-        {
-          "season": 2025,
-          "perGame": 0.35
-        },
-        {
-          "season": 2026,
-          "perGame": 0.32
-        }
-      ]
-    },
-    {
-      "type": "Illegal Block Above the Waist",
-      "current": 0.35,
-      "currentCount": 33,
-      "compare": {
-        "sameWeeks": 0.22,
-        "lastSeason": 0.19,
-        "allPrior": 0.23
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.35
-        },
-        {
-          "season": 2021,
-          "perGame": 0.25
-        },
-        {
-          "season": 2022,
-          "perGame": 0.25
-        },
-        {
-          "season": 2023,
-          "perGame": 0.13
-        },
-        {
-          "season": 2024,
-          "perGame": 0.19
-        },
-        {
-          "season": 2025,
-          "perGame": 0.19
-        },
-        {
-          "season": 2026,
-          "perGame": 0.35
-        }
-      ]
-    },
-    {
       "type": "Illegal Use of Hands",
       "current": 0.32,
       "currentCount": 30,
       "compare": {
         "sameWeeks": 0.28,
         "lastSeason": 0.21,
-        "allPrior": 0.22
+        "allPrior": 0.29
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.46
+        },
+        {
+          "season": 2016,
+          "perGame": 0.35
+        },
+        {
+          "season": 2017,
+          "perGame": 0.42
+        },
+        {
+          "season": 2018,
+          "perGame": 0.28
+        },
+        {
+          "season": 2019,
+          "perGame": 0.38
+        },
         {
           "season": 2020,
           "perGame": 0.19
@@ -625,15 +805,275 @@
       ]
     },
     {
+      "type": "Illegal Formation",
+      "current": 0.42,
+      "currentCount": 39,
+      "compare": {
+        "sameWeeks": 0.51,
+        "lastSeason": 0.41,
+        "allPrior": 0.26
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.23
+        },
+        {
+          "season": 2016,
+          "perGame": 0.25
+        },
+        {
+          "season": 2017,
+          "perGame": 0.18
+        },
+        {
+          "season": 2018,
+          "perGame": 0.28
+        },
+        {
+          "season": 2019,
+          "perGame": 0.25
+        },
+        {
+          "season": 2020,
+          "perGame": 0.18
+        },
+        {
+          "season": 2021,
+          "perGame": 0.24
+        },
+        {
+          "season": 2022,
+          "perGame": 0.18
+        },
+        {
+          "season": 2023,
+          "perGame": 0.21
+        },
+        {
+          "season": 2024,
+          "perGame": 0.47
+        },
+        {
+          "season": 2025,
+          "perGame": 0.41
+        },
+        {
+          "season": 2026,
+          "perGame": 0.42
+        }
+      ]
+    },
+    {
+      "type": "Illegal Contact",
+      "current": 0.32,
+      "currentCount": 30,
+      "compare": {
+        "sameWeeks": 0.44,
+        "lastSeason": 0.35,
+        "allPrior": 0.21
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.22
+        },
+        {
+          "season": 2016,
+          "perGame": 0.18
+        },
+        {
+          "season": 2017,
+          "perGame": 0.12
+        },
+        {
+          "season": 2018,
+          "perGame": 0.17
+        },
+        {
+          "season": 2019,
+          "perGame": 0.14
+        },
+        {
+          "season": 2020,
+          "perGame": 0.23
+        },
+        {
+          "season": 2021,
+          "perGame": 0.1
+        },
+        {
+          "season": 2022,
+          "perGame": 0.24
+        },
+        {
+          "season": 2023,
+          "perGame": 0.33
+        },
+        {
+          "season": 2024,
+          "perGame": 0.21
+        },
+        {
+          "season": 2025,
+          "perGame": 0.35
+        },
+        {
+          "season": 2026,
+          "perGame": 0.32
+        }
+      ]
+    },
+    {
+      "type": "Unsportsmanlike Conduct",
+      "current": 0.12,
+      "currentCount": 11,
+      "compare": {
+        "sameWeeks": 0.1,
+        "lastSeason": 0.13,
+        "allPrior": 0.16
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.27
+        },
+        {
+          "season": 2016,
+          "perGame": 0.25
+        },
+        {
+          "season": 2017,
+          "perGame": 0.27
+        },
+        {
+          "season": 2018,
+          "perGame": 0.19
+        },
+        {
+          "season": 2019,
+          "perGame": 0.12
+        },
+        {
+          "season": 2020,
+          "perGame": 0.09
+        },
+        {
+          "season": 2021,
+          "perGame": 0.11
+        },
+        {
+          "season": 2022,
+          "perGame": 0.11
+        },
+        {
+          "season": 2023,
+          "perGame": 0.08
+        },
+        {
+          "season": 2024,
+          "perGame": 0.14
+        },
+        {
+          "season": 2025,
+          "perGame": 0.13
+        },
+        {
+          "season": 2026,
+          "perGame": 0.12
+        }
+      ]
+    },
+    {
+      "type": "Encroachment",
+      "current": 0.16,
+      "currentCount": 15,
+      "compare": {
+        "sameWeeks": 0.13,
+        "lastSeason": 0.13,
+        "allPrior": 0.15
+      },
+      "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.16
+        },
+        {
+          "season": 2016,
+          "perGame": 0.18
+        },
+        {
+          "season": 2017,
+          "perGame": 0.2
+        },
+        {
+          "season": 2018,
+          "perGame": 0.16
+        },
+        {
+          "season": 2019,
+          "perGame": 0.13
+        },
+        {
+          "season": 2020,
+          "perGame": 0.13
+        },
+        {
+          "season": 2021,
+          "perGame": 0.14
+        },
+        {
+          "season": 2022,
+          "perGame": 0.1
+        },
+        {
+          "season": 2023,
+          "perGame": 0.14
+        },
+        {
+          "season": 2024,
+          "perGame": 0.12
+        },
+        {
+          "season": 2025,
+          "perGame": 0.13
+        },
+        {
+          "season": 2026,
+          "perGame": 0.16
+        }
+      ]
+    },
+    {
       "type": "Ineligible Downfield Pass",
       "current": 0.17,
       "currentCount": 16,
       "compare": {
         "sameWeeks": 0.23,
         "lastSeason": 0.17,
-        "allPrior": 0.19
+        "allPrior": 0.14
       },
       "bySeason": [
+        {
+          "season": 2015,
+          "perGame": 0.07
+        },
+        {
+          "season": 2016,
+          "perGame": 0.08
+        },
+        {
+          "season": 2017,
+          "perGame": 0.05
+        },
+        {
+          "season": 2018,
+          "perGame": 0.06
+        },
+        {
+          "season": 2019,
+          "perGame": 0.15
+        },
         {
           "season": 2020,
           "perGame": 0.09
@@ -663,86 +1103,6 @@
           "perGame": 0.17
         }
       ]
-    },
-    {
-      "type": "Intentional Grounding",
-      "current": 0.14,
-      "currentCount": 13,
-      "compare": {
-        "sameWeeks": 0.22,
-        "lastSeason": 0.21,
-        "allPrior": 0.16
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.17
-        },
-        {
-          "season": 2021,
-          "perGame": 0.11
-        },
-        {
-          "season": 2022,
-          "perGame": 0.15
-        },
-        {
-          "season": 2023,
-          "perGame": 0.21
-        },
-        {
-          "season": 2024,
-          "perGame": 0.12
-        },
-        {
-          "season": 2025,
-          "perGame": 0.21
-        },
-        {
-          "season": 2026,
-          "perGame": 0.14
-        }
-      ]
-    },
-    {
-      "type": "Illegal Shift",
-      "current": 0.29,
-      "currentCount": 27,
-      "compare": {
-        "sameWeeks": 0.18,
-        "lastSeason": 0.18,
-        "allPrior": 0.14
-      },
-      "bySeason": [
-        {
-          "season": 2020,
-          "perGame": 0.09
-        },
-        {
-          "season": 2021,
-          "perGame": 0.09
-        },
-        {
-          "season": 2022,
-          "perGame": 0.1
-        },
-        {
-          "season": 2023,
-          "perGame": 0.13
-        },
-        {
-          "season": 2024,
-          "perGame": 0.22
-        },
-        {
-          "season": 2025,
-          "perGame": 0.18
-        },
-        {
-          "season": 2026,
-          "perGame": 0.29
-        }
-      ]
     }
   ],
   "weekly": {
@@ -750,32 +1110,32 @@
       {
         "week": 1,
         "low": 11.31,
-        "high": 14.94
+        "high": 15.94
       },
       {
         "week": 2,
         "low": 11.88,
-        "high": 13.88
+        "high": 18.62
       },
       {
         "week": 3,
         "low": 10.5,
-        "high": 13.81
+        "high": 15.62
       },
       {
         "week": 4,
         "low": 10.27,
-        "high": 14.69
+        "high": 15.47
       },
       {
         "week": 5,
         "low": 10.93,
-        "high": 15.93
+        "high": 16.13
       },
       {
         "week": 6,
         "low": 11.43,
-        "high": 13.5
+        "high": 14.87
       },
       {
         "week": 7,
@@ -785,47 +1145,47 @@
       {
         "week": 8,
         "low": 11.43,
-        "high": 13.73
+        "high": 14.77
       },
       {
         "week": 9,
         "low": 10.38,
-        "high": 13.0
+        "high": 15.54
       },
       {
         "week": 10,
-        "low": 11.0,
-        "high": 13.5
+        "low": 10.29,
+        "high": 14.62
       },
       {
         "week": 11,
         "low": 11.43,
-        "high": 12.57
+        "high": 13.86
       },
       {
         "week": 12,
         "low": 9.31,
-        "high": 13.29
+        "high": 14.0
       },
       {
         "week": 13,
         "low": 10.2,
-        "high": 13.06
+        "high": 16.19
       },
       {
         "week": 14,
         "low": 10.85,
-        "high": 14.08
+        "high": 15.12
       },
       {
         "week": 15,
         "low": 9.38,
-        "high": 14.38
+        "high": 14.44
       },
       {
         "week": 16,
         "low": 9.88,
-        "high": 13.38
+        "high": 14.69
       },
       {
         "week": 17,
@@ -839,6 +1199,541 @@
       }
     ],
     "seasons": [
+      {
+        "season": 2015,
+        "weeks": [
+          {
+            "week": 1,
+            "perGame": 12.88,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 2,
+            "perGame": 18.62,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 3,
+            "perGame": 14.31,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 4,
+            "perGame": 15.2,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 5,
+            "perGame": 14.43,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 6,
+            "perGame": 13.79,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 13.71,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 8,
+            "perGame": 13.86,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 9,
+            "perGame": 13.0,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 10,
+            "perGame": 13.21,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 11,
+            "perGame": 13.36,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 12,
+            "perGame": 13.5,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 13,
+            "perGame": 13.62,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 14,
+            "perGame": 13.0,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 15,
+            "perGame": 13.19,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 16,
+            "perGame": 13.19,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 17,
+            "perGame": 11.88,
+            "games": 16,
+            "complete": true
+          }
+        ]
+      },
+      {
+        "season": 2016,
+        "weeks": [
+          {
+            "week": 1,
+            "perGame": 12.25,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 2,
+            "perGame": 14.62,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 3,
+            "perGame": 14.12,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 4,
+            "perGame": 15.47,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 5,
+            "perGame": 12.5,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 6,
+            "perGame": 14.87,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 13.53,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 8,
+            "perGame": 14.77,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 9,
+            "perGame": 15.54,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 10,
+            "perGame": 12.43,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 11,
+            "perGame": 13.86,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 12,
+            "perGame": 12.25,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 13,
+            "perGame": 13.33,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 14,
+            "perGame": 14.94,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 15,
+            "perGame": 11.5,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 16,
+            "perGame": 11.44,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 17,
+            "perGame": 11.38,
+            "games": 16,
+            "complete": true
+          }
+        ]
+      },
+      {
+        "season": 2017,
+        "weeks": [
+          {
+            "week": 1,
+            "perGame": 13.8,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 2,
+            "perGame": 14.25,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 3,
+            "perGame": 15.62,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 4,
+            "perGame": 12.81,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 5,
+            "perGame": 13.86,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 6,
+            "perGame": 12.64,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 13.47,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 8,
+            "perGame": 12.85,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 9,
+            "perGame": 13.85,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 10,
+            "perGame": 13.36,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 11,
+            "perGame": 12.43,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 12,
+            "perGame": 13.38,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 13,
+            "perGame": 12.38,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 14,
+            "perGame": 12.56,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 15,
+            "perGame": 14.44,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 16,
+            "perGame": 12.88,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 17,
+            "perGame": 12.19,
+            "games": 16,
+            "complete": true
+          }
+        ]
+      },
+      {
+        "season": 2018,
+        "weeks": [
+          {
+            "week": 1,
+            "perGame": 15.94,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 2,
+            "perGame": 13.0,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 3,
+            "perGame": 15.06,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 4,
+            "perGame": 12.67,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 5,
+            "perGame": 13.2,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 6,
+            "perGame": 12.33,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 11.21,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 8,
+            "perGame": 13.14,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 9,
+            "perGame": 13.85,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 10,
+            "perGame": 10.29,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 11,
+            "perGame": 12.31,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 12,
+            "perGame": 12.67,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 13,
+            "perGame": 16.19,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 14,
+            "perGame": 15.12,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 15,
+            "perGame": 14.31,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 16,
+            "perGame": 14.69,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 17,
+            "perGame": 11.5,
+            "games": 16,
+            "complete": true
+          }
+        ]
+      },
+      {
+        "season": 2019,
+        "weeks": [
+          {
+            "week": 1,
+            "perGame": 15.56,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 2,
+            "perGame": 16.0,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 3,
+            "perGame": 13.5,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 4,
+            "perGame": 14.93,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 5,
+            "perGame": 16.13,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 6,
+            "perGame": 13.43,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 12.29,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 8,
+            "perGame": 13.8,
+            "games": 15,
+            "complete": true
+          },
+          {
+            "week": 9,
+            "perGame": 13.21,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 10,
+            "perGame": 14.62,
+            "games": 13,
+            "complete": true
+          },
+          {
+            "week": 11,
+            "perGame": 13.5,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 12,
+            "perGame": 14.0,
+            "games": 14,
+            "complete": true
+          },
+          {
+            "week": 13,
+            "perGame": 12.75,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 14,
+            "perGame": 11.94,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 15,
+            "perGame": 11.38,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 16,
+            "perGame": 10.88,
+            "games": 16,
+            "complete": true
+          },
+          {
+            "week": 17,
+            "perGame": 11.44,
+            "games": 16,
+            "complete": true
+          }
+        ]
+      },
       {
         "season": 2020,
         "weeks": [
@@ -1556,88 +2451,88 @@
     "priorAverage": [
       {
         "week": 1,
-        "perGame": 13.14,
-        "games": 96
+        "perGame": 13.57,
+        "games": 175
       },
       {
         "week": 2,
-        "perGame": 12.74,
-        "games": 96
+        "perGame": 13.9,
+        "games": 176
       },
       {
         "week": 3,
-        "perGame": 12.42,
-        "games": 96
+        "perGame": 13.38,
+        "games": 176
       },
       {
         "week": 4,
-        "perGame": 12.68,
-        "games": 95
+        "perGame": 13.36,
+        "games": 171
       },
       {
         "week": 5,
-        "perGame": 12.65,
-        "games": 88
+        "perGame": 13.28,
+        "games": 160
       },
       {
         "week": 6,
-        "perGame": 12.5,
-        "games": 86
+        "perGame": 12.92,
+        "games": 158
       },
       {
         "week": 7,
-        "perGame": 12.14,
-        "games": 84
+        "perGame": 12.47,
+        "games": 156
       },
       {
         "week": 8,
-        "perGame": 12.26,
-        "games": 89
+        "perGame": 12.88,
+        "games": 158
       },
       {
         "week": 9,
-        "perGame": 11.71,
-        "games": 84
+        "perGame": 12.67,
+        "games": 150
       },
       {
         "week": 10,
-        "perGame": 12.14,
-        "games": 84
+        "perGame": 12.42,
+        "games": 153
       },
       {
         "week": 11,
-        "perGame": 11.9,
-        "games": 86
+        "perGame": 12.43,
+        "games": 155
       },
       {
         "week": 12,
-        "perGame": 11.51,
-        "games": 90
+        "perGame": 12.26,
+        "games": 167
       },
       {
         "week": 13,
-        "perGame": 11.62,
-        "games": 89
+        "perGame": 12.58,
+        "games": 168
       },
       {
         "week": 14,
-        "perGame": 11.95,
-        "games": 85
+        "perGame": 12.71,
+        "games": 165
       },
       {
         "week": 15,
-        "perGame": 11.32,
-        "games": 96
+        "perGame": 12.07,
+        "games": 176
       },
       {
         "week": 16,
-        "perGame": 11.48,
-        "games": 96
+        "perGame": 11.99,
+        "games": 176
       },
       {
         "week": 17,
-        "perGame": 10.18,
-        "games": 95
+        "perGame": 10.86,
+        "games": 175
       },
       {
         "week": 18,
@@ -1645,9 +2540,49 @@
         "games": 80
       }
     ],
-    "priorLabel": "2020\u201325 avg"
+    "priorLabel": "2015\u201325 avg"
   },
   "seasonCompare": [
+    {
+      "season": 2015,
+      "games": 256,
+      "fullSeason": 13.82,
+      "complete": true,
+      "earlyGames": 91,
+      "early": 14.9
+    },
+    {
+      "season": 2016,
+      "games": 256,
+      "fullSeason": 13.42,
+      "complete": true,
+      "earlyGames": 92,
+      "early": 13.98
+    },
+    {
+      "season": 2017,
+      "games": 256,
+      "fullSeason": 13.34,
+      "complete": true,
+      "earlyGames": 91,
+      "early": 13.86
+    },
+    {
+      "season": 2018,
+      "games": 256,
+      "fullSeason": 13.44,
+      "complete": true,
+      "earlyGames": 93,
+      "early": 13.73
+    },
+    {
+      "season": 2019,
+      "games": 256,
+      "fullSeason": 13.47,
+      "complete": true,
+      "earlyGames": 92,
+      "early": 14.95
+    },
     {
       "season": 2020,
       "games": 256,
@@ -1766,61 +2701,61 @@
       }
     },
     "all": {
-      "games": 1708,
+      "games": 2988,
       "total": [
-        2.48,
-        3.52,
-        2.86,
-        3.11
+        2.65,
+        3.7,
+        2.98,
+        3.28
       ],
       "types": {
         "Offensive Holding": [
-          0.47,
-          0.64,
-          0.64,
-          0.53
+          0.51,
+          0.7,
+          0.67,
+          0.59
         ],
         "False Start": [
-          0.52,
-          0.68,
-          0.5,
-          0.54
+          0.53,
+          0.67,
+          0.49,
+          0.53
         ],
         "Defensive Pass Interference": [
-          0.18,
-          0.29,
-          0.26,
-          0.31
+          0.17,
+          0.28,
+          0.25,
+          0.32
         ],
         "Defensive Holding": [
-          0.13,
-          0.2,
-          0.16,
-          0.17
-        ],
-        "Unnecessary Roughness": [
-          0.12,
-          0.17,
-          0.14,
-          0.18
-        ],
-        "Delay of Game": [
-          0.1,
-          0.17,
-          0.14,
+          0.15,
+          0.23,
+          0.18,
           0.2
         ],
-        "Defensive Offside": [
-          0.13,
-          0.17,
-          0.1,
-          0.14
+        "Unnecessary Roughness": [
+          0.14,
+          0.2,
+          0.15,
+          0.19
         ],
-        "Roughing the Passer": [
-          0.06,
-          0.13,
+        "Defensive Offside": [
+          0.14,
+          0.18,
+          0.11,
+          0.15
+        ],
+        "Delay of Game": [
           0.09,
-          0.13
+          0.14,
+          0.12,
+          0.2
+        ],
+        "Neutral Zone Infraction": [
+          0.14,
+          0.13,
+          0.08,
+          0.1
         ]
       }
     }
@@ -1901,75 +2836,75 @@
       ]
     },
     "all": {
-      "games": 1708,
-      "total": 20575,
-      "perGame": 12.05,
+      "games": 2988,
+      "total": 37852,
+      "perGame": 12.67,
       "types": [
         {
           "type": "Offensive Holding",
-          "count": 3930,
-          "pct": 19.1,
-          "perGame": 2.3
+          "count": 7440,
+          "pct": 19.7,
+          "perGame": 2.49
         },
         {
           "type": "False Start",
-          "count": 3847,
-          "pct": 18.7,
-          "perGame": 2.25
+          "count": 6630,
+          "pct": 17.5,
+          "perGame": 2.22
         },
         {
           "type": "Defensive Pass Interference",
-          "count": 1792,
-          "pct": 8.7,
-          "perGame": 1.05
+          "count": 3075,
+          "pct": 8.1,
+          "perGame": 1.03
         },
         {
           "type": "Defensive Holding",
-          "count": 1129,
-          "pct": 5.5,
-          "perGame": 0.66
+          "count": 2272,
+          "pct": 6.0,
+          "perGame": 0.76
         },
         {
           "type": "Unnecessary Roughness",
-          "count": 1043,
-          "pct": 5.1,
-          "perGame": 0.61
-        },
-        {
-          "type": "Delay of Game",
-          "count": 1036,
-          "pct": 5.0,
-          "perGame": 0.61
+          "count": 2028,
+          "pct": 5.4,
+          "perGame": 0.68
         },
         {
           "type": "Defensive Offside",
-          "count": 932,
-          "pct": 4.5,
-          "perGame": 0.55
+          "count": 1729,
+          "pct": 4.6,
+          "perGame": 0.58
         },
         {
-          "type": "Roughing the Passer",
-          "count": 690,
-          "pct": 3.4,
-          "perGame": 0.4
+          "type": "Delay of Game",
+          "count": 1680,
+          "pct": 4.4,
+          "perGame": 0.56
         },
         {
           "type": "Neutral Zone Infraction",
-          "count": 645,
-          "pct": 3.1,
-          "perGame": 0.38
+          "count": 1357,
+          "pct": 3.6,
+          "perGame": 0.45
         },
         {
-          "type": "Face Mask",
-          "count": 515,
-          "pct": 2.5,
-          "perGame": 0.3
+          "type": "Roughing the Passer",
+          "count": 1230,
+          "pct": 3.2,
+          "perGame": 0.41
         },
         {
-          "type": "All other (49 types)",
-          "count": 5016,
-          "pct": 24.4,
-          "perGame": 2.94,
+          "type": "Illegal Block Above the Waist",
+          "count": 1152,
+          "pct": 3.0,
+          "perGame": 0.39
+        },
+        {
+          "type": "All other (54 types)",
+          "count": 9259,
+          "pct": 24.5,
+          "perGame": 3.1,
           "other": true
         }
       ]
@@ -1977,8 +2912,8 @@
   },
   "scopeLabels": {
     "current": "2026 season",
-    "all": "Since 2020"
+    "all": "Since 2015"
   },
   "notes": "Regular season. Accepted penalties per game, all teams combined.",
-  "generatedAt": "2026-10-20T19:08:13+00:00"
+  "generatedAt": "2026-10-20T20:01:33+00:00"
 }

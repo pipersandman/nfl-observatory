@@ -1,20 +1,55 @@
 {
   "name": "Jerome Boger",
   "slug": "jerome-boger",
-  "firstSeason": 2020,
+  "firstSeason": 2015,
   "lastSeason": 2022,
-  "experience": "3 seasons",
+  "experience": "8 seasons",
   "stats": {
-    "games": 51,
-    "totalPenalties": 555,
-    "avgPerGame": 10.9,
+    "games": 126,
+    "totalPenalties": 1626,
+    "avgPerGame": 12.9,
     "minGame": 5,
-    "maxGame": 22,
-    "stdDev": 3.75,
-    "homeBiasPct": 6.3,
-    "consistency": "Variable"
+    "maxGame": 24,
+    "stdDev": 4.32,
+    "homeBiasPct": 1.6,
+    "consistency": "Highly Variable"
   },
   "seasonStats": [
+    {
+      "season": 2015,
+      "games": 15,
+      "penalties": 230,
+      "avg": 15.3,
+      "homeBias": 0.0
+    },
+    {
+      "season": 2016,
+      "games": 15,
+      "penalties": 226,
+      "avg": 15.1,
+      "homeBias": -8.0
+    },
+    {
+      "season": 2017,
+      "games": 15,
+      "penalties": 193,
+      "avg": 12.9,
+      "homeBias": 5.7
+    },
+    {
+      "season": 2018,
+      "games": 15,
+      "penalties": 207,
+      "avg": 13.8,
+      "homeBias": -1.4
+    },
+    {
+      "season": 2019,
+      "games": 15,
+      "penalties": 215,
+      "avg": 14.3,
+      "homeBias": 0.5
+    },
     {
       "season": 2020,
       "games": 17,
@@ -39,76 +74,76 @@
   ],
   "penaltyTypes": [
     {
-      "type": "False Start",
-      "count": 116,
-      "pct": 20.9
+      "type": "Offensive Holding",
+      "count": 287,
+      "pct": 17.7
     },
     {
-      "type": "Offensive Holding",
-      "count": 75,
-      "pct": 13.5
+      "type": "False Start",
+      "count": 271,
+      "pct": 16.7
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 54,
-      "pct": 9.7
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 36,
-      "pct": 6.5
+      "count": 122,
+      "pct": 7.5
     },
     {
       "type": "Defensive Holding",
-      "count": 33,
-      "pct": 5.9
+      "count": 107,
+      "pct": 6.6
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 100,
+      "pct": 6.2
     },
     {
       "type": "Defensive Offside",
-      "count": 32,
-      "pct": 5.8
-    },
-    {
-      "type": "Delay of Game",
-      "count": 32,
-      "pct": 5.8
-    },
-    {
-      "type": "Roughing the Passer",
-      "count": 28,
-      "pct": 5.0
+      "count": 83,
+      "pct": 5.1
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 24,
-      "pct": 4.3
+      "count": 79,
+      "pct": 4.9
     },
     {
-      "type": "Face Mask",
-      "count": 20,
+      "type": "Delay of Game",
+      "count": 74,
+      "pct": 4.6
+    },
+    {
+      "type": "Illegal Block Above the Waist",
+      "count": 59,
       "pct": 3.6
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 55,
+      "pct": 3.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 109,
-      "pct": 19.7
+      "count": 329,
+      "pct": 20.3
     },
     {
       "quarter": 2,
-      "count": 159,
-      "pct": 28.8
+      "count": 488,
+      "pct": 30.1
     },
     {
       "quarter": 3,
-      "count": 141,
-      "pct": 25.5
+      "count": 379,
+      "pct": 23.4
     },
     {
       "quarter": 4,
-      "count": 144,
-      "pct": 26.0
+      "count": 426,
+      "pct": 26.3
     }
   ],
   "recentGames": [
@@ -635,8 +670,48 @@
   ],
   "currentSeason": 2026,
   "currentSeasonGames": 0,
-  "priorSeasonGames": 49,
+  "priorSeasonGames": 124,
   "regularSeasonStats": [
+    {
+      "season": 2015,
+      "games": 15,
+      "penalties": 230,
+      "yards": 1959,
+      "perGame": 15.33,
+      "yardsPerGame": 130.6
+    },
+    {
+      "season": 2016,
+      "games": 15,
+      "penalties": 226,
+      "yards": 1856,
+      "perGame": 15.07,
+      "yardsPerGame": 123.7
+    },
+    {
+      "season": 2017,
+      "games": 15,
+      "penalties": 193,
+      "yards": 1683,
+      "perGame": 12.87,
+      "yardsPerGame": 112.2
+    },
+    {
+      "season": 2018,
+      "games": 15,
+      "penalties": 207,
+      "yards": 1686,
+      "perGame": 13.8,
+      "yardsPerGame": 112.4
+    },
+    {
+      "season": 2019,
+      "games": 15,
+      "penalties": 215,
+      "yards": 1776,
+      "perGame": 14.33,
+      "yardsPerGame": 118.4
+    },
     {
       "season": 2020,
       "games": 16,
@@ -664,74 +739,74 @@
   ],
   "penaltyTypeComparison": [
     {
-      "type": "False Start",
-      "currentCount": 0,
-      "currentPerGame": null,
-      "priorCount": 111,
-      "priorPerGame": 2.27
-    },
-    {
       "type": "Offensive Holding",
       "currentCount": 0,
       "currentPerGame": null,
-      "priorCount": 72,
-      "priorPerGame": 1.47
+      "priorCount": 284,
+      "priorPerGame": 2.29
+    },
+    {
+      "type": "False Start",
+      "currentCount": 0,
+      "currentPerGame": null,
+      "priorCount": 266,
+      "priorPerGame": 2.15
     },
     {
       "type": "Defensive Pass Interference",
       "currentCount": 0,
       "currentPerGame": null,
-      "priorCount": 53,
-      "priorPerGame": 1.08
+      "priorCount": 121,
+      "priorPerGame": 0.98
+    },
+    {
+      "type": "Defensive Holding",
+      "currentCount": 0,
+      "currentPerGame": null,
+      "priorCount": 104,
+      "priorPerGame": 0.84
     },
     {
       "type": "Unnecessary Roughness",
       "currentCount": 0,
       "currentPerGame": null,
-      "priorCount": 35,
-      "priorPerGame": 0.71
+      "priorCount": 99,
+      "priorPerGame": 0.8
     },
     {
       "type": "Defensive Offside",
       "currentCount": 0,
       "currentPerGame": null,
-      "priorCount": 32,
-      "priorPerGame": 0.65
-    },
-    {
-      "type": "Delay of Game",
-      "currentCount": 0,
-      "currentPerGame": null,
-      "priorCount": 32,
-      "priorPerGame": 0.65
+      "priorCount": 83,
+      "priorPerGame": 0.67
     }
   ],
   "quarterComparison": [
     {
       "quarter": 1,
       "currentPerGame": null,
-      "priorPerGame": 2.12
+      "priorPerGame": 2.61
     },
     {
       "quarter": 2,
       "currentPerGame": null,
-      "priorPerGame": 3.16
+      "priorPerGame": 3.9
     },
     {
       "quarter": 3,
       "currentPerGame": null,
-      "priorPerGame": 2.73
+      "priorPerGame": 3.0
     },
     {
       "quarter": 4,
       "currentPerGame": null,
-      "priorPerGame": 2.84
+      "priorPerGame": 3.4
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.1,
-    "avgVsLeaguePct": -9.4,
-    "description": "Below-average penalty rate. Tends to let minor infractions go."
+    "avgVsLeague": 0.1,
+    "avgVsLeaguePct": 0.8,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -740,5 +815,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-20T19:08:13.089075Z"
+  "generatedAt": "2026-10-20T20:01:33.126160Z"
 }

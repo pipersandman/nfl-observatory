@@ -1,20 +1,55 @@
 {
   "name": "Bill Vinovich",
   "slug": "bill-vinovich",
-  "firstSeason": 2020,
+  "firstSeason": 2015,
   "lastSeason": 2026,
-  "experience": "7 seasons",
+  "experience": "12 seasons",
   "stats": {
-    "games": 107,
-    "totalPenalties": 1167,
-    "avgPerGame": 10.9,
-    "minGame": 3,
+    "games": 189,
+    "totalPenalties": 2080,
+    "avgPerGame": 11.0,
+    "minGame": 2,
     "maxGame": 26,
-    "stdDev": 4.08,
-    "homeBiasPct": 3.3,
-    "consistency": "Highly Variable"
+    "stdDev": 3.87,
+    "homeBiasPct": 2.5,
+    "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2015,
+      "games": 16,
+      "penalties": 193,
+      "avg": 12.1,
+      "homeBias": 4.7
+    },
+    {
+      "season": 2016,
+      "games": 16,
+      "penalties": 175,
+      "avg": 10.9,
+      "homeBias": -5.1
+    },
+    {
+      "season": 2017,
+      "games": 16,
+      "penalties": 161,
+      "avg": 10.1,
+      "homeBias": 9.3
+    },
+    {
+      "season": 2018,
+      "games": 17,
+      "penalties": 189,
+      "avg": 11.1,
+      "homeBias": 3.7
+    },
+    {
+      "season": 2019,
+      "games": 17,
+      "penalties": 195,
+      "avg": 11.5,
+      "homeBias": -4.6
+    },
     {
       "season": 2020,
       "games": 16,
@@ -68,75 +103,75 @@
   "penaltyTypes": [
     {
       "type": "False Start",
-      "count": 253,
-      "pct": 21.7
+      "count": 436,
+      "pct": 21.0
     },
     {
       "type": "Offensive Holding",
-      "count": 186,
-      "pct": 15.9
+      "count": 328,
+      "pct": 15.8
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 101,
-      "pct": 8.7
-    },
-    {
-      "type": "Defensive Offside",
-      "count": 58,
-      "pct": 5.0
+      "count": 190,
+      "pct": 9.1
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 57,
-      "pct": 4.9
+      "count": 117,
+      "pct": 5.6
     },
     {
       "type": "Defensive Holding",
-      "count": 55,
+      "count": 116,
+      "pct": 5.6
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 101,
+      "pct": 4.9
+    },
+    {
+      "type": "Defensive Offside",
+      "count": 98,
       "pct": 4.7
     },
     {
       "type": "Delay of Game",
-      "count": 51,
-      "pct": 4.4
-    },
-    {
-      "type": "Neutral Zone Infraction",
-      "count": 46,
-      "pct": 3.9
-    },
-    {
-      "type": "Face Mask",
-      "count": 31,
-      "pct": 2.7
+      "count": 93,
+      "pct": 4.5
     },
     {
       "type": "Illegal Use of Hands",
-      "count": 29,
-      "pct": 2.5
+      "count": 55,
+      "pct": 2.6
+    },
+    {
+      "type": "Face Mask",
+      "count": 54,
+      "pct": 2.6
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 270,
-      "pct": 23.3
+      "count": 467,
+      "pct": 22.6
     },
     {
       "quarter": 2,
-      "count": 349,
-      "pct": 30.1
+      "count": 603,
+      "pct": 29.1
     },
     {
       "quarter": 3,
-      "count": 266,
+      "count": 475,
       "pct": 22.9
     },
     {
       "quarter": 4,
-      "count": 275,
-      "pct": 23.7
+      "count": 525,
+      "pct": 25.4
     }
   ],
   "recentGames": [
@@ -663,8 +698,48 @@
   ],
   "currentSeason": 2026,
   "currentSeasonGames": 5,
-  "priorSeasonGames": 96,
+  "priorSeasonGames": 171,
   "regularSeasonStats": [
+    {
+      "season": 2015,
+      "games": 15,
+      "penalties": 180,
+      "yards": 1562,
+      "perGame": 12.0,
+      "yardsPerGame": 104.1
+    },
+    {
+      "season": 2016,
+      "games": 15,
+      "penalties": 165,
+      "yards": 1377,
+      "perGame": 11.0,
+      "yardsPerGame": 91.8
+    },
+    {
+      "season": 2017,
+      "games": 15,
+      "penalties": 153,
+      "yards": 1321,
+      "perGame": 10.2,
+      "yardsPerGame": 88.1
+    },
+    {
+      "season": 2018,
+      "games": 15,
+      "penalties": 169,
+      "yards": 1428,
+      "perGame": 11.27,
+      "yardsPerGame": 95.2
+    },
+    {
+      "season": 2019,
+      "games": 15,
+      "penalties": 174,
+      "yards": 1492,
+      "perGame": 11.6,
+      "yardsPerGame": 99.5
+    },
     {
       "season": 2020,
       "games": 15,
@@ -727,99 +802,106 @@
       "type": "Offensive Holding",
       "currentCount": 16,
       "currentPerGame": 3.2,
-      "priorCount": 165,
-      "priorPerGame": 1.72
+      "priorCount": 299,
+      "priorPerGame": 1.75
     },
     {
       "type": "False Start",
       "currentCount": 13,
       "currentPerGame": 2.6,
-      "priorCount": 228,
-      "priorPerGame": 2.38
+      "priorCount": 396,
+      "priorPerGame": 2.32
     },
     {
       "type": "Defensive Pass Interference",
       "currentCount": 6,
       "currentPerGame": 1.2,
-      "priorCount": 93,
-      "priorPerGame": 0.97
+      "priorCount": 175,
+      "priorPerGame": 1.02
     },
     {
       "type": "Delay of Game",
       "currentCount": 5,
       "currentPerGame": 1.0,
-      "priorCount": 43,
-      "priorPerGame": 0.45
+      "priorCount": 82,
+      "priorPerGame": 0.48
     },
     {
       "type": "Illegal Formation",
       "currentCount": 4,
       "currentPerGame": 0.8,
-      "priorCount": 23,
-      "priorPerGame": 0.24
+      "priorCount": 30,
+      "priorPerGame": 0.18
+    },
+    {
+      "type": "Defensive Holding",
+      "currentCount": 3,
+      "currentPerGame": 0.6,
+      "priorCount": 100,
+      "priorPerGame": 0.58
     },
     {
       "type": "Defensive Offside",
       "currentCount": 3,
       "currentPerGame": 0.6,
-      "priorCount": 51,
-      "priorPerGame": 0.53
-    },
-    {
-      "type": "Face Mask",
-      "currentCount": 3,
-      "currentPerGame": 0.6,
-      "priorCount": 27,
-      "priorPerGame": 0.28
+      "priorCount": 85,
+      "priorPerGame": 0.5
     },
     {
       "type": "Illegal Use of Hands",
       "currentCount": 3,
       "currentPerGame": 0.6,
-      "priorCount": 25,
-      "priorPerGame": 0.26
+      "priorCount": 51,
+      "priorPerGame": 0.3
+    },
+    {
+      "type": "Face Mask",
+      "currentCount": 3,
+      "currentPerGame": 0.6,
+      "priorCount": 47,
+      "priorPerGame": 0.27
     },
     {
       "type": "Unnecessary Roughness",
       "currentCount": 1,
       "currentPerGame": 0.2,
-      "priorCount": 49,
-      "priorPerGame": 0.51
+      "priorCount": 103,
+      "priorPerGame": 0.6
     },
     {
       "type": "Neutral Zone Infraction",
       "currentCount": 0,
       "currentPerGame": 0.0,
-      "priorCount": 45,
-      "priorPerGame": 0.47
+      "priorCount": 93,
+      "priorPerGame": 0.54
     }
   ],
   "quarterComparison": [
     {
       "quarter": 1,
       "currentPerGame": 1.8,
-      "priorPerGame": 2.62
+      "priorPerGame": 2.51
     },
     {
       "quarter": 2,
       "currentPerGame": 4.6,
-      "priorPerGame": 3.23
+      "priorPerGame": 3.19
     },
     {
       "quarter": 3,
       "currentPerGame": 2.8,
-      "priorPerGame": 2.45
+      "priorPerGame": 2.53
     },
     {
       "quarter": 4,
       "currentPerGame": 5.0,
-      "priorPerGame": 2.52
+      "priorPerGame": 2.75
     }
   ],
   "tendencies": {
-    "avgVsLeague": -1.1,
-    "avgVsLeaguePct": -9.4,
-    "description": "Below-average penalty rate. Tends to let minor infractions go."
+    "avgVsLeague": -1.8,
+    "avgVsLeaguePct": -14.1,
+    "description": "Let-them-play style \u2014 fewer flags than average. Bill Vinovich's games average 1.8 fewer penalties per game."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -828,5 +910,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-20T19:08:12.774691Z"
+  "generatedAt": "2026-10-20T20:01:32.950933Z"
 }

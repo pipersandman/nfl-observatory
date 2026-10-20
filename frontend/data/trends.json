@@ -1,6 +1,36 @@
 {
   "bySeason": [
     {
+      "season": 2015,
+      "penalties": 3663,
+      "games": 267,
+      "avg_per_game": 13.7
+    },
+    {
+      "season": 2016,
+      "penalties": 3545,
+      "games": 267,
+      "avg_per_game": 13.3
+    },
+    {
+      "season": 2017,
+      "penalties": 3520,
+      "games": 267,
+      "avg_per_game": 13.2
+    },
+    {
+      "season": 2018,
+      "penalties": 3565,
+      "games": 267,
+      "avg_per_game": 13.4
+    },
+    {
+      "season": 2019,
+      "penalties": 3568,
+      "games": 267,
+      "avg_per_game": 13.4
+    },
+    {
       "season": 2020,
       "penalties": 2986,
       "games": 269,
@@ -46,61 +76,61 @@
   "byQuarter": [
     {
       "quarter": 1.0,
-      "count": 4381
+      "count": 8169
     },
     {
       "quarter": 2.0,
-      "count": 6211
+      "count": 11414
     },
     {
       "quarter": 3.0,
-      "count": 5058
+      "count": 9203
     },
     {
       "quarter": 4.0,
-      "count": 5519
+      "count": 10154
     }
   ],
   "byType": [
     {
       "type": "Offensive Holding",
-      "count": 4040
+      "count": 7630
     },
     {
       "type": "False Start",
-      "count": 3995
+      "count": 6882
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 1842
+      "count": 3185
     },
     {
       "type": "Defensive Holding",
-      "count": 1179
+      "count": 2367
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 1093
-    },
-    {
-      "type": "Delay of Game",
-      "count": 1079
+      "count": 2126
     },
     {
       "type": "Defensive Offside",
-      "count": 968
+      "count": 1786
     },
     {
-      "type": "Roughing the Passer",
-      "count": 712
+      "type": "Delay of Game",
+      "count": 1755
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 672
+      "count": 1412
     },
     {
-      "type": "Face Mask",
-      "count": 534
+      "type": "Roughing the Passer",
+      "count": 1266
+    },
+    {
+      "type": "Illegal Block Above the Waist",
+      "count": 1180
     }
   ],
   "byQuarterAndType": {
@@ -116,50 +146,50 @@
       "Defensive Pass Interference",
       "Defensive Holding",
       "Unnecessary Roughness",
-      "Delay of Game"
+      "Defensive Offside"
     ],
     "data": {
       "Defensive Holding": [
-        8.2,
-        9.5,
-        9.0,
-        8.8
+        9.3,
+        10.3,
+        9.8,
+        10.0
+      ],
+      "Defensive Offside": [
+        8.6,
+        7.8,
+        5.9,
+        7.6
       ],
       "Defensive Pass Interference": [
-        11.5,
-        13.6,
-        13.9,
-        16.1
-      ],
-      "Delay of Game": [
-        6.5,
-        7.6,
-        7.5,
-        10.5
+        10.7,
+        12.6,
+        13.3,
+        16.0
       ],
       "False Start": [
-        34.7,
-        31.8,
-        27.1,
-        27.9
+        32.3,
+        29.7,
+        26.3,
+        26.9
       ],
       "Offensive Holding": [
-        31.0,
-        29.4,
-        34.7,
-        27.3
+        30.6,
+        30.8,
+        36.2,
+        29.7
       ],
       "Unnecessary Roughness": [
-        8.1,
-        8.1,
-        7.7,
-        9.3
+        8.5,
+        8.8,
+        8.5,
+        9.8
       ]
     }
   },
   "homeVsAway": {
-    "home": 10374,
-    "away": 10924,
-    "bias_pct": 2.6
+    "home": 19030,
+    "away": 20129,
+    "bias_pct": 2.8
   }
 }

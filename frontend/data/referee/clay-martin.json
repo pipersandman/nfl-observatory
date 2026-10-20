@@ -1,20 +1,34 @@
 {
   "name": "Clay Martin",
   "slug": "clay-martin",
-  "firstSeason": 2020,
+  "firstSeason": 2018,
   "lastSeason": 2026,
-  "experience": "7 seasons",
+  "experience": "9 seasons",
   "stats": {
-    "games": 106,
-    "totalPenalties": 1230,
-    "avgPerGame": 11.6,
-    "minGame": 4,
+    "games": 136,
+    "totalPenalties": 1619,
+    "avgPerGame": 11.9,
+    "minGame": 3,
     "maxGame": 22,
-    "stdDev": 3.75,
-    "homeBiasPct": 3.9,
+    "stdDev": 3.89,
+    "homeBiasPct": 1.7,
     "consistency": "Variable"
   },
   "seasonStats": [
+    {
+      "season": 2018,
+      "games": 15,
+      "penalties": 205,
+      "avg": 13.7,
+      "homeBias": -11.2
+    },
+    {
+      "season": 2019,
+      "games": 15,
+      "penalties": 184,
+      "avg": 12.3,
+      "homeBias": 1.1
+    },
     {
       "season": 2020,
       "games": 14,
@@ -68,75 +82,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 281,
-      "pct": 22.8
+      "count": 356,
+      "pct": 22.0
     },
     {
       "type": "False Start",
-      "count": 224,
-      "pct": 18.2
+      "count": 299,
+      "pct": 18.5
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 96,
-      "pct": 7.8
+      "count": 124,
+      "pct": 7.7
     },
     {
       "type": "Defensive Holding",
-      "count": 77,
-      "pct": 6.3
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 50,
-      "pct": 4.1
+      "count": 94,
+      "pct": 5.8
     },
     {
       "type": "Defensive Offside",
-      "count": 49,
+      "count": 69,
+      "pct": 4.3
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 65,
       "pct": 4.0
     },
     {
-      "type": "Illegal Formation",
-      "count": 44,
-      "pct": 3.6
+      "type": "Neutral Zone Infraction",
+      "count": 62,
+      "pct": 3.8
     },
     {
       "type": "Delay of Game",
-      "count": 44,
+      "count": 58,
       "pct": 3.6
     },
     {
-      "type": "Neutral Zone Infraction",
-      "count": 43,
-      "pct": 3.5
+      "type": "Illegal Use of Hands",
+      "count": 55,
+      "pct": 3.4
     },
     {
-      "type": "Illegal Use of Hands",
-      "count": 39,
-      "pct": 3.2
+      "type": "Illegal Formation",
+      "count": 53,
+      "pct": 3.3
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 253,
-      "pct": 20.7
+      "count": 340,
+      "pct": 21.1
     },
     {
       "quarter": 2,
-      "count": 379,
-      "pct": 31.0
+      "count": 485,
+      "pct": 30.1
     },
     {
       "quarter": 3,
-      "count": 287,
+      "count": 376,
       "pct": 23.4
     },
     {
       "quarter": 4,
-      "count": 305,
-      "pct": 24.9
+      "count": 409,
+      "pct": 25.4
     }
   ],
   "recentGames": [
@@ -663,8 +677,24 @@
   ],
   "currentSeason": 2026,
   "currentSeasonGames": 6,
-  "priorSeasonGames": 94,
+  "priorSeasonGames": 124,
   "regularSeasonStats": [
+    {
+      "season": 2018,
+      "games": 15,
+      "penalties": 205,
+      "yards": 1638,
+      "perGame": 13.67,
+      "yardsPerGame": 109.2
+    },
+    {
+      "season": 2019,
+      "games": 15,
+      "penalties": 184,
+      "yards": 1577,
+      "perGame": 12.27,
+      "yardsPerGame": 105.1
+    },
     {
       "season": 2020,
       "games": 13,
@@ -727,92 +757,99 @@
       "type": "Offensive Holding",
       "currentCount": 18,
       "currentPerGame": 3.0,
-      "priorCount": 244,
-      "priorPerGame": 2.6
+      "priorCount": 319,
+      "priorPerGame": 2.57
     },
     {
       "type": "False Start",
       "currentCount": 16,
       "currentPerGame": 2.67,
-      "priorCount": 198,
-      "priorPerGame": 2.11
+      "priorCount": 273,
+      "priorPerGame": 2.2
     },
     {
       "type": "Unnecessary Roughness",
       "currentCount": 5,
       "currentPerGame": 0.83,
-      "priorCount": 42,
-      "priorPerGame": 0.45
-    },
-    {
-      "type": "Illegal Formation",
-      "currentCount": 5,
-      "currentPerGame": 0.83,
-      "priorCount": 39,
-      "priorPerGame": 0.41
+      "priorCount": 57,
+      "priorPerGame": 0.46
     },
     {
       "type": "Delay of Game",
       "currentCount": 5,
       "currentPerGame": 0.83,
-      "priorCount": 38,
-      "priorPerGame": 0.4
+      "priorCount": 52,
+      "priorPerGame": 0.42
+    },
+    {
+      "type": "Illegal Formation",
+      "currentCount": 5,
+      "currentPerGame": 0.83,
+      "priorCount": 48,
+      "priorPerGame": 0.39
     },
     {
       "type": "Defensive Pass Interference",
       "currentCount": 3,
       "currentPerGame": 0.5,
-      "priorCount": 90,
-      "priorPerGame": 0.96
+      "priorCount": 118,
+      "priorPerGame": 0.95
     },
     {
       "type": "Defensive Offside",
       "currentCount": 3,
       "currentPerGame": 0.5,
-      "priorCount": 43,
-      "priorPerGame": 0.46
+      "priorCount": 63,
+      "priorPerGame": 0.51
     },
     {
       "type": "Illegal Use of Hands",
       "currentCount": 3,
       "currentPerGame": 0.5,
-      "priorCount": 34,
-      "priorPerGame": 0.36
+      "priorCount": 50,
+      "priorPerGame": 0.4
     },
     {
       "type": "Defensive Holding",
       "currentCount": 2,
       "currentPerGame": 0.33,
-      "priorCount": 72,
-      "priorPerGame": 0.77
+      "priorCount": 89,
+      "priorPerGame": 0.72
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "currentCount": 0,
+      "currentPerGame": 0.0,
+      "priorCount": 58,
+      "priorPerGame": 0.47
     }
   ],
   "quarterComparison": [
     {
       "quarter": 1,
       "currentPerGame": 1.83,
-      "priorPerGame": 2.46
+      "priorPerGame": 2.56
     },
     {
       "quarter": 2,
       "currentPerGame": 2.83,
-      "priorPerGame": 3.69
+      "priorPerGame": 3.65
     },
     {
       "quarter": 3,
       "currentPerGame": 3.33,
-      "priorPerGame": 2.64
+      "priorPerGame": 2.72
     },
     {
       "quarter": 4,
       "currentPerGame": 3.5,
-      "priorPerGame": 2.83
+      "priorPerGame": 2.98
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.4,
-    "avgVsLeaguePct": -3.5,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": -0.9,
+    "avgVsLeaguePct": -7.1,
+    "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
     "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
@@ -821,5 +858,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-20T19:08:12.848371Z"
+  "generatedAt": "2026-10-20T20:01:33.092981Z"
 }

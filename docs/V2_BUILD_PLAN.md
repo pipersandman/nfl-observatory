@@ -270,6 +270,8 @@ Ranked by plausibility. Each becomes a pre-registered test in Q2.
 
 ### Q0 Data additions
 
+**Full catalog:** [Data Sources and Data Lake Design](DATA_SOURCES.md) lists every source with coverage, access, license, join keys and priority (P0–P3), plus the lake's zones and id crosswalks.
+
 **Depends on:** V2.0 step 1 (raw capture to R2). Priority order:
 
 1. **Betting lines:** opening, closing, timestamps of movement, and prop lines where available (e.g. The Odds API).

@@ -2137,3 +2137,9 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 
 /* Crew chiefs: show/hide former crew chiefs */
 .former-toggle { grid-column: 1 / -1; display: flex; justify-content: center; padding: 0.5rem 0 0; }
+
+/* Costliest flags: win chances next to points, and the ranking toggle */
+.fc-item { grid-template-columns: 28px 1fr auto auto; }
+.fc-wp { text-align: right; min-width: 4.2rem; } .fc-wp strong { font: 700 1.25rem var(--font-display); color: var(--accent); display: block; line-height: 1; }
+.fc-wp span { font: 500 0.68rem var(--font-mono); color: var(--text-muted); }
+.fc-week-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; margin-bottom: 0.5rem; }

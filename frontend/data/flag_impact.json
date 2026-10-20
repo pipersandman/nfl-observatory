@@ -7,13 +7,30 @@
       "games": 93,
       "flags": 1394,
       "league": {
-        "pointsCostPerTeamGame": 6.21,
+        "pointsCostPerTeamGame": 6.31,
         "keyFirstDownsGiven": 152,
         "drivesKilled": 72,
-        "bigPlaysErased": 53,
-        "turnoversErased": 20
+        "bigPlaysErased": 59,
+        "turnoversErased": 20,
+        "tdsErased": 23,
+        "tdsLostOffsetting": 2
       },
       "teams": [
+        {
+          "team": "JAX",
+          "games": 6,
+          "flags": 46,
+          "pointsCost": 51.8,
+          "pointsCostPerGame": 8.63,
+          "firstDownsGiven": 13,
+          "keyFirstDownsGiven": 8,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 4,
+          "tdsLostOffsetting": 1,
+          "rank": 1
+        },
         {
           "team": "CAR",
           "games": 5,
@@ -25,20 +42,24 @@
           "drivesKilled": 2,
           "bigPlaysErased": 6,
           "turnoversErased": 2,
-          "rank": 1
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 2
         },
         {
-          "team": "JAX",
+          "team": "BUF",
           "games": 6,
-          "flags": 46,
-          "pointsCost": 47.9,
-          "pointsCostPerGame": 7.98,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 8,
-          "drivesKilled": 4,
-          "bigPlaysErased": 3,
+          "flags": 50,
+          "pointsCost": 46.6,
+          "pointsCostPerGame": 7.77,
+          "firstDownsGiven": 20,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 0,
+          "bigPlaysErased": 4,
           "turnoversErased": 1,
-          "rank": 2
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 3
         },
         {
           "team": "GB",
@@ -51,7 +72,24 @@
           "drivesKilled": 2,
           "bigPlaysErased": 2,
           "turnoversErased": 2,
-          "rank": 3
+          "tdsErased": 1,
+          "tdsLostOffsetting": 1,
+          "rank": 4
+        },
+        {
+          "team": "HOU",
+          "games": 6,
+          "flags": 48,
+          "pointsCost": 46.3,
+          "pointsCostPerGame": 7.72,
+          "firstDownsGiven": 9,
+          "keyFirstDownsGiven": 5,
+          "drivesKilled": 2,
+          "bigPlaysErased": 1,
+          "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 5
         },
         {
           "team": "NYJ",
@@ -64,20 +102,9 @@
           "drivesKilled": 1,
           "bigPlaysErased": 2,
           "turnoversErased": 3,
-          "rank": 4
-        },
-        {
-          "team": "BUF",
-          "games": 6,
-          "flags": 50,
-          "pointsCost": 44.7,
-          "pointsCostPerGame": 7.45,
-          "firstDownsGiven": 20,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 0,
-          "bigPlaysErased": 3,
-          "turnoversErased": 1,
-          "rank": 5
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 6
         },
         {
           "team": "SEA",
@@ -90,7 +117,9 @@
           "drivesKilled": 0,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
-          "rank": 6
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 7
         },
         {
           "team": "LAC",
@@ -103,20 +132,24 @@
           "drivesKilled": 0,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "rank": 7
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
+          "rank": 8
         },
         {
-          "team": "HOU",
-          "games": 6,
-          "flags": 48,
-          "pointsCost": 43.2,
-          "pointsCostPerGame": 7.2,
-          "firstDownsGiven": 9,
+          "team": "CIN",
+          "games": 5,
+          "flags": 40,
+          "pointsCost": 36.0,
+          "pointsCostPerGame": 7.21,
+          "firstDownsGiven": 13,
           "keyFirstDownsGiven": 5,
-          "drivesKilled": 2,
-          "bigPlaysErased": 0,
-          "turnoversErased": 0,
-          "rank": 8
+          "drivesKilled": 1,
+          "bigPlaysErased": 2,
+          "turnoversErased": 1,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 9
         },
         {
           "team": "BAL",
@@ -129,19 +162,8 @@
           "drivesKilled": 1,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
-          "rank": 9
-        },
-        {
-          "team": "CIN",
-          "games": 5,
-          "flags": 40,
-          "pointsCost": 33.5,
-          "pointsCostPerGame": 6.71,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 5,
-          "drivesKilled": 1,
-          "bigPlaysErased": 1,
-          "turnoversErased": 1,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 10
         },
         {
@@ -155,6 +177,8 @@
           "drivesKilled": 2,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 11
         },
         {
@@ -168,6 +192,8 @@
           "drivesKilled": 7,
           "bigPlaysErased": 1,
           "turnoversErased": 1,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 12
         },
         {
@@ -181,7 +207,39 @@
           "drivesKilled": 6,
           "bigPlaysErased": 2,
           "turnoversErased": 1,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 13
+        },
+        {
+          "team": "SF",
+          "games": 6,
+          "flags": 36,
+          "pointsCost": 39.1,
+          "pointsCostPerGame": 6.52,
+          "firstDownsGiven": 11,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 2,
+          "bigPlaysErased": 2,
+          "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 14
+        },
+        {
+          "team": "WAS",
+          "games": 6,
+          "flags": 46,
+          "pointsCost": 38.7,
+          "pointsCostPerGame": 6.44,
+          "firstDownsGiven": 10,
+          "keyFirstDownsGiven": 5,
+          "drivesKilled": 5,
+          "bigPlaysErased": 4,
+          "turnoversErased": 2,
+          "tdsErased": 3,
+          "tdsLostOffsetting": 0,
+          "rank": 15
         },
         {
           "team": "NYG",
@@ -194,7 +252,9 @@
           "drivesKilled": 5,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "rank": 14
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
+          "rank": 16
         },
         {
           "team": "KC",
@@ -207,7 +267,9 @@
           "drivesKilled": 0,
           "bigPlaysErased": 2,
           "turnoversErased": 2,
-          "rank": 15
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 17
         },
         {
           "team": "ARI",
@@ -220,7 +282,9 @@
           "drivesKilled": 1,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "rank": 16
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
+          "rank": 18
         },
         {
           "team": "PHI",
@@ -233,32 +297,8 @@
           "drivesKilled": 2,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "rank": 17
-        },
-        {
-          "team": "SF",
-          "games": 6,
-          "flags": 36,
-          "pointsCost": 36.6,
-          "pointsCostPerGame": 6.1,
-          "firstDownsGiven": 11,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 2,
-          "bigPlaysErased": 1,
-          "turnoversErased": 0,
-          "rank": 18
-        },
-        {
-          "team": "WAS",
-          "games": 6,
-          "flags": 46,
-          "pointsCost": 35.3,
-          "pointsCostPerGame": 5.88,
-          "firstDownsGiven": 10,
-          "keyFirstDownsGiven": 5,
-          "drivesKilled": 5,
-          "bigPlaysErased": 3,
-          "turnoversErased": 2,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 19
         },
         {
@@ -272,6 +312,8 @@
           "drivesKilled": 4,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 20
         },
         {
@@ -285,6 +327,8 @@
           "drivesKilled": 3,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 21
         },
         {
@@ -298,6 +342,8 @@
           "drivesKilled": 2,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 22
         },
         {
@@ -311,6 +357,8 @@
           "drivesKilled": 3,
           "bigPlaysErased": 2,
           "turnoversErased": 1,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 23
         },
         {
@@ -324,6 +372,8 @@
           "drivesKilled": 3,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 24
         },
         {
@@ -337,6 +387,8 @@
           "drivesKilled": 2,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 25
         },
         {
@@ -350,6 +402,8 @@
           "drivesKilled": 1,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 26
         },
         {
@@ -363,6 +417,8 @@
           "drivesKilled": 4,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 27
         },
         {
@@ -376,6 +432,8 @@
           "drivesKilled": 0,
           "bigPlaysErased": 0,
           "turnoversErased": 1,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 28
         },
         {
@@ -389,6 +447,8 @@
           "drivesKilled": 0,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 29
         },
         {
@@ -402,6 +462,8 @@
           "drivesKilled": 1,
           "bigPlaysErased": 1,
           "turnoversErased": 2,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 30
         },
         {
@@ -415,6 +477,8 @@
           "drivesKilled": 1,
           "bigPlaysErased": 3,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 31
         },
         {
@@ -428,6 +492,8 @@
           "drivesKilled": 5,
           "bigPlaysErased": 0,
           "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 32
         }
       ],
@@ -450,6 +516,47 @@
           "twoPoint": false,
           "labels": [
             "Key first down given"
+          ]
+        },
+        {
+          "gameId": "2026_04_JAX_CIN",
+          "week": 4,
+          "away": "JAX",
+          "home": "CIN",
+          "team": "JAX",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "E.Cleveland",
+          "qtr": 2,
+          "time": "07:51",
+          "yards": 10,
+          "pointsCost": 4.53,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2026_06_WAS_SF",
+          "week": 6,
+          "away": "WAS",
+          "home": "SF",
+          "team": "WAS",
+          "side": "offense",
+          "type": "Face Mask",
+          "player": "C.Paul",
+          "qtr": 4,
+          "time": "04:19",
+          "yards": 15,
+          "pointsCost": 4.32,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Drive stalled after",
+            "Touchdown erased"
           ]
         },
         {
@@ -553,6 +660,26 @@
           ]
         },
         {
+          "gameId": "2026_05_HOU_TEN",
+          "week": 5,
+          "away": "HOU",
+          "home": "TEN",
+          "team": "HOU",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "B.Jordan",
+          "qtr": 1,
+          "time": "03:51",
+          "yards": 10,
+          "pointsCost": 3.76,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
           "gameId": "2026_03_CIN_PIT",
           "week": 3,
           "away": "CIN",
@@ -571,66 +698,6 @@
           "labels": [
             "Key first down given"
           ]
-        },
-        {
-          "gameId": "2026_01_BUF_HOU",
-          "week": 1,
-          "away": "BUF",
-          "home": "HOU",
-          "team": "HOU",
-          "side": "defense",
-          "type": "Defensive Pass Interference",
-          "player": "K.Lassiter",
-          "qtr": 2,
-          "time": "04:13",
-          "yards": 46,
-          "pointsCost": 3.55,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "First down given"
-          ]
-        },
-        {
-          "gameId": "2026_04_LAC_SEA",
-          "week": 4,
-          "away": "LAC",
-          "home": "SEA",
-          "team": "LAC",
-          "side": "defense",
-          "type": "Leverage",
-          "player": "T.Tuipulotu",
-          "qtr": 3,
-          "time": "02:53",
-          "yards": 15,
-          "pointsCost": 3.52,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
-        },
-        {
-          "gameId": "2026_04_DAL_HOU",
-          "week": 4,
-          "away": "DAL",
-          "home": "HOU",
-          "team": "HOU",
-          "side": "defense",
-          "type": "Defensive Holding",
-          "player": "K.Lassiter",
-          "qtr": 3,
-          "time": "06:59",
-          "yards": 2,
-          "pointsCost": 3.46,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
         }
       ]
     },
@@ -639,11 +706,13 @@
       "games": 272,
       "flags": 3461,
       "league": {
-        "pointsCostPerTeamGame": 5.28,
+        "pointsCostPerTeamGame": 5.34,
         "keyFirstDownsGiven": 374,
         "drivesKilled": 175,
-        "bigPlaysErased": 138,
-        "turnoversErased": 32
+        "bigPlaysErased": 147,
+        "turnoversErased": 32,
+        "tdsErased": 51,
+        "tdsLostOffsetting": 1
       },
       "teams": [
         {
@@ -657,6 +726,8 @@
           "drivesKilled": 7,
           "bigPlaysErased": 4,
           "turnoversErased": 2,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 1
         },
         {
@@ -670,6 +741,8 @@
           "drivesKilled": 4,
           "bigPlaysErased": 9,
           "turnoversErased": 1,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
           "rank": 2
         },
         {
@@ -683,6 +756,8 @@
           "drivesKilled": 5,
           "bigPlaysErased": 7,
           "turnoversErased": 0,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
           "rank": 3
         },
         {
@@ -696,6 +771,8 @@
           "drivesKilled": 6,
           "bigPlaysErased": 5,
           "turnoversErased": 1,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 4
         },
         {
@@ -709,6 +786,8 @@
           "drivesKilled": 4,
           "bigPlaysErased": 6,
           "turnoversErased": 1,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
           "rank": 5
         },
         {
@@ -722,6 +801,8 @@
           "drivesKilled": 6,
           "bigPlaysErased": 5,
           "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 6
         },
         {
@@ -735,6 +816,8 @@
           "drivesKilled": 6,
           "bigPlaysErased": 4,
           "turnoversErased": 1,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 7
         },
         {
@@ -748,7 +831,24 @@
           "drivesKilled": 7,
           "bigPlaysErased": 4,
           "turnoversErased": 3,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
           "rank": 8
+        },
+        {
+          "team": "KC",
+          "games": 17,
+          "flags": 119,
+          "pointsCost": 101.3,
+          "pointsCostPerGame": 5.96,
+          "firstDownsGiven": 30,
+          "keyFirstDownsGiven": 12,
+          "drivesKilled": 5,
+          "bigPlaysErased": 4,
+          "turnoversErased": 4,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 9
         },
         {
           "team": "NO",
@@ -761,19 +861,8 @@
           "drivesKilled": 4,
           "bigPlaysErased": 4,
           "turnoversErased": 2,
-          "rank": 9
-        },
-        {
-          "team": "KC",
-          "games": 17,
-          "flags": 119,
-          "pointsCost": 99.0,
-          "pointsCostPerGame": 5.82,
-          "firstDownsGiven": 30,
-          "keyFirstDownsGiven": 12,
-          "drivesKilled": 5,
-          "bigPlaysErased": 3,
-          "turnoversErased": 4,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
           "rank": 10
         },
         {
@@ -787,7 +876,39 @@
           "drivesKilled": 7,
           "bigPlaysErased": 3,
           "turnoversErased": 2,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 11
+        },
+        {
+          "team": "IND",
+          "games": 17,
+          "flags": 102,
+          "pointsCost": 98.8,
+          "pointsCostPerGame": 5.81,
+          "firstDownsGiven": 31,
+          "keyFirstDownsGiven": 10,
+          "drivesKilled": 0,
+          "bigPlaysErased": 7,
+          "turnoversErased": 0,
+          "tdsErased": 4,
+          "tdsLostOffsetting": 0,
+          "rank": 12
+        },
+        {
+          "team": "MIN",
+          "games": 17,
+          "flags": 111,
+          "pointsCost": 92.8,
+          "pointsCostPerGame": 5.46,
+          "firstDownsGiven": 26,
+          "keyFirstDownsGiven": 13,
+          "drivesKilled": 2,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 3,
+          "tdsLostOffsetting": 0,
+          "rank": 13
         },
         {
           "team": "DET",
@@ -800,7 +921,9 @@
           "drivesKilled": 8,
           "bigPlaysErased": 4,
           "turnoversErased": 3,
-          "rank": 12
+          "tdsErased": 3,
+          "tdsLostOffsetting": 0,
+          "rank": 14
         },
         {
           "team": "GB",
@@ -813,7 +936,9 @@
           "drivesKilled": 5,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "rank": 13
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 15
         },
         {
           "team": "CLE",
@@ -826,7 +951,9 @@
           "drivesKilled": 8,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "rank": 14
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 16
         },
         {
           "team": "ARI",
@@ -839,20 +966,9 @@
           "drivesKilled": 7,
           "bigPlaysErased": 5,
           "turnoversErased": 2,
-          "rank": 15
-        },
-        {
-          "team": "IND",
-          "games": 17,
-          "flags": 102,
-          "pointsCost": 88.9,
-          "pointsCostPerGame": 5.23,
-          "firstDownsGiven": 31,
-          "keyFirstDownsGiven": 10,
-          "drivesKilled": 0,
-          "bigPlaysErased": 5,
-          "turnoversErased": 0,
-          "rank": 16
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 17
         },
         {
           "team": "NYJ",
@@ -865,7 +981,9 @@
           "drivesKilled": 6,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
-          "rank": 17
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 18
         },
         {
           "team": "LV",
@@ -878,7 +996,9 @@
           "drivesKilled": 4,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
-          "rank": 18
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 19
         },
         {
           "team": "ATL",
@@ -891,19 +1011,8 @@
           "drivesKilled": 5,
           "bigPlaysErased": 3,
           "turnoversErased": 1,
-          "rank": 19
-        },
-        {
-          "team": "MIN",
-          "games": 17,
-          "flags": 111,
-          "pointsCost": 87.6,
-          "pointsCostPerGame": 5.15,
-          "firstDownsGiven": 26,
-          "keyFirstDownsGiven": 13,
-          "drivesKilled": 2,
-          "bigPlaysErased": 3,
-          "turnoversErased": 1,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 20
         },
         {
@@ -917,6 +1026,8 @@
           "drivesKilled": 5,
           "bigPlaysErased": 6,
           "turnoversErased": 0,
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
           "rank": 21
         },
         {
@@ -930,6 +1041,8 @@
           "drivesKilled": 7,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 1,
           "rank": 22
         },
         {
@@ -943,7 +1056,24 @@
           "drivesKilled": 8,
           "bigPlaysErased": 7,
           "turnoversErased": 1,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 23
+        },
+        {
+          "team": "PIT",
+          "games": 17,
+          "flags": 101,
+          "pointsCost": 79.4,
+          "pointsCostPerGame": 4.67,
+          "firstDownsGiven": 28,
+          "keyFirstDownsGiven": 11,
+          "drivesKilled": 2,
+          "bigPlaysErased": 7,
+          "turnoversErased": 2,
+          "tdsErased": 3,
+          "tdsLostOffsetting": 0,
+          "rank": 24
         },
         {
           "team": "BAL",
@@ -956,7 +1086,9 @@
           "drivesKilled": 5,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "rank": 24
+          "tdsErased": 1,
+          "tdsLostOffsetting": 0,
+          "rank": 25
         },
         {
           "team": "TB",
@@ -969,20 +1101,24 @@
           "drivesKilled": 8,
           "bigPlaysErased": 6,
           "turnoversErased": 2,
-          "rank": 25
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 26
         },
         {
-          "team": "PIT",
+          "team": "SEA",
           "games": 17,
-          "flags": 101,
-          "pointsCost": 77.6,
-          "pointsCostPerGame": 4.56,
-          "firstDownsGiven": 28,
-          "keyFirstDownsGiven": 11,
-          "drivesKilled": 2,
-          "bigPlaysErased": 6,
-          "turnoversErased": 2,
-          "rank": 26
+          "flags": 100,
+          "pointsCost": 76.6,
+          "pointsCostPerGame": 4.51,
+          "firstDownsGiven": 32,
+          "keyFirstDownsGiven": 10,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 27
         },
         {
           "team": "CAR",
@@ -995,20 +1131,24 @@
           "drivesKilled": 9,
           "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "rank": 27
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
+          "rank": 28
         },
         {
-          "team": "SEA",
+          "team": "BUF",
           "games": 17,
-          "flags": 100,
-          "pointsCost": 75.0,
-          "pointsCostPerGame": 4.41,
-          "firstDownsGiven": 32,
-          "keyFirstDownsGiven": 10,
-          "drivesKilled": 4,
-          "bigPlaysErased": 3,
+          "flags": 101,
+          "pointsCost": 73.3,
+          "pointsCostPerGame": 4.31,
+          "firstDownsGiven": 26,
+          "keyFirstDownsGiven": 6,
+          "drivesKilled": 5,
+          "bigPlaysErased": 5,
           "turnoversErased": 1,
-          "rank": 28
+          "tdsErased": 2,
+          "tdsLostOffsetting": 0,
+          "rank": 29
         },
         {
           "team": "SF",
@@ -1021,20 +1161,24 @@
           "drivesKilled": 4,
           "bigPlaysErased": 0,
           "turnoversErased": 1,
-          "rank": 29
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
+          "rank": 30
         },
         {
-          "team": "BUF",
+          "team": "LA",
           "games": 17,
-          "flags": 101,
-          "pointsCost": 70.6,
-          "pointsCostPerGame": 4.15,
-          "firstDownsGiven": 26,
+          "flags": 75,
+          "pointsCost": 68.8,
+          "pointsCostPerGame": 4.05,
+          "firstDownsGiven": 24,
           "keyFirstDownsGiven": 6,
-          "drivesKilled": 5,
-          "bigPlaysErased": 4,
-          "turnoversErased": 1,
-          "rank": 30
+          "drivesKilled": 9,
+          "bigPlaysErased": 9,
+          "turnoversErased": 0,
+          "tdsErased": 4,
+          "tdsLostOffsetting": 0,
+          "rank": 31
         },
         {
           "team": "CIN",
@@ -1047,23 +1191,72 @@
           "drivesKilled": 3,
           "bigPlaysErased": 2,
           "turnoversErased": 0,
-          "rank": 31
-        },
-        {
-          "team": "LA",
-          "games": 17,
-          "flags": 75,
-          "pointsCost": 63.7,
-          "pointsCostPerGame": 3.74,
-          "firstDownsGiven": 24,
-          "keyFirstDownsGiven": 6,
-          "drivesKilled": 9,
-          "bigPlaysErased": 7,
-          "turnoversErased": 0,
+          "tdsErased": 0,
+          "tdsLostOffsetting": 0,
           "rank": 32
         }
       ],
       "costliest": [
+        {
+          "gameId": "2025_05_LV_IND",
+          "week": 5,
+          "away": "LV",
+          "home": "IND",
+          "team": "IND",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "J.Bachie",
+          "qtr": 1,
+          "time": "03:21",
+          "yards": 10,
+          "pointsCost": 6.07,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2025_09_MIN_DET",
+          "week": 9,
+          "away": "MIN",
+          "home": "DET",
+          "team": "MIN",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "T.Thomas",
+          "qtr": 3,
+          "time": "00:11",
+          "yards": 10,
+          "pointsCost": 5.8,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2025_04_IND_LA",
+          "week": 4,
+          "away": "IND",
+          "home": "LA",
+          "team": "IND",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "A.Mitchell",
+          "qtr": 4,
+          "time": "02:25",
+          "yards": 10,
+          "pointsCost": 5.11,
+          "method": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
         {
           "gameId": "2025_07_NYG_DEN",
           "week": 7,
@@ -1203,66 +1396,6 @@
           "labels": [
             "Key first down given"
           ]
-        },
-        {
-          "gameId": "2025_13_HOU_IND",
-          "week": 13,
-          "away": "HOU",
-          "home": "IND",
-          "team": "HOU",
-          "side": "defense",
-          "type": "Defensive Pass Interference",
-          "player": "C.Bullock",
-          "qtr": 3,
-          "time": "03:00",
-          "yards": 32,
-          "pointsCost": 4.05,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
-        },
-        {
-          "gameId": "2025_18_DAL_NYG",
-          "week": 18,
-          "away": "DAL",
-          "home": "NYG",
-          "team": "DAL",
-          "side": "defense",
-          "type": "Defensive Pass Interference",
-          "player": "C.Carson",
-          "qtr": 4,
-          "time": "14:10",
-          "yards": 33,
-          "pointsCost": 3.88,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
-        },
-        {
-          "gameId": "2025_12_PHI_DAL",
-          "week": 12,
-          "away": "PHI",
-          "home": "DAL",
-          "team": "DAL",
-          "side": "defense",
-          "type": "Roughing the Kicker",
-          "player": "M.Liufau",
-          "qtr": 1,
-          "time": "04:45",
-          "yards": 15,
-          "pointsCost": 3.81,
-          "method": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
         }
       ]
     }
@@ -1270,6 +1403,27 @@
   "week": {
     "week": 6,
     "costliest": [
+      {
+        "gameId": "2026_06_WAS_SF",
+        "week": 6,
+        "away": "WAS",
+        "home": "SF",
+        "team": "WAS",
+        "side": "offense",
+        "type": "Face Mask",
+        "player": "C.Paul",
+        "qtr": 4,
+        "time": "04:19",
+        "yards": 15,
+        "pointsCost": 4.32,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Drive stalled after",
+          "Touchdown erased"
+        ]
+      },
       {
         "gameId": "2026_06_CHI_ATL",
         "week": 6,
@@ -1448,26 +1602,6 @@
         "twoPoint": false,
         "labels": [
           "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_CAR_PHI",
-        "week": 6,
-        "away": "CAR",
-        "home": "PHI",
-        "team": "CAR",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "W.Lee",
-        "qtr": 1,
-        "time": "06:57",
-        "yards": 23,
-        "pointsCost": 2.11,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
         ]
       }
     ]
@@ -1775,6 +1909,26 @@
     ],
     "BUF": [
       {
+        "gameId": "2026_03_LAC_BUF",
+        "week": 3,
+        "away": "LAC",
+        "home": "BUF",
+        "team": "BUF",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "D.Knox",
+        "qtr": 4,
+        "time": "11:15",
+        "yards": 10,
+        "pointsCost": 2.54,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_02_DET_BUF",
         "week": 2,
         "away": "DET",
@@ -1851,26 +2005,6 @@
         "gainErased": null,
         "twoPoint": false,
         "labels": []
-      },
-      {
-        "gameId": "2026_05_BUF_LA",
-        "week": 5,
-        "away": "BUF",
-        "home": "LA",
-        "team": "BUF",
-        "side": "defense",
-        "type": "Unnecessary Roughness",
-        "player": "C.Gardner-Johnson",
-        "qtr": 2,
-        "time": "02:31",
-        "yards": 15,
-        "pointsCost": 1.58,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
       }
     ],
     "CAR": [
@@ -2096,6 +2230,26 @@
         ]
       },
       {
+        "gameId": "2026_04_JAX_CIN",
+        "week": 4,
+        "away": "JAX",
+        "home": "CIN",
+        "team": "CIN",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "D.Fairchild",
+        "qtr": 2,
+        "time": "11:45",
+        "yards": 10,
+        "pointsCost": 3.1,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_05_CIN_MIA",
         "week": 5,
         "away": "CIN",
@@ -2152,26 +2306,6 @@
         "gainErased": 5,
         "twoPoint": false,
         "labels": []
-      },
-      {
-        "gameId": "2026_04_JAX_CIN",
-        "week": 4,
-        "away": "JAX",
-        "home": "CIN",
-        "team": "CIN",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "D.Turner",
-        "qtr": 4,
-        "time": "13:33",
-        "yards": 19,
-        "pointsCost": 1.38,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
       }
     ],
     "CLE": [
@@ -2677,6 +2811,26 @@
     ],
     "HOU": [
       {
+        "gameId": "2026_05_HOU_TEN",
+        "week": 5,
+        "away": "HOU",
+        "home": "TEN",
+        "team": "HOU",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "B.Jordan",
+        "qtr": 1,
+        "time": "03:51",
+        "yards": 10,
+        "pointsCost": 3.76,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_01_BUF_HOU",
         "week": 1,
         "away": "BUF",
@@ -2754,26 +2908,6 @@
         "twoPoint": false,
         "labels": [
           "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_01_BUF_HOU",
-        "week": 1,
-        "away": "BUF",
-        "home": "HOU",
-        "team": "HOU",
-        "side": "defense",
-        "type": "Roughing the Passer",
-        "player": "M.Edwards",
-        "qtr": 3,
-        "time": "07:22",
-        "yards": 15,
-        "pointsCost": 1.79,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
         ]
       }
     ],
@@ -2879,6 +3013,26 @@
     ],
     "JAX": [
       {
+        "gameId": "2026_04_JAX_CIN",
+        "week": 4,
+        "away": "JAX",
+        "home": "CIN",
+        "team": "JAX",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "E.Cleveland",
+        "qtr": 2,
+        "time": "07:51",
+        "yards": 10,
+        "pointsCost": 4.53,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_05_PHI_JAX",
         "week": 5,
         "away": "PHI",
@@ -2956,27 +3110,6 @@
         "twoPoint": false,
         "labels": [
           "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_04_JAX_CIN",
-        "week": 4,
-        "away": "JAX",
-        "home": "CIN",
-        "team": "JAX",
-        "side": "defense",
-        "type": "Roughing the Passer",
-        "player": "A.Armstead",
-        "qtr": 1,
-        "time": "01:24",
-        "yards": 15,
-        "pointsCost": 2.24,
-        "method": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given",
-          "Turnover erased"
         ]
       }
     ],
@@ -4303,6 +4436,26 @@
         ]
       },
       {
+        "gameId": "2026_03_ARI_SF",
+        "week": 3,
+        "away": "ARI",
+        "home": "SF",
+        "team": "SF",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "G.Kittle",
+        "qtr": 4,
+        "time": "01:52",
+        "yards": 10,
+        "pointsCost": 3.14,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_01_SF_LA",
         "week": 1,
         "away": "SF",
@@ -4361,24 +4514,6 @@
         "labels": [
           "Key first down given"
         ]
-      },
-      {
-        "gameId": "2026_06_WAS_SF",
-        "week": 6,
-        "away": "WAS",
-        "home": "SF",
-        "team": "SF",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "T.Williams",
-        "qtr": 2,
-        "time": "01:18",
-        "yards": 10,
-        "pointsCost": 1.44,
-        "method": "play value",
-        "gainErased": -2,
-        "twoPoint": false,
-        "labels": []
       }
     ],
     "TB": [
@@ -4583,6 +4718,27 @@
     ],
     "WAS": [
       {
+        "gameId": "2026_06_WAS_SF",
+        "week": 6,
+        "away": "WAS",
+        "home": "SF",
+        "team": "WAS",
+        "side": "offense",
+        "type": "Face Mask",
+        "player": "C.Paul",
+        "qtr": 4,
+        "time": "04:19",
+        "yards": 15,
+        "pointsCost": 4.32,
+        "method": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Drive stalled after",
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_05_NYG_WAS",
         "week": 5,
         "away": "NYG",
@@ -4660,26 +4816,6 @@
         "labels": [
           "Key first down given"
         ]
-      },
-      {
-        "gameId": "2026_04_IND_WAS",
-        "week": 4,
-        "away": "IND",
-        "home": "WAS",
-        "team": "WAS",
-        "side": "offense",
-        "type": "Offensive Pass Interference",
-        "player": "S.Diggs",
-        "qtr": 4,
-        "time": "10:59",
-        "yards": 9,
-        "pointsCost": 1.19,
-        "method": "play value",
-        "gainErased": 21,
-        "twoPoint": false,
-        "labels": [
-          "Big play erased"
-        ]
       }
     ]
   },
@@ -4689,8 +4825,10 @@
     "keyFirstDownsGiven": "Defensive flags that gave the offense a first down on 3rd or 4th down",
     "drivesKilled": "Drives stalled: offensive flags inside the opponent 40 on drives that then did not score (the flag may or may not be why)",
     "bigPlaysErased": "Offensive flags that wiped out a 15+ yard gain or a touchdown",
+    "tdsErased": "Touchdowns wiped out by the scoring team's own flag (including fouls enforced at the spot)",
+    "tdsLostOffsetting": "Touchdowns wiped out by offsetting penalties (no team charged with a flag)",
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points are estimates from nflverse's expected-points model and 2020-25 league rates.",
-  "generatedAt": "2026-10-20T20:01:33+00:00"
+  "generatedAt": "2026-10-20T20:04:27+00:00"
 }

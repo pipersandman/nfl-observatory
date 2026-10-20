@@ -1,8 +1,13 @@
-# V2 Build Plan: Architecture and Quant Research
+# V2 Build Plan: Architecture, Quant Research and AI Delivery
 
-**What this covers:** how V2 is built (the platform, tools and sequence a
-professional team would use) and the quantitative research track (what we
-measure, which models we use, and how any betting-related edge is tested).
+**What this covers:** what V2 is (the platform, tools and sequence a
+professional team would use), the quantitative research track (what we
+measure, which models we use, and how any betting-related edge is tested), and
+how it gets built (an AI engineering delivery system with isolated agents,
+independent review and human approval).
+
+**Start here:** Part C, section 12 (V2.-1 setup, Session 0) is the first thing
+to build. V2.0's R2 raw capture can start alongside it.
 
 **Related docs:**
 [Data & Modeling Roadmap](DATA_AND_MODELING_ROADMAP.md) (data platform and
@@ -11,7 +16,7 @@ indexing; Phase 1 now, Phase 2 overlaps with this plan).
 
 **How to use this doc:** each step lists what it depends on, its micro-steps
 and how to confirm it's done. Any step can be drilled into further before
-building. Decisions are recorded in section 10.
+building. Decisions are recorded in section 16.
 
 ---
 
@@ -30,10 +35,18 @@ building. Decisions are recorded in section 10.
 8. [Methods](#8-methods)
 9. [Research phases (Q0–Q5)](#9-research-phases-q0q5)
 
+**Part C: AI engineering delivery system (V2.-1)**
+10. [Roles and boundaries](#10-roles-and-boundaries)
+11. [Tools and runtime](#11-tools-and-runtime)
+12. [V2.-1 setup sequence](#12-v2-1-setup-sequence)
+13. [Agent task protocol](#13-agent-task-protocol)
+14. [Phase ownership and gates](#14-phase-ownership-and-gates)
+15. [Hosting, security and cost controls](#15-hosting-security-and-cost-controls)
+
 **Shared**
-10. [Decisions log](#10-decisions-log)
-11. [Dependency map](#11-dependency-map)
-12. [Costs](#12-costs)
+16. [Decisions log](#16-decisions-log)
+17. [Dependency map](#17-dependency-map)
+18. [Costs](#18-costs)
 
 ---
 
@@ -309,9 +322,176 @@ Ranked by plausibility. Each becomes a pre-registered test in Q2.
 
 ---
 
+# Part C: AI engineering delivery system (V2.-1)
+
+**What this is:** how V2 gets built. A small team of AI coding agents does the
+implementation, each in isolation, with independent review and human approval
+for anything that ships. This governs the *building* of V2; it does not replace
+Dagster (production data orchestration) or the public-site architecture.
+
+**Stage name:** V2.-1, because it comes before V2.0.
+
+## 10. Roles and boundaries
+
+| Role | Who | Does | Never does |
+|---|---|---|---|
+| **Product owner** | You | Sets priorities; approves architecture decisions, credentials, spending and production releases | — |
+| **Lead architect** | Claude (in this project or Claude Code) | Reads the repo, breaks work into scoped tasks, defines interfaces and acceptance criteria, drafts decision records | Merges or deploys |
+| **Builders** | Claude Code sessions | Implement one scoped task each, in their own Git worktree and branch; data-platform, site and API tasks run in parallel only when their interfaces are stable | Touch files outside the task's allowed paths |
+| **Independent reviewer** | Codex (a different model family from the builder) | Reviews each change; runs regression and security tests; challenges data and statistical assumptions | Approves its own or another agent's work for production. *A second model reviewing is a check, not proof of correctness; tests and numbers decide* |
+| **Quant research agent** | Claude Code session scoped to `research/` | Implements experiments, records uncertainty | Runs tests that weren't pre-registered (Part B, Q2), uses held-out data |
+| **Documentation agent** | Claude Code session scoped to `docs/` | Updates READMEs, decision records, runbooks and changelogs from merged code | Documents unmerged or unverified results |
+| **Release coordinator** | Claude (summary) + you (decision) | Summarizes CI, parity checks, staging, rollback plan and approval status | Deploys without your approval |
+
+## 11. Tools and runtime
+
+| Need | Baseline (start here) | Candidates to pilot | Notes |
+|---|---|---|---|
+| Task tracking | **GitHub Issues + Projects** | Built into ComposioHQ agent-orchestrator / Stoneforge | Every task is an issue using the task contract (section 13) |
+| Isolation | **Git worktrees** (one per task) + a dedicated agent machine | Containers per agent (Docker) | No two agents ever share a writable working directory |
+| Agent sessions | Claude Code and Codex CLIs in separate terminals | **Herdr**: persistent, agent-aware terminal workspaces; shows which agent is working, blocked or done; survives disconnects; SSH remote; CLI/socket API. Rust, **AGPL-3.0** (fine for internal use). macOS/Linux, so on Windows run it under **WSL2** or on the ThinkCentre | Adopt only after a pilot (decision D11) |
+| Coordination | You + the lead architect assigning issues | **ComposioHQ agent-orchestrator** (spawns agents in isolated worktrees, routes CI failures and review comments back to the agent), **Stoneforge** (Apache 2.0; dispatch, worktree isolation, merge automation), **Overstory** | The draft named "orchestratr"; no project by that name could be found. Use one of these or stay on the baseline (D11) |
+| CI | **GitHub Actions** (existing) | — | Required checks on every PR (section 13, step 5) |
+| Production data | **Dagster** (Part A) | — | Unaffected by any of the above |
+
+**Permissions (non-negotiable):**
+1. Agents get **read-only** production data access and **least-privilege** development tokens (fine-grained GitHub token scoped to this repo, no admin).
+2. **No autonomous changes** to DNS, billing, secrets, GitHub settings, or production datasets.
+3. The agent machine never holds production deploy credentials (HostGator FTP, Cloudflare account tokens); deploys run only from GitHub Actions after you merge.
+4. Agents never see secrets in plain text; secrets live in GitHub Actions secrets and a local `.env` excluded from git.
+
+## 12. V2.-1 setup sequence
+
+Each session is about 1–2 hours. **You** steps are clicks and approvals; **Agent** steps are run by Claude Code with you watching.
+
+### Session 0: Agent machine and accounts
+
+**Depends on:** nothing.
+
+1. **You: pick the machine.** The ThinkCentre (Linux) is the cleaner choice; your Windows PC works with WSL2. Keep the Raspberry Pi for other services.
+2. **You: if using Windows,** open PowerShell as administrator → `wsl --install` → restart → finish the Ubuntu setup (username and password).
+3. **You: install the basics** on the agent machine (in the Ubuntu/Linux terminal):
+   1. `sudo apt update && sudo apt install -y git gh python3-venv python3-pip`
+   2. Node.js 20+ (needed by both CLIs): `curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt install -y nodejs`
+4. **You: sign in to GitHub:** `gh auth login` → GitHub.com → HTTPS → login with a web browser.
+5. **You: install Claude Code** and sign in (follow the current instructions at docs.claude.com for Claude Code), then run `claude` once to confirm it starts.
+6. **You: install Codex CLI** and sign in (follow OpenAI's current Codex CLI instructions), then run `codex` once to confirm.
+7. **You: clone the repo into a dedicated folder:** `mkdir -p ~/agents && cd ~/agents && git clone https://github.com/pipersandman/nfl-observatory.git main`
+8. **Done when:** `claude`, `codex`, `gh auth status` and `git -C ~/agents/main status` all work.
+
+### Session 1: Current-state inventory
+
+**Depends on:** Session 0.
+
+1. **Agent (lead architect):** inventory the repo: pipeline scripts and what each produces, site files, tests, workflows, secrets *by name only*, dependencies, deploy flow.
+2. **Agent:** record baseline numbers to compare against later (league flags per game per season, every crew's 2026 rate, team ranks, scorecard summary) in `docs/architecture/baseline-YYYY-MM-DD.json`.
+3. **Agent:** write `docs/architecture/current-state.md` (diagram + file map + data flow + known gaps).
+4. **You:** read it and correct anything wrong.
+5. **Done when:** the inventory is merged through a PR.
+
+### Session 2: Repository conventions
+
+**Depends on:** Session 1.
+
+1. **Agent:** add `AGENTS.md` (instructions any coding agent reads: setup, test commands, allowed paths per role, "never" list from section 13) and `CLAUDE.md` (Claude Code specifics; points to `AGENTS.md`).
+2. **Agent:** add `docs/adr/` with a template and ADR-0001 recording decisions D1–D15.
+3. **Agent:** add `.github/ISSUE_TEMPLATE/agent-task.md` (the task contract, section 13) and `.github/pull_request_template.md` (test evidence, diff summary, assumptions, open questions).
+4. **Agent:** add Ruff + pre-commit and a `make test` (or `scripts/test.sh`) that runs everything CI runs.
+5. **You:** GitHub → repo **Settings → Branches → Add branch ruleset** for `main`: require a pull request, require status checks (the CI job), block force pushes. (The data bot's daily commit needs an exception: add GitHub Actions as a bypass actor.)
+6. **Done when:** conventions are merged and a test PR can't merge without passing CI.
+
+### Session 3: Isolated environments and budgets
+
+**Depends on:** Session 2.
+
+1. **Agent:** script `scripts/agent-worktree.sh <issue-number>` that creates `~/agents/wt-<issue>` on branch `agent/<issue>-<slug>` from latest `main`.
+2. **You:** create a **fine-grained GitHub token** (github.com → Settings → Developer settings → Fine-grained tokens): repository `nfl-observatory` only; Contents read/write, Pull requests read/write, Issues read/write; nothing else; 90-day expiry. Store it in the agent machine's credential store, never in the repo.
+3. **You:** set spending limits: in the Anthropic and OpenAI consoles (or plans), a monthly cap; note the per-task budget in `AGENTS.md` (e.g. stop and ask if a task exceeds 2 hours or the set cost).
+4. **Agent:** logging: every agent session writes a summary to the PR (what it ran, test results, time spent).
+5. **Done when:** two worktrees can run at once without touching each other, and the token can't access other repos or settings.
+
+### Session 4: Pilot one small task end to end
+
+**Depends on:** Session 3.
+
+1. **You + lead architect:** pick a noncritical task (suggestion: add unit tests for `scripts/weeks.py` and fix anything they reveal).
+2. **Agent (builder):** implement in its own worktree; open a PR using the template.
+3. **Agent (reviewer, Codex):** review the PR: logic, tests, edge cases; comment on the PR.
+4. **Builder:** address comments; CI passes.
+5. **You:** review and merge.
+6. **Done when:** one full issue → isolated build → independent review → green CI → your merge cycle completes, with no credentials exposed.
+
+### Session 5 (optional): Pilot Herdr and/or an orchestrator
+
+**Depends on:** Session 4.
+
+1. **Agent:** install Herdr on the agent machine (Linux/WSL2); run builder and reviewer in two panes on a second small task.
+2. **Agent:** optionally trial one coordinator (ComposioHQ agent-orchestrator or Stoneforge) on a third small task.
+3. **You + lead architect:** compare against the baseline: did it save time, did it stay within permissions, is it maintained? Record the decision (D11).
+4. **Done when:** D11 is decided (adopt / keep baseline).
+
+### Session 6: Authorize V2.0
+
+**Depends on:** Session 4 (Session 5 optional).
+
+1. **Lead architect:** confirm reproducible setup instructions, reliable logs, and a written recovery procedure (how to roll back a bad merge; how to restore data from the history ledger and R2).
+2. **You:** approve starting V2.0.
+
+**V2.-1 exit criteria:** one complete issue → isolated build → independent review → green CI → human-approved merge; no exposed credentials; setup reproducible from the docs.
+
+**Exception (time-sensitive):** V2.0 step 1, **R2 raw capture**, may start before V2.-1 finishes. It's append-only, doesn't touch the site, and every week without it is history we can't recover (decision D15).
+
+## 13. Agent task protocol
+
+**Task contract** (every issue has all of these):
+- **Goal** and **why**
+- **Inputs:** files, data and docs to read
+- **Allowed paths:** where the agent may write
+- **Depends on:** issues that must merge first
+- **Outputs:** files or changes expected
+- **Acceptance tests:** commands and expected results (including numeric parity where data is involved)
+- **Escalate when:** conditions where the agent stops and asks (ambiguity, a failing check it can't explain, needing a secret, exceeding the budget)
+
+**Flow:**
+1. Lead architect creates the issue with the contract.
+2. Only dependency-ready issues are assigned; the builder gets its own worktree and minimum permissions.
+3. Builder commits, then opens a PR with test evidence, diff summary, assumptions and open questions.
+4. Independent reviewer checks logic, data sources, security, numerical outputs and reproducibility.
+5. CI runs Ruff, unit and integration tests, dbt tests, Playwright, Lighthouse where relevant, and dependency scans.
+6. You review release-sensitive changes and approve the merge; failures go back to the builder.
+7. The documentation agent updates docs and the decisions log after merge.
+
+**Never allowed:** an agent approving its own work; silent edits to production data; publishing unverified numbers; unreviewed infrastructure changes; unrestricted shell or network access while running untrusted code.
+
+## 14. Phase ownership and gates
+
+| Phase | Builder focus | Independent gate (must pass before the next phase) |
+|---|---|---|
+| V2.-1 | Conventions, worktrees, pilot | One full reviewed, CI-green, human-merged cycle |
+| V2.0 | R2 snapshots; DuckDB/dbt marts; Dagster assets | Zero-difference metric reconciliation; two parallel weeks |
+| V2.1 | Astro pages, design system, redirects | Page parity; Lighthouse ≥ 90; post-cutover indexing checks |
+| V2.2 | Explorer, API, Pagefind | 20 cross-surface numeric checks; read-only API security review |
+| V2.3 | Supabase auth and saved work | User isolation, access-control and sharing tests |
+| V2.4 | Claude metric tools, Vega-Lite rendering | 200-question test ≥ 95% exact numeric match; first 100 real questions reviewed, no wrong numbers |
+| Q0–Q5 | Data sourcing, experiments, reproducible reports | Pre-registration; no lookahead; held-out tests; uncertainty and calibration checks |
+
+## 15. Hosting, security and cost controls
+
+1. **Agent machine:** your development PC (via WSL2) or one dedicated ThinkCentre. Keep the Raspberry Pi for other services. Use hosted model APIs; don't run local model inference on the small machines.
+2. **Network:** keep any agent dashboards (Herdr, orchestrators) off public ports; reach them over SSH or a private network (Tailscale or similar). Encrypt the disk; back up the agent machine's config (not secrets) to the repo or a private backup.
+3. **Isolation from production:** production Cloudflare, DigitalOcean and HostGator accounts are never logged in on the agent machine.
+4. **Cost tracking,** separately:
+   - (a) agent model usage (Claude, Codex)
+   - (b) agent tooling infrastructure (if any)
+   - (c) CI and development hosting
+   - (d) production services and odds data
+5. **Budgets:** monthly caps in each provider console, a per-task budget in `AGENTS.md`, and a rule that any loop running past its budget stops and escalates.
+
+---
+
 # Shared
 
-## 10. Decisions log
+## 16. Decisions log
 
 Record each decision here (and as an ADR in `docs/adr/` once V2 starts).
 
@@ -325,10 +505,20 @@ Record each decision here (and as an ADR in `docs/adr/` once V2 starts).
 | D6 | Research results public or private | Private by default | — |
 | D7 | Cloudscape: internal tools only, not the public site | Decided | Oct 2026 |
 | D8 | Text-to-SQL: Claude tool use over semantic layer (not Vanna, archived) | Decided | Oct 2026 |
+| D9 | AI engineering control plane, separate from Dagster | Proposed | — |
+| D10 | Claude Code as primary builder; Codex as independent reviewer | Proposed | — |
+| D11 | Herdr and/or an orchestrator (agent-orchestrator, Stoneforge, Overstory): pilot before adopting; baseline is GitHub Issues + worktrees | Open (Session 5) | — |
+| D12 | GitHub PRs, isolated worktrees, required CI, human approval for merges and production | Proposed | — |
+| D13 | Lead architect model: Claude by default; confirm the exact "Astra" product/model before assigning it a role | Open | — |
+| D14 | Agent machine (ThinkCentre vs Windows + WSL2) and agent spending budgets | Open (Session 0, 3) | — |
+| D15 | R2 raw capture may start before V2.-1 completes (append-only, time-sensitive) | Proposed | — |
 
-## 11. Dependency map
+## 17. Dependency map
 
 ```
+V2.-1 Agent delivery system (Sessions 0–6) ──► authorizes V2.0 onward
+   (exception: V2.0 step 1, R2 raw capture, may start now)
+
 V2.0 Data platform ──► V2.1 Astro site ──► V2.2 Explorer/API/search ──► V2.3 Accounts ──► V2.4 Ask the Observatory
    │  (R2 raw capture)                                                                         ▲
    │                                                                                           │
@@ -338,7 +528,7 @@ V2.0 Data platform ──► V2.1 Astro site ──► V2.2 Explorer/API/search 
 Growth Cadence Phase 1 runs throughout; its Phase 2 items land in V2.1.
 ```
 
-## 12. Costs
+## 18. Costs
 
 | Item | Monthly |
 |---|---|
@@ -348,4 +538,6 @@ Growth Cadence Phase 1 runs throughout; its Phase 2 items land in V2.1.
 | Plausible (or self-hosted Umami: $0) | $0–9 |
 | Supabase (free tier at launch) | $0 |
 | Claude API for Ask the Observatory | usage-based; cap with rate limits |
-| **Total excluding odds data** | **~$10–30** |
+| **Total excluding odds data and AI agents** | **~$10–30** |
+| AI engineering agents (Claude Code, Codex) | plan- or usage-based; set monthly caps (D14) |
+| Agent tooling (Herdr is free; orchestrators mostly free/open source) | $0 for the baseline |

@@ -1,8 +1,11 @@
 """
 Crew styles: each active crew chief's calling fingerprint
 =========================================================
-Career window: regular seasons before the current one (2020-25), so styles are
-stable (~95 games for most crews). Also a current-season view for the map.
+Career window: every regular season before the current one (2015 onward), so
+styles are stable. Multi-season numbers are season-adjusted: each crew is compared
+with the league in the seasons it worked (league levels moved ~18% over the
+window), expressed at the window's overall league level. Also single-season and
+current-season (week-by-week) views for the map.
 
 For each crew chief, compared with the league over the same games:
   volume        flags per game
@@ -67,23 +70,59 @@ def _profiles(pen, games, crew_by_game, types=None):
     }
     types = types or list(p['penalty_type'].value_counts().head(TOP_TYPES).index)
     lg_type = {t: (p['penalty_type'] == t).sum() / n_league for t in types}
+
+    # Season adjustment (multi-season windows only). League penalty levels move a lot between
+    # seasons (2015-19 ~13.5 flags/game, 2021-23 ~11.4), so a crew is compared with the league
+    # *in the seasons it worked*, then expressed at the window's overall league level:
+    #   rates (per game):   pooled league rate x (crew count / expected count from its seasons)
+    #   per-flag measures:  pooled league value + (crew value - league value in its seasons,
+    #                       weighted by the crew's flags)
+    seasons_in = sorted(games['season'].unique()) if 'season' in games.columns else []
+    adjust = len(seasons_in) > 1
+    per_flag = {
+        'yardsPerFlag': lambda d: d['penalty_yards'].mean(), 'costPerFlag': lambda d: d['cost_epa'].mean(),
+        'preSnapShare': lambda d: d['penalty_type'].isin(PRE_SNAP).mean(), 'q4Share': lambda d: (d['qtr'] == 4).mean(),
+        'offenseShare': lambda d: (d['side'] == 'offense').mean(), 'homeShare': lambda d: (d['penalty_team'] == d['home_team']).mean(),
+    }
+    if adjust:
+        p = p.merge(games[['game_id', 'season']], on='game_id', how='left', suffixes=('', '_g'))
+        if 'season_g' in p.columns:
+            p['season'] = p['season'].fillna(p['season_g'])
+        sg = games.groupby('season').size()
+        sp = p.groupby('season')
+        s_rate = (sp.size() / sg).to_dict()
+        s_flag = {m: sp.apply(f).to_dict() for m, f in per_flag.items()}
+        s_type = {t: (sp.apply(lambda d, t=t: (d['penalty_type'] == t).sum()) / sg).to_dict() for t in types}
+
     rows = {}
     for crew, gg in games.groupby('crew'):
         n = len(gg)
         q = p[p['crew'] == crew]
         if n < 1 or not len(q):
             continue
+        raw = {'perGame': len(q) / n, **{m: f(q) for m, f in per_flag.items()}}
+        if adjust:
+            n_by_s = gg.groupby('season').size()
+            m_by_s = q.groupby('season').size()
+            exp_flags = sum(n_by_s[s_] * s_rate.get(s_, lg['perGame']) for s_ in n_by_s.index)
+            vals = {'perGame': lg['perGame'] * len(q) / exp_flags if exp_flags else raw['perGame']}
+            for m in per_flag:
+                exp_m = sum(m_by_s.get(s_, 0) * s_flag[m].get(s_, lg[m]) for s_ in m_by_s.index) / max(1, m_by_s.sum())
+                vals[m] = lg[m] + (raw[m] - exp_m)
+        else:
+            vals = dict(raw)
         tr = {}
         for t in types:
             c = (q['penalty_type'] == t).sum()
+            if adjust:
+                exp_c = sum(n_by_s[s_] * s_type[t].get(s_, lg_type[t]) for s_ in n_by_s.index)
+                c = n * lg_type[t] * (c / exp_c) if exp_c else c        # count at the window's league level
             shrunk = (c + SHRINK * lg_type[t]) / (n + SHRINK)
             tr[t] = {'perGame': _r(shrunk, 3), 'league': _r(lg_type[t], 3), 'diffPct': _r((shrunk / lg_type[t] - 1) * 100, 0)}
         rows[crew] = {
-            'games': n, 'flags': int(len(q)), 'perGame': len(q) / n,
-            'yardsPerFlag': q['penalty_yards'].sum() / len(q), 'costPerFlag': q['cost_epa'].mean(),
-            'preSnapShare': q['penalty_type'].isin(PRE_SNAP).mean(), 'q4Share': (q['qtr'] == 4).mean(),
-            'offenseShare': (q['side'] == 'offense').mean(), 'homeShare': (q['penalty_team'] == q['home_team']).mean(),
-            'types': tr,
+            'games': n, 'flags': int(len(q)), **vals, 'types': tr,
+            'seasonAdjusted': adjust,
+            'raw': {k: _r(v, 3 if 'Share' in k else 2) for k, v in raw.items()} if adjust else None,
         }
     return lg, types, rows
 
@@ -162,6 +201,7 @@ def build_crew_styles(data: dict, active_names) -> dict:
                              'yardsPerFlagDiff': _r(pc['yardsPerFlag'] - lg['yardsPerFlag'], 2)},
                 'types': pc['types'], 'traits': traits,
                 'archetype': {'key': key, 'title': title, 'description': desc},
+                'seasonAdjusted': bool(pc.get('seasonAdjusted')), 'raw': pc.get('raw'),
             }
         return lg, types_, out, zz
 
@@ -187,6 +227,7 @@ def build_crew_styles(data: dict, active_names) -> dict:
             **{m: car[m] for m in metrics},
             'types': car['types'], 'traits': car['traits'], 'similar': sims, 'archetype': car['archetype'],
             'vsLeague': car['vsLeague'],
+            'seasonAdjusted': car['seasonAdjusted'], 'raw': car['raw'],   # raw = unadjusted career values
             'seasons': by_season.get(c, {}),      # every season this crew chief worked, same fields
             'current': None if not cur else {'games': cur['games'], 'perGame': cur['perGame'],
                                              'yardsPerFlag': cur['yardsPerFlag'], 'costPerFlag': cur['costPerFlag']},

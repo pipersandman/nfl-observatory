@@ -38,7 +38,7 @@ justified) · **Avoid** (terms or quality make it unsuitable).
 
 | Source | Contents | Coverage | Access | License / terms | Status |
 |---|---|---|---|---|---|
-| **nflverse play-by-play** (`load_pbp`) | Every play: down, distance, field position, play type, penalty fields (team, type, yards, player), EPA, WPA, drive results, replay/challenge flags, play description text | 1999 → current | nflreadpy (Python), Parquet releases on GitHub | nflverse-data repository license CC BY 4.0 (attribution) | **In use** (2020+); **P0** extend to 1999 |
+| **nflverse play-by-play** (`load_pbp`) | Every play: down, distance, field position, play type, penalty fields (team, type, yards, player), EPA, WPA, drive results, replay/challenge flags, play description text | 1999 → current | nflreadpy (Python), Parquet releases on GitHub | nflverse-data repository license CC BY 4.0 (attribution) | **In use** (2015+, all seven officials begin); 1999–2014 available if ever needed |
 | **nflverse schedules** (`load_schedules`) | Game id, date, time, weekday, home/away, scores, overtime, roof, surface, temperature/wind (outdoor), rest days, division game, **closing spread, total and moneylines**, stadium, ESPN/PFR game ids, referee | 1999 → current | nflreadpy | CC BY 4.0 | **In use**; closing lines **P0** (already in the file, not yet used) |
 | **nflverse team stats** (`load_team_stats`) | Team-level weekly stats | 1999 → current | nflreadpy | CC BY 4.0 | **P0** |
 | **nflverse teams** (`load_teams`) | Team metadata, abbreviation history, colors, logos | All | nflreadpy | CC BY 4.0 | **P0** (team crosswalk) |
@@ -179,7 +179,7 @@ The value of the lake comes from joining sources reliably. Canonical ids:
 
 ### P0: add now (free; fits the current pipeline, then moves to Dagster)
 
-1. Extend play-by-play and schedules back to **1999** (more history for every model).
+1. ~~Extend history~~ Done: the site now covers **2015 onward** (season-adjusted career comparisons). 1999–2014 remains available.
 2. **Closing lines** from schedules (spread, total, moneylines) into the history ledger and models.
 3. **All seven officials** per game, plus the yearly **Football Zebras crew rosters** (experience, previous crew).
 4. **Players, rosters, injuries, snap counts** (penalties per snap; backup players).

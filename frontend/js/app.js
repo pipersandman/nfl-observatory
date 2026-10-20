@@ -92,7 +92,7 @@ const EXPLAINERS = {
     'games': {
         title: 'Games Worked',
         content: `
-            <p>Total number of games this crew chief has officiated during the analysis period (2020-2024).</p>
+            <p>Total number of regular-season games this crew chief has led in the data (2015 onward).</p>
             <p>More games = more reliable statistics. Crew chiefs typically work <strong>16-18 games per season</strong> 
             during the regular season, plus playoffs for top-rated officials.</p>
         `
@@ -135,7 +135,7 @@ const EXPLAINERS = {
         content: `
             <p>Each call's share of all accepted penalties, with its rate per game. The ten most common calls are shown;
             everything else is combined into "All other".</p>
-            <p>Switch between this season and every season since 2020. The two biggest calls are highlighted.</p>
+            <p>Switch between this season and every season in the data (2015 onward). The two biggest calls are highlighted.</p>
         `
     },
     'quarter-penalties': {
@@ -1880,7 +1880,7 @@ function crewStyleInner(c) {
             : `<p class="modal-footnote" style="margin-top:0.5rem">Close to the league average on everything we track${isCareer ? '' : ' this season'}.</p>`}
         ${isCareer ? `<div class="cs-similar">Calls most like: ${c.similar.map(s => `<a href="#" onclick="openRefereeModal('${s.slug}'); return false;">${esc(s.name)}</a>`).join(' · ')}</div>` : ''}
         <div class="cs-fp"><div class="cs-fp-title">How often they call each type vs the league${isCareer ? '' : ` (${view})`}</div>${bars}</div>
-        <p class="modal-footnote">Compared with the league in the same ${isCareer ? 'seasons' : 'season'}. Penalty-type rates are pulled toward the league average so a few calls can't dominate (strongest early in a season). Crews change around the chief each year. Patterns, not motives.</p>`;
+        <p class="modal-footnote">${isCareer ? `Career numbers are season-adjusted: each game is compared with its own season's league average (league levels have moved a lot since ${state.crewStyles.careerSeasons[0]}), shown at the ${span} league level${c.raw ? `. Unadjusted: ${fmtNum(c.raw.perGame, 1)} flags per game, ${fmtNum(c.raw.yardsPerFlag, 1)} yards per flag` : ''}.` : 'Compared with the league in the same season.'} Penalty-type rates are pulled toward the league average so a few calls can't dominate (strongest early in a season). Crews change around the chief each year. Patterns, not motives.</p>`;
 }
 
 function crewStyleCompare(c, span) {
@@ -2048,7 +2048,7 @@ function renderStyleMap() {
     const m = /^(through|only)-(\d+)$/.exec(key);
     const tap = window.innerWidth < 640 ? 'Tap a dot for the crew\'s name, tap again for its profile.' : 'Tap a crew for its profile.';
     setSub('styleMapSub',
-        key === 'career' ? `Each active crew chief's ${cs.careerSeasons[0]}–${cs.careerSeasons[1]} regular seasons, against the league average for those seasons. Note the narrow yardage range. ${tap}`
+        key === 'career' ? `Each active crew chief's ${cs.careerSeasons[0]}–${cs.careerSeasons[1]} regular seasons, season-adjusted (each game compared with its own season's league average). Note the narrow yardage range. ${tap}`
         : m && m[1] === 'only' ? `${cs.season} Week ${m[2]} only: one game per crew, so this is a snapshot, not a style. Lines are that week's league averages. ${tap}`
         : m ? `${cs.season} through Week ${m[2]}, against the league average over the same games. Early weeks have only a few games per crew. ${tap}`
         : key === String(cs.season) ? `${cs.season} so far: only a few games per crew, so expect big swings. Lines are this season's league averages. ${tap}`
@@ -2486,6 +2486,9 @@ function renderTeamChart(t, priorAll) {
 // RENDERING - REFEREE CARDS (with most common penalty)
 // =============================================================================
 
+function toggleFormerCrews() { state.showFormerCrews = !state.showFormerCrews; renderRefereeCards(); }
+window.toggleFormerCrews = toggleFormerCrews;
+
 function renderRefereeCards() {
     const container = document.getElementById('refereeGrid');
     if (!container) return;
@@ -2546,7 +2549,13 @@ function renderRefereeCards() {
             </div>`;
     };
 
-    container.innerHTML = cards.map(({ ref, cmp }, index) => {
+    // Active crews by default; former crew chiefs behind a toggle (the data goes back to 2015)
+    const activeCards = cards.filter(c => c.cmp?.current);
+    const formerCards = cards.filter(c => !c.cmp?.current);
+    const shown = state.showFormerCrews || !activeCards.length ? cards : activeCards;
+    const toggle = formerCards.length && activeCards.length
+        ? `<div class="former-toggle"><button class="baseline-btn" onclick="toggleFormerCrews()">${state.showFormerCrews ? 'Hide' : 'Show'} former crew chiefs (${formerCards.length})</button></div>` : '';
+    container.innerHTML = shown.map(({ ref, cmp }, index) => {
         const profile = state.refereeProfiles[ref.slug];
         const topPenalty = profile?.penaltyTypes?.[0];
         const topPenaltyDisplay = topPenalty 
@@ -2603,7 +2612,7 @@ function renderRefereeCards() {
                 </div>
             </div>
         `;
-    }).join('');
+    }).join('') + toggle;
 }
 
 // =============================================================================

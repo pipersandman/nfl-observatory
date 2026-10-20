@@ -7,7 +7,7 @@ Includes game details, scores, weather, and team information.
 
 Usage:
     python update_data.py          # Update current season only
-    python update_data.py --full   # Full rebuild (2020-present)
+    python update_data.py --full   # Full rebuild (2015-present)
     
 Requirements:
     pip install nflreadpy pandas numpy pyarrow
@@ -39,7 +39,7 @@ DATA_DIR = PROJECT_DIR / 'frontend' / 'data'
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 CURRENT_YEAR = datetime.now().year
-HISTORICAL_START = 2020
+HISTORICAL_START = 2015   # first season nflverse publishes all seven officials per game
 
 # NFL team data for logos and display names
 NFL_TEAMS = {
@@ -85,6 +85,7 @@ SNAP_TYPES = {'run', 'pass', 'punt', 'field_goal', 'kickoff', 'extra_point', 'qb
 NAME_FIXES = {
     'Ronald Torbert': 'Ron Torbert',
     'Adrian Hall': 'Adrian Hill',
+    'Bradley Rogers': 'Brad Rogers',   # nflverse lists his 2019 games under his full first name
 }
 
 

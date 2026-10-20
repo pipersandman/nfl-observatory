@@ -200,7 +200,7 @@ def load_all_data(seasons: list[int]) -> dict:
         'home_team', 'away_team', 'posteam', 'score_differential',
         'down', 'ydstogo', 'play_type', 'season_type', 'first_down_penalty',
         # flag impact: value of each flag and what it did to the drive
-        'defteam', 'epa', 'wpa', 'fixed_drive', 'fixed_drive_result', 'yardline_100',
+        'defteam', 'epa', 'ep', 'wpa', 'fixed_drive', 'fixed_drive_result', 'yardline_100',
         'two_point_attempt', 'time', 'desc', 'game_seconds_remaining'
     ]
     
@@ -227,6 +227,10 @@ def load_all_data(seasons: list[int]) -> dict:
     if all_pbp:
         pbp = pd.concat(all_pbp, ignore_index=True)
         data['penalties'] = pbp[pbp['penalty'] == 1].copy()
+        # Touchdowns wiped out by offsetting penalties: nflverse marks no penalty on these plays
+        _d = pbp['desc'].fillna('')
+        data['offsetting_tds'] = pbp[_d.str.contains('TOUCHDOWN NULLIFIED', case=False) & _d.str.contains('offsetting', case=False)][
+            [c for c in ['game_id', 'season', 'week', 'season_type', 'posteam', 'play_type', 'desc'] if c in pbp.columns]].copy()
         # Every game with play-by-play (including any with zero accepted penalties)
         game_cols = [c for c in ['game_id', 'season', 'week', 'season_type'] if c in pbp.columns]
         data['games_played'] = pbp[game_cols].drop_duplicates('game_id')

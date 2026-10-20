@@ -1762,6 +1762,7 @@ function renderFlagCost() {
                     <th title="Defensive flags that gave a first down on 3rd or 4th down">Key 1st downs given</th>
                     <th title="Offensive flags inside the opponent 40 on drives that then didn't score">Drives stalled</th>
                     <th title="Offensive flags that wiped out a 15+ yard gain or a touchdown">Big plays erased</th>
+                    <th title="Touchdowns wiped out by the team's own flags (plus any lost to offsetting penalties)">TDs erased</th>
                     <th title="Defensive flags that wiped out their own interception or fumble recovery">Own turnovers erased</th></tr></thead>
                 <tbody>${rows.map(t => `
                     <tr onclick="openTeamModal('${t.team}')" style="cursor:pointer">
@@ -1770,7 +1771,7 @@ function renderFlagCost() {
                         <td><span class="fc-bar"><i style="width:${Math.min(100, (t.pointsCostPerGame / maxCost) * 100)}%"></i></span><strong>${fmtNum(t.pointsCostPerGame, 2)}</strong></td>
                         <td class="season-prev">${fmtNum(t.pointsCost, 1)} <span class="modal-muted">(${t.games} g)</span></td>
                         <td class="season-prev">${t.flags}</td>
-                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${t.turnoversErased}</td>
+                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}${t.tdsLostOffsetting ? ` <span class="modal-muted" title="${t.tdsLostOffsetting} lost to offsetting penalties">(${t.tdsLostOffsetting} off.)</span>` : ''}</td><td>${t.turnoversErased}</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
@@ -1794,6 +1795,7 @@ function teamFlagCostHtml(abbr) {
             ${tile('Points given away / game', fmtNum(t.pointsCostPerGame, 2), `#${t.rank} of ${n} most costly · league ${fmtNum(league, 2)} ${pctBadge(t.pointsCostPerGame, league)}`)}
             ${tile('Key 1st downs given', t.keyFirstDownsGiven, '3rd/4th-down flags that moved the chains')}
             ${tile('Drives stalled / big plays erased', `${t.drivesKilled} / ${t.bigPlaysErased}`, 'offensive flags in scoring range / on 15+ yd gains or TDs')}
+            ${tile('Touchdowns erased', `${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}`, t.tdsLostOffsetting ? `${t.tdsErased} by own flags, ${t.tdsLostOffsetting} by offsetting penalties` : 'wiped out by own flags')}
             ${tile('Own turnovers erased', t.turnoversErased, 'defensive flags that wiped out a takeaway')}
         </div>
         ${fi.teamCostliest?.[abbr]?.length ? `<div class="fc-sub">Costliest ${abbr} flags this season</div>${costliestHtml(fi.teamCostliest[abbr], false)}` : ''}

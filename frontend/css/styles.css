@@ -2134,3 +2134,6 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
 .cs-cmp .cs-arch { font-size: 0.6rem; padding: 0.1rem 0.4rem; }
 .cs-cmp .cs-sep td { font: 600 0.7rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding-top: 0.9rem; }
 @media (max-width: 640px) { .cs-traj-wrap { height: 300px; } .cs-metrics { grid-template-columns: repeat(2, 1fr); } }
+
+/* Crew chiefs: show/hide former crew chiefs */
+.former-toggle { grid-column: 1 / -1; display: flex; justify-content: center; padding: 0.5rem 0 0; }

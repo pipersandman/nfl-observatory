@@ -183,6 +183,10 @@ SEASON = sc.get('currentSeason') or styles.get('season')
 THRU = sc.get('throughWeek')
 LG = (sc.get('league') or {}).get('current') or {}
 style_by_name = {c['name']: c for c in styles.get('crews', [])}
+_cs = styles.get('careerSeasons') or [2015, (SEASON or 2026) - 1]
+CAREER = f"{_cs[0]}–{str(_cs[1])[2:]}"          # e.g. 2015–25: the career window (seasons before this one)
+CAREER_US = f"{_cs[0]}_{str(_cs[1])[2:]}"
+START = _cs[0]                                     # first season in the data
 crews_now = sorted([c for c in sc.get('crewChiefs', []) if c.get('current', {}).get('games')],
                    key=lambda c: -c['current']['perGame'])
 teams = []
@@ -219,18 +223,28 @@ def crew_pages():
         rows.append([f'<a href="/crew/{c["slug"]}/">{e(c["name"])}</a>', c['current']['games'], f'<strong>{f1(c["current"]["perGame"])}</strong>',
                      f1(allb.get('perGame')), e((s.get('archetype') or {}).get('title', '—'))])
     top = crews_now[:3]
+    refs = {r['slug']: r for r in (load('referees.json') or [])}
+    former = sorted(sc.get('inactiveCrewChiefs', []), key=lambda c: -(refs.get(c['slug'], {}).get('last_season') or 0))
+    former_rows = [[f'<a href="/crew/{c["slug"]}/">{e(c["name"])}</a>',
+                    f"{refs.get(c['slug'], {}).get('first_season', '—')}–{refs.get(c['slug'], {}).get('last_season', '—')}",
+                    ((c.get('baselines') or {}).get('all') or {}).get('games', '—'),
+                    f1(((c.get('baselines') or {}).get('all') or {}).get('perGame'))] for c in former]
+    former_html = ('<h2>Former crew chiefs (since ' + str(START) + ')</h2>'
+                   + table(['Crew chief', 'Seasons in the data', 'Games', 'Flags / game'], former_rows)
+                   + '<p class="st-note">Flags per game are raw averages; league levels varied by season (about 13.5 per game in 2015–19, 11–13 since).</p>') if former_rows else ''
     body = f"""<h1 class="section-title">NFL referee stats {SEASON}: penalties per game by crew chief</h1>
     {tldr(f"Through Week {THRU} of {SEASON}, NFL games average <strong>{f1(LG.get('perGame'))} accepted penalties</strong>. "
           + ("The most flags per game have come in games worked by " + ', '.join(f"{crew_link(c['name'])} ({f1(c['current']['perGame'])})" for c in top) + ". " if top else '')
           + "Each crew chief's page lists his season and career numbers, style and most common calls.")}
-    {table(['Crew chief', f'{SEASON} games', f'{SEASON} flags / game', '2020–25 flags / game', 'Career style'], rows)}
+    {table(['Crew chief', f'{SEASON} games', f'{SEASON} flags / game', f'{CAREER} flags / game', 'Career style'], rows)}
+    {former_html}
     <p class="st-note">Accepted penalties in regular-season games each crew chief worked. Crew chiefs lead a seven-official crew; the data doesn't say which official threw each flag.</p>
     {open_app('referees', 'See the interactive crew chief profiles')}"""
     page('/crew/', f'NFL Referee Stats {SEASON}: Penalties Per Game by Crew Chief | NFL Officiating Observatory',
          f'Every active NFL crew chief ranked by penalties per game in {SEASON} {thru_txt}, with career averages and calling style.',
          body, crumbs=[('/', 'Home'), ('/crew/', 'Crew chiefs')])
 
-    for c in sc.get('crewChiefs', []):
+    for c in sc.get('crewChiefs', []) + sc.get('inactiveCrewChiefs', []):
         name, slug = c['name'], c['slug']
         prof = load(f'referee/{slug}.json') or {}
         s = style_by_name.get(name, {})
@@ -249,24 +263,24 @@ def crew_pages():
                      f"{g['awayTeam']['abbr']} {g.get('awayPenalties')} · {g['homeTeam']['abbr']} {g.get('homePenalties')}"] for g in recent]
         summary = (f"{e(name)} is an NFL referee (crew chief). In {SEASON}, games his crew has worked average <strong>{f1(cur.get('perGame'))} accepted penalties</strong>"
                    f" over {cur.get('games', 0)} games" + (f", {abs(diff):.0f}% {'above' if diff > 0 else 'below'} the league's {f1(LG.get('perGame'))}" if diff is not None else '')
-                   + f". Across 2020–25 his crew averaged {f1(allb.get('perGame'))} per game"
+                   + f". Across {CAREER} his crew averaged {f1(allb.get('perGame'))} per game"
                    + (f" ({allb.get('games')} games), a <strong>{e(arch.get('title', '').lower())}</strong> style: {e(arch.get('description', ''))}." if arch else '.')) if cur.get('games') else \
-                  (f"{e(name)} is an NFL referee (crew chief). Across 2020–25 his crew averaged {f1(allb.get('perGame'))} accepted penalties per game ({allb.get('games')} games).")
+                  (f"{e(name)} is an NFL referee (crew chief). Across {CAREER} his crew averaged {f1(allb.get('perGame'))} accepted penalties per game ({allb.get('games')} games).")
         traits = ''.join(f'<li>{e(t["text"])}</li>' for t in s.get('traits', []))
         sims = ', '.join(crew_link(x['name']) for x in s.get('similar', []))
         qa = []
         if cur.get('games'):
             qa.append((f'How many penalties does {name} call per game?',
                        f"<p>In {SEASON} {thru_txt}, games {e(name)}'s crew worked averaged {f1(cur['perGame'])} accepted penalties and {f1(cur.get('yardsPerGame'))} penalty yards per game ({cur['games']} games). "
-                       f"His 2020–25 average was {f1(allb.get('perGame'))}; the {SEASON} league average is {f1(LG.get('perGame'))}.</p>"))
+                       f"His {CAREER} average was {f1(allb.get('perGame'))}; the {SEASON} league average is {f1(LG.get('perGame'))}.</p>"))
         if types:
             top = sorted(types, key=lambda x: -(x[1] or 0))[:3]
             qa.append((f'What penalties does {name} call most?',
-                       '<p>Per game, 2020–25: ' + ', '.join(f"{e(t.lower())} ({f2(pg)})" for t, pg, _ in top) + '. '
+                       f'<p>Per game, {CAREER}: ' + ', '.join(f"{e(t.lower())} ({f2(pg)})" for t, pg, _ in top) + '. '
                        + ('Compared with other crews: ' + '; '.join(e(t['text']) for t in s.get('traits', [])[:2]) + '.' if s.get('traits') else 'His mix of calls is close to the league average.') + '</p>'))
         if s.get('homeShare') is not None:
             qa.append((f'Does {name} call more penalties on the home team?',
-                       f"<p>In 2020–25, {pct(s['homeShare'])} of the flags in his games were on the home team (league: {pct(styles['league']['homeShare'])}). "
+                       f"<p>In {CAREER}, {pct(s['homeShare'])} of the flags in his games were on the home team (league: {pct(styles['league']['homeShare'])}). "
                        "Small differences like this are normal and are not evidence of bias.</p>"))
         schema = [{'@context': 'https://schema.org', '@type': 'ProfilePage', 'dateModified': NOW.isoformat(timespec='seconds'),
                    'name': f'{name}: NFL referee penalty stats', 'url': f'{SITE}/crew/{slug}/',
@@ -280,13 +294,13 @@ def crew_pages():
             <div><span>{SEASON} flags / game</span><b>{f1(cur.get('perGame'))}</b><em>{cur.get('games', 0)} games · league {f1(LG.get('perGame'))}</em></div>
             <div><span>{SEASON} yards / game</span><b>{f1(cur.get('yardsPerGame'))}</b><em>league {f1(LG.get('yardsPerGame'))}</em></div>
             <div><span>{(last or {}).get('games') and (SEASON - 1) or 'Last season'} flags / game</span><b>{f1(last.get('perGame'))}</b><em>{last.get('games', 0)} games</em></div>
-            <div><span>2020–25 flags / game</span><b>{f1(allb.get('perGame'))}</b><em>{allb.get('games', 0)} games</em></div>
+            <div><span>{CAREER} flags / game</span><b>{f1(allb.get('perGame'))}</b><em>{allb.get('games', 0)} games</em></div>
         </div>
         <h2>Calling style</h2>
-        <p>Career (2020–25): <strong>{e(arch.get('title', '—'))}</strong>, {e(arch.get('description', ''))}.{f" {SEASON} so far: <strong>{e(cur_style.get('title'))}</strong>." if cur_style else ''}</p>
+        <p>Career ({CAREER}): <strong>{e(arch.get('title', '—'))}</strong>, {e(arch.get('description', ''))}.{f" {SEASON} so far: <strong>{e(cur_style.get('title'))}</strong>." if cur_style else ''}</p>
         {f'<ul class="st-list">{traits}</ul>' if traits else '<p>Close to the league average on every measure we track.</p>'}
         {f'<p>Calls most like: {sims}.</p>' if sims else ''}
-        {'<h2>Penalty types vs the league (2020–25, per game)</h2>' + table(['Penalty', 'Per game', 'vs league rate'], type_rows) if type_rows else ''}
+        {f'<h2>Penalty types vs the league ({CAREER}, season-adjusted, per game)</h2>' + table(['Penalty', 'Per game', 'vs league rate'], type_rows) if type_rows else ''}
         {'<h2>Season by season</h2>' + table(['Season', 'Games', 'Flags / game'], season_rows) if season_rows else ''}
         {'<h2>Recent games</h2>' + table(['Date', 'Game', 'Score', 'Flags', 'By team'], rec_rows) if rec_rows else ''}
         <h2>Questions</h2>
@@ -345,9 +359,9 @@ def team_pages():
             <div><span>Penalty yards / game</span><b>{f1(cur.get('yardsPerGame'))}</b><em>{SEASON - 1}: {f1(last.get('yardsPerGame'))}</em></div>
             <div><span>Points given away / game</span><b>{f2(ct.get('pointsCostPerGame'))}</b><em>#{ct.get('rank', '—')} most costly</em></div>
         </div>
-        {'<h2>Most common penalties</h2>' + table(['Penalty', f'{SEASON} / game', '2020–25 / game'], types) if types else ''}
+        {'<h2>Most common penalties</h2>' + table(['Penalty', f'{SEASON} / game', f'{CAREER} / game'], types) if types else ''}
         {'<h2>Game log</h2>' + table(['Week', 'Opponent', 'Result', 'Flags on ' + a, 'Flags on opponent'], games) if games else ''}
-        {'<h2>By crew chief (since 2020)</h2>' + table(['Crew chief', 'Games', f'Flags on {a} / game'], crews) if crews else ''}
+        {f'<h2>By crew chief (since {START})</h2>' + table(['Crew chief', 'Games', f'Flags on {a} / game'], crews) if crews else ''}
         <h2>Questions</h2>
         {faq(qa, schema)}
         {open_app(f'team={a}')}"""
@@ -407,9 +421,9 @@ def trends_page():
     <h2>Which penalties are increasing?</h2>
     {table(['Penalty', f'{SEASON} / game', f"{e(comp.get('short', 'Comparison'))} / game", 'Change'], rrows)}
     <h2>When are penalties called?</h2>
-    <p>Since 2020, flags per game by quarter: Q1 {f2((q.get('total') or [None]*4)[0])}, Q2 {f2((q.get('total') or [None]*4)[1])}, Q3 {f2((q.get('total') or [None]*4)[2])}, Q4 {f2((q.get('total') or [None]*4)[3])}. The second quarter usually leads, partly because the two-minute drill packs in extra plays.</p>
+    <p>Since {START}, flags per game by quarter: Q1 {f2((q.get('total') or [None]*4)[0])}, Q2 {f2((q.get('total') or [None]*4)[1])}, Q3 {f2((q.get('total') or [None]*4)[2])}, Q4 {f2((q.get('total') or [None]*4)[3])}. The second quarter usually leads, partly because the two-minute drill packs in extra plays.</p>
     <h2>Home vs road</h2>
-    <p>In {SEASON}, {f1(100 - (sea.get('homeShare') or 50))}% of flags are on road teams and {f1(sea.get('homeShare'))}% on home teams (2020–25 crews: {pct(styles.get('league', {}).get('homeShare'))} on the home team).</p>
+    <p>In {SEASON}, {f1(100 - (sea.get('homeShare') or 50))}% of flags are on road teams and {f1(sea.get('homeShare'))}% on home teams ({CAREER} crews: {pct(styles.get('league', {}).get('homeShare'))} on the home team).</p>
     <h2>What penalties cost</h2>
     <p>League-wide, flags cost each team about {f2((cost.get('league') or {}).get('pointsCostPerTeamGame'))} expected points per game in {SEASON}. Most costly: {', '.join(f"{e(team_name(x['team']))} ({f2(x['pointsCostPerGame'])})" for x in cost.get('teams', [])[:3])}.</p>
     {open_app('trends', 'See the interactive League Trends charts')}"""
@@ -429,29 +443,29 @@ def dataset_page():
             w.writerow(head)
             w.writerows(rows)
         files.append((name, desc, len(rows)))
-    write(f'crew_chiefs_{SEASON}.csv', ['crew_chief', f'games_{SEASON}', f'flags_per_game_{SEASON}', f'yards_per_game_{SEASON}', 'career_games_2020_25', 'career_flags_per_game_2020_25', 'career_style'],
+    write(f'crew_chiefs_{SEASON}.csv', ['crew_chief', f'games_{SEASON}', f'flags_per_game_{SEASON}', f'yards_per_game_{SEASON}', f'career_games_{CAREER_US}', f'career_flags_per_game_{CAREER_US}', 'career_style'],
           [[c['name'], c['current'].get('games'), c['current'].get('perGame'), c['current'].get('yardsPerGame'),
             ((c.get('baselines') or {}).get('all') or {}).get('games'), ((c.get('baselines') or {}).get('all') or {}).get('perGame'),
-            (style_by_name.get(c['name'], {}).get('archetype') or {}).get('title')] for c in crews_now], 'Penalties per game by crew chief, current season and 2020–25')
+            (style_by_name.get(c['name'], {}).get('archetype') or {}).get('title')] for c in crews_now], f'Penalties per game by crew chief, current season and {CAREER}')
     write(f'teams_{SEASON}.csv', ['team', 'games', 'flags_per_game', 'last_season_flags_per_game', 'rank'],
           [[t['abbr'], t.get('games'), t.get('perGame'), t.get('lastSeasonPerGame'), t.get('rank')] for t in teams], 'Penalties per game by team, current season')
     write('flags_by_season.csv', ['season', 'games', 'flags_per_game_full_season', 'flags_per_game_same_early_weeks'],
           [[x['season'], x['games'], x.get('fullSeason') if x.get('complete') else '', x.get('early')] for x in tt.get('seasonCompare', [])], 'League penalties per game by season')
     write('flags_by_week.csv', ['season', 'week', 'games', 'flags_per_game'],
-          [[s_['season'], w['week'], w['games'], w['perGame']] for s_ in tt.get('weekly', {}).get('seasons', []) for w in s_['weeks']], 'League penalties per game by week of season, 2020 to now')
+          [[s_['season'], w['week'], w['games'], w['perGame']] for s_ in tt.get('weekly', {}).get('seasons', []) for w in s_['weeks']], f'League penalties per game by week of season, {START} to now')
     write('penalty_types_by_season.csv', ['penalty_type', 'season', 'per_game'],
           [[r['type'], b['season'], b['perGame']] for r in tt.get('types', []) for b in r.get('bySeason', [])], 'Per-game rate of each common penalty type by season')
     dist = [{'@type': 'DataDownload', 'encodingFormat': 'text/csv', 'name': n, 'contentUrl': f'{SITE}/data/exports/{n}'} for n, _, _ in files]
     schema = [{'@context': 'https://schema.org', '@type': 'Dataset',
                'name': 'NFL Officiating Observatory: NFL penalty and referee (crew chief) statistics',
-               'description': ('Accepted penalties in NFL regular-season games since 2020, aggregated by crew chief (head referee), team, season, '
+               'description': (f'Accepted penalties in NFL regular-season games since {START}, aggregated by crew chief (head referee), team, season, '
                                'week and penalty type, updated weekly during the season. Includes penalties per game, penalty yards, calling-style '
                                'measures and the expected-points cost of penalties.'),
                'url': f'{SITE}/dataset/', 'sameAs': SITE,
                'keywords': ['NFL', 'penalties', 'referees', 'crew chief', 'officiating', 'football statistics', 'sports data'],
                'creator': {'@type': 'Organization', 'name': 'NFL Officiating Observatory', 'url': SITE},
                'isBasedOn': 'https://github.com/nflverse',
-               'temporalCoverage': f'2020-09/{TODAY}', 'spatialCoverage': 'United States',
+               'temporalCoverage': f'{START}-09/{TODAY}', 'spatialCoverage': 'United States',
                'dateModified': NOW.isoformat(timespec='seconds'),
                'license': 'https://creativecommons.org/licenses/by/4.0/',
                'creditText': 'NFL Officiating Observatory (nflobservatory.com), from nflverse play-by-play',
@@ -460,7 +474,7 @@ def dataset_page():
     rows = [[f'<a href="/data/exports/{n}">{e(n)}</a>', e(d), r] for n, d, r in files]
     body = f"""<p class="section-number">FULL DATA</p>
     <h1 class="section-title">NFL penalty and referee data (downloads)</h1>
-    {tldr("Free CSV downloads of NFL penalty statistics: by crew chief, team, season, week and penalty type, regular season since 2020, updated weekly. "
+    {tldr(f"Free CSV downloads of NFL penalty statistics: by crew chief, team, season, week and penalty type, regular season since {START}, updated weekly. "
           "Please credit nflobservatory.com.")}
     {table(['File', 'What it contains', 'Rows'], rows)}
     <h2>About the data</h2>
@@ -468,7 +482,7 @@ def dataset_page():
     Counts are accepted penalties in regular-season games. Declined and offsetting penalties are not counted. See the <a href="/guide/#methodology">methodology</a>.</p>
     {open_app('data', 'See the full interactive tables')}"""
     page('/dataset/', 'NFL Penalty & Referee Data: Free CSV Downloads | NFL Officiating Observatory',
-         'Free, weekly-updated CSV downloads of NFL penalty statistics by crew chief, team, season, week and penalty type since 2020.',
+         f'Free, weekly-updated CSV downloads of NFL penalty statistics by crew chief, team, season, week and penalty type since {START}.',
          body, schema, crumbs=[('/', 'Home'), ('/dataset/', 'Data')])
 
 
@@ -492,15 +506,15 @@ def guide_page():
          f"<p>Through Week {THRU}, the most accepted penalties per game have come in games worked by " + '; '.join(f"{crew_link(c['name'])} ({f1(c['current']['perGame'])} in {c['current']['games']} games)" for c in top_now)
          + f". The league average is {f1(LG.get('perGame'))}. Early-season samples are small. <a href=\"/crew/\">All crew chiefs</a>.</p>"),
         ('Which NFL referees call the most penalties overall?',
-         '<p>Across the 2020–25 regular seasons: ' + '; '.join(f"{crew_link(c['name'])} ({f1(c['perGame'])} per game, {c['games']} games)" for c in car)
+         f'<p>Across the {CAREER} regular seasons (season-adjusted): ' + '; '.join(f"{crew_link(c['name'])} ({f1(c['perGame'])} per game, {c['games']} games)" for c in car)
          + f". League average: {f1(lgs.get('perGame'))}.</p>"),
         ('Which NFL referees call the most holding penalties?',
-         '<p>Offensive holding per game in each crew chief\'s games, 2020–25: ' + '; '.join(f"{crew_link(n)} ({f2(v)}, {g_of(n)} games)" for n, v in hold if v)
+         f'<p>Offensive holding per game in each crew chief\'s games, {CAREER}: ' + '; '.join(f"{crew_link(n)} ({f2(v)}, {g_of(n)} games)" for n, v in hold if v)
          + '. Rates are adjusted toward the league average to account for sample size.</p>'),
         ('Which NFL referees call the most pass interference?',
-         '<p>Defensive pass interference per game, 2020–25: ' + '; '.join(f"{crew_link(n)} ({f2(v)}, {g_of(n)} games)" for n, v in dpi if v) + '.</p>'),
+         f'<p>Defensive pass interference per game, {CAREER}: ' + '; '.join(f"{crew_link(n)} ({f2(v)}, {g_of(n)} games)" for n, v in dpi if v) + '.</p>'),
         ('Do NFL referees favor the home team?',
-         f"<p>Slightly fewer flags go against home teams: across 2020–25 crews, {pct(lgs.get('homeShare'), 1)} of accepted penalties were on the home team "
+         f"<p>Slightly fewer flags go against home teams: across {CAREER} crews, {pct(lgs.get('homeShare'), 1)} of accepted penalties were on the home team "
          f"and {pct(1 - lgs.get('homeShare', 0.5), 1)} on the road team. In {SEASON}, {f1(season_frame.get('homeShare'))}% are on the home team. "
          "The gap is small and can reflect crowd noise (more false starts for road offenses) as much as officiating.</p>"),
         (f'Which NFL team commits the most penalties in {SEASON}?',
@@ -510,7 +524,7 @@ def guide_page():
          f"<p>Yes. {SEASON} games average {f1(season_frame.get('perGame'))} accepted penalties {thru_txt}, vs {f1(last_frame.get('perGame'))} in {SEASON - 1}. "
          + ('The biggest increases are in ' + ', '.join(e(r['type'].lower()) for r in rising) + '. ' if rising else '') + '<a href="/trends/">League trends</a>.</p>'),
         ('Do refs call more penalties early in the season?',
-         (f"<p>Usually. Since 2020, Weeks 1–4 average {f1(sum(early) / len(early))} flags per game and Weeks 15–18 average {f1(sum(late) / len(late))}. "
+         (f"<p>Usually. Since {START}, Weeks 1–4 average {f1(sum(early) / len(early))} flags per game and Weeks 15–18 average {f1(sum(late) / len(late))}. "
           "The last two weeks are lowest of all, partly because of resting starters and games with nothing at stake.</p>") if early and late else '<p>Data not available.</p>'),
         ('How much does a penalty cost a team?',
          f"<p>About {f2((cost.get('league') or {}).get('pointsCostPerTeamGame'))} expected points per team per game in {SEASON}. The most costly flags are pass interference "
@@ -528,7 +542,7 @@ def guide_page():
     <h2 id="faq">Frequently asked questions</h2>
     {faq(qa, schema)}
     <h2 id="methodology">Methodology</h2>
-    <p><strong>What's counted.</strong> Accepted penalties in regular-season games since 2020, from NFL play-by-play published by nflverse. Declined and offsetting
+    <p><strong>What's counted.</strong> Accepted penalties in regular-season games since {START}, from NFL play-by-play published by nflverse. Declined and offsetting
     penalties are not counted. Playoffs are excluded so seasons compare fairly.</p>
     <p><strong>Crew chiefs.</strong> Each game is credited to its referee (crew chief), using nflverse officials data, the NFL schedule, and, for the newest week,
     the assignments published before kickoff by Football Zebras. Crews change around the chief each year, so these are crew-chief-level patterns, not
@@ -634,7 +648,7 @@ def home_prefill():
                         f'<ul>{g_rows}</ul><p><a href="/assignments/">All Week {previews["week"]} referee assignments</a></p></div></div>')
     put('REFEREES', '<div class="seo-prefill"><div class="seo-prefill-col wide"><h3>Crew chiefs</h3><ul>' + ''.join(
         f"<li>{crew_link(c['name'])}: {f1(c['current']['perGame'])} flags/game in {SEASON}, "
-        f"{f1(((c.get('baselines') or {}).get('all') or {}).get('perGame'))} in 2020–25</li>" for c in crews_now) + '</ul></div></div>')
+        f"{f1(((c.get('baselines') or {}).get('all') or {}).get('perGame'))} in {CAREER}</li>" for c in crews_now) + '</ul></div></div>')
     refs = load('referees.json') or []
     put('DATA_TABLE', ''.join(
         f"<tr><td>{crew_link(r['name'])}</td><td>{r.get('games')}</td><td>{f1(r.get('avg_per_game'))}</td>"
@@ -654,7 +668,7 @@ def sitemap_and_llms():
     top = ', '.join(f"{c['name']} ({f1(c['current']['perGame'])}/game)" for c in crews_now[:3])
     llms = f"""# NFL Officiating Observatory
 
-> Independent, data-driven tracking of NFL penalties and officiating: accepted penalties in regular-season games since 2020, by crew chief (head referee), team, season, week and penalty type, with pre-game flag projections and a public track record. Updated weekly. Not affiliated with the NFL.
+> Independent, data-driven tracking of NFL penalties and officiating: accepted penalties in regular-season games since {START}, by crew chief (head referee), team, season, week and penalty type, with pre-game flag projections and a public track record. Updated weekly. Not affiliated with the NFL.
 
 Current numbers ({SEASON}, {thru_txt}): {f1(season_frame.get('perGame'))} accepted penalties per game (vs {f1(last_frame.get('perGame'))} in {SEASON - 1}). Most flags per game by crew chief: {top}.
 

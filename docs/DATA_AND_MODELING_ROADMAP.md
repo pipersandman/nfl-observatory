@@ -247,3 +247,5 @@ Every model change is judged here first.
 **V2:** [V2 Build Plan](V2_BUILD_PLAN.md) covers the V2 architecture (tool choices and migration sequence) and the quant research track (betting-market hypotheses, core calculations, methods, research phases).
 
 **Data sources:** [Data Sources and Data Lake Design](DATA_SOURCES.md), the full catalog of sources, licensing rules, lake zones and identity crosswalks.
+
+**Unusual-stat discovery:** [Stat Miner](STAT_MINER.md), the weekly ranked and luck-filtered list (live), with its V2 pattern-finding roadmap.

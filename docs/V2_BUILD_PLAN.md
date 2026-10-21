@@ -12,7 +12,9 @@ to build. V2.0's R2 raw capture can start alongside it.
 **Related docs:**
 [Data & Modeling Roadmap](DATA_AND_MODELING_ROADMAP.md) (data platform and
 models) · [Growth Cadence Plan](GROWTH_CADENCE_PLAN.md) (weekly publishing and
-indexing; Phase 1 now, Phase 2 overlaps with this plan).
+indexing; Phase 1 now, Phase 2 overlaps with this plan) ·
+[Data Sources](DATA_SOURCES.md) · [Stat Miner](STAT_MINER.md) (unusual-stat
+discovery: live Phases 1–2, roadmap Phases 2.5–5).
 
 **How to use this doc:** each step lists what it depends on, its micro-steps
 and how to confirm it's done. Any step can be drilled into further before
@@ -150,6 +152,14 @@ matched its output for two consecutive weeks.
    2. Asset checks: row counts, no duplicate plays, every played game has a crew, totals reconcile.
    3. Runs on a DigitalOcean droplet (or Dagster+); GitHub Actions remains the deploy step.
    4. **Done when:** Dagster has produced the site's data for two weeks with zero manual fixes, and GitHub Actions only builds and deploys.
+
+### V2.0b Stat miner Phase 3 (pattern finding)
+
+**Depends on:** V2.0 steps 1–3 and Data Sources P0. Full plan: [Stat Miner](STAT_MINER.md), section 8.
+
+1. Move `scripts/stat_miner.py` into a Dagster asset reading the dbt marts; output `marts.stat_candidates`.
+2. Add changepoint detection, game-fingerprint anomalies, crew × team matchups, per-snap and official-level patterns.
+3. **Done when:** the weekly report includes pattern items, backtested on 2015–25, and every item still carries its plays as evidence.
 
 ### V2.1 Astro site
 
@@ -471,6 +481,7 @@ Each session is about 1–2 hours. **You** steps are clicks and approvals; **Age
 |---|---|---|
 | V2.-1 | Conventions, worktrees, pilot | One full reviewed, CI-green, human-merged cycle |
 | V2.0 | R2 snapshots; DuckDB/dbt marts; Dagster assets | Zero-difference metric reconciliation; two parallel weeks |
+| V2.0b | Stat miner patterns (changepoints, game fingerprints, crew × team) | Backtest on 2015–25 detects known shifts; false-discovery control on every item; evidence plays attached |
 | V2.1 | Astro pages, design system, redirects | Page parity; Lighthouse ≥ 90; post-cutover indexing checks |
 | V2.2 | Explorer, API, Pagefind | 20 cross-surface numeric checks; read-only API security review |
 | V2.3 | Supabase auth and saved work | User isolation, access-control and sharing tests |
@@ -521,7 +532,9 @@ Record each decision here (and as an ADR in `docs/adr/` once V2 starts).
 V2.-1 Agent delivery system (Sessions 0–6) ──► authorizes V2.0 onward
    (exception: V2.0 step 1, R2 raw capture, may start now)
 
-V2.0 Data platform ──► V2.1 Astro site ──► V2.2 Explorer/API/search ──► V2.3 Accounts ──► V2.4 Ask the Observatory
+V2.0 Data platform ──► V2.0b Stat miner patterns ──► (publishing loop, Records page: see STAT_MINER.md)
+   │
+   └──► V2.1 Astro site ──► V2.2 Explorer/API/search ──► V2.3 Accounts ──► V2.4 Ask the Observatory
    │  (R2 raw capture)                                                                         ▲
    │                                                                                           │
    └──► Q0 Data additions (odds, full crews, snaps, injuries) ──► Q1 Foundations ──► Q2 Prereg ──► Q3 Backtests ──► Q4 Paper ──► Q5 Monitor

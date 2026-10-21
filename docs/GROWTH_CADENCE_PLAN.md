@@ -232,6 +232,8 @@ These apply to every template in Phase 1 and Phase 2. A page that fails them is 
 
 ### 5.9 Daily: Fact of the Day and /live/
 
+> **Source of facts:** the [Stat Miner](STAT_MINER.md) (live). Its weekly report already ranks and luck-filters candidates; this step adds a daily pick from it, the novelty log (Stat Miner Phase 2.5) and the public page.
+
 **Depends on:** 5.1, `narratives.py` (5.3). **Files:** `scripts/facts.py` (new), `scripts/build_static.py`.
 
 1. **Candidate facts** from the week's data: crew streaks ("5 roughing-the-passer calls in his last 2 games"), team streaks, rare events, record-setting games, rising penalty types, projection hits.
@@ -309,6 +311,8 @@ In order of payoff:
 2. Human review queue for the top 5 narratives each week (optional, 10 min).
 
 ### 6.6 Automated anomaly engine
+
+> Now planned in detail as [Stat Miner](STAT_MINER.md) Phase 3 (pattern finding) and Phase 4 (publishing loop).
 
 1. Shift detection (control charts) for every crew and team, plus the anomaly finder from the roadmap.
 2. Feeds Fact of the Day, report cards, alerts, and X posts.

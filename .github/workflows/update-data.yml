@@ -56,6 +56,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add frontend/data/
+          git add reports/miner/ 2>/dev/null || true
           
           # Only commit if there are changes
           if git diff --staged --quiet; then

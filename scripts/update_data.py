@@ -998,6 +998,15 @@ def main():
         print(f"   ⚠️  Flag impact failed: {type(e).__name__}: {e}")
         traceback.print_exc()
 
+    # Stat miner: ranked, luck-filtered shortlist of the week's most unusual stats (internal report)
+    try:
+        from stat_miner import build_stat_miner
+        build_stat_miner(data)
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Stat miner failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
     # Crew styles: each active crew chief's calling fingerprint
     try:
         from crew_styles import build_crew_styles

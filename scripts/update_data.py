@@ -200,7 +200,7 @@ def load_all_data(seasons: list[int]) -> dict:
         'home_team', 'away_team', 'posteam', 'score_differential',
         'down', 'ydstogo', 'play_type', 'season_type', 'first_down_penalty',
         # flag impact: value of each flag and what it did to the drive
-        'defteam', 'epa', 'ep', 'wpa', 'fixed_drive', 'fixed_drive_result', 'yardline_100',
+        'defteam', 'epa', 'ep', 'wp', 'wpa', 'fixed_drive', 'fixed_drive_result', 'yardline_100',
         'two_point_attempt', 'time', 'desc', 'game_seconds_remaining'
     ]
     
@@ -231,6 +231,13 @@ def load_all_data(seasons: list[int]) -> dict:
         _d = pbp['desc'].fillna('')
         data['offsetting_tds'] = pbp[_d.str.contains('TOUCHDOWN NULLIFIED', case=False) & _d.str.contains('offsetting', case=False)][
             [c for c in ['game_id', 'season', 'week', 'season_type', 'posteam', 'play_type', 'desc'] if c in pbp.columns]].copy()
+        # Win-probability context tables (what a point is worth by score and clock; a kicking
+        # team's chances after a score) for valuing flags in win chances
+        try:
+            from flag_impact import build_wp_tables
+            data['wp_tables'] = build_wp_tables(pbp)
+        except Exception as e:
+            print(f"   ⚠️  Win-probability tables failed: {type(e).__name__}: {e}")
         # Every game with play-by-play (including any with zero accepted penalties)
         game_cols = [c for c in ['game_id', 'season', 'week', 'season_type'] if c in pbp.columns]
         data['games_played'] = pbp[game_cols].drop_duplicates('game_id')
@@ -989,6 +996,15 @@ def main():
     except Exception as e:
         import traceback
         print(f"   ⚠️  Flag impact failed: {type(e).__name__}: {e}")
+        traceback.print_exc()
+
+    # Stat miner: ranked, luck-filtered shortlist of the week's most unusual stats (internal report)
+    try:
+        from stat_miner import build_stat_miner
+        build_stat_miner(data)
+    except Exception as e:
+        import traceback
+        print(f"   ⚠️  Stat miner failed: {type(e).__name__}: {e}")
         traceback.print_exc()
 
     # Crew styles: each active crew chief's calling fingerprint

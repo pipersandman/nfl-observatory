@@ -1727,7 +1727,16 @@ function costliestHtml(list, showTeamGame = true) {
                 <div class="fc-tags">${flagLabelsHtml(f.labels)}${f.gainErased && f.gainErased >= 15 ? `<span class="fc-tag">${f.gainErased}-yd gain erased</span>` : ''}</div>
             </div>
             <div class="fc-pts"><strong>${fmtNum(f.pointsCost, 1)}</strong><span>pts</span></div>
+            <div class="fc-wp" title="Win chances this flag cost the penalized team (nflverse win probability)">${f.winProbCost != null ? `<strong>${fmtNum(f.winProbCost, 0)}%</strong><span>win chance</span>` : '<span>—</span>'}</div>
         </div>`).join('')}</div>`;
+}
+
+// Costliest flags: rank by expected points or by win chances (late, close-game flags rise)
+function setFlagRank(k) { state.flagRank = k; renderFlagCost(); }
+function flagRankToggle() {
+    const k = state.flagRank || 'points';
+    return `<div class="baseline-toggle fc-rank-toggle" role="group" aria-label="Rank flags by">${[['points', 'By points'], ['winProb', 'By win chances']].map(([v, l]) =>
+        `<button class="baseline-btn ${v === k ? 'active' : ''}" onclick="setFlagRank('${v}')">${l}</button>`).join('')}</div>`;
 }
 
 function setFlagScope(k) { state.flagScope = k; renderFlagCost(); }
@@ -1763,6 +1772,7 @@ function renderFlagCost() {
                     <th title="Offensive flags inside the opponent 40 on drives that then didn't score">Drives stalled</th>
                     <th title="Offensive flags that wiped out a 15+ yard gain or a touchdown">Big plays erased</th>
                     <th title="Touchdowns wiped out by the team's own flags (plus any lost to offsetting penalties)">TDs erased</th>
+                    <th title="Win chances lost to flags, added up: about this many wins">≈ Wins given away</th>
                     <th title="Defensive flags that wiped out their own interception or fumble recovery">Own turnovers erased</th></tr></thead>
                 <tbody>${rows.map(t => `
                     <tr onclick="openTeamModal('${t.team}')" style="cursor:pointer">
@@ -1771,14 +1781,20 @@ function renderFlagCost() {
                         <td><span class="fc-bar"><i style="width:${Math.min(100, (t.pointsCostPerGame / maxCost) * 100)}%"></i></span><strong>${fmtNum(t.pointsCostPerGame, 2)}</strong></td>
                         <td class="season-prev">${fmtNum(t.pointsCost, 1)} <span class="modal-muted">(${t.games} g)</span></td>
                         <td class="season-prev">${t.flags}</td>
-                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}${t.tdsLostOffsetting ? ` <span class="modal-muted" title="${t.tdsLostOffsetting} lost to offsetting penalties">(${t.tdsLostOffsetting} off.)</span>` : ''}</td><td>${t.turnoversErased}</td>
+                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}${t.tdsLostOffsetting ? ` <span class="modal-muted" title="${t.tdsLostOffsetting} lost to offsetting penalties">(${t.tdsLostOffsetting} off.)</span>` : ''}</td><td>${t.turnoversErased}</td><td>${t.winsGivenAway != null ? fmtNum(t.winsGivenAway, 1) : '—'}</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
         </div>
-        ${key === 'current' && fi.week?.costliest?.length
-            ? `<div class="fc-week"><div class="table-title" style="font-size:1rem">Costliest flags of Week ${fi.week.week}</div>${costliestHtml(fi.week.costliest.slice(0, 8))}</div>`
-            : `<div class="fc-week"><div class="table-title" style="font-size:1rem">Costliest flags of ${sc.season}</div>${costliestHtml(sc.costliest.slice(0, 8))}</div>`}
+        ${(() => {
+            const byWp = state.flagRank === 'winProb';
+            const wk = key === 'current' && fi.week?.costliest?.length;
+            const list = wk ? (byWp && fi.week.costliestWinProb?.length ? fi.week.costliestWinProb : fi.week.costliest)
+                            : (byWp && sc.costliestWinProb?.length ? sc.costliestWinProb : sc.costliest);
+            return `<div class="fc-week"><div class="fc-week-head"><div class="table-title" style="font-size:1rem">Costliest flags of ${wk ? `Week ${fi.week.week}` : sc.season}</div>${flagRankToggle()}</div>
+                ${costliestHtml(list.slice(0, 8))}
+                <p class="modal-footnote">${byWp ? 'Ranked by win chances lost: flags late in close games count most. ' : 'Ranked by expected points lost, whatever the score and clock. '}Win chance = how much the flag changed the penalized team's chance of winning (nflverse win-probability model; for a wiped-out touchdown, the chance had it stood, assuming the extra point).</p></div>`;
+        })()}
         <p class="modal-footnote" style="padding: 0 1.25rem 1rem">How it's valued: when a flag erases the play, its cost is the change in expected points (nflverse's model). When a flag is added on top of a play that counts, only the penalty yards are charged (about 0.06 points per yard). Two-point tries use the 46.8% conversion rate. "Drives stalled" shows flags on drives that came up empty, not proof the flag caused it. Click a team for its profile.</p>`;
 }
 
@@ -1795,6 +1811,7 @@ function teamFlagCostHtml(abbr) {
             ${tile('Points given away / game', fmtNum(t.pointsCostPerGame, 2), `#${t.rank} of ${n} most costly · league ${fmtNum(league, 2)} ${pctBadge(t.pointsCostPerGame, league)}`)}
             ${tile('Key 1st downs given', t.keyFirstDownsGiven, '3rd/4th-down flags that moved the chains')}
             ${tile('Drives stalled / big plays erased', `${t.drivesKilled} / ${t.bigPlaysErased}`, 'offensive flags in scoring range / on 15+ yd gains or TDs')}
+            ${t.winsGivenAway != null ? tile('≈ Wins given away', fmtNum(t.winsGivenAway, 1), 'win chances lost to flags, added up') : ''}
             ${tile('Touchdowns erased', `${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}`, t.tdsLostOffsetting ? `${t.tdsErased} by own flags, ${t.tdsLostOffsetting} by offsetting penalties` : 'wiped out by own flags')}
             ${tile('Own turnovers erased', t.turnoversErased, 'defensive flags that wiped out a takeaway')}
         </div>
@@ -3837,6 +3854,7 @@ window.toggleWeekLayer = toggleWeekLayer;
 window.openTrendMenu = openTrendMenu;
 window.setTypeScope = setTypeScope;
 window.setFlagScope = setFlagScope;
+window.setFlagRank = setFlagRank;
 window.setStyleScope = setStyleScope;
 window.openStylePeriodMenu = openStylePeriodMenu;
 window.setCrewStyleView = setCrewStyleView;

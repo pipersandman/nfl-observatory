@@ -230,7 +230,7 @@ def load_all_data(seasons: list[int]) -> dict:
         # Touchdowns wiped out by offsetting penalties: nflverse marks no penalty on these plays
         _d = pbp['desc'].fillna('')
         data['offsetting_tds'] = pbp[_d.str.contains('TOUCHDOWN NULLIFIED', case=False) & _d.str.contains('offsetting', case=False)][
-            [c for c in ['game_id', 'season', 'week', 'season_type', 'posteam', 'play_type', 'desc'] if c in pbp.columns]].copy()
+            [c for c in ['game_id', 'season', 'week', 'season_type', 'posteam', 'defteam', 'play_type', 'desc'] if c in pbp.columns]].copy()
         # Win-probability context tables (what a point is worth by score and clock; a kicking
         # team's chances after a score) for valuing flags in win chances
         try:

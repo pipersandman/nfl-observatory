@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from flag_impact import classify
+from flag_impact import classify, offsetting_td_rows
 from weeks import completed_week
 
 OUT = Path(__file__).resolve().parent.parent / 'reports' / 'miner'
@@ -109,7 +109,7 @@ def _prepare(data):
     return season, done, fl, games
 
 
-def _game_table(fl, games):
+def _game_table(fl, games, offs=None):
     """One row per game: totals and splits."""
     g = fl.groupby('game_id')
     t = pd.DataFrame({
@@ -119,6 +119,8 @@ def _game_table(fl, games):
         'preSnap': g['pre_snap'].sum(),
     })
     out = games.merge(t, left_on='game_id', right_index=True, how='left').fillna({c: 0 for c in t.columns})
+    if offs is not None and len(offs):      # touchdowns wiped out by offsetting fouls
+        out['tdsErased'] += out['game_id'].map(offs.groupby('game_id').size()).fillna(0)
     by_team = fl.groupby(['game_id', 'penalty_team']).size()
     home = [by_team.get((g, h), 0) for g, h in zip(out['game_id'], out['home_team'])]
     away = [by_team.get((g, a_), 0) for g, a_ in zip(out['game_id'], out['away_team'])]
@@ -126,7 +128,7 @@ def _game_table(fl, games):
     return out
 
 
-def _team_games(fl, games):
+def _team_games(fl, games, offs=None):
     g = fl.groupby(['game_id', 'penalty_team'])
     t = pd.DataFrame({'flags': g.size(), 'yards': g['penalty_yards'].sum(), 'points': g['cost_epa'].sum(),
                       'firstDowns': g['first_down_given'].sum(), 'tdsErased': g['td_erased'].sum()}).reset_index()
@@ -136,13 +138,16 @@ def _team_games(fl, games):
                       games[['game_id', 'season', 'week', 'crew', 'home_team', 'away_team']].assign(team=games['away_team'])])
     t = allg.merge(t.drop(columns=['season', 'week', 'home_team', 'away_team', 'crew']), on=['game_id', 'team'], how='left').fillna(
         {'flags': 0, 'yards': 0, 'points': 0, 'firstDowns': 0, 'tdsErased': 0})
+    if offs is not None and len(offs):      # credited to the team that lost the touchdown
+        oc = offs.groupby(['game_id', 'team']).size()
+        t['tdsErased'] += [oc.get((g_, tm), 0) for g_, tm in zip(t['game_id'], t['team'])]
     t['opponent'] = np.where(t['team'] == t['home_team'], t['away_team'], t['home_team'])
     return t
 
 
 # --------------------------------------------------------------------------- candidates
 
-def _cands_week(fl, games, season, week, types):
+def _cands_week(fl, games, season, week, types, offs=None):
     """League week vs every regular-season week since the data begins."""
     gw = games.groupby(['season', 'week']).size().rename('games')
     f = fl.merge(games[['game_id', 'season', 'week']], on=['game_id'], suffixes=('', '_g'))
@@ -154,6 +159,8 @@ def _cands_week(fl, games, season, week, types):
     for t in types:
         agg[f't:{t}'] = f[f['penalty_type'] == t].groupby(['season', 'week']).size()
     agg = agg.join(gw).fillna(0)
+    if offs is not None and len(offs):
+        agg['tdsErased'] += offs.groupby(['season', 'week']).size().reindex(agg.index, fill_value=0)
     out = []
     if (season, week) not in agg.index:
         return out
@@ -383,9 +390,10 @@ def build_stat_miner(data):
         print('   (no completed week yet)')
         return None
     types = list(fl['penalty_type'].value_counts().head(TOP_TYPES).index)
-    gt = _game_table(fl, games)
-    tg = _team_games(fl, games)
-    cands = (_cands_week(fl, games, season, week, types) + _cands_games(gt, season, week) + _cands_team_games(tg, season, week)
+    offs = offsetting_td_rows(data.get('offsetting_tds'))
+    gt = _game_table(fl, games, offs)
+    tg = _team_games(fl, games, offs)
+    cands = (_cands_week(fl, games, season, week, types, offs) + _cands_games(gt, season, week) + _cands_team_games(tg, season, week)
              + _cands_crews(gt, season, week) + _cands_team_seasons(tg, season, week) + _cands_players(fl, season, week)
              + _cands_flags(fl, season, week))
     if not cands:

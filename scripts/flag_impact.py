@@ -167,6 +167,28 @@ def classify(pen, wp_tables=None):
     return p
 
 
+def offsetting_td_rows(offs):
+    """One row per touchdown wiped out by offsetting fouls, credited to the team that lost it.
+
+    Offsetting requires a foul by each team, so the scoring team always had a flag on the play;
+    these count toward tdsErased (touchdowns wiped out by the team's own flags). nflverse marks
+    no penalty on these plays, so they never reach the accepted-penalty table. posteam is the
+    scoring team on offense and kickoff returns; on punt returns and interception returns the
+    defense scored."""
+    if offs is None or not len(offs):
+        return pd.DataFrame(columns=['game_id', 'season', 'week', 'team'])
+    o = offs.copy()
+    if 'season_type' in o.columns:
+        o = o[o['season_type'] == 'REG']
+    pre = o['desc'].fillna('').str.upper().str.split('TOUCHDOWN NULLIFIED').str[0]
+    defense_scored = pre.str.contains(' PUNTS ') | pre.str.contains('INTERCEPTED')
+    if 'play_type' in o.columns:
+        defense_scored |= o['play_type'].eq('punt')
+    defteam = o['defteam'] if 'defteam' in o.columns else o['posteam']
+    o['team'] = np.where(defense_scored, defteam, o['posteam'])
+    return o[['game_id', 'season', 'week', 'team']].reset_index(drop=True)
+
+
 def _team_block(fl, games_by_team, offsetting_tds=None):
     out = []
     offsetting_tds = offsetting_tds or {}
@@ -180,7 +202,7 @@ def _team_block(fl, games_by_team, offsetting_tds=None):
             'firstDownsGiven': int(d['first_down_given'].sum()), 'keyFirstDownsGiven': int(d['key_first_down'].sum()),
             'drivesKilled': int(d['drive_killed'].sum()), 'bigPlaysErased': int(d['big_play_erased'].sum()),
             'turnoversErased': int(d['to_erased'].sum()),
-            'tdsErased': int(d['td_erased'].sum()),
+            'tdsErased': int(d['td_erased'].sum()) + int(offsetting_tds.get(team, 0)),
             'winsGivenAway': _r(d['cost_wp'].fillna(0).sum(), 2),
             'tdsLostOffsetting': int(offsetting_tds.get(team, 0)),
         })
@@ -220,12 +242,8 @@ def build_flag_impact(data: dict) -> dict:
         pen = pen[pen['season_type'] == 'REG']
     # Touchdowns wiped out by offsetting penalties: no accepted flag on either team, but the
     # scoring team lost the touchdown (on kicks, nflverse's posteam is the returning team)
-    offs = data.get('offsetting_tds')
-    if offs is None or not len(offs):
-        offs = pd.DataFrame(columns=['season', 'posteam'])
-    elif 'season_type' in offs.columns:
-        offs = offs[offs['season_type'] == 'REG']
-    offsetting_by_season = {s_: d['posteam'].value_counts().to_dict() for s_, d in offs.groupby('season')}
+    offs = offsetting_td_rows(data.get('offsetting_tds'))
+    offsetting_by_season = {s_: d['team'].value_counts().to_dict() for s_, d in offs.groupby('season')}
     pen = pen[pen['penalty_team'].notna() & pen['season'].isin([season - 1, season])].copy()
     pen['penalty_yards'] = pd.to_numeric(pen['penalty_yards'], errors='coerce').fillna(0).abs()
     fl = classify(pen, data.get('wp_tables'))
@@ -248,7 +266,7 @@ def build_flag_impact(data: dict) -> dict:
             'league': {'pointsCostPerTeamGame': _r(f['cost_epa'].sum() / max(1, 2 * len(gs)), 2),
                        'keyFirstDownsGiven': int(f['key_first_down'].sum()), 'drivesKilled': int(f['drive_killed'].sum()),
                        'bigPlaysErased': int(f['big_play_erased'].sum()), 'turnoversErased': int(f['to_erased'].sum()),
-                       'tdsErased': int(f['td_erased'].sum()),
+                       'tdsErased': int(f['td_erased'].sum()) + int(sum(offsetting_by_season.get(s_, {}).values())),
                        'tdsLostOffsetting': int(sum(offsetting_by_season.get(s_, {}).values()))},
             'teams': _team_block(f, gbt, offsetting_by_season.get(s_)),
             'costliest': [_flag_row(r, games) for _, r in top.iterrows()],
@@ -273,8 +291,8 @@ def build_flag_impact(data: dict) -> dict:
             'keyFirstDownsGiven': 'Defensive flags that gave the offense a first down on 3rd or 4th down',
             'drivesKilled': 'Drives stalled: offensive flags inside the opponent 40 on drives that then did not score (the flag may or may not be why)',
             'bigPlaysErased': 'Offensive flags that wiped out a 15+ yard gain or a touchdown',
-            'tdsErased': "Touchdowns wiped out by the scoring team's own flag (including fouls enforced at the spot)",
-            'tdsLostOffsetting': 'Touchdowns wiped out by offsetting penalties (no team charged with a flag)',
+            'tdsErased': "Touchdowns wiped out by the scoring team's own flag (including fouls enforced at the spot and offsetting fouls)",
+            'tdsLostOffsetting': 'Of those, touchdowns wiped out by offsetting fouls (both teams flagged; no yards enforced)',
             'turnoversErased': 'Defensive flags that wiped out their own interception or fumble recovery',
         },
         'notes': 'Regular season, accepted penalties. Points and win chances are estimates from nflverse\'s expected-points and win-probability models and league rates since 2015.',

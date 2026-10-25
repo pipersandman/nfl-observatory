@@ -12,13 +12,14 @@
     const LOGO = { WAS: 'wsh', LA: 'lar' };
     const logo = a => `https://a.espncdn.com/i/teamlogos/nfl/500/${(LOGO[a] || a).toLowerCase()}.png`;
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q === 5 ? 'OT' : `Q${q}`;   // overtime reads OT, never Q5
     const time = iso => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     const day = iso => new Date(iso).toLocaleDateString([], { weekday: 'short' });
     const last = new Map();             // game id -> {away, home, af, hf, flags}
     let signature = null, timer;
 
     // ---------------------------------------------------------------- what each tile says
-    const status = g => g.state === 'in' ? (g.detail || `Q${g.period} ${g.clock}`) : g.state === 'post' ? (g.detail || 'Final')
+    const status = g => g.state === 'in' ? (g.detail || `${qLabel(g.period)} ${g.clock}`) : g.state === 'post' ? (g.detail || 'Final')
         : (new Date(g.start) - Date.now() < 20 * 3600e3 ? time(g.start) : `${day(g.start)} ${time(g.start)}`);
     const foot = g => g.state === 'pre'
         ? (g.preview?.projected != null ? `Proj <b>${g.preview.projected.toFixed(1)}</b> flags${g.preview.crew ? ` · ${esc(g.preview.crew.split(' ').slice(-1)[0])}` : ''}` : 'Flags start at kickoff')
@@ -39,7 +40,7 @@
             <div class="lt-top"><span class="lt-st">Costliest flag</span><span class="lt-net">win chance</span></div>
             <div class="lt-cost-main"><b class="lt-cost-n">${c ? `−${Math.round(c.wpCost * 100)}%` : '—'}</b>
                 <span class="lt-cost-what">${c ? `${esc(c.team)} ${esc(c.type)}` : 'No costly flags yet'}</span></div>
-            <div class="lt-foot">${c ? `${esc(c.game || '')} · Q${esc(c.qtr ?? '')}` : '&nbsp;'}</div></div>`;
+            <div class="lt-foot">${c ? `${esc(c.game || '')} · ${qLabel(c.qtr)}` : '&nbsp;'}</div></div>`;
     }
 
     // ---------------------------------------------------------------- build / update
@@ -88,7 +89,7 @@
         all('.lt[data-g="costliest"]').forEach(tile => {
             tile.querySelector('.lt-cost-n').textContent = cost ? `−${Math.round(cost.wpCost * 100)}%` : '—';
             tile.querySelector('.lt-cost-what').textContent = cost ? `${cost.team} ${cost.type}` : 'No costly flags yet';
-            tile.querySelector('.lt-foot').textContent = cost ? `${cost.game || ''} · Q${cost.qtr ?? ''}` : '';
+            tile.querySelector('.lt-foot').textContent = cost ? `${cost.game || ''} · ${qLabel(cost.qtr)}` : '';
         });
         if (!firstTime && cost) {
             const n = `−${Math.round(cost.wpCost * 100)}%`;

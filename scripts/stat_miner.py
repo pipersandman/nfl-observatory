@@ -366,6 +366,11 @@ def _sentence(c):
     return f"**{head}: {c['entity']}, {v}{pct} {c['metric']}**{vs}: {_ordinal(c['rank'])} of {c['of']:,} {c['scope']}."
 
 
+def _qlabel(q):
+    q = int(q)
+    return f'{q - 4}OT' if q >= 6 else 'OT' if q == 5 else f'Q{q}'
+
+
 def _evidence(c, fl):
     if c['level'] == 'flag':
         return [c.get('desc', '')[:240]]
@@ -378,7 +383,7 @@ def _evidence(c, fl):
     if c['level'] == 'player game':
         f = f[(f['penalty_player_name'] + ' (' + f['penalty_team'] + ')') == c['entity']]
     f = f.sort_values('cost_epa', ascending=False)
-    return [f"Q{int(r.qtr)} {r.time} {r.penalty_team} {r.penalty_type}"
+    return [f"{_qlabel(r.qtr)} {r.time} {r.penalty_team} {r.penalty_type}"
             + (f" ({r.penalty_player_name})" if isinstance(r.penalty_player_name, str) else '')
             + f", {int(r.penalty_yards)} yds, {r.cost_epa:.1f} pts" for r in f.head(4).itertuples()]
 

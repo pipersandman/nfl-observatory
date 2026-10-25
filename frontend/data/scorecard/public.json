@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-21T18:30:10+00:00",
+  "generatedAt": "2026-10-25T19:39:36+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 30,
-      "avgMiss": 3.49,
-      "hitRate": 90.0,
-      "within3": 50.0,
-      "baselineAvgMiss": 3.75,
-      "skillPct": 7.0
+      "games": 31,
+      "avgMiss": 3.58,
+      "hitRate": 87.1,
+      "within3": 48.4,
+      "baselineAvgMiss": 3.78,
+      "skillPct": 5.3
     },
     "byWeek": [
       {
@@ -47,9 +47,39 @@
         "within3": 42.9,
         "baselineAvgMiss": 3.43,
         "skillPct": 1.5
+      },
+      {
+        "season": 2026,
+        "week": 7,
+        "games": 1,
+        "avgMiss": 6.3,
+        "hitRate": 0.0,
+        "within3": 0.0,
+        "baselineAvgMiss": 4.6,
+        "skillPct": -37.0
       }
     ],
     "games": [
+      {
+        "gameId": "2026_07_NE_CHI",
+        "season": 2026,
+        "week": 7,
+        "away": "NE",
+        "home": "CHI",
+        "crew": "Alan Eck",
+        "source": "live",
+        "projected": 12.7,
+        "low": 7,
+        "high": 18,
+        "actual": 19,
+        "miss": 6.3,
+        "inRange": false,
+        "baselineMiss": 4.6,
+        "homeProjected": 6.5,
+        "awayProjected": 6.3,
+        "homeActual": 9,
+        "awayActual": 10
+      },
       {
         "gameId": "2026_06_WAS_SF",
         "season": 2026,

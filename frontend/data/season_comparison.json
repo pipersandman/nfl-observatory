@@ -2,7 +2,10 @@
   "currentSeason": 2026,
   "previousSeason": 2025,
   "throughWeek": 6,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 7,
+    "games": 1
+  },
   "regularSeasonOnly": true,
   "baselines": [
     {
@@ -53,11 +56,11 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 93,
-      "penalties": 1394,
-      "yards": 11331,
-      "perGame": 14.99,
-      "yardsPerGame": 121.8,
+      "games": 94,
+      "penalties": 1413,
+      "yards": 11471,
+      "perGame": 15.03,
+      "yardsPerGame": 122.0,
       "yardsPerPenalty": 8.1
     },
     "baselines": {
@@ -567,6 +570,53 @@
       }
     },
     {
+      "name": "Alan Eck",
+      "slug": "alan-eck",
+      "current": {
+        "games": 6,
+        "penalties": 85,
+        "yards": 716,
+        "perGame": 14.17,
+        "yardsPerGame": 119.3,
+        "yardsPerPenalty": 8.4
+      },
+      "throughWeek": 7,
+      "baselines": {
+        "sameWeeks": {
+          "games": 6,
+          "penalties": 75,
+          "yards": 691,
+          "perGame": 12.5,
+          "yardsPerGame": 115.2,
+          "yardsPerPenalty": 9.2
+        },
+        "lastSeason": {
+          "games": 16,
+          "penalties": 175,
+          "yards": 1434,
+          "perGame": 10.94,
+          "yardsPerGame": 89.6,
+          "yardsPerPenalty": 8.2
+        },
+        "last3": {
+          "games": 48,
+          "penalties": 522,
+          "yards": 4406,
+          "perGame": 10.88,
+          "yardsPerGame": 91.8,
+          "yardsPerPenalty": 8.4
+        },
+        "all": {
+          "games": 48,
+          "penalties": 522,
+          "yards": 4406,
+          "perGame": 10.88,
+          "yardsPerGame": 91.8,
+          "yardsPerPenalty": 8.4
+        }
+      }
+    },
+    {
       "name": "Carl Cheffers",
       "slug": "carl-cheffers",
       "current": {
@@ -656,53 +706,6 @@
           "yards": 9548,
           "perGame": 11.95,
           "yardsPerGame": 100.5,
-          "yardsPerPenalty": 8.4
-        }
-      }
-    },
-    {
-      "name": "Alan Eck",
-      "slug": "alan-eck",
-      "current": {
-        "games": 5,
-        "penalties": 66,
-        "yards": 576,
-        "perGame": 13.2,
-        "yardsPerGame": 115.2,
-        "yardsPerPenalty": 8.7
-      },
-      "throughWeek": 6,
-      "baselines": {
-        "sameWeeks": {
-          "games": 5,
-          "penalties": 66,
-          "yards": 614,
-          "perGame": 13.2,
-          "yardsPerGame": 122.8,
-          "yardsPerPenalty": 9.3
-        },
-        "lastSeason": {
-          "games": 16,
-          "penalties": 175,
-          "yards": 1434,
-          "perGame": 10.94,
-          "yardsPerGame": 89.6,
-          "yardsPerPenalty": 8.2
-        },
-        "last3": {
-          "games": 48,
-          "penalties": 522,
-          "yards": 4406,
-          "perGame": 10.88,
-          "yardsPerGame": 91.8,
-          "yardsPerPenalty": 8.4
-        },
-        "all": {
-          "games": 48,
-          "penalties": 522,
-          "yards": 4406,
-          "perGame": 10.88,
-          "yardsPerGame": 91.8,
           "yardsPerPenalty": 8.4
         }
       }
@@ -1103,5 +1106,5 @@
       }
     }
   ],
-  "generatedAt": "2026-10-21T18:29:52.367799Z"
+  "generatedAt": "2026-10-25T19:39:18.805642Z"
 }

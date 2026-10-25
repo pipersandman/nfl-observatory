@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 6,
-  "currentGames": 93,
+  "currentGames": 94,
   "comparisons": [
     {
       "key": "sameWeeks",
@@ -26,8 +26,8 @@
   "types": [
     {
       "type": "Offensive Holding",
-      "current": 3.3,
-      "currentCount": 307,
+      "current": 3.32,
+      "currentCount": 312,
       "compare": {
         "sameWeeks": 2.89,
         "lastSeason": 2.47,
@@ -80,14 +80,14 @@
         },
         {
           "season": 2026,
-          "perGame": 3.3
+          "perGame": 3.32
         }
       ]
     },
     {
       "type": "False Start",
-      "current": 2.67,
-      "currentCount": 248,
+      "current": 2.68,
+      "currentCount": 252,
       "compare": {
         "sameWeeks": 2.43,
         "lastSeason": 2.42,
@@ -140,14 +140,14 @@
         },
         {
           "season": 2026,
-          "perGame": 2.67
+          "perGame": 2.68
         }
       ]
     },
     {
       "type": "Defensive Pass Interference",
       "current": 1.13,
-      "currentCount": 105,
+      "currentCount": 106,
       "compare": {
         "sameWeeks": 1.1,
         "lastSeason": 1.03,
@@ -207,7 +207,7 @@
     {
       "type": "Defensive Holding",
       "current": 0.71,
-      "currentCount": 66,
+      "currentCount": 67,
       "compare": {
         "sameWeeks": 0.8,
         "lastSeason": 0.65,
@@ -326,7 +326,7 @@
     },
     {
       "type": "Defensive Offside",
-      "current": 0.58,
+      "current": 0.57,
       "currentCount": 54,
       "compare": {
         "sameWeeks": 0.63,
@@ -380,13 +380,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.58
+          "perGame": 0.57
         }
       ]
     },
     {
       "type": "Delay of Game",
-      "current": 1.05,
+      "current": 1.04,
       "currentCount": 98,
       "compare": {
         "sameWeeks": 0.76,
@@ -440,14 +440,14 @@
         },
         {
           "season": 2026,
-          "perGame": 1.05
+          "perGame": 1.04
         }
       ]
     },
     {
       "type": "Neutral Zone Infraction",
       "current": 0.4,
-      "currentCount": 37,
+      "currentCount": 38,
       "compare": {
         "sameWeeks": 0.27,
         "lastSeason": 0.28,
@@ -506,8 +506,8 @@
     },
     {
       "type": "Roughing the Passer",
-      "current": 0.48,
-      "currentCount": 45,
+      "current": 0.49,
+      "currentCount": 46,
       "compare": {
         "sameWeeks": 0.42,
         "lastSeason": 0.34,
@@ -560,7 +560,7 @@
         },
         {
           "season": 2026,
-          "perGame": 0.48
+          "perGame": 0.49
         }
       ]
     },
@@ -806,8 +806,8 @@
     },
     {
       "type": "Illegal Formation",
-      "current": 0.42,
-      "currentCount": 39,
+      "current": 0.43,
+      "currentCount": 40,
       "compare": {
         "sameWeeks": 0.51,
         "lastSeason": 0.41,
@@ -860,7 +860,7 @@
         },
         {
           "season": 2026,
-          "perGame": 0.42
+          "perGame": 0.43
         }
       ]
     },
@@ -986,8 +986,8 @@
     },
     {
       "type": "Encroachment",
-      "current": 0.16,
-      "currentCount": 15,
+      "current": 0.18,
+      "currentCount": 17,
       "compare": {
         "sameWeeks": 0.13,
         "lastSeason": 0.13,
@@ -1040,7 +1040,7 @@
         },
         {
           "season": 2026,
-          "perGame": 0.16
+          "perGame": 0.18
         }
       ]
     },
@@ -2444,6 +2444,12 @@
             "perGame": 14.71,
             "games": 14,
             "complete": true
+          },
+          {
+            "week": 7,
+            "perGame": 19.0,
+            "games": 1,
+            "complete": false
           }
         ]
       }
@@ -2633,8 +2639,8 @@
     },
     {
       "season": 2026,
-      "games": 93,
-      "fullSeason": 14.99,
+      "games": 94,
+      "fullSeason": 15.03,
       "complete": false,
       "earlyGames": 93,
       "early": 14.99
@@ -2642,41 +2648,41 @@
   ],
   "quarters": {
     "current": {
-      "games": 93,
+      "games": 94,
       "total": [
         3.18,
-        4.37,
-        3.49,
-        3.84
+        4.38,
+        3.51,
+        3.85
       ],
       "types": {
         "Offensive Holding": [
-          0.75,
+          0.76,
           1.04,
-          0.81,
+          0.82,
           0.68
         ],
         "False Start": [
           0.55,
-          0.8,
-          0.67,
-          0.63
+          0.79,
+          0.68,
+          0.64
         ],
         "Defensive Pass Interference": [
           0.15,
-          0.4,
-          0.24,
-          0.34
+          0.39,
+          0.23,
+          0.35
         ],
         "Delay of Game": [
           0.14,
           0.26,
-          0.24,
-          0.4
+          0.23,
+          0.39
         ],
         "Defensive Holding": [
           0.1,
-          0.25,
+          0.26,
           0.18,
           0.18
         ],
@@ -2694,14 +2700,14 @@
         ],
         "Roughing the Passer": [
           0.11,
-          0.13,
+          0.14,
           0.06,
           0.18
         ]
       }
     },
     "all": {
-      "games": 2988,
+      "games": 2989,
       "total": [
         2.65,
         3.7,
@@ -2762,105 +2768,105 @@
   },
   "typeShare": {
     "current": {
-      "games": 93,
-      "total": 1394,
-      "perGame": 14.99,
+      "games": 94,
+      "total": 1413,
+      "perGame": 15.03,
       "types": [
         {
           "type": "Offensive Holding",
-          "count": 307,
-          "pct": 22.0,
-          "perGame": 3.3
+          "count": 312,
+          "pct": 22.1,
+          "perGame": 3.32
         },
         {
           "type": "False Start",
-          "count": 248,
+          "count": 252,
           "pct": 17.8,
-          "perGame": 2.67
+          "perGame": 2.68
         },
         {
           "type": "Defensive Pass Interference",
-          "count": 105,
+          "count": 106,
           "pct": 7.5,
           "perGame": 1.13
         },
         {
           "type": "Delay of Game",
           "count": 98,
-          "pct": 7.0,
-          "perGame": 1.05
+          "pct": 6.9,
+          "perGame": 1.04
         },
         {
           "type": "Defensive Holding",
-          "count": 66,
+          "count": 67,
           "pct": 4.7,
           "perGame": 0.71
         },
         {
           "type": "Unnecessary Roughness",
           "count": 58,
-          "pct": 4.2,
+          "pct": 4.1,
           "perGame": 0.62
         },
         {
           "type": "Defensive Offside",
           "count": 54,
-          "pct": 3.9,
-          "perGame": 0.58
+          "pct": 3.8,
+          "perGame": 0.57
         },
         {
           "type": "Roughing the Passer",
-          "count": 45,
-          "pct": 3.2,
-          "perGame": 0.48
+          "count": 46,
+          "pct": 3.3,
+          "perGame": 0.49
         },
         {
           "type": "Face Mask",
           "count": 40,
-          "pct": 2.9,
+          "pct": 2.8,
           "perGame": 0.43
         },
         {
           "type": "Illegal Formation",
-          "count": 39,
+          "count": 40,
           "pct": 2.8,
-          "perGame": 0.42
+          "perGame": 0.43
         },
         {
-          "type": "All other (36 types)",
-          "count": 334,
-          "pct": 24.0,
-          "perGame": 3.59,
+          "type": "All other (37 types)",
+          "count": 340,
+          "pct": 24.1,
+          "perGame": 3.62,
           "other": true
         }
       ]
     },
     "all": {
-      "games": 2988,
-      "total": 37852,
+      "games": 2989,
+      "total": 37871,
       "perGame": 12.67,
       "types": [
         {
           "type": "Offensive Holding",
-          "count": 7440,
+          "count": 7445,
           "pct": 19.7,
           "perGame": 2.49
         },
         {
           "type": "False Start",
-          "count": 6630,
+          "count": 6634,
           "pct": 17.5,
           "perGame": 2.22
         },
         {
           "type": "Defensive Pass Interference",
-          "count": 3075,
+          "count": 3076,
           "pct": 8.1,
           "perGame": 1.03
         },
         {
           "type": "Defensive Holding",
-          "count": 2272,
+          "count": 2273,
           "pct": 6.0,
           "perGame": 0.76
         },
@@ -2884,14 +2890,14 @@
         },
         {
           "type": "Neutral Zone Infraction",
-          "count": 1357,
+          "count": 1358,
           "pct": 3.6,
           "perGame": 0.45
         },
         {
           "type": "Roughing the Passer",
-          "count": 1230,
-          "pct": 3.2,
+          "count": 1231,
+          "pct": 3.3,
           "perGame": 0.41
         },
         {
@@ -2901,8 +2907,8 @@
           "perGame": 0.39
         },
         {
-          "type": "All other (54 types)",
-          "count": 9259,
+          "type": "All other (55 types)",
+          "count": 9265,
           "pct": 24.5,
           "perGame": 3.1,
           "other": true
@@ -2915,5 +2921,5 @@
     "all": "Since 2015"
   },
   "notes": "Regular season. Accepted penalties per game, all teams combined.",
-  "generatedAt": "2026-10-21T18:29:53+00:00"
+  "generatedAt": "2026-10-25T19:39:20+00:00"
 }

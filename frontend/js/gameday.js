@@ -60,6 +60,8 @@
         const log = (g.log || []).slice(0, 6).map(f => `<li class="gd-flag ${f.status}"><span class="gd-q">Q${esc(f.qtr ?? '')} ${esc(f.clock ?? '')}</span>
             <b>${esc(f.team)}</b> ${esc(f.type)}${f.player ? ` <span class="modal-muted">${esc(f.player)}</span>` : ''}
             <span class="gd-y">${f.status === 'accepted' ? `${f.yards} yds` : esc(f.status)}</span></li>`).join('');
+        const cf = g.costliest;
+        const costLine = cf && cf.wpCost > 0.005 ? `<div class="gd-costline" title="Live estimate of the win chances this flag cost ${esc(cf.team)}">Costliest: <b>${esc(cf.team)}</b> ${esc(cf.type)}${cf.tdErased ? ' <span class="gd-tag">TD erased</span>' : ''} · Q${esc(cf.qtr ?? '')} ${esc(cf.clock ?? '')} <span class="gd-wp">−${Math.round(cf.wpCost * 100)}% win chance</span></div>` : '';
         return `<li class="gd-card st-${g.state}" data-id="${esc(g.id)}">
             <div class="gd-rank">${g.state === 'pre' ? '' : rank}</div>
             <div class="gd-match">
@@ -72,6 +74,7 @@
                 ${g.state !== 'pre' ? `<div class="gd-split" title="Flags by team"><i style="width:${share}%"></i><span>${esc(g.away.abbr)} ${g.away.flags} · ${g.away.yards} yds</span><span>${esc(g.home.abbr)} ${g.home.flags} · ${g.home.yards} yds</span></div>` : ''}
                 ${proj != null ? `<div class="gd-pace"><div class="gd-pace-bar"><i class="now" style="width:${Math.min(100, g.flags / max * 100)}%"></i>${pc != null ? `<i class="pace" style="left:${Math.min(100, pc / max * 100)}%"></i>` : ''}<i class="proj" style="left:${Math.min(100, proj / max * 100)}%"></i></div>
                     <span>${g.state === 'pre' ? `Projected <b>${proj.toFixed(1)}</b> flags` : `Projected ${proj.toFixed(1)}${pc != null ? ` · <b class="${paceCls}">on pace for ${pc}</b>` : ''}`}</span></div>` : ''}
+                ${costLine}
             </div>
             <div class="gd-count"><b class="gd-num">${g.state === 'pre' ? '—' : metric}</b><span>${state.sort === 'yards' ? 'penalty yds' : 'flags'}</span>
                 ${g.state !== 'pre' ? `<em>${state.sort === 'yards' ? `${g.flags} flags` : `${g.yards} yds`}</em>` : ''}</div>
@@ -121,8 +124,35 @@
             if (g.state !== was.state && g.state === 'post') el.classList.add('gd-final-now');
         });
         state.prev = new Map(d.games.map(g => [g.id, { flags: g.flags, yards: g.yards, state: g.state }]));
+        costly(d);
         ticker(d);
         state.first = false;
+    }
+
+    let lastCostKey = null;
+    function costly(d) {
+        const box = $('gdCostly');
+        const list = (d.costliest || []).filter(f => f.wpCost > 0.005);
+        if (!list.length) { box.innerHTML = ''; box.hidden = true; return; }
+        box.hidden = false;
+        const top = list[0];
+        const key = `${top.gameId}:${top.id}`;
+        const changed = !state.first && lastCostKey && key !== lastCostKey;
+        lastCostKey = key;
+        const pct = Math.round(top.wpCost * 100);
+        box.innerHTML = `<div class="gd-costly-head"><span class="gd-costly-title">Costliest flag so far</span><span class="modal-muted">win chances lost · live estimate</span></div>
+            <div class="gd-costly-main">
+                <div class="gd-costly-num"><b data-to="${pct}">−${changed ? 0 : pct}%</b><span>win chance</span></div>
+                <div class="gd-costly-what"><div class="gd-costly-type"><span class="gd-tick-flag" aria-hidden="true"></span>${esc(top.type)} on <b>${esc(top.team)}</b>${top.player ? ` <span class="modal-muted">${esc(top.player)}</span>` : ''}</div>
+                    <div class="modal-muted">${esc(top.game)} · Q${esc(top.qtr ?? '')} ${esc(top.clock ?? '')} · ${top.yards} yds${top.tdErased ? ' · <span class="gd-tag">touchdown erased</span>' : top.noPlay ? ' · play wiped out' : ''}</div></div>
+            </div>
+            ${list.length > 1 ? `<ol class="gd-costly-rest">${list.slice(1).map(f => `<li><b>${esc(f.team)}</b> ${esc(f.type)} <span class="modal-muted">${esc(f.game)} · Q${esc(f.qtr ?? '')}</span><span class="gd-wp">−${Math.round(f.wpCost * 100)}%</span></li>`).join('')}</ol>` : ''}`;
+        if (changed) {
+            box.classList.remove('gd-costly-new'); void box.offsetWidth; box.classList.add('gd-costly-new');
+            const el = box.querySelector('.gd-costly-num b'); const to = pct; const t0 = performance.now();
+            const step = t => { const k = Math.min(1, (t - t0) / 900); el.textContent = `−${Math.round(to * (1 - Math.pow(1 - k, 3)))}%`; if (k < 1) requestAnimationFrame(step); };
+            reduce ? (el.textContent = `−${to}%`) : requestAnimationFrame(step);
+        }
     }
 
     function ticker(d) {
@@ -209,13 +239,18 @@
                     const [type, yds] = TYPES[Math.floor(Math.random() * TYPES.length)];
                     const side = Math.random() < 0.5 ? 'home' : 'away';
                     const status = Math.random() < 0.1 ? 'declined' : 'accepted';
-                    g.log.unshift({ id: `${t}-${i}`, qtr: g.period, clock: g.clock, team: g[side].abbr, type, yards: status === 'accepted' ? yds : 0, status, player: null });
+                    const late = g.period >= 4 ? 2.2 : g.period === 3 ? 1.3 : 0.8, close = Math.abs(g.home.score - g.away.score) <= 8 ? 1.4 : 0.6;
+                    const td = status === 'accepted' && type === 'Offensive Holding' && Math.random() < 0.25;
+                    const wpCost = status !== 'accepted' ? null : td ? 0.12 + Math.random() * 0.2 : Math.min(0.25, yds * 0.0615 * 0.03 * late * close * (0.6 + Math.random()));
+                    g.log.unshift({ id: `${t}-${i}`, qtr: g.period, clock: g.clock, team: g[side].abbr, type, yards: status === 'accepted' ? yds : 0, status, player: null, wpCost, tdErased: td, noPlay: td });
                     if (status === 'accepted') { g[side].flags++; g[side].yards += yds; }
                 }
                 g.flags = g.home.flags + g.away.flags; g.yards = g.home.yards + g.away.yards;
+                g.costliest = g.log.filter(f => f.wpCost != null).sort((a, b) => b.wpCost - a.wpCost)[0] || null;
             });
             if (t === 8) games[5].state = 'in';
-            return { updatedAt: new Date().toISOString(), week: 7, season: 2026, live: games.some(g => g.state === 'in'), games: JSON.parse(JSON.stringify(games)) };
+            const costliest = games.flatMap(g => g.log.filter(f => f.wpCost != null).map(f => ({ ...f, game: g.name, gameId: g.id }))).sort((a, b) => b.wpCost - a.wpCost).slice(0, 3);
+            return { updatedAt: new Date().toISOString(), week: 7, season: 2026, live: games.some(g => g.state === 'in'), games: JSON.parse(JSON.stringify(games)), costliest };
         } };
     })();
 

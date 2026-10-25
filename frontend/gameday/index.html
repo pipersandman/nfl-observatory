@@ -49,6 +49,8 @@
             </div>
         </div>
 
+        <section class="gd-costly" id="gdCostly" aria-live="polite" aria-label="Costliest flag so far"></section>
+
         <section class="gd-ticker" aria-live="polite" aria-label="Latest flags">
             <div class="gd-ticker-title">Latest flags</div>
             <ol id="gdTicker"></ol>
@@ -58,7 +60,9 @@
 
         <p class="st-note" id="gdNote">Accepted penalties; declined and offsetting flags are listed but not counted. Totals come from the live box score.
             Play-by-play via ESPN, updated about every 20 seconds; official numbers on the rest of the site come from nflverse after each game.
-            Projections from our pre-game model. <a href="/guide/#methodology">Methodology</a></p>
+            Projections from our pre-game model. "Costliest flag" is a live estimate of the win chances a flag cost the penalized team, using ESPN's live
+            win probability and our own tables (the same method as <a href="/#trends">What Flags Cost</a>); final expected-points and win-chance numbers
+            appear on the site after each game. <a href="/guide/#flag-cost">How flag cost is measured</a></p>
     </main>
     <div class="gd-toast" id="gdToast" role="status" aria-live="assertive"></div>
     <script src="/js/gameday.js"></script>

@@ -5,6 +5,7 @@ import { compactGame } from './parse.js';
 
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
 const PREVIEWS = 'https://nflobservatory.com/data/previews/latest.json';
+const WP_TABLES = 'https://nflobservatory.com/data/wp_tables.json';
 const TTL_LIVE = 15;          // seconds: cache while any game is live
 const TTL_IDLE = 300;         // seconds: no game live
 const ALLOWED = ['https://nflobservatory.com', 'https://www.nflobservatory.com', 'http://localhost:8000', 'http://127.0.0.1:8000'];
@@ -31,6 +32,8 @@ async function previewsByMatchup() {
 async function build() {
   const sb = await getJSON(`${ESPN}/scoreboard`, TTL_LIVE);
   const prev = await previewsByMatchup();
+  let wpTables = null;
+  try { wpTables = await getJSON(WP_TABLES, 86400); } catch { wpTables = null; }
   const events = sb.events || [];
   const games = await Promise.all(events.map(async ev => {
     const state = ev.status?.type?.state;
@@ -41,10 +44,15 @@ async function build() {
     const c = ev.competitions?.[0] || {};
     const ab = h => (c.competitors?.find(x => x.homeAway === h)?.team?.abbreviation) || '';
     const n = a => ({ WSH: 'WAS', LAR: 'LA' }[a] || a);
-    return compactGame(ev, summary, prev[`${n(ab('away'))}@${n(ab('home'))}`]);
+    return compactGame(ev, summary, prev[`${n(ab('away'))}@${n(ab('home'))}`], wpTables);
   }));
+  // league-wide: the costliest flags so far by win chances
+  const costliest = games.flatMap(g => g.costliest ? [{ ...g.costliest, game: g.name, gameId: g.id }] : [])
+    .concat(games.flatMap(g => (g.log || []).filter(f => f.wpCost != null && f !== g.costliest).map(f => ({ ...f, game: g.name, gameId: g.id }))))
+    .sort((a, b) => b.wpCost - a.wpCost).slice(0, 3);
   const live = games.some(g => g.state === 'in');
-  return { updatedAt: new Date().toISOString(), week: sb.week?.number ?? null, season: sb.season?.year ?? null, live, games, source: 'ESPN' };
+  return { updatedAt: new Date().toISOString(), week: sb.week?.number ?? null, season: sb.season?.year ?? null, live, games, costliest,
+           wpModel: wpTables ? 'ESPN live win probability + Observatory tables' : 'ESPN live win probability', source: 'ESPN' };
 }
 
 export default {

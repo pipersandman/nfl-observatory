@@ -3327,7 +3327,7 @@ const EXPORT_SRI = {
 
 // Escape text that originates outside this site (scraped or user-supplied) before
 // it goes into HTML
-const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q === 5 ? 'OT' : `${qLabel(q)}`;   // overtime reads OT, never Q5
+const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q === 5 ? 'OT' : `Q${q}``;   // overtime reads OT, never Q5
 function esc(v) {
     return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }

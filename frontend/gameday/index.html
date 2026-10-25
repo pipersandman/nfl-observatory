@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live NFL Penalty Tracker: Flags as They Happen | NFL Officiating Observatory</title>
+    <meta name="description" content="Every NFL penalty as it happens: games ranked by flags or penalty yards, live flag feed, crew chiefs and projected flags for every game.">
+    <link rel="canonical" href="https://nflobservatory.com/gameday/">
+    <meta property="og:title" content="Live NFL Penalty Tracker | NFL Officiating Observatory">
+    <meta property="og:description" content="Every flag as it happens, games ranked by flags or penalty yards.">
+    <meta property="og:image" content="https://nflobservatory.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0c0d0f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/static.css">
+    <link rel="stylesheet" href="/css/gameday.css">
+</head>
+<!-- data-feed: the Worker's /live URL (set after deploying worker/gameday) -->
+<body class="static-page gd-page" data-feed="https://nflobs-gameday.YOUR-SUBDOMAIN.workers.dev/live">
+    <header class="st-header">
+        <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
+        <div class="st-nav" role="navigation" aria-label="Site"><a href="/">Home</a><a href="/gameday/" aria-current="page">Gameday</a><a href="/assignments/">This week</a><a href="/crew/">Crew chiefs</a><a href="/team/">Teams</a><a href="/trends/">Trends</a></div>
+    </header>
+    <main class="container gd-main">
+        <div class="gd-head">
+            <div>
+                <p class="section-number">GAMEDAY · <span id="gdWeek">LIVE</span></p>
+                <h1 class="section-title">Flags as they happen</h1>
+                <p class="section-subtitle" id="gdSub">Every penalty in every game, ranked live.</p>
+            </div>
+            <div class="gd-status"><span class="gd-dot" id="gdDot"></span><span id="gdUpdated">Connecting…</span></div>
+        </div>
+
+        <div class="gd-league" id="gdLeague"></div>
+
+        <div class="gd-controls">
+            <div class="baseline-toggle" role="group" aria-label="Rank games by">
+                <button class="baseline-btn active" data-sort="flags">Most flags</button>
+                <button class="baseline-btn" data-sort="yards">Most penalty yards</button>
+            </div>
+            <div class="baseline-toggle" role="group" aria-label="Show">
+                <button class="baseline-btn active" data-show="all">All games</button>
+                <button class="baseline-btn" data-show="live">Live now</button>
+            </div>
+        </div>
+
+        <section class="gd-ticker" aria-live="polite" aria-label="Latest flags">
+            <div class="gd-ticker-title">Latest flags</div>
+            <ol id="gdTicker"></ol>
+        </section>
+
+        <ol class="gd-board" id="gdBoard" aria-label="Games ranked"></ol>
+
+        <p class="st-note" id="gdNote">Accepted penalties; declined and offsetting flags are listed but not counted. Totals come from the live box score.
+            Play-by-play via ESPN, updated about every 20 seconds; official numbers on the rest of the site come from nflverse after each game.
+            Projections from our pre-game model. <a href="/guide/#methodology">Methodology</a></p>
+    </main>
+    <div class="gd-toast" id="gdToast" role="status" aria-live="assertive"></div>
+    <script src="/js/gameday.js"></script>
+</body>
+</html>

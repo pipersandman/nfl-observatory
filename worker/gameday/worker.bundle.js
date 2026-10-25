@@ -99,7 +99,7 @@ function compactGame(ev, summary, preview, wpTables) {
     home: H, away: A,
     flags: H.flags + A.flags, yards: H.yards + A.yards,
     // newest first; declined and offsetting kept and labeled
-    log: flags.slice().reverse().slice(0, 40),
+    log: flags.slice().reverse().slice(0, 100),   // every flag in the game, newest first
     costliest,
     preview: preview || null,
   };

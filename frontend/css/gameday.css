@@ -76,6 +76,8 @@
 .gd-log { grid-column: 2 / -1; }
 .gd-log summary { cursor: pointer; font: 500 0.75rem var(--font-mono); color: var(--text-muted); }
 .gd-log ol { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.2rem; }
+.gd-qhead { margin-top: 0.35rem; font: 600 0.65rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.gd-qhead:first-child { margin-top: 0; }
 .gd-flag { display: flex; gap: 0.5rem; font-size: 0.82rem; color: var(--text-secondary); }
 .gd-flag b { color: var(--text-primary); }
 .gd-flag.declined, .gd-flag.offsetting { opacity: 0.55; }

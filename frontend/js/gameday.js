@@ -13,7 +13,7 @@
     const logo = a => `https://a.espncdn.com/i/teamlogos/nfl/500/${(ESPN_LOGO[a] || a).toLowerCase()}.png`;
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-    const state = { sort: 'flags', show: 'all', data: null, prev: new Map(), seenFlags: new Set(), first: true, lastOk: null, timer: null };
+    const state = { sort: 'flags', show: 'all', data: null, prev: new Map(), seenFlags: new Set(), first: true, lastOk: null, timer: null, openLogs: new Set() };
     const $ = id => document.getElementById(id);
 
     // ------------------------------------------------------------------ helpers
@@ -57,9 +57,19 @@
         const paceCls = pc != null && proj != null ? (pc > proj * 1.1 ? 'pct-up' : pc < proj * 0.9 ? 'pct-down' : '') : '';
         const share = g.flags ? Math.round(g.away.flags / g.flags * 100) : 0;
         const metric = state.sort === 'yards' ? g.yards : g.flags;
-        const log = (g.log || []).slice(0, 6).map(f => `<li class="gd-flag ${f.status}"><span class="gd-q">Q${esc(f.qtr ?? '')} ${esc(f.clock ?? '')}</span>
-            <b>${esc(f.team)}</b> ${esc(f.type)}${f.player ? ` <span class="modal-muted">${esc(f.player)}</span>` : ''}
-            <span class="gd-y">${f.status === 'accepted' ? `${f.yards} yds` : esc(f.status)}</span></li>`).join('');
+        // every flag in the game, newest first, grouped by quarter
+        const all = g.log || [];
+        let lastQ = null;
+        const log = all.map(f => {
+            const head = f.qtr !== lastQ ? `<li class="gd-qhead">${f.qtr >= 5 ? 'Overtime' : `Quarter ${esc(f.qtr ?? '')}`}</li>` : '';
+            lastQ = f.qtr;
+            return head + `<li class="gd-flag ${f.status}"><span class="gd-q">${esc(f.clock ?? '')}</span>
+            <b>${esc(f.team)}</b> ${esc(f.type)}${f.player ? ` <span class="modal-muted">${esc(f.player)}</span>` : ''}${f.tdErased ? ' <span class="gd-tag">TD erased</span>' : ''}
+            <span class="gd-y">${f.status === 'accepted' ? `${f.yards} yds` : esc(f.status)}</span></li>`;
+        }).join('');
+        const accepted = all.filter(f => f.status === 'accepted').length;
+        const other = all.length - accepted;
+        const logOpen = state.openLogs.has(String(g.id));
         const cf = g.costliest;
         const costLine = cf && cf.wpCost > 0.005 ? `<div class="gd-costline" title="Live estimate of the win chances this flag cost ${esc(cf.team)}">Costliest: <b>${esc(cf.team)}</b> ${esc(cf.type)}${cf.tdErased ? ' <span class="gd-tag">TD erased</span>' : ''} · Q${esc(cf.qtr ?? '')} ${esc(cf.clock ?? '')} <span class="gd-wp">−${Math.round(cf.wpCost * 100)}% win chance</span></div>` : '';
         return `<li class="gd-card st-${g.state}" data-id="${esc(g.id)}">
@@ -78,7 +88,7 @@
             </div>
             <div class="gd-count"><b class="gd-num">${g.state === 'pre' ? '—' : metric}</b><span>${state.sort === 'yards' ? 'penalty yds' : 'flags'}</span>
                 ${g.state !== 'pre' ? `<em>${state.sort === 'yards' ? `${g.flags} flags` : `${g.yards} yds`}</em>` : ''}</div>
-            ${log ? `<details class="gd-log"><summary>Flag log (${(g.log || []).length})</summary><ol>${log}</ol></details>` : ''}
+            ${log ? `<details class="gd-log" data-log="${esc(g.id)}"${logOpen ? ' open' : ''}><summary>Flag log · ${accepted} flag${accepted === 1 ? '' : 's'}${other ? `, ${other} declined or offsetting` : ''}</summary><ol>${log}</ol></details>` : ''}
             <span class="gd-drop" aria-hidden="true"></span>
         </li>`;
     }
@@ -210,6 +220,11 @@
     document.querySelectorAll('[data-show]').forEach(b => b.addEventListener('click', () => {
         state.show = b.dataset.show; document.querySelectorAll('[data-show]').forEach(x => x.classList.toggle('active', x === b)); render();
     }));
+    document.addEventListener('toggle', e => {
+        const d = e.target;
+        if (!(d instanceof HTMLDetailsElement) || !d.dataset.log) return;
+        d.open ? state.openLogs.add(d.dataset.log) : state.openLogs.delete(d.dataset.log);
+    }, true);
     setInterval(setUpdated, 1000);
 
     // ------------------------------------------------------------------ demo slate

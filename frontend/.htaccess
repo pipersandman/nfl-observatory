@@ -38,7 +38,7 @@ Options -Indexes
     Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
     # Only this site, jsDelivr (pinned + integrity-checked libraries), Cloudflare
     # analytics, Google Fonts and ESPN team logos may load content
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://a.espncdn.com; connect-src 'self' https://cloudflareinsights.com https://cdn.jsdelivr.net https://*.workers.dev; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://a.espncdn.com; connect-src 'self' https://cloudflareinsights.com https://cdn.jsdelivr.net https://nflobs-gameday.tfostery.workers.dev; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
 
     # Always check for a fresh page, scripts, styles and data; icons can be cached
     <FilesMatch "\.(html|js|css|json|webmanifest)$">

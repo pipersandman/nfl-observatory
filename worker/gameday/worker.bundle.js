@@ -65,7 +65,9 @@ function gamePenalties(summary) {
     const list = parsePlayPenalties(p.text);
     list.forEach((f, i) => flags.push({
       id: `${p.id}-${i}`, seq: Number(p.sequenceNumber || 0),
-      qtr: p.period?.number ?? null, clock: p.clock?.displayValue ?? null, ...f,
+      qtr: p.period?.number ?? null, clock: p.clock?.displayValue ?? null,
+      wall: p.wallclock || null,          // real-world time of the play (orders flags across games)
+      ...f,
     }));
   }
   return flags;

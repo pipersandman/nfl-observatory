@@ -15,6 +15,7 @@
 
     const state = { sort: 'flags', show: 'all', data: null, prev: new Map(), seenFlags: new Set(), first: true, lastOk: null, timer: null, openLogs: new Set() };
     const $ = id => document.getElementById(id);
+const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q === 5 ? 'OT' : `Q${q}`;   // overtime reads OT, never Q5
 
     // ------------------------------------------------------------------ helpers
     const clockSecs = c => { const m = /^(\d+):(\d+)$/.exec(c || ''); return m ? (+m[1]) * 60 + (+m[2]) : 0; };
@@ -30,7 +31,7 @@
     }
     const kickoff = iso => new Date(iso).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
     function statusText(g) {
-        if (g.state === 'in') return `<span class="gd-live">LIVE</span> ${esc(g.detail || `Q${g.period} ${g.clock}`)}`;
+        if (g.state === 'in') return `<span class="gd-live">LIVE</span> ${esc(g.detail || `${qLabel(g.period)} ${g.clock}`)}`;
         if (g.state === 'post') return esc(g.detail || 'Final');
         return esc(kickoff(g.start));
     }
@@ -71,7 +72,7 @@
         const other = all.length - accepted;
         const logOpen = state.openLogs.has(String(g.id));
         const cf = g.costliest;
-        const costLine = cf && cf.wpCost > 0.005 ? `<div class="gd-costline" title="Live estimate of the win chances this flag cost ${esc(cf.team)}">Costliest: <b>${esc(cf.team)}</b> ${esc(cf.type)}${cf.tdErased ? ' <span class="gd-tag">TD erased</span>' : ''} · Q${esc(cf.qtr ?? '')} ${esc(cf.clock ?? '')} <span class="gd-wp">−${Math.round(cf.wpCost * 100)}% win chance</span></div>` : '';
+        const costLine = cf && cf.wpCost > 0.005 ? `<div class="gd-costline" title="Live estimate of the win chances this flag cost ${esc(cf.team)}">Costliest: <b>${esc(cf.team)}</b> ${esc(cf.type)}${cf.tdErased ? ' <span class="gd-tag">TD erased</span>' : ''} · ${qLabel(cf.qtr)} ${esc(cf.clock ?? '')} <span class="gd-wp">−${Math.round(cf.wpCost * 100)}% win chance</span></div>` : '';
         return `<li class="gd-card st-${g.state}" data-id="${esc(g.id)}">
             <div class="gd-rank">${g.state === 'pre' ? '' : rank}</div>
             <div class="gd-match">
@@ -154,9 +155,9 @@
             <div class="gd-costly-main">
                 <div class="gd-costly-num"><b data-to="${pct}">−${changed ? 0 : pct}%</b><span>win chance</span></div>
                 <div class="gd-costly-what"><div class="gd-costly-type"><span class="gd-tick-flag" aria-hidden="true"></span>${esc(top.type)} on <b>${esc(top.team)}</b>${top.player ? ` <span class="modal-muted">${esc(top.player)}</span>` : ''}</div>
-                    <div class="modal-muted">${esc(top.game)} · Q${esc(top.qtr ?? '')} ${esc(top.clock ?? '')} · ${top.yards} yds${top.tdErased ? ' · <span class="gd-tag">touchdown erased</span>' : top.noPlay ? ' · play wiped out' : ''}</div></div>
+                    <div class="modal-muted">${esc(top.game)} · ${qLabel(top.qtr)} ${esc(top.clock ?? '')} · ${top.yards} yds${top.tdErased ? ' · <span class="gd-tag">touchdown erased</span>' : top.noPlay ? ' · play wiped out' : ''}</div></div>
             </div>
-            ${list.length > 1 ? `<ol class="gd-costly-rest">${list.slice(1).map(f => `<li><b>${esc(f.team)}</b> ${esc(f.type)} <span class="modal-muted">${esc(f.game)} · Q${esc(f.qtr ?? '')}</span><span class="gd-wp">−${Math.round(f.wpCost * 100)}%</span></li>`).join('')}</ol>` : ''}`;
+            ${list.length > 1 ? `<ol class="gd-costly-rest">${list.slice(1).map(f => `<li><b>${esc(f.team)}</b> ${esc(f.type)} <span class="modal-muted">${esc(f.game)} · ${qLabel(f.qtr)}</span><span class="gd-wp">−${Math.round(f.wpCost * 100)}%</span></li>`).join('')}</ol>` : ''}`;
         if (changed) {
             box.classList.remove('gd-costly-new'); void box.offsetWidth; box.classList.add('gd-costly-new');
             const el = box.querySelector('.gd-costly-num b'); const to = pct; const t0 = performance.now();
@@ -166,18 +167,25 @@
     }
 
     function ticker(d) {
-        const all = d.games.flatMap(g => (g.log || []).map(f => ({ ...f, g })))
-            .sort((a, b) => (b.g.state === 'in') - (a.g.state === 'in') || (b.qtr - a.qtr) || (clockSecs(a.clock) - clockSecs(b.clock)));
+        // newest first across every game, by real-world time of the play (ESPN's timestamp); if a
+        // play has none, estimate it from kickoff plus game time elapsed (~3 hours for 60 minutes)
+        const when = (f, g) => {
+            if (f.wall) { const t = Date.parse(f.wall); if (!Number.isNaN(t)) return t; }
+            const q = Math.max(1, f.qtr || 1), el = (Math.min(q, 5) - 1) * 900 + (900 - clockSecs(f.clock));
+            return Date.parse(g.start) + el * 3000;
+        };
+        const all = d.games.flatMap(g => (g.log || []).map(f => ({ ...f, g, t: when(f, g) })))
+            .sort((a, b) => b.t - a.t);
         const fresh = all.filter(f => !state.seenFlags.has(`${f.g.id}:${f.id}`));
         all.forEach(f => state.seenFlags.add(`${f.g.id}:${f.id}`));
-        $('gdTicker').innerHTML = all.slice(0, 8).map(f => `<li class="gd-tick ${f.status}${!state.first && fresh.includes(f) ? ' gd-new' : ''}">
+        $('gdTicker').innerHTML = all.slice(0, 10).map(f => `<li class="gd-tick ${f.status}${!state.first && fresh.includes(f) ? ' gd-new' : ''}">
             <span class="gd-tick-flag" aria-hidden="true"></span><b>${esc(f.team)}</b> ${esc(f.type)}
-            <span class="modal-muted">${esc(f.g.away.abbr)} @ ${esc(f.g.home.abbr)} · Q${esc(f.qtr ?? '')} ${esc(f.clock ?? '')}</span>
+            <span class="modal-muted">${esc(f.g.away.abbr)} @ ${esc(f.g.home.abbr)} · ${qLabel(f.qtr)} ${esc(f.clock ?? '')}</span>
             <span class="gd-y">${f.status === 'accepted' ? `${f.yards} yds` : esc(f.status)}</span></li>`).join('')
             || '<li class="gd-tick modal-muted">No flags yet.</li>';
         if (!state.first && fresh.length) {
             const f = fresh.find(x => x.status === 'accepted') || fresh[0];
-            toast(`<span class="gd-tick-flag" aria-hidden="true"></span><b>FLAG</b> ${esc(f.team)} · ${esc(f.type)}${f.status === 'accepted' ? ` · ${f.yards} yds` : ` (${esc(f.status)})`}<br><span>${esc(f.g.away.abbr)} @ ${esc(f.g.home.abbr)} · Q${esc(f.qtr ?? '')} ${esc(f.clock ?? '')}${fresh.length > 1 ? ` · +${fresh.length - 1} more` : ''}</span>`);
+            toast(`<span class="gd-tick-flag" aria-hidden="true"></span><b>FLAG</b> ${esc(f.team)} · ${esc(f.type)}${f.status === 'accepted' ? ` · ${f.yards} yds` : ` (${esc(f.status)})`}<br><span>${esc(f.g.away.abbr)} @ ${esc(f.g.home.abbr)} · ${qLabel(f.qtr)} ${esc(f.clock ?? '')}${fresh.length > 1 ? ` · +${fresh.length - 1} more` : ''}</span>`);
         }
     }
 
@@ -247,7 +255,7 @@
                 const secs = Math.max(0, clockSecs(g.clock) - 70 - Math.floor(Math.random() * 60));
                 if (secs === 0) { g.period++; g.clock = '15:00'; if (g.period > 4) { g.state = 'post'; g.detail = 'Final'; return; } }
                 else g.clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
-                g.detail = `Q${g.period} ${g.clock}`;
+                g.detail = `${qLabel(g.period)} ${g.clock}`;
                 if (Math.random() < 0.18) { const side = Math.random() < 0.5 ? 'home' : 'away'; g[side].score += Math.random() < 0.5 ? 3 : 7; }
                 const chance = 0.22 + (i === 0 ? 0.25 : 0);           // Novak's crew throws more, naturally
                 if (Math.random() < chance) {
@@ -257,7 +265,7 @@
                     const late = g.period >= 4 ? 2.2 : g.period === 3 ? 1.3 : 0.8, close = Math.abs(g.home.score - g.away.score) <= 8 ? 1.4 : 0.6;
                     const td = status === 'accepted' && type === 'Offensive Holding' && Math.random() < 0.25;
                     const wpCost = status !== 'accepted' ? null : td ? 0.12 + Math.random() * 0.2 : Math.min(0.25, yds * 0.0615 * 0.03 * late * close * (0.6 + Math.random()));
-                    g.log.unshift({ id: `${t}-${i}`, qtr: g.period, clock: g.clock, team: g[side].abbr, type, yards: status === 'accepted' ? yds : 0, status, player: null, wpCost, tdErased: td, noPlay: td });
+                    g.log.unshift({ id: `${t}-${i}`, wall: new Date().toISOString(), qtr: g.period, clock: g.clock, team: g[side].abbr, type, yards: status === 'accepted' ? yds : 0, status, player: null, wpCost, tdErased: td, noPlay: td });
                     if (status === 'accepted') { g[side].flags++; g[side].yards += yds; }
                 }
                 g.flags = g.home.flags + g.away.flags; g.yards = g.home.yards + g.away.yards;

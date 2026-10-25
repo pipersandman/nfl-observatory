@@ -955,7 +955,7 @@ function openPreviewModal(gameId) {
             </div>
             <div class="pvq-total">${fmtNum(q.home + q.away, 1)}</div>
             <div class="pvq-split">${A.abbr} ${fmtNum(q.away, 1)} · ${H.abbr} ${fmtNum(q.home, 1)}</div>
-            <div class="pvq-label">Q${q.quarter}</div>
+            <div class="pvq-label">${qLabel(q.quarter)}</div>
         </div>`).join('');
 
     // Crew
@@ -1723,7 +1723,7 @@ function costliestHtml(list, showTeamGame = true) {
         <div class="fc-item">
             <div class="fc-rank">${i + 1}</div>
             <div class="fc-main">
-                <div><strong>${esc(f.type)}</strong> <span class="modal-muted">${f.player ? esc(f.player) + ' · ' : ''}${f.team}${showTeamGame ? ` · ${f.away} @ ${f.home}, Wk ${f.week}` : `, Wk ${f.week} ${f.team === f.home ? 'vs ' + f.away : '@ ' + f.home}`} · Q${f.qtr} ${f.time || ''}</span></div>
+                <div><strong>${esc(f.type)}</strong> <span class="modal-muted">${f.player ? esc(f.player) + ' · ' : ''}${f.team}${showTeamGame ? ` · ${f.away} @ ${f.home}, Wk ${f.week}` : `, Wk ${f.week} ${f.team === f.home ? 'vs ' + f.away : '@ ' + f.home}`} · ${qLabel(f.qtr)} ${f.time || ''}</span></div>
                 <div class="fc-tags">${flagLabelsHtml(f.labels)}${f.gainErased && f.gainErased >= 15 ? `<span class="fc-tag">${f.gainErased}-yd gain erased</span>` : ''}</div>
             </div>
             <div class="fc-pts"><strong>${fmtNum(f.pointsCost, 1)}</strong><span>pts</span></div>
@@ -2433,7 +2433,7 @@ function renderTeamProfile(t) {
         <div class="modal-section">
             <h4>⏱️ When they get flagged</h4>
             ${pairLegend(cs, allLabel)}
-            ${renderPairedRows(quarterRows, cs, allLabel, small, q => `Q${q.quarter}`)}
+            ${renderPairedRows(quarterRows, cs, allLabel, small, q => `${qLabel(q.quarter)}`)}
         </div>
 
         ${crews ? `<div class="modal-section">
@@ -3100,7 +3100,7 @@ function renderQuarterComparison(quarters, cs, allLabel, small) {
         <div class="modal-section">
             <h4>⏱️ When flags fly: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
-            ${renderPairedRows(quarters, cs, allLabel, small, q => `Q${q.quarter}`)}
+            ${renderPairedRows(quarters, cs, allLabel, small, q => `${qLabel(q.quarter)}`)}
         </div>`;
 }
 
@@ -3147,7 +3147,7 @@ function renderQuarterDistribution(quarterDist) {
             <div class="quarter-dist-grid">
                 ${quarterDist.map(q => `
                     <div class="quarter-dist-item">
-                        <div class="quarter-label">Q${q.quarter}</div>
+                        <div class="quarter-label">${qLabel(q.quarter)}</div>
                         <div class="quarter-bar-container">
                             <div class="quarter-bar" style="height: ${(q.pct / maxPct) * 100}%"></div>
                         </div>
@@ -3327,6 +3327,7 @@ const EXPORT_SRI = {
 
 // Escape text that originates outside this site (scraped or user-supplied) before
 // it goes into HTML
+const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q === 5 ? 'OT' : `${qLabel(q)}`;   // overtime reads OT, never Q5
 function esc(v) {
     return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }

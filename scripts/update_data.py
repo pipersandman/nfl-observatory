@@ -236,6 +236,10 @@ def load_all_data(seasons: list[int]) -> dict:
         try:
             from flag_impact import build_wp_tables
             data['wp_tables'] = build_wp_tables(pbp)
+            # published for the live Gameday feed (Worker), which values flags the same way during games
+            (DATA_DIR / 'wp_tables.json').write_text(json.dumps({**data['wp_tables'],
+                'pointsPerYard': 0.0615, 'seasons': f"{min(seasons)}-{max(seasons)}",
+                'note': 'kick: "lead|clockBucket" -> [kicking team win chance, n]; lev: "clockBucket|marginBucket" -> [win chance per expected point, n]'}))
         except Exception as e:
             print(f"   ⚠️  Win-probability tables failed: {type(e).__name__}: {e}")
         # Every game with play-by-play (including any with zero accepted penalties)

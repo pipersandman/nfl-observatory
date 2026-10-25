@@ -70,7 +70,7 @@ def team_name(a):
 
 # --------------------------------------------------------------------------- layout
 
-NAV = [('/', 'Home'), ('/assignments/', 'This week'), ('/crew/', 'Crew chiefs'), ('/team/', 'Teams'),
+NAV = [('/', 'Home'), ('/gameday/', 'Gameday'), ('/assignments/', 'This week'), ('/crew/', 'Crew chiefs'), ('/team/', 'Teams'),
        ('/trends/', 'Trends'), ('/guide/', 'Guide'), ('/dataset/', 'Data')]
 
 
@@ -658,7 +658,7 @@ def home_prefill():
 
 
 def sitemap_and_llms():
-    urls = ['/'] + [p for p in SITEMAP if p != '/']
+    urls = ['/', '/gameday/'] + [p for p in SITEMAP if p != '/']
     xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in dict.fromkeys(urls):
         pr = '1.0' if u == '/' else '0.8' if u.count('/') <= 2 else '0.6'

@@ -1,0 +1,152 @@
+// Penalty extraction from ESPN's (undocumented) NFL feed. Shared by the Worker and the local test.
+
+const ALIAS = { WSH: 'WAS', LAR: 'LA', JAC: 'JAX', OAK: 'LV', SD: 'LAC', STL: 'LA' };
+export const norm = a => ALIAS[a] || a;
+
+// "PENALTY on CHI-T.Edwards, Defensive Holding, 5 yards, enforced at NE 30 - No Play."
+// "PENALTY on CHI, Delay of Game, 5 yards, enforced at CHI 25."
+// "PENALTY on NE-M.Judon, Roughing the Passer, declined."
+// Several flags can appear on one play; offsetting flags are marked as such.
+const RE = /PENALTY on ([A-Z]{2,3})(?:-([^,]+?))?,\s*([^,]+?),\s*(?:(\d+)\s*yards?|(declined)|(offsetting))/gi;
+
+export function parsePlayPenalties(text) {
+  const out = [];
+  if (!text || !/PENALTY on/i.test(text)) return out;
+  const offsetting = /offset/i.test(text);
+  const noPlay = /No Play/i.test(text);
+  let m;
+  RE.lastIndex = 0;
+  while ((m = RE.exec(text))) {
+    const declined = !!m[5];
+    const status = offsetting ? 'offsetting' : declined ? 'declined' : 'accepted';
+    out.push({
+      team: norm(m[1].toUpperCase()),
+      player: m[2] ? m[2].replace(/^\d+\s*-?\s*/, '').trim() : null,
+      type: m[3].trim().replace(/\s+/g, ' '),
+      yards: m[4] ? Number(m[4]) : 0,
+      status,
+      noPlay,
+    });
+  }
+  return out;
+}
+
+// Official per-team totals from the box score: "7-55" (accepted penalties - yards)
+export function boxPenalties(summary) {
+  const res = {};
+  for (const t of summary?.boxscore?.teams || []) {
+    const abbr = norm(t.team?.abbreviation);
+    const s = (t.statistics || []).find(x => /totalPenaltiesYards|penalties/i.test(x.name || x.label || ''));
+    if (!s) continue;
+    const m = String(s.displayValue || '').match(/(\d+)\s*-\s*(\d+)/);
+    if (m) res[abbr] = { flags: Number(m[1]), yards: Number(m[2]) };
+  }
+  return res;
+}
+
+export function playsFrom(summary) {
+  const drives = [...(summary?.drives?.previous || []), ...(summary?.drives?.current ? [summary.drives.current] : [])];
+  const seen = new Set();
+  const plays = [];
+  for (const d of drives) for (const p of d.plays || []) {
+    if (!p || seen.has(p.id)) continue;
+    seen.add(p.id);
+    plays.push(p);
+  }
+  // fallback: some live feeds only carry "plays" at the top level
+  for (const p of summary?.plays || []) if (p && !seen.has(p.id)) { seen.add(p.id); plays.push(p); }
+  return plays.sort((a, b) => Number(a.sequenceNumber || 0) - Number(b.sequenceNumber || 0));
+}
+
+export function gamePenalties(summary) {
+  const flags = [];
+  for (const p of playsFrom(summary)) {
+    const list = parsePlayPenalties(p.text);
+    list.forEach((f, i) => flags.push({
+      id: `${p.id}-${i}`, seq: Number(p.sequenceNumber || 0),
+      qtr: p.period?.number ?? null, clock: p.clock?.displayValue ?? null, ...f,
+    }));
+  }
+  return flags;
+}
+
+// One compact record per game for the board
+export function compactGame(ev, summary, preview, wpTables) {
+  const c = ev.competitions?.[0] || {};
+  const side = h => c.competitors?.find(x => x.homeAway === h) || {};
+  const home = side('home'), away = side('away');
+  const hA = norm(home.team?.abbreviation), aA = norm(away.team?.abbreviation);
+  const st = ev.status || c.status || {};
+  const flags = summary ? gamePenalties(summary) : [];
+  if (summary && wpTables) addWinChanceCost(flags, summary, wpTables, hA);
+  const costliest = flags.filter(f => f.wpCost != null).sort((a, b) => b.wpCost - a.wpCost)[0] || null;
+  const acc = flags.filter(f => f.status === 'accepted');
+  const box = summary ? boxPenalties(summary) : {};
+  const team = abbr => {
+    const fromPlays = acc.filter(f => f.team === abbr);
+    const b = box[abbr];
+    return { abbr, score: Number(side(abbr === hA ? 'home' : 'away').score || 0),
+             flags: b ? b.flags : fromPlays.length, yards: b ? b.yards : fromPlays.reduce((s, f) => s + f.yards, 0),
+             source: b ? 'boxscore' : 'plays' };
+  };
+  const H = team(hA), A = team(aA);
+  return {
+    id: ev.id, name: ev.shortName, start: ev.date,
+    state: st.type?.state || 'pre', detail: st.type?.shortDetail || st.type?.detail || '',
+    period: st.period ?? 0, clock: st.displayClock || '',
+    network: (c.broadcasts?.[0]?.names || [])[0] || ev.broadcast || '',
+    home: H, away: A,
+    flags: H.flags + A.flags, yards: H.yards + A.yards,
+    // newest first; declined and offsetting kept and labeled
+    log: flags.slice().reverse().slice(0, 40),
+    costliest,
+    preview: preview || null,
+  };
+}
+
+// ------------------------------------------------------------------ win-chance cost (live)
+// Same method as scripts/flag_impact.py, using ESPN's live win probability per play and our
+// own tables (frontend/data/wp_tables.json, measured 2015 onward):
+//   flag erases the play            -> change in win probability on that play
+//   touchdown wiped out             -> chance had it stood (our kickoff table) - chance after
+//   flag on top of a play that counts -> yards x points per yard x value of a point at this score/clock
+const tbucket = sec => (sec < 600 ? Math.floor(sec / 60) : 10 + Math.floor((sec - 600) / 300));
+const dbucket = d => { d = Math.abs(d); return d <= 3 ? 0 : d <= 8 ? 1 : d <= 16 ? 2 : 3; };
+const secsLeft = (period, clock) => {
+  const m = /^(\d+):(\d+)$/.exec(clock || ''); const c = m ? (+m[1]) * 60 + (+m[2]) : 0;
+  return period >= 5 ? c : (4 - period) * 900 + c;
+};
+function kickWp(t, lead, sec) {
+  lead = Math.max(-28, Math.min(28, Math.round(lead))); const tb = tbucket(sec);
+  for (const [dl, dt] of [[0, 0], [0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, -1], [0, 2], [0, -2]]) {
+    const v = t?.kick?.[`${lead + dl}|${tb + dt}`]; if (v && v[1] >= 8) return v[0];
+  }
+  return null;
+}
+
+export function addWinChanceCost(flags, summary, tables, homeAbbr) {
+  const wpList = summary?.winprobability || [];
+  const idx = new Map(wpList.map((w, i) => [String(w.playId), i]));
+  const plays = new Map(playsFrom(summary).map(p => [String(p.id), p]));
+  for (const f of flags) {
+    f.wpCost = null; f.wpMethod = null; f.tdErased = false;
+    if (f.status !== 'accepted') continue;
+    const pid = String(f.id).replace(/-\d+$/, '');
+    const p = plays.get(pid); const i = idx.get(pid);
+    if (!p || i == null) continue;
+    const isHome = f.team === homeAbbr;
+    const forTeam = w => (w == null ? null : isHome ? w.homeWinPercentage : 1 - w.homeWinPercentage - (w.tiePercentage || 0));
+    const after = forTeam(wpList[i]); const before = i > 0 ? forTeam(wpList[i - 1]) : null;
+    const sec = secsLeft(p.period?.number || 1, p.clock?.displayValue);
+    const lead = (isHome ? 1 : -1) * ((p.homeScore ?? 0) - (p.awayScore ?? 0));
+    if (/TOUCHDOWN NULLIFIED/i.test(p.text || '')) {
+      f.tdErased = true;
+      const stood = kickWp(tables, lead + 7, sec);
+      if (stood != null && after != null) { f.wpCost = Math.max(0, stood - after); f.wpMethod = 'touchdown value'; continue; }
+    }
+    if (f.noPlay && before != null && after != null) { f.wpCost = before - after; f.wpMethod = 'play value'; continue; }
+    const lev = tables?.lev?.[`${tbucket(sec)}|${dbucket(lead)}`]?.[0];
+    if (lev != null) { f.wpCost = lev * f.yards * (tables.pointsPerYard || 0.0615); f.wpMethod = 'points at this score and clock'; }
+  }
+  return flags;
+}

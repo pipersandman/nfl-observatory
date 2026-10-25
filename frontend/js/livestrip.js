@@ -127,3 +127,32 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
     document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
     load();
 })();
+
+/* Home page: when new results land (the pipeline runs hourly on game days), tell visitors who
+   already have the page open, instead of leaving them on old numbers. */
+(() => {
+    const url = 'data/stats.json';
+    let seen = null, timer;
+    async function check() {
+        try {
+            const s = await (await fetch(url, { cache: 'no-cache' })).json();
+            const v = s.lastUpdated || s.generatedAt || null;
+            if (seen == null) seen = v;
+            else if (v && v !== seen) show(v);
+        } catch { /* try again later */ }
+        clearTimeout(timer);
+        if (!document.hidden) timer = setTimeout(check, 5 * 60 * 1000);
+    }
+    function show(v) {
+        if (document.getElementById('newResults')) return;
+        const b = document.createElement('button');
+        b.id = 'newResults'; b.className = 'new-results'; b.type = 'button';
+        const t = new Date(v); const when = isNaN(t) ? '' : ` · updated ${t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+        b.innerHTML = `<span class="nr-dot" aria-hidden="true"></span>New results are in${when} <b>Refresh</b>`;
+        b.addEventListener('click', () => location.reload());
+        document.body.appendChild(b);
+        requestAnimationFrame(() => b.classList.add('show'));
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+    check();
+})();

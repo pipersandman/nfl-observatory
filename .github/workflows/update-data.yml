@@ -8,6 +8,13 @@ on:
     - cron: '0 19 * * 2'
     # Wednesday 8am PT - backstop in case assignments post late
     - cron: '0 15 * * 3'
+    # Game days: hourly while results come in (nflverse posts play-by-play ~1-3 hours
+    # after each game). Each run checks for new play-by-play first and stops in under a
+    # minute if there's nothing new. Times are UTC and cover both daylight and standard time.
+    - cron: '0 3-9 * * 5'       # Thursday night game (Thu evening PT)
+    - cron: '0 15-23 * * 0'     # Sunday: international morning games through the late games
+    - cron: '0 0-9 * * 1'       # Sunday night game
+    - cron: '0 2-5,7-9 * * 2'   # Monday night game (06:00 Tuesday is the weekly run above)
   workflow_dispatch:
     # Manual trigger option (no longer needs checkbox - always full)
   push:
@@ -33,7 +40,44 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (pinned to a commit)
 
+      - name: Check for new play-by-play (game-day runs only)
+        # Game-day runs continue only if nflverse has published new play-by-play since the last
+        # update; every other run (weekly, manual, code merges) always continues.
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request, datetime as dt
+          GAMEDAY = {'0 3-9 * * 5', '0 15-23 * * 0', '0 0-9 * * 1', '0 2-5,7-9 * * 2'}
+          now = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
+          season = now.year if now.month >= 3 else now.year - 1
+          stamp_path = 'frontend/data/source_stamp.json'
+          try:
+              old = json.load(open(stamp_path)).get('pbp')
+          except Exception:
+              old = None
+          new = None
+          try:
+              req = urllib.request.Request('https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp',
+                                           headers={**({'Authorization': f"Bearer {os.environ['GH_TOKEN']}"} if os.environ.get('GH_TOKEN') else {}), 'Accept': 'application/vnd.github+json'})
+              rel = json.load(urllib.request.urlopen(req, timeout=30))
+              new = next((a['updated_at'] for a in rel.get('assets', []) if a['name'] == f'play_by_play_{season}.parquet'), None)
+          except Exception as e:
+              print(f'Could not check nflverse ({e}); continuing with the update')
+          gameday = os.environ.get('EVENT') == 'schedule' and os.environ.get('SCHEDULE') in GAMEDAY
+          skip = gameday and new is not None and new == old
+          print(f'play-by-play {season}: last used {old}, now {new} -> {"no new games, skipping" if skip else "updating"}')
+          if new:
+              json.dump({'pbp': new, 'checkedAt': now.isoformat(timespec='seconds') + 'Z'}, open(stamp_path, 'w'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"skip={'true' if skip else 'false'}\n")
+          EOF
+
       - name: Set up Python
+        if: steps.gate.outputs.skip != 'true'
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5 (pinned to a commit)
         with:
           python-version: '3.11'
@@ -41,17 +85,21 @@ jobs:
           cache-dependency-path: scripts/requirements.txt
 
       - name: Install dependencies
+        if: steps.gate.outputs.skip != 'true'
         run: pip install -r scripts/requirements.txt
 
       - name: Fetch crew assignments (Football Zebras)
+        if: steps.gate.outputs.skip != 'true'
         # Never blocks the update: previews just show "Crew TBA" if this fails
         continue-on-error: true
         run: python scripts/fetch_assignments.py
 
       - name: Run data update (full rebuild)
+        if: steps.gate.outputs.skip != 'true'
         run: python scripts/update_data.py --full
 
       - name: Commit and push if changes
+        if: steps.gate.outputs.skip != 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -67,11 +115,13 @@ jobs:
           fi
 
       - name: Build static pages for search engines and AI (deploy copy only, not committed)
+        if: steps.gate.outputs.skip != 'true'
         # Pre-renders /crew/, /team/, /assignments/, /trends/, /guide/, /dataset/, sitemap.xml,
         # llms.txt, CSV downloads and the home page summary from this run's data
         run: python scripts/build_static.py
 
       - name: Cache-bust CSS/JS/icons (deploy copy only, not committed)
+        if: steps.gate.outputs.skip != 'true'
         # Browsers cache styles.css and app.js aggressively. Stamping each deploy's
         # commit into the URLs (styles.css?v=abc1234) forces every visitor to get
         # the new files together with the new page.
@@ -86,9 +136,16 @@ jobs:
             -e "s#(favicon-32\.png)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
             -e "s#(apple-touch-icon\.png)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
             frontend/index.html
-          grep -nE "styles\.css|app\.js|favicon" frontend/index.html
+          sed -i -E "s#(src=\"js/livestrip\.js)(\?v=[^\"]*)?\"#\1?v=${V}\"#" frontend/index.html
+          sed -i -E \
+            -e "s#(href=\"/css/(styles|static|gameday)\.css)(\?v=[^\"]*)?\"#\1?v=${V}\"#g" \
+            -e "s#(src=\"/js/gameday\.js)(\?v=[^\"]*)?\"#\1?v=${V}\"#" \
+            frontend/gameday/index.html
+          grep -nE "styles\.css|app\.js|livestrip\.js|favicon" frontend/index.html
+          grep -nE "\.css|\.js" frontend/gameday/index.html
 
       - name: Deploy to HostGator
+        if: steps.gate.outputs.skip != 'true'
         uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65  # v4.3.5 (pinned: this step receives the FTP password)
         with:
           server: ${{ secrets.FTP_SERVER }}

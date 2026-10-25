@@ -64,6 +64,8 @@
     <!-- This week in NFL officiating: plain text in the page source so search engines and AI
          assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
     <div class="container tldr-strip">
+        <!-- Live flags strip: appears on game days, links to /gameday/ (js/livestrip.js) -->
+        <a class="live-strip" id="liveStrip" href="/gameday/" hidden aria-label="Live flags: open the Gameday scoreboard"></a>
         <!-- SEO:SUMMARY -->
         <p class="tldr-text"><strong>NFL referee and penalty statistics, updated weekly:</strong> penalties per game by crew chief and team, this week's referee assignments and penalty trends. <a href="/guide/">FAQ and methodology</a></p>
         <!-- /SEO:SUMMARY -->
@@ -411,6 +413,7 @@
 
     <!-- Main Application Script -->
     <script src="js/app.js"></script>
+    <script src="js/livestrip.js" defer></script>
 
     <!-- Cloudflare Web Analytics (cookieless; token is public by design) -->
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "77bd1d7e32bb4f60ad87189467fae090"}'></script>

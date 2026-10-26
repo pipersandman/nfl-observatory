@@ -116,3 +116,17 @@
 @keyframes lt-pulse { 0% { color: var(--accent); transform: scale(1.25); } 100% { transform: none; } }
 @media (max-width: 640px) { .lt-cta { display: none; } .lt-label { padding: 0.45rem 0.6rem; } .lt-week { font-size: 0.9rem; } .lt { width: 160px; } .lt-cost { width: 210px; } .lt-cost-n { font-size: 1.35rem; } }
 @media (prefers-reduced-motion: reduce) { .lt-dot, .lt.hit, .lt-fl.pop, .lt-sc.pulse, .lt-cost.hit { animation: none; } }
+
+/* Home page: 'New results are in' notice (appears when the data updates while the page is open) */
+.new-results { position: fixed; left: 50%; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 70; transform: translate(-50%, 160%);
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border-radius: 999px; cursor: pointer;
+    background: #16181b; border: 1px solid var(--accent); color: var(--text-primary); font: 500 0.88rem var(--font-body);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); transition: transform 0.45s cubic-bezier(.2, .9, .3, 1.2); }
+.new-results.show { transform: translate(-50%, 0); }
+.new-results b { color: var(--accent); font-weight: 600; }
+.nr-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .new-results { transition: none; } }
+
+/* Strip: 'Next up' tile (between weeks) */
+.lt.lt-next { background: rgba(255, 196, 0, 0.06); }
+.lt.lt-next .lt-st { color: var(--accent); }

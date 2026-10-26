@@ -126,3 +126,7 @@
 .new-results b { color: var(--accent); font-weight: 600; }
 .nr-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .new-results { transition: none; } }
+
+/* Strip: 'Next up' tile (between weeks) */
+.lt.lt-next { background: rgba(255, 196, 0, 0.06); }
+.lt.lt-next .lt-st { color: var(--accent); }

@@ -160,10 +160,9 @@ with separate code (not the pipeline's):
 8. **Windows: redirected output crashes on emoji.** Running
    `update_data.py > log.txt` on Windows fails with `UnicodeEncodeError` at the
    first 🏈. Workaround: set `PYTHONUTF8=1` first. Linux (Actions) is fine.
-9. **Six unused variables kept for review** (flagged in #74, marked
-   `# noqa: F841  (flagged in #74)`): `mask` and `allg` in `previews.py`
-   `head_to_head`, `d_ly` in `social/captions.py`, `proj_txt` in
-   `social/generate.py`, `rk` in `stat_miner.py`, `spread` in `update_data.py`.
+9. **Three unused calculations kept for their own issues** (marked
+   `# noqa: F841  (flagged in #74)`): `d_ly` in `social/captions.py`,
+   `proj_txt` in `social/generate.py`, `spread` in `update_data.py`.
 10. **Formatter not adopted yet**: Ruff format would change about 9,500 lines
     in 18 files; deferred to its own issue.
 11. **Dependabot bumps** `ruff` in `requirements-dev.txt` but not the matching

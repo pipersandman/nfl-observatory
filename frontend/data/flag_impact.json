@@ -1,18 +1,18 @@
 {
   "season": 2026,
-  "throughWeek": 6,
+  "throughWeek": 7,
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 106,
-      "flags": 1557,
+      "games": 107,
+      "flags": 1570,
       "league": {
-        "pointsCostPerTeamGame": 6.48,
-        "keyFirstDownsGiven": 169,
+        "pointsCostPerTeamGame": 6.51,
+        "keyFirstDownsGiven": 173,
         "drivesKilled": 79,
-        "bigPlaysErased": 66,
-        "turnoversErased": 22,
-        "tdsErased": 28,
+        "bigPlaysErased": 67,
+        "turnoversErased": 23,
+        "tdsErased": 29,
         "tdsLostOffsetting": 2
       },
       "teams": [
@@ -113,6 +113,22 @@
           "rank": 6
         },
         {
+          "team": "DAL",
+          "games": 7,
+          "flags": 53,
+          "pointsCost": 54.2,
+          "pointsCostPerGame": 7.74,
+          "firstDownsGiven": 20,
+          "keyFirstDownsGiven": 9,
+          "drivesKilled": 2,
+          "bigPlaysErased": 3,
+          "turnoversErased": 1,
+          "tdsErased": 1,
+          "winsGivenAway": 1.59,
+          "tdsLostOffsetting": 0,
+          "rank": 7
+        },
+        {
           "team": "HOU",
           "games": 7,
           "flags": 58,
@@ -126,7 +142,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.58,
           "tdsLostOffsetting": 0,
-          "rank": 7
+          "rank": 8
         },
         {
           "team": "TB",
@@ -142,7 +158,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.48,
           "tdsLostOffsetting": 0,
-          "rank": 8
+          "rank": 9
         },
         {
           "team": "LAC",
@@ -158,7 +174,7 @@
           "tdsErased": 0,
           "winsGivenAway": 0.96,
           "tdsLostOffsetting": 0,
-          "rank": 9
+          "rank": 10
         },
         {
           "team": "LA",
@@ -174,7 +190,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.46,
           "tdsLostOffsetting": 0,
-          "rank": 10
+          "rank": 11
         },
         {
           "team": "BAL",
@@ -190,7 +206,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.2,
           "tdsLostOffsetting": 0,
-          "rank": 11
+          "rank": 12
         },
         {
           "team": "SEA",
@@ -206,7 +222,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.22,
           "tdsLostOffsetting": 0,
-          "rank": 12
+          "rank": 13
         },
         {
           "team": "SF",
@@ -222,7 +238,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.09,
           "tdsLostOffsetting": 0,
-          "rank": 13
+          "rank": 14
         },
         {
           "team": "CLE",
@@ -237,22 +253,6 @@
           "turnoversErased": 1,
           "tdsErased": 0,
           "winsGivenAway": 1.37,
-          "tdsLostOffsetting": 0,
-          "rank": 14
-        },
-        {
-          "team": "DAL",
-          "games": 6,
-          "flags": 45,
-          "pointsCost": 40.1,
-          "pointsCostPerGame": 6.68,
-          "firstDownsGiven": 16,
-          "keyFirstDownsGiven": 6,
-          "drivesKilled": 2,
-          "bigPlaysErased": 2,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.1,
           "tdsLostOffsetting": 0,
           "rank": 15
         },
@@ -305,22 +305,6 @@
           "rank": 18
         },
         {
-          "team": "PHI",
-          "games": 6,
-          "flags": 47,
-          "pointsCost": 36.6,
-          "pointsCostPerGame": 6.1,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 2,
-          "bigPlaysErased": 4,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 0.87,
-          "tdsLostOffsetting": 0,
-          "rank": 19
-        },
-        {
           "team": "NYG",
           "games": 7,
           "flags": 50,
@@ -333,6 +317,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.1,
+          "tdsLostOffsetting": 0,
+          "rank": 19
+        },
+        {
+          "team": "PHI",
+          "games": 7,
+          "flags": 52,
+          "pointsCost": 41.6,
+          "pointsCostPerGame": 5.94,
+          "firstDownsGiven": 15,
+          "keyFirstDownsGiven": 8,
+          "drivesKilled": 2,
+          "bigPlaysErased": 4,
+          "turnoversErased": 0,
+          "tdsErased": 0,
+          "winsGivenAway": 1.04,
           "tdsLostOffsetting": 0,
           "rank": 20
         },
@@ -575,6 +575,28 @@
           ]
         },
         {
+          "gameId": "2026_07_DAL_PHI",
+          "week": 7,
+          "away": "DAL",
+          "home": "PHI",
+          "team": "DAL",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "J.Barron",
+          "qtr": 2,
+          "time": "13:25",
+          "yards": 10,
+          "pointsCost": 6.53,
+          "method": "touchdown value",
+          "winProbCost": 27.9,
+          "winProbMethod": "touchdown value",
+          "gainErased": null,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
           "gameId": "2026_05_CHI_GB",
           "week": 5,
           "away": "CHI",
@@ -727,28 +749,6 @@
           "labels": [
             "Touchdown erased"
           ]
-        },
-        {
-          "gameId": "2026_07_TB_CAR",
-          "week": 7,
-          "away": "TB",
-          "home": "CAR",
-          "team": "TB",
-          "side": "offense",
-          "type": "Illegal Shift",
-          "player": "B.Irving",
-          "qtr": 2,
-          "time": "00:16",
-          "yards": 5,
-          "pointsCost": 4.33,
-          "method": "touchdown value",
-          "winProbCost": 3.8,
-          "winProbMethod": "touchdown value",
-          "gainErased": 9,
-          "twoPoint": false,
-          "labels": [
-            "Touchdown erased"
-          ]
         }
       ],
       "costliestWinProb": [
@@ -814,6 +814,28 @@
           "winProbCost": 28.2,
           "winProbMethod": "touchdown value",
           "gainErased": 87,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2026_07_DAL_PHI",
+          "week": 7,
+          "away": "DAL",
+          "home": "PHI",
+          "team": "DAL",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "J.Barron",
+          "qtr": 2,
+          "time": "13:25",
+          "yards": 10,
+          "pointsCost": 6.53,
+          "method": "touchdown value",
+          "winProbCost": 27.9,
+          "winProbMethod": "touchdown value",
+          "gainErased": null,
           "twoPoint": false,
           "labels": [
             "Touchdown erased"
@@ -949,29 +971,6 @@
           "twoPoint": false,
           "labels": [
             "Key first down given"
-          ]
-        },
-        {
-          "gameId": "2026_03_CAR_CLE",
-          "week": 3,
-          "away": "CAR",
-          "home": "CLE",
-          "team": "CAR",
-          "side": "defense",
-          "type": "Roughing the Passer",
-          "player": "B.Okereke",
-          "qtr": 4,
-          "time": "02:36",
-          "yards": 15,
-          "pointsCost": 1.92,
-          "method": "play value",
-          "winProbCost": 16.9,
-          "winProbMethod": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "First down given",
-            "Turnover erased"
           ]
         }
       ]
@@ -1957,179 +1956,89 @@
     }
   },
   "week": {
-    "week": 6,
+    "week": 7,
     "costliest": [
       {
-        "gameId": "2026_06_BUF_LV",
-        "week": 6,
-        "away": "BUF",
-        "home": "LV",
-        "team": "BUF",
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
         "side": "offense",
         "type": "Offensive Holding",
-        "player": "O.Torrence",
-        "qtr": 3,
-        "time": "09:57",
+        "player": "J.Barron",
+        "qtr": 2,
+        "time": "13:25",
         "yards": 10,
-        "pointsCost": 5.14,
+        "pointsCost": 6.53,
         "method": "touchdown value",
-        "winProbCost": 26.2,
+        "winProbCost": 27.9,
         "winProbMethod": "touchdown value",
-        "gainErased": 18,
+        "gainErased": null,
         "twoPoint": false,
         "labels": [
           "Touchdown erased"
         ]
       },
       {
-        "gameId": "2026_06_WAS_SF",
-        "week": 6,
-        "away": "WAS",
-        "home": "SF",
-        "team": "WAS",
+        "gameId": "2026_07_LA_LV",
+        "week": 7,
+        "away": "LA",
+        "home": "LV",
+        "team": "LA",
         "side": "offense",
         "type": "Face Mask",
-        "player": "C.Paul",
-        "qtr": 4,
-        "time": "04:19",
+        "player": "S.Avila",
+        "qtr": 3,
+        "time": "04:18",
         "yards": 15,
-        "pointsCost": 4.32,
+        "pointsCost": 4.78,
         "method": "touchdown value",
-        "winProbCost": 30.1,
+        "winProbCost": 0.1,
         "winProbMethod": "touchdown value",
-        "gainErased": null,
+        "gainErased": 43,
         "twoPoint": false,
         "labels": [
-          "Drive stalled after",
           "Touchdown erased"
         ]
       },
       {
-        "gameId": "2026_06_NYJ_NE",
-        "week": 6,
-        "away": "NYJ",
-        "home": "NE",
-        "team": "NYJ",
+        "gameId": "2026_07_TB_CAR",
+        "week": 7,
+        "away": "TB",
+        "home": "CAR",
+        "team": "TB",
         "side": "offense",
-        "type": "Offensive Pass Interference",
-        "player": "T.Patrick",
-        "qtr": 1,
-        "time": "08:34",
-        "yards": 10,
-        "pointsCost": 4.08,
-        "method": "touchdown value",
-        "winProbCost": 18.7,
-        "winProbMethod": "touchdown value",
-        "gainErased": 14,
-        "twoPoint": false,
-        "labels": [
-          "Touchdown erased"
-        ]
-      },
-      {
-        "gameId": "2026_06_CHI_ATL",
-        "week": 6,
-        "away": "CHI",
-        "home": "ATL",
-        "team": "CHI",
-        "side": "defense",
-        "type": "Roughing the Kicker",
-        "player": "J.Walker",
-        "qtr": 3,
-        "time": "12:48",
-        "yards": 15,
-        "pointsCost": 4.06,
-        "method": "play value",
-        "winProbCost": 5.7,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_TEN_IND",
-        "week": 6,
-        "away": "TEN",
-        "home": "IND",
-        "team": "TEN",
-        "side": "defense",
-        "type": "Running Into the Kicker",
-        "player": "T.Jones",
-        "qtr": 3,
-        "time": "12:37",
+        "type": "Illegal Shift",
+        "player": "B.Irving",
+        "qtr": 2,
+        "time": "00:16",
         "yards": 5,
-        "pointsCost": 3.21,
-        "method": "play value",
-        "winProbCost": 4.2,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_HOU_JAX",
-        "week": 6,
-        "away": "HOU",
-        "home": "JAX",
-        "team": "JAX",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "B.Strange",
-        "qtr": 2,
-        "time": "14:12",
-        "yards": 10,
-        "pointsCost": 2.94,
+        "pointsCost": 4.33,
         "method": "touchdown value",
-        "winProbCost": 9.6,
+        "winProbCost": 3.8,
         "winProbMethod": "touchdown value",
-        "gainErased": 3,
+        "gainErased": 9,
         "twoPoint": false,
         "labels": [
-          "Drive stalled after",
           "Touchdown erased"
         ]
       },
       {
-        "gameId": "2026_06_DAL_GB",
-        "week": 6,
-        "away": "DAL",
-        "home": "GB",
-        "team": "DAL",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "J.Porter",
-        "qtr": 2,
-        "time": "01:01",
-        "yards": 37,
-        "pointsCost": 2.88,
-        "method": "play value",
-        "winProbCost": 3.8,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_HOU_JAX",
-        "week": 6,
-        "away": "HOU",
-        "home": "JAX",
-        "team": "JAX",
+        "gameId": "2026_07_CLE_TEN",
+        "week": 7,
+        "away": "CLE",
+        "home": "TEN",
+        "team": "CLE",
         "side": "defense",
         "type": "Defensive Too Many Men on Field",
         "player": null,
         "qtr": 3,
-        "time": "13:06",
+        "time": "09:06",
         "yards": 5,
-        "pointsCost": 2.71,
+        "pointsCost": 2.61,
         "method": "play value",
-        "winProbCost": 9.5,
+        "winProbCost": 6.9,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
@@ -2138,20 +2047,87 @@
         ]
       },
       {
-        "gameId": "2026_06_TEN_IND",
-        "week": 6,
-        "away": "TEN",
-        "home": "IND",
-        "team": "IND",
+        "gameId": "2026_07_SF_ATL",
+        "week": 7,
+        "away": "SF",
+        "home": "ATL",
+        "team": "SF",
         "side": "defense",
         "type": "Defensive Pass Interference",
-        "player": "C.Taylor-Britt",
-        "qtr": 4,
-        "time": "05:26",
-        "yards": 36,
-        "pointsCost": 2.58,
+        "player": "J.Jones",
+        "qtr": 3,
+        "time": "01:00",
+        "yards": 20,
+        "pointsCost": 2.55,
         "method": "play value",
-        "winProbCost": 10.2,
+        "winProbCost": 7.1,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_TB_CAR",
+        "week": 7,
+        "away": "TB",
+        "home": "CAR",
+        "team": "CAR",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "A.Evans",
+        "qtr": 1,
+        "time": "03:20",
+        "yards": 21,
+        "pointsCost": 2.48,
+        "method": "play value",
+        "winProbCost": 5.6,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
+        "side": "defense",
+        "type": "Defensive Offside",
+        "player": "Q.Williams",
+        "qtr": 1,
+        "time": "03:18",
+        "yards": 5,
+        "pointsCost": 2.47,
+        "method": "play value",
+        "winProbCost": 6.6,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given",
+          "Turnover erased"
+        ]
+      },
+      {
+        "gameId": "2026_07_LA_LV",
+        "week": 7,
+        "away": "LA",
+        "home": "LV",
+        "team": "LA",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "J.Wallace",
+        "qtr": 1,
+        "time": "11:44",
+        "yards": 39,
+        "pointsCost": 2.34,
+        "method": "play value",
+        "winProbCost": 8.1,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
@@ -2160,223 +2136,89 @@
         ]
       },
       {
-        "gameId": "2026_06_CAR_PHI",
-        "week": 6,
-        "away": "CAR",
-        "home": "PHI",
-        "team": "PHI",
+        "gameId": "2026_07_GB_DET",
+        "week": 7,
+        "away": "GB",
+        "home": "DET",
+        "team": "GB",
         "side": "defense",
-        "type": "Encroachment",
-        "player": "M.Ojomo",
-        "qtr": 4,
-        "time": "14:19",
-        "yards": 2,
-        "pointsCost": 2.47,
+        "type": "Roughing the Passer",
+        "player": "B.Cox",
+        "qtr": 3,
+        "time": "04:09",
+        "yards": 15,
+        "pointsCost": 2.3,
         "method": "play value",
-        "winProbCost": 2.5,
+        "winProbCost": 6.4,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
         "labels": [
           "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_LA_LV",
+        "week": 7,
+        "away": "LA",
+        "home": "LV",
+        "team": "LA",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "K.Dotson",
+        "qtr": 1,
+        "time": "07:10",
+        "yards": 10,
+        "pointsCost": 2.15,
+        "method": "touchdown value",
+        "winProbCost": 6.3,
+        "winProbMethod": "touchdown value",
+        "gainErased": 2,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
         ]
       }
     ],
     "costliestWinProb": [
       {
-        "gameId": "2026_06_WAS_SF",
-        "week": 6,
-        "away": "WAS",
-        "home": "SF",
-        "team": "WAS",
-        "side": "offense",
-        "type": "Face Mask",
-        "player": "C.Paul",
-        "qtr": 4,
-        "time": "04:19",
-        "yards": 15,
-        "pointsCost": 4.32,
-        "method": "touchdown value",
-        "winProbCost": 30.1,
-        "winProbMethod": "touchdown value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Drive stalled after",
-          "Touchdown erased"
-        ]
-      },
-      {
-        "gameId": "2026_06_BUF_LV",
-        "week": 6,
-        "away": "BUF",
-        "home": "LV",
-        "team": "BUF",
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
         "side": "offense",
         "type": "Offensive Holding",
-        "player": "O.Torrence",
-        "qtr": 3,
-        "time": "09:57",
-        "yards": 10,
-        "pointsCost": 5.14,
-        "method": "touchdown value",
-        "winProbCost": 26.2,
-        "winProbMethod": "touchdown value",
-        "gainErased": 18,
-        "twoPoint": false,
-        "labels": [
-          "Touchdown erased"
-        ]
-      },
-      {
-        "gameId": "2026_06_WAS_SF",
-        "week": 6,
-        "away": "WAS",
-        "home": "SF",
-        "team": "SF",
-        "side": "defense",
-        "type": "Illegal Contact",
-        "player": "A.Davis",
-        "qtr": 4,
-        "time": "03:01",
-        "yards": 5,
-        "pointsCost": 2.22,
-        "method": "play value",
-        "winProbCost": 18.8,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_NYJ_NE",
-        "week": 6,
-        "away": "NYJ",
-        "home": "NE",
-        "team": "NYJ",
-        "side": "offense",
-        "type": "Offensive Pass Interference",
-        "player": "T.Patrick",
-        "qtr": 1,
-        "time": "08:34",
-        "yards": 10,
-        "pointsCost": 4.08,
-        "method": "touchdown value",
-        "winProbCost": 18.7,
-        "winProbMethod": "touchdown value",
-        "gainErased": 14,
-        "twoPoint": false,
-        "labels": [
-          "Touchdown erased"
-        ]
-      },
-      {
-        "gameId": "2026_06_PIT_TB",
-        "week": 6,
-        "away": "PIT",
-        "home": "TB",
-        "team": "TB",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "J.Parrish",
-        "qtr": 4,
-        "time": "03:38",
-        "yards": 12,
-        "pointsCost": 1.55,
-        "method": "play value",
-        "winProbCost": 15.4,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_ARI_LA",
-        "week": 6,
-        "away": "ARI",
-        "home": "LA",
-        "team": "ARI",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "K.Clark",
-        "qtr": 4,
-        "time": "08:55",
-        "yards": 26,
-        "pointsCost": 1.51,
-        "method": "play value",
-        "winProbCost": 10.2,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_TEN_IND",
-        "week": 6,
-        "away": "TEN",
-        "home": "IND",
-        "team": "IND",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "C.Taylor-Britt",
-        "qtr": 4,
-        "time": "05:26",
-        "yards": 36,
-        "pointsCost": 2.58,
-        "method": "play value",
-        "winProbCost": 10.2,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_06_HOU_JAX",
-        "week": 6,
-        "away": "HOU",
-        "home": "JAX",
-        "team": "JAX",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "B.Strange",
+        "player": "J.Barron",
         "qtr": 2,
-        "time": "14:12",
+        "time": "13:25",
         "yards": 10,
-        "pointsCost": 2.94,
+        "pointsCost": 6.53,
         "method": "touchdown value",
-        "winProbCost": 9.6,
+        "winProbCost": 27.9,
         "winProbMethod": "touchdown value",
-        "gainErased": 3,
+        "gainErased": null,
         "twoPoint": false,
         "labels": [
-          "Drive stalled after",
           "Touchdown erased"
         ]
       },
       {
-        "gameId": "2026_06_ARI_LA",
-        "week": 6,
-        "away": "ARI",
-        "home": "LA",
+        "gameId": "2026_07_LA_LV",
+        "week": 7,
+        "away": "LA",
+        "home": "LV",
         "team": "LA",
         "side": "defense",
-        "type": "Unnecessary Roughness",
+        "type": "Defensive Pass Interference",
         "player": "J.Wallace",
-        "qtr": 4,
-        "time": "00:47",
-        "yards": 15,
-        "pointsCost": 0.92,
-        "method": "penalty yards",
-        "winProbCost": 9.6,
-        "winProbMethod": "points at this score and clock",
+        "qtr": 1,
+        "time": "11:44",
+        "yards": 39,
+        "pointsCost": 2.34,
+        "method": "play value",
+        "winProbCost": 8.1,
+        "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
         "labels": [
@@ -2384,25 +2226,178 @@
         ]
       },
       {
-        "gameId": "2026_06_HOU_JAX",
-        "week": 6,
-        "away": "HOU",
-        "home": "JAX",
-        "team": "JAX",
+        "gameId": "2026_07_DEN_ARI",
+        "week": 7,
+        "away": "DEN",
+        "home": "ARI",
+        "team": "DEN",
+        "side": "offense",
+        "type": "Offensive Pass Interference",
+        "player": "A.Trautman",
+        "qtr": 1,
+        "time": "11:19",
+        "yards": 10,
+        "pointsCost": 1.68,
+        "method": "play value",
+        "winProbCost": 7.8,
+        "winProbMethod": "play value",
+        "gainErased": 19,
+        "twoPoint": false,
+        "labels": [
+          "Big play erased"
+        ]
+      },
+      {
+        "gameId": "2026_07_GB_DET",
+        "week": 7,
+        "away": "GB",
+        "home": "DET",
+        "team": "GB",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "A.Belton",
+        "qtr": 4,
+        "time": "09:14",
+        "yards": 10,
+        "pointsCost": 1.11,
+        "method": "play value",
+        "winProbCost": 7.3,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": []
+      },
+      {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "PHI",
+        "side": "defense",
+        "type": "Defensive Holding",
+        "player": "T.Woolen",
+        "qtr": 3,
+        "time": "04:53",
+        "yards": 6,
+        "pointsCost": 1.87,
+        "method": "play value",
+        "winProbCost": 7.1,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_SF_ATL",
+        "week": 7,
+        "away": "SF",
+        "home": "ATL",
+        "team": "SF",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "J.Jones",
+        "qtr": 3,
+        "time": "01:00",
+        "yards": 20,
+        "pointsCost": 2.55,
+        "method": "play value",
+        "winProbCost": 7.1,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_CLE_TEN",
+        "week": 7,
+        "away": "CLE",
+        "home": "TEN",
+        "team": "TEN",
+        "side": "defense",
+        "type": "Defensive Offside",
+        "player": "J.Simmons",
+        "qtr": 2,
+        "time": "02:27",
+        "yards": 5,
+        "pointsCost": 2.11,
+        "method": "play value",
+        "winProbCost": 7.1,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_SF_ATL",
+        "week": 7,
+        "away": "SF",
+        "home": "ATL",
+        "team": "SF",
+        "side": "defense",
+        "type": "Encroachment",
+        "player": "O.Odighizuwa",
+        "qtr": 2,
+        "time": "00:29",
+        "yards": 5,
+        "pointsCost": 1.88,
+        "method": "play value",
+        "winProbCost": 7.0,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_CLE_TEN",
+        "week": 7,
+        "away": "CLE",
+        "home": "TEN",
+        "team": "CLE",
         "side": "defense",
         "type": "Defensive Too Many Men on Field",
         "player": null,
         "qtr": 3,
-        "time": "13:06",
+        "time": "09:06",
         "yards": 5,
-        "pointsCost": 2.71,
+        "pointsCost": 2.61,
         "method": "play value",
-        "winProbCost": 9.5,
+        "winProbCost": 6.9,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
         "labels": [
           "Key first down given"
+        ]
+      },
+      {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
+        "side": "defense",
+        "type": "Defensive Offside",
+        "player": "Q.Williams",
+        "qtr": 1,
+        "time": "03:18",
+        "yards": 5,
+        "pointsCost": 2.47,
+        "method": "play value",
+        "winProbCost": 6.6,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given",
+          "Turnover erased"
         ]
       }
     ]
@@ -3113,7 +3108,7 @@
         "yards": 10,
         "pointsCost": 3.1,
         "method": "touchdown value",
-        "winProbCost": 2.5,
+        "winProbCost": 2.6,
         "winProbMethod": "touchdown value",
         "gainErased": null,
         "twoPoint": false,
@@ -3299,6 +3294,28 @@
     ],
     "DAL": [
       {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "J.Barron",
+        "qtr": 2,
+        "time": "13:25",
+        "yards": 10,
+        "pointsCost": 6.53,
+        "method": "touchdown value",
+        "winProbCost": 27.9,
+        "winProbMethod": "touchdown value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_03_BAL_DAL",
         "week": 3,
         "away": "BAL",
@@ -3343,6 +3360,29 @@
         ]
       },
       {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "DAL",
+        "side": "defense",
+        "type": "Defensive Offside",
+        "player": "Q.Williams",
+        "qtr": 1,
+        "time": "03:18",
+        "yards": 5,
+        "pointsCost": 2.47,
+        "method": "play value",
+        "winProbCost": 6.6,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given",
+          "Turnover erased"
+        ]
+      },
+      {
         "gameId": "2026_05_TB_DAL",
         "week": 5,
         "away": "TB",
@@ -3357,48 +3397,6 @@
         "pointsCost": 2.33,
         "method": "play value",
         "winProbCost": 1.4,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_01_DAL_NYG",
-        "week": 1,
-        "away": "DAL",
-        "home": "NYG",
-        "team": "DAL",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "L.Schoonmaker",
-        "qtr": 2,
-        "time": "10:25",
-        "yards": 10,
-        "pointsCost": 1.85,
-        "method": "play value",
-        "winProbCost": 3.8,
-        "winProbMethod": "play value",
-        "gainErased": 2,
-        "twoPoint": false,
-        "labels": []
-      },
-      {
-        "gameId": "2026_05_TB_DAL",
-        "week": 5,
-        "away": "TB",
-        "home": "DAL",
-        "team": "DAL",
-        "side": "defense",
-        "type": "Defensive Holding",
-        "player": "D.Bland",
-        "qtr": 1,
-        "time": "04:27",
-        "yards": 5,
-        "pointsCost": 1.44,
-        "method": "play value",
-        "winProbCost": 3.7,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
@@ -5224,6 +5222,28 @@
         ]
       },
       {
+        "gameId": "2026_07_DAL_PHI",
+        "week": 7,
+        "away": "DAL",
+        "home": "PHI",
+        "team": "PHI",
+        "side": "defense",
+        "type": "Defensive Holding",
+        "player": "T.Woolen",
+        "qtr": 3,
+        "time": "04:53",
+        "yards": 6,
+        "pointsCost": 1.87,
+        "method": "play value",
+        "winProbCost": 7.1,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
         "gameId": "2026_03_PHI_CHI",
         "week": 3,
         "away": "PHI",
@@ -5265,28 +5285,6 @@
         "twoPoint": false,
         "labels": [
           "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_04_LA_PHI",
-        "week": 4,
-        "away": "LA",
-        "home": "PHI",
-        "team": "PHI",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "J.Mundt",
-        "qtr": 2,
-        "time": "12:56",
-        "yards": 10,
-        "pointsCost": 1.36,
-        "method": "play value",
-        "winProbCost": 3.0,
-        "winProbMethod": "play value",
-        "gainErased": 19,
-        "twoPoint": false,
-        "labels": [
-          "Big play erased"
         ]
       }
     ],
@@ -5972,5 +5970,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-10-27T00:59:24+00:00"
+  "generatedAt": "2026-10-27T04:58:17+00:00"
 }

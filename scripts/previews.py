@@ -304,8 +304,6 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
         return out[:n]
 
     def head_to_head(a, b, n=3):
-        mask = (((gp['home_team'] == a) & (gp['away_team'] == b)) | ((gp['home_team'] == b) & (gp['away_team'] == a)))
-        allg = gp.copy()
         hist_ids = games_played[games_played['game_id'].isin(
             reg_sched[(((reg_sched['home_team'] == a) & (reg_sched['away_team'] == b)) |
                        ((reg_sched['home_team'] == b) & (reg_sched['away_team'] == a))) &

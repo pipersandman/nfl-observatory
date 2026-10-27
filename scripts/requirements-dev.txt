@@ -1,0 +1,5 @@
+# Tools for checks (scripts/check.py, pre-commit, CI). Exact versions so the
+# laptop and GitHub Actions run the same thing. Keep ruff in step with the rev
+# in .pre-commit-config.yaml.
+ruff==0.17.3
+pre-commit==4.7.0

@@ -1,0 +1,8 @@
+# Runs Ruff on staged Python files before each commit.
+# One-time setup: venv/Scripts/pre-commit install
+# Keep rev in step with ruff in scripts/requirements-dev.txt.
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.3
+    hooks:
+      - id: ruff-check

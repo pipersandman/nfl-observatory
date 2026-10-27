@@ -8,7 +8,6 @@ Writes:
   frontend/data/teams/{ABBR}.json  - full profile per team
 """
 
-import json
 from datetime import datetime, timezone
 from pathlib import Path
 

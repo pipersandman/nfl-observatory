@@ -23,7 +23,7 @@ import sys
 try:
     import nflreadpy as nfl
     import pandas as pd
-    import numpy as np
+    import numpy as np  # noqa: F401  (dependency check)
 except ImportError:
     print("❌ Missing dependencies. Run:")
     print("   pip install nflreadpy pandas numpy pyarrow")
@@ -248,7 +248,7 @@ def load_all_data(seasons: list[int]) -> dict:
         data['plays'] = pd.concat(plays_per_game).reset_index()
         print(f"   ✓ {len(data['penalties'])} total penalties")
     else:
-        print(f"   ✗ No play-by-play data loaded")
+        print("   ✗ No play-by-play data loaded")
         data['penalties'] = pd.DataFrame()
         data['games_played'] = pd.DataFrame()
         data['plays'] = pd.DataFrame(columns=['game_id', 'plays'])
@@ -414,7 +414,7 @@ def calculate_league_trends(data: dict) -> dict:
         'bias_pct': round((away_count - home_count) / len(penalties) * 100, 1)
     }
     
-    print(f"   ✓ Generated trend data")
+    print("   ✓ Generated trend data")
     return trends
 
 
@@ -475,7 +475,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     if not ref_stats.empty:
         max_avg = ref_stats['avg_per_game'].max()
         min_avg = ref_stats['avg_per_game'].min()
-        spread = max_avg - min_avg
+        spread = max_avg - min_avg  # noqa: F841  (flagged in #74)
         variance_pct = (ref_stats['avg_per_game'].std() / ref_stats['avg_per_game'].mean() * 100)
         
         insights.append({
@@ -864,11 +864,11 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
         if diff_pct > 10:
             tendency_desc = f"Flag-heavy crew — expect more penalties than average. {name}'s games average {diff:.1f} more penalties per game than league average."
         elif diff_pct > 5:
-            tendency_desc = f"Above-average penalty rate. Slightly more flags than typical."
+            tendency_desc = "Above-average penalty rate. Slightly more flags than typical."
         elif diff_pct < -10:
             tendency_desc = f"Let-them-play style — fewer flags than average. {name}'s games average {abs(diff):.1f} fewer penalties per game."
         elif diff_pct < -5:
-            tendency_desc = f"Below-average penalty rate. Tends to let minor infractions go."
+            tendency_desc = "Below-average penalty rate. Tends to let minor infractions go."
         else:
             tendency_desc = "League-average officiating style. Penalty rates are typical."
         

@@ -190,7 +190,7 @@ def flag_forecast(f, url):
 def laundry_day(f, url):
     """f: week, season, wk, prev, ly, std, lstd, hi (A,H,flags,crew), lo (...), team (abbr, flags, opp), n_games, pending"""
     k = f"laundry{f['season']}{f['week']}"
-    d_prev, d_ly, d_std = pct(f['wk'], f['prev']), pct(f['wk'], f['ly']), pct(f['std'], f['lstd'])
+    d_prev, d_ly, d_std = pct(f['wk'], f['prev']), pct(f['wk'], f['ly']), pct(f['std'], f['lstd'])  # noqa: F841  (flagged in #74)
     hooks = []
     if d_prev is not None and abs(d_prev) >= 10:
         hooks.append((abs(d_prev), pick([

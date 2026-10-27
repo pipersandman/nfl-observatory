@@ -355,7 +355,6 @@ def _fmt(v):
 def _sentence(c):
     v = _fmt(c['value'])
     pct = '%' if 'win chances' in c['metric'] else ''
-    rk = _rank_phrase(c['rank'], c['of'], 'of ' + c['scope'] if c['rank'] > 1 else 'of ' + c['scope'])
     vs = f" (normal: {_fmt(c['baseline'])})" if c.get('baseline') not in (None, 0) and c['level'] not in ('flag',) else ''
     if c['rank'] == 1:
         head = 'Record'

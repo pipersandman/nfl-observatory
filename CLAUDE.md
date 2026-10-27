@@ -28,6 +28,8 @@ request. Read the plan section named in the issue before proposing anything.
    "Done when" commands, and report the actual output.
 5. **Explain like a checklist.** Ty follows instructions literally: give exact
    commands, exact clicks, and what he should see when it worked.
+6. When Ty asks to review something before you act, stop and wait for his OK,
+   even if the next step seems obvious.
 
 ## Machine and shell
 

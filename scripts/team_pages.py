@@ -41,7 +41,10 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     season = int(reg['season'].max())
 
     # Divisions (current 32 teams, as they appear in this season's schedule)
-    teams_meta = nfl.load_teams().to_pandas().set_index('team_abbr')
+    import raw_capture
+    teams_pl = nfl.load_teams()
+    raw_capture.get().capture_frame('nflverse-teams', 'teams_colors_logos', teams_pl)
+    teams_meta = teams_pl.to_pandas().set_index('team_abbr')
     current_teams = sorted(set(reg.loc[reg['season'] == season, 'home_team']) |
                            set(reg.loc[reg['season'] == season, 'away_team']))
 

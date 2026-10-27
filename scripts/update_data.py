@@ -30,6 +30,8 @@ except ImportError:
     print("   pip install nflreadpy pandas numpy pyarrow")
     sys.exit(1)
 
+import raw_capture  # noqa: E402  (raw pulls to R2; never stops the update)
+
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
@@ -162,7 +164,9 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
     print("   Loading schedules...")
     try:
         forced_failure('load_schedules')
-        schedules = nfl.load_schedules(schedule_seasons).to_pandas()
+        sched_pl = nfl.load_schedules(schedule_seasons)
+        raw_capture.get().capture_frame('nflverse-schedules', f'games_{min(schedule_seasons)}-{max(schedule_seasons)}', sched_pl)
+        schedules = sched_pl.to_pandas()
     except Exception as e:
         raise DataLoadError(f"schedules: {short_error(e)}") from e
     # nflreadpy returns no rows (no error) for a season it hasn't published
@@ -185,7 +189,9 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
     print("   Loading officials...")
     try:
         forced_failure('load_officials')
-        officials = nfl.load_officials(seasons).to_pandas()
+        off_pl = nfl.load_officials(seasons)
+        raw_capture.get().capture_frame('nflverse-officials', f'officials_{min(seasons)}-{max(seasons)}', off_pl)
+        officials = off_pl.to_pandas()
         
         # Officials use old_game_id format - rename and merge to get new game_id
         officials = officials.rename(columns={'game_id': 'old_game_id', 'official_name': 'name'})
@@ -263,7 +269,10 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
         try:
             forced_failure('load_pbp')
             # Load full PBP then select columns (nflreadpy doesn't support column filtering on load)
-            season_pbp = nfl.load_pbp(season).to_pandas()
+            pbp_pl = nfl.load_pbp(season)
+            raw_capture.get().capture_frame('nflverse-pbp', f'play_by_play_{season}', pbp_pl)
+            season_pbp = pbp_pl.to_pandas()
+            del pbp_pl
             if season_pbp.empty:
                 raise ValueError('no plays')
             # Select only the columns we need (that exist in the data)
@@ -1017,19 +1026,58 @@ class RunStatus:
         return result
 
 
-def write_run_status(modules: dict, warnings: list, run_at: str) -> bool:
+RAW_CAPTURE_STALE_HOURS = 24   # raw capture failing longer than this turns the run red
+
+
+def raw_capture_status(raw: dict, prev: dict, run_at: str) -> dict:
+    """rawCapture for run_status.json. lastSuccess carries forward; failingSince is set
+    on the first failure and cleared by a success. 'stale' = failing for more than
+    RAW_CAPTURE_STALE_HOURS, counted from lastSuccess (or failingSince if it never worked)."""
+    out = dict(raw)
+    prev = prev or {}
+    if raw['status'] == 'ok':
+        out['lastSuccess'] = run_at
+    elif raw['status'] == 'failed':
+        out['lastSuccess'] = prev.get('lastSuccess')
+        out['failingSince'] = prev.get('failingSince') or run_at
+        since = out['lastSuccess'] or out['failingSince']
+        hours = (datetime.fromisoformat(run_at.replace('Z', '+00:00'))
+                 - datetime.fromisoformat(since.replace('Z', '+00:00'))).total_seconds() / 3600
+        out['failingHours'] = round(hours, 1)
+        out['stale'] = hours > RAW_CAPTURE_STALE_HOURS
+    else:   # off (local run): keep what the last real run recorded
+        for k in ('lastSuccess', 'failingSince'):
+            if prev.get(k):
+                out[k] = prev[k]
+    return out
+
+
+def write_run_status(modules: dict, warnings: list, run_at: str, raw: dict | None = None) -> bool:
     """frontend/data/run_status.json: what failed this run and when each output was
-    last refreshed. lastSuccess carries forward from the previous file. Returns ok."""
+    last refreshed. lastSuccess carries forward from the previous file. Returns ok:
+    every module ok, and raw capture not failing for more than 24 hours."""
     try:
-        prev = json.loads((DATA_DIR / 'run_status.json').read_text(encoding='utf-8')).get('modules', {})
+        prev_file = json.loads((DATA_DIR / 'run_status.json').read_text(encoding='utf-8'))
     except Exception:
-        prev = {}
+        prev_file = {}
+    prev = prev_file.get('modules', {})
     out = {}
     for name, m in modules.items():
         last = run_at if m['status'] == 'ok' else (prev.get(name) or {}).get('lastSuccess')
         out[name] = {**m, 'lastSuccess': last}
     ok = all(m['status'] == 'ok' for m in out.values())
-    save_json({'runAt': run_at, 'ok': ok, 'modules': out, 'warnings': warnings}, 'run_status.json')
+    status = {'runAt': run_at, 'ok': ok, 'modules': out, 'warnings': warnings}
+    if raw:
+        rc = raw_capture_status(raw, prev_file.get('rawCapture'), run_at)
+        status['rawCapture'] = rc
+        if rc['status'] == 'failed':
+            since = rc.get('lastSuccess') or rc.get('failingSince')
+            msg = (f"raw capture failing for {rc['failingHours']} h (since {since}): {rc.get('error')}"
+                   if rc['stale'] else f"raw capture failed: {rc.get('error')}")
+            warnings.append({'source': 'raw_capture', 'message': msg})
+            if rc['stale']:
+                status['ok'] = ok = False
+    save_json(status, 'run_status.json')
     return ok
 
 
@@ -1059,10 +1107,15 @@ def main():
     if os.environ.get('NFLOBS_FAIL') and os.environ.get('GITHUB_ACTIONS'):
         print("WARNING: NFLOBS_FAIL is set but ignored in GitHub Actions")
 
+    # Raw capture (R2): this step's pulls plus fetch_assignments.py's, one manifest per run
+    cap = raw_capture.get()
+    cap.load_handoff()
+
     # Load data. A required source that fails stops the run here, before anything is written.
     try:
         data = load_all_data(seasons, schedule_seasons)
     except DataLoadError as e:
+        cap.write_manifest(error=f'data loading: {e}')
         report(['', '=' * 60, f"❌ FAILED (data loading): {e} — nothing written", '=' * 60])
         return 1
 
@@ -1162,7 +1215,9 @@ def main():
 
     # Run status (written last) and summary
     run_at = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    ok = write_run_status(status.modules, data['warnings'], run_at)
+    cap.write_manifest()
+    raw = cap.status()
+    ok = write_run_status(status.modules, data['warnings'], run_at, raw)
     failed = [f"{n} ({m['error']})" for n, m in status.modules.items() if m['status'] == 'failed']
     skipped = [f"{n} ({m['reason']})" for n, m in status.modules.items() if m['status'] == 'skipped']
     warns = [w.get('message') or f"{w.get('file')}: {w.get('error')}" for w in data['warnings']]
@@ -1174,14 +1229,28 @@ def main():
         lines.append(f"   SKIPPED: {'; '.join(skipped)}")
     if warns:
         lines.append(f"   WARNINGS ({len(warns)}): {'; '.join(warns)}")
+    lines.append(f"   Raw capture: {raw['status']}" +
+                 (f" ({raw['new']} new, {raw['unchanged']} unchanged)" if raw['status'] != 'off' else ''))
     lines += [f"   Penalties: {hero_stats['totalPenalties']:,}",
               f"   Games: {hero_stats['totalGames']:,}",
               f"   Referees: {hero_stats['totalReferees']}",
               f"   Output: {DATA_DIR}"]
     report(lines)
-    # 3 = some modules failed or were skipped; everything else was written
+    # 3 = some modules failed or were skipped, or raw capture has failed for over 24 hours;
+    # everything else was written
     return 0 if ok else 3
 
 
+def run():
+    """main(), plus a run manifest even if the run crashes part-way."""
+    try:
+        return main()
+    except BaseException as e:
+        cap = raw_capture.get()
+        if cap.mode == 'on' and cap.manifest_key is None:
+            cap.write_manifest(error=f'crashed: {type(e).__name__}')
+        raise
+
+
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(run())

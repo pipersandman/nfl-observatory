@@ -244,7 +244,7 @@ Every model change is judged here first.
 
 **See also:** [Growth Cadence Plan](GROWTH_CADENCE_PLAN.md) for the weekly publishing and indexing schedule (Phase 1 on the current site, Phase 2 for V2).
 
-**V2:** [V2 Build Plan](V2_BUILD_PLAN.md) covers the V2 architecture (tool choices and migration sequence) and the quant research track (betting-market hypotheses, core calculations, methods, research phases).
+**V2:** [V2 Build Plan](V2_BUILD_PLAN.md) covers the V2 architecture (tool choices and migration sequence), analytical trust (metric dictionary, uncertainty, data quality), experience and information design, the quant research track, and the solo build routine.
 
 **Data sources:** [Data Sources and Data Lake Design](DATA_SOURCES.md), the full catalog of sources, licensing rules, lake zones and identity crosswalks.
 

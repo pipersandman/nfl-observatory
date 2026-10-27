@@ -4,7 +4,7 @@
 surprising officiating stats each week, filtered so that what's left is very
 unlikely to be luck, with the plays behind every number.
 
-**Related docs:** [V2 Build Plan](V2_BUILD_PLAN.md) (data lake, agents) ·
+**Related docs:** [V2 Build Plan](V2_BUILD_PLAN.md) (data lake, trust standards, build routine) ·
 [Growth Cadence Plan](GROWTH_CADENCE_PLAN.md) (Fact of the Day, report cards) ·
 [Data Sources](DATA_SOURCES.md).
 

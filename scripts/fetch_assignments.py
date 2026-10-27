@@ -15,8 +15,14 @@ Only the game -> referee facts are stored; no article text is copied.
 Source credit/link is stored so the site can attribute Football Zebras.
 
 Usage:
-    python scripts/fetch_assignments.py              # next unplayed week
-    python scripts/fetch_assignments.py --week 5     # specific week (current season)
+    python scripts/fetch_assignments.py              # next unplayed regular-season week
+    python scripts/fetch_assignments.py --week 5     # specific week (season the default would pick)
+    python scripts/fetch_assignments.py --season 2027 --week 1
+
+Season (#84): by default the next upcoming regular-season games across nflverse's
+current season and, when later, the calendar year (scripts/seasons.py). January
+finds Week 18 of the season in progress; August finds next season's Week 1 once
+its schedule is out. Playoff games are never fetched.
     python scripts/fetch_assignments.py --html page.html --week 4   # parse a saved page (testing)
 
 Exit codes (the workflow step is allowed to fail, so these never block the data run):
@@ -37,6 +43,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
+
+from seasons import nflverse_current_season, schedule_seasons
 
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_DIR = SCRIPT_DIR.parent
@@ -99,18 +107,19 @@ def first_kickoff(wk: pd.DataFrame):
 # Schedule helpers
 # -----------------------------------------------------------------------------
 
-def load_schedule(season: int) -> pd.DataFrame:
+def load_schedule(seasons: list[int]) -> pd.DataFrame:
     import nflreadpy as nfl
-    return nfl.load_schedules([season]).to_pandas()
+    return nfl.load_schedules(seasons).to_pandas()
 
 
-def upcoming_weeks(schedule: pd.DataFrame) -> list[int]:
-    """Weeks to cover: the earliest week with games still to come (US Eastern date,
-    so Monday night stays 'upcoming' all evening), plus the next week when the
-    current one is already partly played."""
+def upcoming_weeks(schedule: pd.DataFrame, today=None) -> list[int]:
+    """Weeks to cover in one season's schedule: the earliest regular-season week with
+    games still to come (US Eastern date, so Monday night stays 'upcoming' all
+    evening), plus the next week when the current one is already partly played.
+    Playoff games are ignored. `today` (a date) defaults to today in US Eastern."""
     from zoneinfo import ZoneInfo
     reg = schedule[schedule['game_type'] == 'REG']
-    today_et = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+    today_et = (today or datetime.now(ZoneInfo('America/New_York')).date()).isoformat()
     up = reg[reg['result'].isna() & (reg['gameday'].astype(str) >= today_et)]
     if up.empty:
         return []
@@ -120,6 +129,17 @@ def upcoming_weeks(schedule: pd.DataFrame) -> list[int]:
     if len(up[up['week'] == first]) < len(reg[reg['week'] == first]) and len(weeks) > 1:
         out.append(weeks[1])
     return out
+
+
+def select_weeks(schedule: pd.DataFrame, seasons: list[int], today=None):
+    """(season, weeks) for the first of `seasons` with regular-season games still to
+    come, or (None, []). In January that's Week 18 of the season in progress; in
+    August, once next season's schedule is out, its Week 1."""
+    for season in seasons:
+        weeks = upcoming_weeks(schedule[schedule['season'] == season], today)
+        if weeks:
+            return season, weeks
+    return None, []
 
 
 # -----------------------------------------------------------------------------
@@ -317,8 +337,10 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
 
 def main():
     ap = argparse.ArgumentParser(description='Fetch crew chief assignments from Football Zebras')
-    ap.add_argument('--season', type=int, default=datetime.now().year)
-    ap.add_argument('--week', type=int)
+    ap.add_argument('--season', type=int,
+                    help="Season to use (default: the next upcoming regular-season games across "
+                         "nflverse's current season and, when later, the calendar year)")
+    ap.add_argument('--week', type=int, help='Specific week (default: the next unplayed week)')
     ap.add_argument('--html', help='Parse a saved article HTML file instead of fetching (testing)')
     ap.add_argument('--force', action='store_true', help='Refetch even if the week is complete')
     args = ap.parse_args()
@@ -326,17 +348,23 @@ def main():
     print('\n🦓 Crew assignments (Football Zebras)')
     print('=' * 60)
 
-    schedule = load_schedule(args.season)
-    weeks = [args.week] if args.week else upcoming_weeks(schedule)
+    seasons = [args.season] if args.season else schedule_seasons()
+    schedule = load_schedule(seasons)
+    season, weeks = select_weeks(schedule, seasons)
+    if args.week:
+        # --week alone: the season the default would pick, else nflverse's current season
+        season = args.season or season or nflverse_current_season()
+        weeks = [args.week]
     if not weeks:
         print('   No upcoming regular-season games. Nothing to do.')
         return 0
+    schedule = schedule[schedule['season'] == season]
 
     problems = []
     known_refs = set(NAME_FIXES.values())
     try:
         import nflreadpy as nfl
-        hist = nfl.load_schedules([args.season - 1, args.season]).to_pandas()
+        hist = nfl.load_schedules([season - 1, season]).to_pandas()
         known_refs |= set(hist['referee'].dropna().replace(NAME_FIXES))
     except Exception as e:
         # Parsing still works (any "First Last" line counts as a name), just less strictly
@@ -351,7 +379,7 @@ def main():
         return feed_cache['xml']
 
     for week in weeks:
-        problems += process_week(args.season, week, schedule, known_refs, get_feed, args.html, args.force)
+        problems += process_week(season, week, schedule, known_refs, get_feed, args.html, args.force)
 
     fails = [m for k, m in problems if k == 'fail']
     if fails:

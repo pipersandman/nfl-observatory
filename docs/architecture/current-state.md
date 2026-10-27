@@ -44,6 +44,18 @@ Day; nflverse refuses later seasons). Schedules load up to the calendar year, so
 next season's games appear as soon as nflverse publishes them (Week 1 previews
 before opening night). The `seasonsRange` label follows the current season.
 
+**One season rule** (#84): `scripts/seasons.py` (standard library only) holds the
+same rule for code that runs without nflreadpy. `nflverse_current_season()`
+matches `nfl.get_current_season()`; `schedule_seasons()` is the current season
+plus the calendar year when later. Users:
+- **Workflow gate** watches `play_by_play_<current season>.parquet`.
+- **`fetch_assignments.py`** picks the next upcoming regular-season games across
+  `schedule_seasons()` (January: Week 18 of the season in progress; August: next
+  season's Week 1 once its schedule is out). Playoff games are never fetched.
+  `--season` overrides; `--week` alone uses the season the default would pick.
+- **`social/generate.py`** defaults `--season` to the current season.
+`update_data.py` keeps calling `nfl.get_current_season()` directly.
+
 **Failures** (#80):
 - **Data loading** (schedules, officials, any season of play-by-play, including a
   required season with no rows) stops the run with exit 1 before anything is
@@ -109,7 +121,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 
 | Workflow | Runs | Does |
 |---|---|---|
-| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play changed (checks `source_stamp.json`). Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
+| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 

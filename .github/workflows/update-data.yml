@@ -95,8 +95,13 @@ jobs:
         run: python scripts/fetch_assignments.py
 
       - name: Run data update (full rebuild)
+        id: update
         if: steps.gate.outputs.skip != 'true'
-        run: python scripts/update_data.py --full
+        # Exit 3 = one or more modules failed, everything else was written: commit and
+        # deploy what worked, then "Fail if any module failed" turns the run red.
+        # Exit 1 = a source failed to load (nothing written) or a core file failed:
+        # this step fails, so commit, build and deploy are all skipped.
+        run: python scripts/update_data.py --full || [ $? -eq 3 ]
 
       - name: Commit and push if changes
         if: steps.gate.outputs.skip != 'true'
@@ -160,3 +165,25 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/_*.csv
+
+      - name: Fail if any module failed
+        if: steps.gate.outputs.skip != 'true'
+        # Runs after the deploy, so the outputs that worked are already published.
+        # Reads run_status.json (written by update_data.py) and ends the run red
+        # if any module failed or was skipped.
+        env:
+          RUN_STATUS: frontend/data/run_status.json
+        run: |
+          python - <<'EOF'
+          import json, os, sys
+          s = json.load(open(os.environ['RUN_STATUS'], encoding='utf-8'))
+          bad = [f"{n}: {m['status']} ({m.get('error') or m.get('reason') or 'no detail'})"
+                 for n, m in s.get('modules', {}).items() if m.get('status') != 'ok']
+          if s.get('ok') is True and not bad:
+              print('All modules OK')
+              sys.exit(0)
+          print('Modules failed or skipped this run; their outputs are stale (see run_status.json):')
+          for b in bad:
+              print('  -', b)
+          sys.exit(1)
+          EOF

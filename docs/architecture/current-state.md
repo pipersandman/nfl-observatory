@@ -36,8 +36,34 @@ Week 7: 16 from the officials feed, 49 from the schedule, 42 from assignments.
 
 `update_data.py` loads the data once, then calls each module with it. Current
 season only by default; `--full` rebuilds 2015 to now (CI always uses
-`--full`). Each module after the core files runs in its own `try` block: if it
-fails, the error is printed and the run continues and still reports success.
+`--full`).
+
+**Seasons** (#80): play-by-play and officials load 2015 up to nflverse's current
+season (`nfl.get_current_season()`, which turns over the Thursday after Labor
+Day; nflverse refuses later seasons). Schedules load up to the calendar year, so
+next season's games appear as soon as nflverse publishes them (Week 1 previews
+before opening night). The `seasonsRange` label follows the current season.
+
+**Failures** (#80):
+- **Data loading** (schedules, officials, any season of play-by-play, including a
+  required season with no rows) stops the run with exit 1 before anything is
+  written.
+- **Modules** each run even if an earlier one failed; `scorecard` and `history`
+  are skipped if `previews` fails. Failures and skips are printed in an
+  end-of-run summary (also on the Actions run page) and give exit 3.
+- **Warnings** (exit 0): an unreadable published assignment file, and next
+  season's schedule not published yet.
+- **`frontend/data/run_status.json`**, written last and committed with the data:
+  `runAt`, `ok`, per module `status` (`ok`, `failed`, `skipped`), short `error`
+  or `reason`, `outputs`, and `lastSuccess` (carried forward from the previous
+  file), plus `warnings`. For V2.0a step 9 (freshness).
+- **`save_json()`** writes a temp file and renames it into place, so a failed
+  write leaves the old file. Multi-file modules can still leave a mix of old and
+  new files if they fail partway (#81).
+- **Testing:** `NFLOBS_FAIL=<name>[,<name>]` forces a named step to fail
+  (modules, `wp_tables`, `load_pbp`, `load_schedules`, `load_officials`,
+  `save_json:<file>`). It is ignored, with a warning, when `GITHUB_ACTIONS` is
+  set.
 
 | Script | Writes (under `frontend/data/`) | What |
 |---|---|---|
@@ -83,7 +109,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 
 | Workflow | Runs | Does |
 |---|---|---|
-| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play changed (checks `source_stamp.json`). Then: install, fetch assignments (allowed to fail), `update_data.py --full`, commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator |
+| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play changed (checks `source_stamp.json`). Then: install, fetch assignments (allowed to fail), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 
@@ -145,9 +171,10 @@ with separate code (not the pipeline's):
 
 ## Known gaps
 
-1. **Module failures don't fail the run.** Each pipeline module after the core
-   files catches its own errors and the run still ends "DATA UPDATE COMPLETE",
-   so a broken module can publish stale files without a red run.
+1. **~~Module failures don't fail the run.~~** Fixed in #80: a failed module
+   turns the run red and is recorded in `run_status.json`; data-loading failures
+   stop the run before anything is written. Remaining part: multi-file modules
+   can leave a mix of old and new files (#81).
 2. **No tests of the numbers.** Before W1 there were no automated checks at all;
    `check.py` now covers lint, syntax and JSON validity, not correctness.
 3. **Two definitions of "season"** sit side by side: league trends include

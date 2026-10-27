@@ -38,7 +38,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (pinned to a commit)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4 (pinned to a commit)
 
       - name: Check for new play-by-play (game-day runs only)
         # Game-day runs continue only if nflverse has published new play-by-play since the last

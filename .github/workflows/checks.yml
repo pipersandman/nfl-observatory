@@ -1,7 +1,8 @@
 name: Checks
 
 # Runs scripts/check.py on every pull request. The job name "checks" is the
-# status check the main branch ruleset requires.
+# status check the main ruleset will require once the data bot pushes as a
+# GitHub App (see plan section 28 step 5).
 on:
   pull_request:
   workflow_dispatch:

@@ -24,7 +24,6 @@ Crews change around the chief every year, so these are crew-chief-level styles.
 import re
 from datetime import datetime, timezone
 
-import numpy as np
 import pandas as pd
 
 from flag_impact import classify

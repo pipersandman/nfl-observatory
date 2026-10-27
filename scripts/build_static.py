@@ -216,7 +216,7 @@ def type_rate(crew, t, career=True):
 # --------------------------------------------------------------------------- pages
 
 def crew_pages():
-    rows, items = [], []
+    rows = []
     for c in crews_now:
         s = style_by_name.get(c['name'], {})
         allb = (c.get('baselines') or {}).get('all') or {}

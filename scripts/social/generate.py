@@ -316,7 +316,7 @@ def t_final(w, d, game_id, season_avg):
 <div class='note' style='margin:0 0 34px;display:flex;justify-content:space-between'><span>{ya} yds</span><span>{yh} yds</span></div>
 <div class='tt'>What was called</div>{trows}
 <div style='margin-top:14px'>{proj_html}{f"<span class='chip'>Most flagged: {e(top_player)}</span>" if top_player else ''}<span class='chip'>{d.season} avg {season_avg:.1f}/game</span></div>"""
-    proj_txt = f" We projected {snap['total']:.1f}." if snap else ''
+    proj_txt = f" We projected {snap['total']:.1f}." if snap else ''  # noqa: F841  (flagged in #74)
     gr = d.game_rows()
     before = gr[(gr['season'] == d.season) & (gr['game_id'] != game_id) &
                 ((gr['week'] < g['week']) | ((gr['week'] == g['week']) & (gr['gameday'] < g['gameday'])))]
@@ -445,7 +445,6 @@ def t_magnets(w, d, week):
                  f"<small>{e(', '.join(f'{short_type(k)} ×{v}' if v > 1 else short_type(k) for k, v in t.head(2).items()))}</small></span>"
                  f"<span class='n'>{r.n}<small class='dim'>{int(r.y)} yds</small></span></div>")
     body = f"<div class='h'>Flag<br>magnets</div><div class='sub'>Most accepted penalties, {S} through Week {week}</div>{rows}"
-    lead = top.iloc[0]
     leaders = []
     for r in top.itertuples():
         tt = p[(p['penalty_player_name'] == r.penalty_player_name) & (p['penalty_team'] == r.penalty_team)]['penalty_type'].value_counts()

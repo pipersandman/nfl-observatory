@@ -153,16 +153,16 @@ with separate code (not the pipeline's):
    plays a season). Worth checking against the "accepted penalties" wording in
    V2.0a.
 5. **Wording:** the Referee Variance insight in `update_data.py` says "most
-   lenient and strictest crews", against rule 5 in `CLAUDE.md`. Separate issue.
+   lenient and strictest crews", against rule 5 in `CLAUDE.md` (#76).
 6. **Worker deploys by hand** and has no checks beyond syntax; the ESPN API is
    unofficial.
 7. **No staging site**: every merge to `main` deploys to production.
 8. **Windows: redirected output crashes on emoji.** Running
    `update_data.py > log.txt` on Windows fails with `UnicodeEncodeError` at the
    first 🏈. Workaround: set `PYTHONUTF8=1` first. Linux (Actions) is fine.
-9. **Three unused calculations kept for their own issues** (marked
-   `# noqa: F841  (flagged in #74)`): `d_ly` in `social/captions.py`,
-   `proj_txt` in `social/generate.py`, `spread` in `update_data.py`.
+9. **Two unused calculations kept for their own issues** (marked
+   `# noqa: F841  (flagged in #74)`): `d_ly` in `social/captions.py` (#75)
+   and `spread` in `update_data.py` (#76).
 10. **Formatter not adopted yet**: Ruff format would change about 9,500 lines
     in 18 files; deferred to its own issue.
 11. **Dependabot bumps** `ruff` in `requirements-dev.txt` but not the matching

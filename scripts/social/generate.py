@@ -316,7 +316,6 @@ def t_final(w, d, game_id, season_avg):
 <div class='note' style='margin:0 0 34px;display:flex;justify-content:space-between'><span>{ya} yds</span><span>{yh} yds</span></div>
 <div class='tt'>What was called</div>{trows}
 <div style='margin-top:14px'>{proj_html}{f"<span class='chip'>Most flagged: {e(top_player)}</span>" if top_player else ''}<span class='chip'>{d.season} avg {season_avg:.1f}/game</span></div>"""
-    proj_txt = f" We projected {snap['total']:.1f}." if snap else ''  # noqa: F841  (flagged in #74)
     gr = d.game_rows()
     before = gr[(gr['season'] == d.season) & (gr['game_id'] != game_id) &
                 ((gr['week'] < g['week']) | ((gr['week'] == g['week']) & (gr['gameday'] < g['gameday'])))]

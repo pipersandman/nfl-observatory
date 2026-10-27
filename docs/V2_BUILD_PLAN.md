@@ -896,7 +896,7 @@ Claude Code → PR).
    `main` with the workflow's `GITHUB_TOKEN`, which can't be a ruleset bypass
    actor, so those rules would block its commits. Full protection (pull
    request and the `checks` job required) needs a GitHub App for the bot to
-   push as, added as the bypass actor; tracked as its own issue.
+   push as, added as the bypass actor; tracked in #78.
 6. **Done when:** the ruleset is active on `main` with those two rules, and the
    next automated "Update NFL data" commit still lands on `main`.
 
@@ -955,7 +955,7 @@ locally, never committed).
 
 | Stage | Must pass before the next stage |
 |---|---|
-| W0–W1 | Laptop checks pass; `main` ruleset active (restrict deletions, block force pushes); data bot still commits. Pull request and `checks` protection follow with a GitHub App (own issue) |
+| W0–W1 | Laptop checks pass; `main` ruleset active (restrict deletions, block force pushes); data bot still commits. Pull request and `checks` protection follow with a GitHub App (#78) |
 | V2.0a | Every published number in the dictionary; conflicts resolved; recompute check matches JSON; section 17 checklist passes on every page; baseline usability test done |
 | V2.0 | Zero-difference reconciliation with current JSON; data-quality checks blocking; two parallel weeks |
 | V2.0b | Backtest on 2015–25 detects known shifts; false-discovery control on every item; evidence plays attached |

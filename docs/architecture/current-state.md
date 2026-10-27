@@ -91,7 +91,7 @@ Actions are pinned to commit SHAs. The data bot pushes directly to `main`
 with the workflow's `GITHUB_TOKEN`, which can't be a ruleset bypass actor. So
 the W1 ruleset only restricts deletions and blocks force pushes (plan section
 28 step 5). Requiring pull requests and the `checks` job needs a GitHub App
-for the bot to push as; tracked as its own issue.
+for the bot to push as; tracked in #78.
 
 ## Secrets (names only)
 
@@ -173,4 +173,4 @@ with separate code (not the pipeline's):
 12. **`main` doesn't require pull requests or passing checks.** The ruleset
     only restricts deletions and blocks force pushes, because the data bot's
     `GITHUB_TOKEN` can't bypass stricter rules. A merge with a red `checks` job
-    is possible until the GitHub App issue is done.
+    is possible until #78 is done.

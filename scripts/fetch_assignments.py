@@ -11,8 +11,11 @@ Fetch upcoming crew chief assignments from Football Zebras.
 
 Polite by design: one feed request + one article request per run, an
 identifying User-Agent, and no refetch once every game in the week is assigned.
-Only the game -> referee facts are stored; no article text is copied.
+Only the game -> referee facts are published; no article text is published.
 Source credit/link is stored so the site can attribute Football Zebras.
+Raw capture (#88): the feed and the article page are kept exactly as received in
+the private R2 bucket nflobs-raw (never published), so they can be re-parsed;
+see scripts/raw_capture.py. A capture problem is a warning, never exit 2.
 
 Usage:
     python scripts/fetch_assignments.py              # next unplayed regular-season week
@@ -44,6 +47,7 @@ from pathlib import Path
 
 import pandas as pd
 
+import raw_capture
 from seasons import nflverse_current_season, schedule_seasons
 
 SCRIPT_DIR = Path(__file__).parent
@@ -109,7 +113,10 @@ def first_kickoff(wk: pd.DataFrame):
 
 def load_schedule(seasons: list[int]) -> pd.DataFrame:
     import nflreadpy as nfl
-    return nfl.load_schedules(seasons).to_pandas()
+    df = nfl.load_schedules(seasons)
+    raw_capture.get('fetch_assignments').capture_frame(
+        'nflverse-schedules', f'games_{min(seasons)}-{max(seasons)}', df)
+    return df.to_pandas()
 
 
 def upcoming_weeks(schedule: pd.DataFrame, today=None) -> list[int]:
@@ -146,10 +153,16 @@ def select_weeks(schedule: pd.DataFrame, seasons: list[int], today=None):
 # Football Zebras
 # -----------------------------------------------------------------------------
 
-def http_get(url: str) -> str:
+def http_get(url: str, source: str | None = None, name: str | None = None) -> str:
+    """GET a page; with source/name, also keep the exact bytes in raw capture."""
     import requests
     r = requests.get(url, headers={'User-Agent': USER_AGENT}, timeout=TIMEOUT)
     r.raise_for_status()
+    if source:
+        is_xml = 'xml' in (r.headers.get('Content-Type') or '') or source.endswith('feed')
+        raw_capture.get('fetch_assignments').capture_bytes(
+            source, name, r.content, 'xml' if is_xml else 'html',
+            'application/xml' if is_xml else 'text/html', url, encoding=r.encoding)
     return r.text
 
 
@@ -270,7 +283,7 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
                     problem(problems, 'warn', msg)
             else:
                 print(f'   ✓ Found post: {source_url}')
-                html = http_get(source_url)
+                html = http_get(source_url, 'footballzebras-post', f'{season}-week-{week:02d}')
         if html:
             parsed = parse_assignments(article_lines(html), known_refs)
             print(f'   ✓ Parsed {len(parsed)} games from article')
@@ -364,7 +377,10 @@ def main():
     known_refs = set(NAME_FIXES.values())
     try:
         import nflreadpy as nfl
-        hist = nfl.load_schedules([season - 1, season]).to_pandas()
+        hist_pl = nfl.load_schedules([season - 1, season])
+        raw_capture.get('fetch_assignments').capture_frame(
+            'nflverse-schedules', f'games_{season - 1}-{season}', hist_pl)
+        hist = hist_pl.to_pandas()
         known_refs |= set(hist['referee'].dropna().replace(NAME_FIXES))
     except Exception as e:
         # Parsing still works (any "First Last" line counts as a name), just less strictly
@@ -375,7 +391,7 @@ def main():
     feed_cache = {}
     def get_feed():   # fetched at most once per run, and only if a week needs it
         if 'xml' not in feed_cache:
-            feed_cache['xml'] = http_get(FEED_URL)
+            feed_cache['xml'] = http_get(FEED_URL, 'footballzebras-feed', 'assignments_feed')
         return feed_cache['xml']
 
     for week in weeks:
@@ -388,5 +404,13 @@ def main():
     return 0
 
 
+def run():
+    """main(), then hand this step's raw captures to update_data.py (same workflow run)."""
+    try:
+        return main()
+    finally:
+        raw_capture.get('fetch_assignments').save_handoff()
+
+
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(run())

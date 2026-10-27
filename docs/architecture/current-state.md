@@ -32,6 +32,42 @@ Names are normalized with `NAME_FIXES` in `update_data.py` (for example
 "Ronald Torbert" becomes "Ron Torbert"). For 2026 regular-season games through
 Week 7: 16 from the officials feed, 49 from the schedule, 42 from assignments.
 
+## Raw capture (#88)
+
+Every run saves what it pulled to the private R2 bucket `nflobs-raw`
+(`scripts/raw_capture.py`), so any past run can be rebuilt from those files
+alone (`scripts/rebuild_from_raw.py`, or the manual "R2 rebuild check" workflow).
+
+- **What:** nflverse play-by-play (each season), schedules, officials and teams
+  as zstd Parquet (the polars frame the pipeline used, before `.to_pandas()`);
+  the Football Zebras feed and assignments post as the exact bytes received,
+  gzip-compressed. Layout and sources: `docs/DATA_SOURCES.md` section 11.
+- **Append-only:** conditional writes (`If-None-Match: *`); nothing under `raw/`
+  is overwritten or deleted. A file identical to its latest capture (sha256)
+  isn't stored again; the run's manifest still lists it, pointing to the existing
+  object. Each run writes one manifest (`raw/_runs/`): every input with its key
+  and sha256, the commit the run started from, the event, start times, each
+  step's arguments, and library versions. `fetch_assignments.py` passes its
+  captures to `update_data.py` through a file in `$RUNNER_TEMP`.
+- **Never stops the update:** no `R2_*` variables on a local run = off. Missing
+  variables in GitHub Actions, or any R2 problem = `failed`: a warning, an entry
+  in `run_status.json` `warnings` and `rawCapture`, and no more R2 calls in that
+  process (timeouts 5 s connect / 30 s read, 3 attempts, 120 s budget). The run's
+  result doesn't change, unless capture has been failing for **more than 24
+  hours** (from `rawCapture.lastSuccess`, or `failingSince` if it never worked):
+  then `ok: false`, exit 3, and the run goes red after deploying.
+- **Size:** a full first copy is about 148 MB (12 seasons; nflverse's own files
+  are 232 MB). With unchanged files skipped, about 1.6 GB in the first year
+  against R2's 10 GB free tier.
+- **Rebuild:** downloads a run's inputs (sha256 checked), checks out its start
+  commit in a worktree, runs both scripts with the clock fixed to the run's start,
+  the network blocked and nflreadpy reading the stored files, then compares
+  `frontend/data/` and `reports/miner/` with the run's data commit. Timestamp
+  fields must agree within 20 minutes; `rawCapture` and `source_stamp.json` are
+  ignored.
+- **Test hooks** (ignored in GitHub Actions): `NFLOBS_FAIL=raw_capture`,
+  `NFLOBS_RAW_STORE_DIR=<folder>` (a local folder in place of the bucket).
+
 ## Pipeline scripts
 
 `update_data.py` loads the data once, then calls each module with it. Current
@@ -123,6 +159,8 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 |---|---|---|
 | `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
+| `r2-access-check.yml` (#88) | Manual only | Proves the R2 token can write `nflobs-raw`, can't overwrite an object, and can't list or write `drsplus-tiles`; always deletes its `_checks/` test object |
+| `r2-rebuild-check.yml` (#88) | Manual only (input: a run id) | Rebuilds that "Update NFL Data" run's data from its raw files alone and compares it with what the run committed |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 
 Actions are pinned to commit SHAs. The data bot pushes directly to `main`
@@ -137,13 +175,14 @@ for the bot to push as; tracked in #78.
 |---|---|---|
 | `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR` | GitHub Actions secrets | Deploy step |
 | `GITHUB_TOKEN` | Provided by Actions | nflverse release check, data commit |
-| `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT` | Not yet created | V2.0 step 1 |
+| `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT` | GitHub Actions secrets only (not in a local `.env`, so capture is off on the laptop). Token scoped to `nflobs-raw` | Raw capture (fetch and update steps), the two R2 check workflows (#88) |
 | `ODDS_API_KEY`, `SENTRY_DSN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY` | Not yet created | Later stages (see `.env.example`) |
 
 ## Dependencies
 
 - Runtime (`scripts/requirements.txt`, bounded to major versions): `nflreadpy`,
-  `pandas`, `numpy`, `pyarrow`, `requests`, `beautifulsoup4`.
+  `pandas`, `numpy`, `pyarrow`, `requests`, `beautifulsoup4`, `boto3` (raw
+  capture to R2, #88; about 16.6 MB more to download, mostly `botocore`).
 - Checks (`scripts/requirements-dev.txt`, exact): `ruff`, `pre-commit`.
 - Python 3.11 (laptop and Actions). Node LTS for the Worker scripts and checks.
 - Social images need Playwright with Chromium, installed by hand (see

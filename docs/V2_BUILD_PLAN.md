@@ -1002,11 +1002,12 @@ Record each decision here (and as an ADR in `docs/adr/` from W1).
 | D12 | Trust fixes (V2.0a) ship on the current site before the redesign | Proposed | — |
 | D13 | Small-sample threshold for the label (games per crew-season, team weeks) | Open (V2.0a step 3) | — |
 | D14 | Public uncertainty display: interval level (90% vs 95%) and model source | Open (V2.1b) | — |
-| D15 | R2 raw capture starts right after W1, in parallel with V2.0a | Proposed | — |
+| D15 | R2 raw capture starts right after W1, in parallel with V2.0a | Decided (#88) | Oct 2026 |
 | D16 | Visual design: keep the Penalty Flag theme; audit's palette and typography not adopted | Decided | Oct 2026 |
 | D17 | Uptime monitoring: hosted free tier instead of self-hosted Uptime Kuma | Proposed | — |
 | D18 | Analytics: keep Cloudflare Web Analytics (Plausible optional later) | Proposed | — |
 | D19 | Where assignments and Gameday live in the six-section navigation | Open (V2.1) | — |
+| D20 | Raw capture design: boto3; tables as Parquet, pages as exact bytes; unchanged files not stored again, one manifest per run; conditional writes; failing over 24 hours turns the run red (ADR-0002) | Decided (#88) | Oct 2026 |
 
 ## 34. Dependency map
 

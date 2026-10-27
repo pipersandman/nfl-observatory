@@ -22,7 +22,7 @@ separate Cloudflare Worker serves live penalties for `/gameday/` from ESPN.
 | nflverse play-by-play | Every play 2015 to now; flags are rows with `penalty == 1` | `nfl.load_pbp(season)` per season |
 | nflverse schedules | Games, scores, spreads, weather, `referee` column | `nfl.load_schedules` |
 | nflverse officials | Seven officials per game (lags in season: in 2026 it only had Week 1) | `nfl.load_officials` |
-| Football Zebras | Crew chief assignments before kickoff | `scripts/fetch_assignments.py` (RSS + one article per run) |
+| Football Zebras | Crew chief assignments before kickoff (usually posted Tuesday ~9am PT) | `scripts/fetch_assignments.py` (RSS + one article per run). Exit 2 (#82) when the fetch or parse fails, the post has 0 games, or the week's first game kicks off with no post; "not posted yet" within 2 days of kickoff and partial parses are warnings (exit 0). Problems also show as `::warning::` on the Actions run page |
 | Manual overrides | Corrections to assignments | `data/assignments_overrides.csv` |
 | ESPN site API (unofficial) | Live box scores and play text during games | Gameday Worker only |
 
@@ -109,7 +109,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 
 | Workflow | Runs | Does |
 |---|---|---|
-| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play changed (checks `source_stamp.json`). Then: install, fetch assignments (allowed to fail), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
+| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play changed (checks `source_stamp.json`). Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 

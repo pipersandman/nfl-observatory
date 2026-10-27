@@ -38,3 +38,33 @@ frontend/dataset/
 frontend/sitemap.xml
 frontend/llms.txt
 frontend/data/exports/
+
+# Local secrets (template is .env.example)
+.env.*
+!.env.example
+
+# Claude Code personal settings (shared settings are .claude/settings.json)
+.claude/settings.local.json
+
+# V2.0 data platform
+warehouse/*.duckdb
+warehouse/*.duckdb.wal
+warehouse/target/
+warehouse/logs/
+warehouse/dbt_packages/
+.dagster/
+dagster_home/
+mlruns/
+
+# V2.1 site (Astro / Node)
+node_modules/
+site/dist/
+site/.astro/
+.astro/
+storybook-static/
+
+# Tools
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/

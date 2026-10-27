@@ -38,8 +38,10 @@ DATA = ROOT / 'frontend' / 'data'
 OUT = ROOT / 'social' / 'output'
 SNAP = ROOT / 'social' / 'snapshots'
 sys.path.insert(0, str(HERE))
+sys.path.insert(1, str(HERE.parent))
 from colors import matchup_colors  # noqa: E402
 import captions as C  # noqa: E402
+from seasons import nflverse_current_season  # noqa: E402
 
 SITE = 'nflobservatory.com'
 NAME_FIXES = {'Ronald Torbert': 'Ron Torbert', 'Adrian Hall': 'Adrian Hill'}
@@ -499,7 +501,10 @@ def hood_close_games(d):
 
 def main():
     ap = argparse.ArgumentParser(description='Generate weekly social posts')
-    ap.add_argument('--season', type=int, default=datetime.now().year)
+    ap.add_argument('--season', type=int, default=nflverse_current_season(),
+                    help="Season (default: nflverse's current season, %(default)s; it turns over the "
+                         "Thursday after Labor Day). For next season's Week 1 forecast before opening "
+                         "night, pass --season")
     ap.add_argument('--week', type=int, help='Week for recaps / reports (default: last completed week)')
     ap.add_argument('--kind', choices=list(SERIES), action='append')
     ap.add_argument('--all', action='store_true', help='Every post type for the week')

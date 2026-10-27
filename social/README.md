@@ -32,6 +32,10 @@ python scripts/social/generate.py --kind forecast                         # Tues
 python scripts/social/generate.py --kind watch --game 2026_05_TB_DAL      # before a game
 ```
 
+`--season` defaults to nflverse's current season, which turns over the Thursday after Labor Day.
+In January it's still the season being played, so Week 18 and playoff posts need no `--season`.
+For next season's Week 1 forecast **before opening night**, pass it: `--season 2027 --kind forecast`.
+
 Images and `captions.md` (caption, alt text, hashtags, tracking link) land in `social/output/{season}-week-NN/`.
 **Review every number before posting.**
 

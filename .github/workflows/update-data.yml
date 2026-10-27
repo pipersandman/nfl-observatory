@@ -42,7 +42,10 @@ jobs:
 
       - name: Check for new play-by-play (game-day runs only)
         # Game-day runs continue only if nflverse has published new play-by-play since the last
-        # update; every other run (weekly, manual, code merges) always continues.
+        # update; every other run (weekly, manual, code merges) always continues. The season
+        # watched is nflverse's current season (scripts/seasons.py, same rule as update_data.py).
+        # Until that season's file exists (opening week), game-day runs skip; weekly, manual and
+        # push runs still go ahead, and update_data.py stops red if the file is still missing.
         id: gate
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,26 +53,35 @@ jobs:
           SCHEDULE: ${{ github.event.schedule }}
         run: |
           python3 - <<'EOF'
-          import json, os, urllib.request, datetime as dt
+          import json, os, sys, urllib.request, datetime as dt
+          sys.path.insert(0, 'scripts')
+          from seasons import nflverse_current_season
           GAMEDAY = {'0 3-9 * * 5', '0 15-23 * * 0', '0 0-9 * * 1', '0 2-5,7-9 * * 2'}
           now = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
-          season = now.year if now.month >= 3 else now.year - 1
+          season = nflverse_current_season(now.date())
           stamp_path = 'frontend/data/source_stamp.json'
           try:
               old = json.load(open(stamp_path)).get('pbp')
           except Exception:
               old = None
           new = None
+          checked = False
           try:
               req = urllib.request.Request('https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp',
                                            headers={**({'Authorization': f"Bearer {os.environ['GH_TOKEN']}"} if os.environ.get('GH_TOKEN') else {}), 'Accept': 'application/vnd.github+json'})
               rel = json.load(urllib.request.urlopen(req, timeout=30))
               new = next((a['updated_at'] for a in rel.get('assets', []) if a['name'] == f'play_by_play_{season}.parquet'), None)
+              checked = True
           except Exception as e:
               print(f'Could not check nflverse ({e}); continuing with the update')
           gameday = os.environ.get('EVENT') == 'schedule' and os.environ.get('SCHEDULE') in GAMEDAY
-          skip = gameday and new is not None and new == old
-          print(f'play-by-play {season}: last used {old}, now {new} -> {"no new games, skipping" if skip else "updating"}')
+          unpublished = checked and new is None
+          skip = checked and gameday and (new is None or new == old)
+          if unpublished:
+              why = 'not published yet, skipping' if skip else 'not published yet, updating anyway (not a game-day run)'
+          else:
+              why = 'no new games, skipping' if skip else 'updating'
+          print(f'play-by-play {season}: last used {old}, now {new} -> {why}')
           if new:
               json.dump({'pbp': new, 'checkedAt': now.isoformat(timespec='seconds') + 'Z'}, open(stamp_path, 'w'))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:

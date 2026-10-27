@@ -87,8 +87,11 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 | `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 
-Actions are pinned to commit SHAs. The data bot pushes directly to `main`, so
-the W1 ruleset needs GitHub Actions as a bypass actor (plan section 28 step 5).
+Actions are pinned to commit SHAs. The data bot pushes directly to `main`
+with the workflow's `GITHUB_TOKEN`, which can't be a ruleset bypass actor. So
+the W1 ruleset only restricts deletions and blocks force pushes (plan section
+28 step 5). Requiring pull requests and the `checks` job needs a GitHub App
+for the bot to push as; tracked in #78.
 
 ## Secrets (names only)
 
@@ -167,3 +170,7 @@ with separate code (not the pipeline's):
     in 18 files; deferred to its own issue.
 11. **Dependabot bumps** `ruff` in `requirements-dev.txt` but not the matching
     `rev` in `.pre-commit-config.yaml`; update both together.
+12. **`main` doesn't require pull requests or passing checks.** The ruleset
+    only restricts deletions and blocks force pushes, because the data bot's
+    `GITHUB_TOKEN` can't bypass stricter rules. A merge with a red `checks` job
+    is possible until #78 is done.

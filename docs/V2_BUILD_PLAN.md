@@ -889,13 +889,16 @@ Claude Code → PR).
       section 17 checklist ticked for page changes, open questions.
    3. `docs/adr/` with a template and ADR-0001 recording the decisions in
       section 33.
-5. **You: protect `main`.** GitHub → repo **Settings → Rules → Rulesets → New
-   branch ruleset** → target `main` → require a pull request before merging,
-   require status checks (the checks job), block force pushes → add **GitHub
-   Actions** as a bypass actor so the data bot's update commits still land →
-   **Create**.
-6. **Done when:** the PR merges through the new rules, and the next automated
-   "Update NFL data" commit still lands on `main`.
+5. **You: protect `main` (basic).** GitHub → repo **Settings → Rules →
+   Rulesets → New branch ruleset** → target `main` → tick **Restrict
+   deletions** and **Block force pushes** only → **Create**. Leave "Require a
+   pull request" and "Require status checks" off: the data bot pushes to
+   `main` with the workflow's `GITHUB_TOKEN`, which can't be a ruleset bypass
+   actor, so those rules would block its commits. Full protection (pull
+   request and the `checks` job required) needs a GitHub App for the bot to
+   push as, added as the bypass actor; tracked in #78.
+6. **Done when:** the ruleset is active on `main` with those two rules, and the
+   next automated "Update NFL data" commit still lands on `main`.
 
 ## 29. The routine for every step
 
@@ -952,7 +955,7 @@ locally, never committed).
 
 | Stage | Must pass before the next stage |
 |---|---|
-| W0–W1 | Laptop checks pass; `main` protected; data bot still commits |
+| W0–W1 | Laptop checks pass; `main` ruleset active (restrict deletions, block force pushes); data bot still commits. Pull request and `checks` protection follow with a GitHub App (#78) |
 | V2.0a | Every published number in the dictionary; conflicts resolved; recompute check matches JSON; section 17 checklist passes on every page; baseline usability test done |
 | V2.0 | Zero-difference reconciliation with current JSON; data-quality checks blocking; two parallel weeks |
 | V2.0b | Backtest on 2015–25 detects known shifts; false-discovery control on every item; evidence plays attached |

@@ -18,15 +18,22 @@ Usage:
     python scripts/fetch_assignments.py              # next unplayed week
     python scripts/fetch_assignments.py --week 5     # specific week (current season)
     python scripts/fetch_assignments.py --html page.html --week 4   # parse a saved page (testing)
+
+Exit codes (the workflow step is allowed to fail, so these never block the data run):
+    0  fetched, week already complete, or not posted yet (normal until 2 days before kickoff)
+    2  fetch or parse failed, the post had no games, or the week's first game kicked off
+       with no post found
+Problems also print a ::warning:: line when running in GitHub Actions.
 """
 
 import argparse
 import csv
 import json
+import os
 import re
 import sys
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -62,6 +69,30 @@ MATCHUP_RE = re.compile(r'^\s*([A-Za-z0-9]+)\s+(at|vs\.?|@)\s+([A-Za-z0-9]+)\s*$
 NAME_RE = re.compile(r"^[A-Z][a-zA-Z'.\-]+(?:\s+[A-Z][a-zA-Z'.\-]+){1,2}$")
 SAFE_NETWORK_RE = re.compile(r"^[A-Za-z0-9 +&./'-]{1,40}$")
 TIME_RE = re.compile(r'^\d{1,2}(:\d{2})?\s*[ap]\.?m\.?$', re.IGNORECASE)
+
+# "Not posted yet" becomes a warning this close to the week's first kickoff. Football
+# Zebras usually posts Tuesday ~9am PT; 2 days before a Thursday opener is Tuesday evening.
+WARN_BEFORE_KICKOFF = timedelta(days=2)
+
+
+def problem(problems: list, kind: str, message: str) -> None:
+    """Record a 'fail' (exit 2) or 'warn' (exit 0) and show it on the Actions run page."""
+    problems.append((kind, message))
+    if os.environ.get('GITHUB_ACTIONS'):
+        print(f'::warning title=Crew assignments::{message}')
+
+
+def first_kickoff(wk: pd.DataFrame):
+    """Earliest kickoff of the week, US Eastern (schedule gameday + gametime)."""
+    from zoneinfo import ZoneInfo
+    times = []
+    for _, r in wk.iterrows():
+        t = r.get('gametime') if isinstance(r.get('gametime'), str) and r.get('gametime') else '00:00'
+        try:
+            times.append(datetime.fromisoformat(f"{r['gameday']} {t}").replace(tzinfo=ZoneInfo('America/New_York')))
+        except (TypeError, ValueError):
+            continue
+    return min(times) if times else None
 
 
 # -----------------------------------------------------------------------------
@@ -178,7 +209,10 @@ def load_overrides(season: int, week: int) -> dict:
 # -----------------------------------------------------------------------------
 
 def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set,
-                 get_feed, html_override: str | None = None, force: bool = False) -> None:
+                 get_feed, html_override: str | None = None, force: bool = False) -> list:
+    """Fetch, parse and save one week. Returns the problems found: [(kind, message)],
+    kind 'fail' (exit 2) or 'warn'."""
+    problems = []
     wk = schedule[(schedule['game_type'] == 'REG') & (schedule['week'] == week)].copy()
     out_path = OUT_DIR / f'{season}-week-{week:02d}.json'
     print(f'   Target: {season} Week {week} ({len(wk)} games)')
@@ -188,7 +222,7 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
         assigned = sum(1 for g in existing.get('games', []) if g.get('referee'))
         if assigned >= len(wk):
             print(f'   ✓ Already have all {assigned} assignments — skipping fetch')
-            return
+            return problems
 
     source_url, published = None, None
     parsed = []
@@ -201,14 +235,32 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
             if not source_url:
                 print(f'   … Week {week} assignments not posted yet (checked feed)')
                 html = None
+                # Judge "not posted yet" against the week's first kickoff
+                from zoneinfo import ZoneInfo
+                kick = first_kickoff(wk)
+                now = datetime.now(ZoneInfo('America/New_York'))
+                if kick and now >= kick:
+                    msg = (f'Week {week}: first game kicked off {kick:%a %Y-%m-%d %H:%M} ET '
+                           f'without published assignments')
+                    print(f'   ⚠️  {msg}')
+                    problem(problems, 'fail', msg)
+                elif kick and kick - now <= WARN_BEFORE_KICKOFF:
+                    msg = f'Week {week} assignments not posted yet, first game {kick:%a %Y-%m-%d %H:%M} ET'
+                    print(f'   ⚠️  {msg}')
+                    problem(problems, 'warn', msg)
             else:
                 print(f'   ✓ Found post: {source_url}')
                 html = http_get(source_url)
         if html:
             parsed = parse_assignments(article_lines(html), known_refs)
             print(f'   ✓ Parsed {len(parsed)} games from article')
+            if not parsed:
+                msg = f'Week {week}: found the post but parsed 0 games (page layout may have changed)'
+                print(f'   ⚠️  {msg}')
+                problem(problems, 'fail', msg)
     except Exception as e:
         print(f'   ⚠️  Fetch/parse failed: {type(e).__name__}: {e}')
+        problem(problems, 'fail', f'Week {week}: fetch/parse failed: {type(e).__name__}: {e}')
 
     by_pair = {}
     for g in parsed:
@@ -255,9 +307,12 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
     print(f'   💾 {out_path.relative_to(PROJECT_DIR)}: {assigned}/{len(wk)} games assigned')
     if unmatched:
         print(f'   ⚠️  Parsed but not on schedule: {", ".join(unmatched)}')
+        problem(problems, 'warn', f'Week {week}: parsed but not on schedule: {", ".join(unmatched)}')
     if parsed and assigned < len(wk):
         missing = [f"{g['away']}@{g['home']}" for g in games if not g['referee']]
         print(f'   ⚠️  Missing: {", ".join(missing)} (add to data/assignments_overrides.csv if needed)')
+        problem(problems, 'warn', f'Week {week}: missing crews for {", ".join(missing)}')
+    return problems
 
 
 def main():
@@ -277,13 +332,17 @@ def main():
         print('   No upcoming regular-season games. Nothing to do.')
         return 0
 
+    problems = []
     known_refs = set(NAME_FIXES.values())
     try:
         import nflreadpy as nfl
         hist = nfl.load_schedules([args.season - 1, args.season]).to_pandas()
         known_refs |= set(hist['referee'].dropna().replace(NAME_FIXES))
-    except Exception:
-        pass
+    except Exception as e:
+        # Parsing still works (any "First Last" line counts as a name), just less strictly
+        msg = f'known-referee list failed to load ({type(e).__name__}: {e}); parsing with a shorter list'
+        print(f'   ⚠️  {msg}')
+        problem(problems, 'warn', msg)
 
     feed_cache = {}
     def get_feed():   # fetched at most once per run, and only if a week needs it
@@ -292,7 +351,12 @@ def main():
         return feed_cache['xml']
 
     for week in weeks:
-        process_week(args.season, week, schedule, known_refs, get_feed, args.html, args.force)
+        problems += process_week(args.season, week, schedule, known_refs, get_feed, args.html, args.force)
+
+    fails = [m for k, m in problems if k == 'fail']
+    if fails:
+        print(f'\n   FAILED ({len(fails)}): ' + '; '.join(fails))
+        return 2
     return 0
 
 

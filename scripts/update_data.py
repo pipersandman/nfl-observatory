@@ -15,8 +15,9 @@ Requirements:
 
 import json
 import argparse
+import os
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 import sys
 
@@ -38,8 +39,42 @@ PROJECT_DIR = SCRIPT_DIR.parent
 DATA_DIR = PROJECT_DIR / 'frontend' / 'data'
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-CURRENT_YEAR = datetime.now().year
+CURRENT_YEAR = datetime.now().year          # calendar year: schedules go this far
+CURRENT_SEASON = nfl.get_current_season()   # nflverse's season (turns over the Thursday after Labor Day)
 HISTORICAL_START = 2015   # first season nflverse publishes all seven officials per game
+
+
+def season_plan(full: bool, current_season: int | None = None, calendar_year: int | None = None):
+    """Seasons to load: (required, schedule_seasons).
+
+    Play-by-play and officials go up to nflverse's current season (it refuses later
+    ones) and every one of them must load. Schedules go up to the calendar year, so
+    next season's games appear as soon as nflverse publishes them (Week 1 previews
+    before opening night); a season past the current one may be empty.
+    """
+    cs = CURRENT_SEASON if current_season is None else current_season
+    cy = CURRENT_YEAR if calendar_year is None else calendar_year
+    first = HISTORICAL_START if full else cs - 1
+    return list(range(first, cs + 1)), list(range(first, max(cs, cy) + 1))
+
+
+class DataLoadError(Exception):
+    """A required source failed to load: stop before writing anything."""
+
+
+def forced_failure(name: str):
+    """Test hook: NFLOBS_FAIL=team_pages,load_pbp,... makes the named step fail.
+    Ignored in GitHub Actions so a forced failure can never reach production."""
+    raw = os.environ.get('NFLOBS_FAIL', '')
+    if raw and not os.environ.get('GITHUB_ACTIONS') and name in {x.strip() for x in raw.split(',')}:
+        raise RuntimeError('forced failure (NFLOBS_FAIL)')
+
+
+def short_error(e: Exception) -> str:
+    """Exception type and first line, without local paths (run_status.json is public)."""
+    msg = str(e).splitlines()[0] if str(e) else ''
+    msg = msg.replace(str(PROJECT_DIR) + os.sep, '').replace(str(PROJECT_DIR), '')
+    return f"{type(e).__name__}: {msg}"[:200] if msg else type(e).__name__
 
 # NFL team data for logos and display names
 NFL_TEAMS = {
@@ -110,31 +145,46 @@ def get_team_info(abbr: str) -> dict:
 # DATA LOADING
 # =============================================================================
 
-def load_all_data(seasons: list[int]) -> dict:
-    """Load all required data from nflreadpy."""
+def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None) -> dict:
+    """Load all required data from nflreadpy.
+
+    Raises DataLoadError if the schedules, the officials or any season of play-by-play
+    fail to load: the run must stop before writing anything. Soft problems are returned
+    in data['warnings'] and data['wp_status'] for run_status.json.
+    """
+    schedule_seasons = schedule_seasons or seasons
     print(f"\n📥 Loading data for seasons: {seasons}")
     print("=" * 60)
-    
-    data = {}
-    
+
+    data = {'warnings': [], 'wp_status': None}
+
     # Load schedules FIRST - we need it to map game IDs
     print("   Loading schedules...")
     try:
-        schedules = nfl.load_schedules(seasons).to_pandas()
-        data['schedules'] = schedules
-        print(f"   ✓ {len(schedules)} games")
-        
-        # Create game ID mapping (old_game_id -> game_id)
-        # Officials use old_game_id format, PBP uses game_id format
-        id_map = schedules[['game_id', 'old_game_id']].drop_duplicates()
+        forced_failure('load_schedules')
+        schedules = nfl.load_schedules(schedule_seasons).to_pandas()
     except Exception as e:
-        print(f"   ✗ Schedules error: {e}")
-        data['schedules'] = pd.DataFrame()
-        id_map = pd.DataFrame()
-    
+        raise DataLoadError(f"schedules: {short_error(e)}") from e
+    # nflreadpy returns no rows (no error) for a season it hasn't published
+    have = set(schedules['season'].unique()) if 'season' in schedules.columns else set()
+    missing = [s for s in seasons if s not in have]
+    if missing:
+        raise DataLoadError(f"schedules: no games for {', '.join(map(str, missing))}")
+    for s in schedule_seasons:
+        if s not in have:
+            print(f"   … {s} schedule not published yet")
+            data['warnings'].append({'source': 'schedules', 'message': f'{s} schedule not published yet'})
+    data['schedules'] = schedules
+    print(f"   ✓ {len(schedules)} games")
+
+    # Create game ID mapping (old_game_id -> game_id)
+    # Officials use old_game_id format, PBP uses game_id format
+    id_map = schedules[['game_id', 'old_game_id']].drop_duplicates()
+
     # Officials assignments
     print("   Loading officials...")
     try:
+        forced_failure('load_officials')
         officials = nfl.load_officials(seasons).to_pandas()
         
         # Officials use old_game_id format - rename and merge to get new game_id
@@ -179,7 +229,11 @@ def load_all_data(seasons: list[int]) -> dict:
                                          'position': 'Referee', 'season': int(g['game_id'][:4]),
                                          'week': int(g['game_id'].split('_')[1])})
                             covered.add(g['game_id'])
-                except Exception:
+                except Exception as e:
+                    # One unreadable week file shouldn't stop the run, but it's recorded
+                    rel = f.relative_to(DATA_DIR).as_posix()
+                    print(f"   ⚠️  Skipped unreadable assignment file {rel}: {short_error(e)}")
+                    data['warnings'].append({'source': 'assignments', 'file': rel, 'error': short_error(e)})
                     continue
             if rows:
                 officials = pd.concat([officials, pd.DataFrame(rows)], ignore_index=True)
@@ -188,9 +242,8 @@ def load_all_data(seasons: list[int]) -> dict:
         data['officials'] = officials
         print(f"   ✓ {len(officials)} official assignments")
     except Exception as e:
-        print(f"   ✗ Officials error: {e}")
-        data['officials'] = pd.DataFrame()
-    
+        raise DataLoadError(f"officials: {short_error(e)}") from e
+
     # Play-by-play for penalties — load season by season to handle errors gracefully
     print("   Loading play-by-play (this takes a minute)...")
     cols = [
@@ -208,8 +261,11 @@ def load_all_data(seasons: list[int]) -> dict:
     plays_per_game = []
     for season in seasons:
         try:
+            forced_failure('load_pbp')
             # Load full PBP then select columns (nflreadpy doesn't support column filtering on load)
             season_pbp = nfl.load_pbp(season).to_pandas()
+            if season_pbp.empty:
+                raise ValueError('no plays')
             # Select only the columns we need (that exist in the data)
             available_cols = [c for c in cols if c in season_pbp.columns]
             # Play counts per game (for "% of plays with a flag"): real snaps plus
@@ -221,9 +277,8 @@ def load_all_data(seasons: list[int]) -> dict:
             all_pbp.append(season_pbp)
             print(f"      {season}: ✓ {len(season_pbp)} plays")
         except Exception as e:
-            print(f"      {season}: ✗ Skipped ({type(e).__name__}: {e})")
-            continue
-    
+            raise DataLoadError(f"play-by-play {season}: {short_error(e)}") from e
+
     if all_pbp:
         pbp = pd.concat(all_pbp, ignore_index=True)
         data['penalties'] = pbp[pbp['penalty'] == 1].copy()
@@ -233,15 +288,19 @@ def load_all_data(seasons: list[int]) -> dict:
             [c for c in ['game_id', 'season', 'week', 'season_type', 'posteam', 'defteam', 'play_type', 'desc'] if c in pbp.columns]].copy()
         # Win-probability context tables (what a point is worth by score and clock; a kicking
         # team's chances after a score) for valuing flags in win chances
+        # Soft failure: recorded in run_status.json (the old wp_tables.json stays)
         try:
+            forced_failure('wp_tables')
             from flag_impact import build_wp_tables
             data['wp_tables'] = build_wp_tables(pbp)
             # published for the live Gameday feed (Worker), which values flags the same way during games
             (DATA_DIR / 'wp_tables.json').write_text(json.dumps({**data['wp_tables'],
                 'pointsPerYard': 0.0615, 'seasons': f"{min(seasons)}-{max(seasons)}",
                 'note': 'kick: "lead|clockBucket" -> [kicking team win chance, n]; lev: "clockBucket|marginBucket" -> [win chance per expected point, n]'}))
+            data['wp_status'] = {'status': 'ok', 'outputs': ['wp_tables.json']}
         except Exception as e:
             print(f"   ⚠️  Win-probability tables failed: {type(e).__name__}: {e}")
+            data['wp_status'] = {'status': 'failed', 'error': short_error(e), 'outputs': ['wp_tables.json']}
         # Every game with play-by-play (including any with zero accepted penalties)
         game_cols = [c for c in ['game_id', 'season', 'week', 'season_type'] if c in pbp.columns]
         data['games_played'] = pbp[game_cols].drop_duplicates('game_id')
@@ -426,7 +485,7 @@ def generate_hero_stats(data: dict, ref_stats: pd.DataFrame) -> dict:
         'totalPenalties': int(len(penalties)) if not penalties.empty else 0,
         'totalGames': int(penalties['game_id'].nunique()) if not penalties.empty else 0,
         'totalReferees': int(len(ref_stats)) if not ref_stats.empty else 0,
-        'seasonsRange': f"{HISTORICAL_START}-{CURRENT_YEAR}",
+        'seasonsRange': f"{HISTORICAL_START}-{CURRENT_SEASON}",
         'lastUpdated': datetime.utcnow().isoformat() + 'Z'
     }
     
@@ -689,16 +748,26 @@ def calculate_season_comparison(data: dict) -> dict:
 # OUTPUT GENERATION
 # =============================================================================
 
-def save_json(data, filename: str):
-    """Save data to JSON file."""
+def save_json(data, filename: str, quiet: bool = False):
+    """Save data to a JSON file atomically: convert first, write a temp file, then
+    rename it into place. If anything fails, the old file is left untouched."""
     filepath = DATA_DIR / filename
     filepath.parent.mkdir(parents=True, exist_ok=True)
-    
+    tmp = filepath.with_name(filepath.name + '.tmp')
+
     from jsonsafe import dumps as safe_dumps   # NaN-proof: one NaN breaks the whole file in browsers
-    with open(filepath, 'w') as f:
-        f.write(safe_dumps(data))
-    
-    print(f"   💾 {filename}")
+    try:
+        text = safe_dumps(data)
+        forced_failure(f'save_json:{filename}')
+        with open(tmp, 'w') as f:
+            f.write(text)
+        os.replace(tmp, filepath)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
+
+    if not quiet:
+        print(f"   💾 {filename}")
 
 
 def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame, 
@@ -914,9 +983,7 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             'generatedAt': datetime.utcnow().isoformat() + 'Z'
         }
         
-        # Save
-        with open(referee_dir / f"{slug}.json", 'w') as f:
-            f.write(__import__('jsonsafe').dumps(profile))
+        save_json(profile, f"referee/{slug}.json", quiet=True)
     
     print(f"   ✓ Generated {len(ref_stats)} profiles")
 
@@ -925,26 +992,80 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
 # MAIN
 # =============================================================================
 
+class RunStatus:
+    """Runs each pipeline module, keeps going past failures, and records the result."""
+
+    def __init__(self):
+        self.modules = {}
+
+    def run(self, name, outputs, fn, depends_on=None):
+        dep = self.modules.get(depends_on) if depends_on else None
+        if dep and dep['status'] != 'ok':
+            print(f"   ⏭️  {name} skipped ({depends_on} {dep['status']})")
+            self.modules[name] = {'status': 'skipped', 'reason': f'{depends_on} {dep["status"]}', 'outputs': outputs}
+            return None
+        try:
+            forced_failure(name)
+            result = fn()
+        except Exception as e:
+            import traceback
+            print(f"   ⚠️  {name} failed: {type(e).__name__}: {e}")
+            traceback.print_exc()
+            self.modules[name] = {'status': 'failed', 'error': short_error(e), 'outputs': outputs}
+            return None
+        self.modules[name] = {'status': 'ok', 'outputs': outputs}
+        return result
+
+
+def write_run_status(modules: dict, warnings: list, run_at: str) -> bool:
+    """frontend/data/run_status.json: what failed this run and when each output was
+    last refreshed. lastSuccess carries forward from the previous file. Returns ok."""
+    try:
+        prev = json.loads((DATA_DIR / 'run_status.json').read_text(encoding='utf-8')).get('modules', {})
+    except Exception:
+        prev = {}
+    out = {}
+    for name, m in modules.items():
+        last = run_at if m['status'] == 'ok' else (prev.get(name) or {}).get('lastSuccess')
+        out[name] = {**m, 'lastSuccess': last}
+    ok = all(m['status'] == 'ok' for m in out.values())
+    save_json({'runAt': run_at, 'ok': ok, 'modules': out, 'warnings': warnings}, 'run_status.json')
+    return ok
+
+
+def report(lines: list[str]):
+    """Print the end-of-run summary, and add it to the GitHub Actions run page."""
+    for line in lines:
+        print(line)
+    path = os.environ.get('GITHUB_STEP_SUMMARY')
+    if path:
+        with open(path, 'a', encoding='utf-8') as f:
+            f.write('### Data update\n\n' + '\n'.join(f'- {x.strip()}' for x in lines if x.strip() and set(x.strip()) != {'='}) + '\n')
+
+
 def main():
     parser = argparse.ArgumentParser(description='Update NFL Observatory data')
     parser.add_argument('--full', action='store_true', help='Full historical rebuild')
     args = parser.parse_args()
-    
+
     # Determine seasons
-    if args.full:
-        seasons = list(range(HISTORICAL_START, CURRENT_YEAR + 1))
-    else:
-        seasons = [CURRENT_YEAR - 1, CURRENT_YEAR]
-    
+    seasons, schedule_seasons = season_plan(args.full)
+
     print("\n" + "=" * 60)
     print("🏈 NFL OFFICIATING OBSERVATORY - DATA UPDATE")
     print("=" * 60)
     print(f"   Mode: {'Full Rebuild' if args.full else 'Incremental'}")
     print(f"   Seasons: {seasons}")
-    
-    # Load data
-    data = load_all_data(seasons)
-    
+    if os.environ.get('NFLOBS_FAIL') and os.environ.get('GITHUB_ACTIONS'):
+        print("WARNING: NFLOBS_FAIL is set but ignored in GitHub Actions")
+
+    # Load data. A required source that fails stops the run here, before anything is written.
+    try:
+        data = load_all_data(seasons, schedule_seasons)
+    except DataLoadError as e:
+        report(['', '=' * 60, f"❌ FAILED (data loading): {e} — nothing written", '=' * 60])
+        return 1
+
     if data['penalties'].empty:
         print("\n❌ No penalty data available. Exiting.")
         sys.exit(1)
@@ -975,97 +1096,92 @@ def main():
     # Individual profiles (with penalty type breakdown)
     generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'])
 
+    # Modules: each one runs even if an earlier one failed; failures are recorded,
+    # not hidden. Order and arguments are unchanged.
+    status = RunStatus()
+    if data['wp_status']:
+        status.modules['wp_tables'] = data['wp_status']
+
     # Scoreboard (league totals by timeframe + weekly running log)
-    try:
+    def scoreboard_():
         from scoreboard import build_scoreboard
         save_json(build_scoreboard(data), 'scoreboard.json')
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Scoreboard failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('scoreboard', ['scoreboard.json'], scoreboard_)
 
     # Penalty type trends (which calls are rising or falling)
-    try:
+    def type_trends_():
         from type_trends import build_type_trends
         save_json(build_type_trends(data), 'type_trends.json')
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Type trends failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('type_trends', ['type_trends.json'], type_trends_)
 
     # Flag impact: what each flag cost, drive killers / extenders, big plays erased
-    try:
+    def flag_impact_():
         from flag_impact import build_flag_impact
         save_json(build_flag_impact(data), 'flag_impact.json')
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Flag impact failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('flag_impact', ['flag_impact.json'], flag_impact_)
 
     # Stat miner: ranked, luck-filtered shortlist of the week's most unusual stats (internal report)
-    try:
+    def stat_miner_():
         from stat_miner import build_stat_miner
         build_stat_miner(data)
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Stat miner failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('stat_miner', ['reports/miner/'], stat_miner_)
 
     # Crew styles: each active crew chief's calling fingerprint
-    try:
+    def crew_styles_():
         from crew_styles import build_crew_styles
         sc_path = DATA_DIR / 'season_comparison.json'
         active = [c['name'] for c in json.loads(sc_path.read_text()).get('crewChiefs', [])] if sc_path.exists() else []
         save_json(build_crew_styles(data, active), 'crew_styles.json')
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Crew styles failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('crew_styles', ['crew_styles.json'], crew_styles_)
 
     # Team pages (all 32 teams, by division)
-    try:
+    def team_pages_():
         from team_pages import build_team_pages
         build_team_pages(data, get_team_info, slugify, DATA_DIR)
-    except Exception as e:
-        import traceback
-        print(f"   ⚠️  Team pages failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
+    status.run('team_pages', ['teams/'], team_pages_)
 
     # Game previews for the next week (uses Football Zebras assignments if fetched)
-    try:
+    def previews_():
         from previews import build_previews
-        preview_out = build_previews(data, slugify, get_team_info, NAME_FIXES, DATA_DIR)
-        # Prediction scorecard: freeze upcoming projections, backtest past weeks, grade
-        try:
-            import scorecard
-            scorecard.run(data, build_previews, (slugify, get_team_info, NAME_FIXES, DATA_DIR),
-                          (preview_out or {}).get('weeks', []), DATA_DIR, PROJECT_DIR)
-        except Exception as e:
-            import traceback
-            print(f"   ⚠️  Scorecard failed: {type(e).__name__}: {e}")
-            traceback.print_exc()
-        # History ledger: permanent week-by-week record of predictions and outcomes
-        try:
-            from history import build_history
-            build_history(data, DATA_DIR)
-        except Exception as e:
-            import traceback
-            print(f"   ⚠️  History ledger failed: {type(e).__name__}: {e}")
-            traceback.print_exc()
-    except Exception as e:
-        # Previews must never block the main data update
-        import traceback
-        print(f"   ⚠️  Previews failed: {type(e).__name__}: {e}")
-        traceback.print_exc()
-    
-    print("\n" + "=" * 60)
-    print("✅ DATA UPDATE COMPLETE")
-    print("=" * 60)
-    print(f"   Penalties: {hero_stats['totalPenalties']:,}")
-    print(f"   Games: {hero_stats['totalGames']:,}")
-    print(f"   Referees: {hero_stats['totalReferees']}")
-    print(f"   Output: {DATA_DIR}")
+        return build_previews(data, slugify, get_team_info, NAME_FIXES, DATA_DIR)
+    preview_out = status.run('previews', ['previews/'], previews_)
+
+    # Prediction scorecard: freeze upcoming projections, backtest past weeks, grade
+    def scorecard_():
+        import scorecard
+        from previews import build_previews
+        scorecard.run(data, build_previews, (slugify, get_team_info, NAME_FIXES, DATA_DIR),
+                      (preview_out or {}).get('weeks', []), DATA_DIR, PROJECT_DIR)
+    status.run('scorecard', ['scorecard/'], scorecard_, depends_on='previews')
+
+    # History ledger: permanent week-by-week record of predictions and outcomes
+    def history_():
+        from history import build_history
+        build_history(data, DATA_DIR)
+    status.run('history', ['history/'], history_, depends_on='previews')
+
+    # Run status (written last) and summary
+    run_at = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    ok = write_run_status(status.modules, data['warnings'], run_at)
+    failed = [f"{n} ({m['error']})" for n, m in status.modules.items() if m['status'] == 'failed']
+    skipped = [f"{n} ({m['reason']})" for n, m in status.modules.items() if m['status'] == 'skipped']
+    warns = [w.get('message') or f"{w.get('file')}: {w.get('error')}" for w in data['warnings']]
+
+    lines = ['', '=' * 60, '✅ DATA UPDATE COMPLETE' if ok else '❌ DATA UPDATE FINISHED WITH FAILURES', '=' * 60]
+    if failed:
+        lines.append(f"   FAILED: {'; '.join(failed)}")
+    if skipped:
+        lines.append(f"   SKIPPED: {'; '.join(skipped)}")
+    if warns:
+        lines.append(f"   WARNINGS ({len(warns)}): {'; '.join(warns)}")
+    lines += [f"   Penalties: {hero_stats['totalPenalties']:,}",
+              f"   Games: {hero_stats['totalGames']:,}",
+              f"   Referees: {hero_stats['totalReferees']}",
+              f"   Output: {DATA_DIR}"]
+    report(lines)
+    # 3 = some modules failed or were skipped; everything else was written
+    return 0 if ok else 3
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

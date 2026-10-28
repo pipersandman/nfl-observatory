@@ -180,10 +180,22 @@ for the bot to push as; tracked in #78.
 
 ## Dependencies
 
-- Runtime (`scripts/requirements.txt`, bounded to major versions): `nflreadpy`,
-  `pandas`, `numpy`, `pyarrow`, `requests`, `beautifulsoup4`, `boto3` (raw
-  capture to R2, #88; about 16.6 MB more to download, mostly `botocore`).
-- Checks (`scripts/requirements-dev.txt`, exact): `ruff`, `pre-commit`.
+- Runtime: `nflreadpy`, `pandas`, `numpy`, `pyarrow`, `requests`,
+  `beautifulsoup4`, `boto3` (raw capture to R2, #88; about 16.6 MB more to
+  download, mostly `botocore`).
+  - `scripts/requirements.in` lists them with allowed ranges (edit this one).
+  - `scripts/requirements.txt` is the lock file: exact versions of all 30
+    packages, generated from `requirements.in` with
+    `uv pip compile --universal` (#92). CI and the laptop both install from it.
+    `tzdata` and `colorama` carry Windows-only markers, so Linux skips them.
+  - Dependabot (`uv` ecosystem) proposes updates to the lock weekly; `boto3`,
+    `botocore` and `s3transfer` come as one grouped PR.
+  - The lock's Python floor is 3.11.9 (`--python-version 3.11.9`) because
+    that's the oldest Python we run (the laptop; Actions has 3.11.17). If the
+    laptop's Python is ever upgraded, raise the floor to match in a separate
+    step.
+- Checks (`scripts/requirements-dev.txt`, exact): `ruff`, `pre-commit`, `uv`
+  (generates the lock file).
 - Python 3.11 (laptop and Actions). Node LTS for the Worker scripts and checks.
 - Social images need Playwright with Chromium, installed by hand (see
   `social/README.md`); not in either requirements file.

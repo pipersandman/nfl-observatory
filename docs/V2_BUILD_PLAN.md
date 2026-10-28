@@ -917,9 +917,10 @@ Claude Code → PR).
    > Propose a step-by-step plan with the files you'll change and how you'll
    > check it. Don't edit anything until I approve.
 4. **Approve or adjust the plan.** Ask for smaller steps if any part is unclear.
-5. **Build.** Let Claude Code work; approve each command it asks to run (keep the
-   default permission mode; never use the skip-permissions option). If it asks
-   for a secret, stop: add it to GitHub secrets or `.env` yourself.
+5. **Build.** Let Claude Code work; approve each command it asks to run. Auto
+   mode is fine: pushes, PR creation and merges always ask, and the deny rules
+   always apply. Never use the skip-permissions option. If it asks for a secret,
+   stop: add it to GitHub secrets or `.env` yourself.
 6. **Check locally:** `python scripts\check.py`; for page changes, run the
    local server and look at the changed pages on desktop and a narrow window.
 7. **Commit and open the PR:** ask Claude Code to commit with a clear message,

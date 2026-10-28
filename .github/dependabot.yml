@@ -17,6 +17,11 @@ updates:
           - "boto3"
           - "botocore"
           - "s3transfer"
+    ignore:
+      # numpy 2.5+ needs Python 3.12; our lock's floor is 3.11.9 (#92).
+      # Remove this when we move to Python 3.12+.
+      - dependency-name: "numpy"
+        versions: [">=2.5"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -103,3 +103,5 @@ unless the task is about data: `git restore frontend/data reports/miner`.
 5. Commit messages: a short summary line, then what changed and why.
 6. Pull from `main` before starting: the data bot commits to it several times
    a week (more on game days).
+7. Change files in `.github/workflows/` with the Edit tool only, never with a
+   shell command (`sed`, redirection), so the ask rule applies.

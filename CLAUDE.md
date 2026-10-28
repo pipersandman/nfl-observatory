@@ -43,7 +43,8 @@ request. Read the plan section named in the issue before proposing anything.
 
 | Task | Command |
 |---|---|
-| Install dependencies | `venv/Scripts/python -m pip install -r scripts/requirements.txt` |
+| Install dependencies (exact versions from the lock file) | `venv/Scripts/python -m pip install -r scripts/requirements.txt` |
+| Regenerate the lock file (after editing `scripts/requirements.in`; run from `scripts/`) | `../venv/Scripts/python -m uv pip compile requirements.in --universal --python-version 3.11.9 --output-file requirements.txt` |
 | Update current season | `venv/Scripts/python scripts/update_data.py` |
 | Full rebuild (2015 to now) | `venv/Scripts/python scripts/update_data.py --full` |
 | Crew assignments | `venv/Scripts/python scripts/fetch_assignments.py` |

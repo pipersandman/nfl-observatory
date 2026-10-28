@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from jsonsafe import dumps as safe_dumps
+from jsonsafe import PendingWrites, dumps as safe_dumps
 
 DIVISION_ORDER = ['AFC East', 'AFC North', 'AFC South', 'AFC West',
                   'NFC East', 'NFC North', 'NFC South', 'NFC West']
@@ -323,18 +323,20 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                 'rank': rank_cur,
             })
 
+    # Build every file first, write them all at the end (a failure leaves the old set, #81)
     out = data_dir / 'teams'
-    out.mkdir(parents=True, exist_ok=True)
+    pending = PendingWrites('team_pages:mid')
     for team, p in profiles.items():
-        (out / f'{team}.json').write_text(safe_dumps(p, indent=2, default=str))
+        pending.put(out / f'{team}.json', safe_dumps(p, indent=2, default=str))
     divisions = [{'name': d, 'teams': sorted(index[d], key=lambda x: (x['perGame'] or 0), reverse=True)}
                  for d in DIVISION_ORDER]
-    (out / 'index.json').write_text(safe_dumps({
+    pending.put(out / 'index.json', safe_dumps({
         'season': season, 'leaguePerGame': _r(league_pg), 'divisions': divisions,
         'throughWeek': through_week,
         'baselines': [{'key': k, 'label': l, 'short': sh} for k, l, sh, _ in baseline_defs],
         'defaultBaseline': 'sameWeeks' if any(k == 'sameWeeks' for k, *_ in baseline_defs) else (baseline_defs[0][0] if baseline_defs else None),
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }, indent=2))
+    pending.commit()
     print(f"   ✓ {len(profiles)} team pages ({season}), 8 divisions")
     return {'teams': len(profiles)}

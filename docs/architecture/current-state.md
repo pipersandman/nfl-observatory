@@ -236,8 +236,19 @@ with separate code (not the pipeline's):
 
 1. **~~Module failures don't fail the run.~~** Fixed in #80: a failed module
    turns the run red and is recorded in `run_status.json`; data-loading failures
-   stop the run before anything is written. Remaining part: multi-file modules
-   can leave a mix of old and new files (#81).
+   stop the run before anything is written. **~~Multi-file modules can leave a
+   mix of old and new files.~~** Fixed in #81: `team_pages`, `previews`,
+   `stat_miner`, `scorecard` and `history` build every file in memory
+   (`PendingWrites` in `scripts/jsonsafe.py`) and write them only at the end,
+   each through `atomic_write()` (temp file, then rename, UTF-8). `save_json()`
+   and `wp_tables.json` use `atomic_write()` too. The scorecard writes in two
+   batches: `live/` freezes as soon as freezing is done (they can't be made again
+   once a game kicks off), then `backtest/` and `public.json` together (derived,
+   rebuilt every run). Test hooks: `NFLOBS_FAIL=<module>:mid`,
+   `scorecard:after-freeze` and `atomic:<file>` (ignored in GitHub Actions).
+   Known limit: a failure during the final write loop itself (for example, disk
+   full) could still leave a mix; the run is red and `run_status.json` names
+   the module.
 2. **No tests of the numbers.** Before W1 there were no automated checks at all;
    `check.py` now covers lint, syntax and JSON validity, not correctness.
 3. **Two definitions of "season"** sit side by side: league trends include

@@ -31,6 +31,7 @@ except ImportError:
     sys.exit(1)
 
 import raw_capture  # noqa: E402  (raw pulls to R2; never stops the update)
+from jsonsafe import atomic_write, forced_failure  # noqa: E402  (atomic writes; NFLOBS_FAIL test hook)
 
 # =============================================================================
 # CONFIGURATION
@@ -62,14 +63,6 @@ def season_plan(full: bool, current_season: int | None = None, calendar_year: in
 
 class DataLoadError(Exception):
     """A required source failed to load: stop before writing anything."""
-
-
-def forced_failure(name: str):
-    """Test hook: NFLOBS_FAIL=team_pages,load_pbp,... makes the named step fail.
-    Ignored in GitHub Actions so a forced failure can never reach production."""
-    raw = os.environ.get('NFLOBS_FAIL', '')
-    if raw and not os.environ.get('GITHUB_ACTIONS') and name in {x.strip() for x in raw.split(',')}:
-        raise RuntimeError('forced failure (NFLOBS_FAIL)')
 
 
 def short_error(e: Exception) -> str:
@@ -303,7 +296,7 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
             from flag_impact import build_wp_tables
             data['wp_tables'] = build_wp_tables(pbp)
             # published for the live Gameday feed (Worker), which values flags the same way during games
-            (DATA_DIR / 'wp_tables.json').write_text(json.dumps({**data['wp_tables'],
+            atomic_write(DATA_DIR / 'wp_tables.json', json.dumps({**data['wp_tables'],
                 'pointsPerYard': 0.0615, 'seasons': f"{min(seasons)}-{max(seasons)}",
                 'note': 'kick: "lead|clockBucket" -> [kicking team win chance, n]; lev: "clockBucket|marginBucket" -> [win chance per expected point, n]'}))
             data['wp_status'] = {'status': 'ok', 'outputs': ['wp_tables.json']}
@@ -760,20 +753,10 @@ def calculate_season_comparison(data: dict) -> dict:
 def save_json(data, filename: str, quiet: bool = False):
     """Save data to a JSON file atomically: convert first, write a temp file, then
     rename it into place. If anything fails, the old file is left untouched."""
-    filepath = DATA_DIR / filename
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    tmp = filepath.with_name(filepath.name + '.tmp')
-
     from jsonsafe import dumps as safe_dumps   # NaN-proof: one NaN breaks the whole file in browsers
-    try:
-        text = safe_dumps(data)
-        forced_failure(f'save_json:{filename}')
-        with open(tmp, 'w') as f:
-            f.write(text)
-        os.replace(tmp, filepath)
-    except BaseException:
-        tmp.unlink(missing_ok=True)
-        raise
+    text = safe_dumps(data)
+    forced_failure(f'save_json:{filename}')
+    atomic_write(DATA_DIR / filename, text)
 
     if not quiet:
         print(f"   💾 {filename}")

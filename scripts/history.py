@@ -26,18 +26,13 @@ from pathlib import Path
 
 import pandas as pd
 
-from jsonsafe import dumps as safe_dumps
+from jsonsafe import PendingWrites, dumps as safe_dumps
 
 NAME_FIXES = {'Ronald Torbert': 'Ron Torbert', 'Adrian Hall': 'Adrian Hill'}
 
 
 def _load(path):
     return json.loads(path.read_text()) if path.exists() else None
-
-
-def _save(path, obj):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(safe_dumps(obj))
 
 
 def _num(x, d=2):
@@ -136,6 +131,10 @@ def build_history(data: dict, data_dir: Path) -> dict:
     season = int(reg['season'].max())
     seasons = [season - 1, season]
     written, corrected = 0, 0
+    # Build every file first (week files with their corrections, the snapshot, the index),
+    # write them all at the end: the ledger is a permanent record, never half-updated (#81).
+    # Each file is read before it's rebuilt and never read back, so reads stay on disk.
+    pending = PendingWrites('history:mid')
     index = _load(hist / 'index.json') or {'weeks': []}
     idx = {(w['season'], w['week']): w for w in index['weeks']}
 
@@ -182,8 +181,8 @@ def build_history(data: dict, data_dir: Path) -> dict:
                         changed = True
                 games.append(entry)
             if changed:
-                _save(path, {'season': s, 'week': wk, 'summary': _summary(games), 'games': games,
-                             'notes': 'prediction.source: live = published before kickoff; backtest = reconstructed afterward.'})
+                pending.put(path, safe_dumps({'season': s, 'week': wk, 'summary': _summary(games), 'games': games,
+                                              'notes': 'prediction.source: live = published before kickoff; backtest = reconstructed afterward.'}))
                 written += 1
                 idx[(s, wk)] = {'season': s, 'week': wk, 'file': f'history/games/{s}-week-{wk:02d}.json', **_summary(games)}
 
@@ -196,7 +195,7 @@ def build_history(data: dict, data_dir: Path) -> dict:
             teams = _load(data_dir / 'teams' / 'index.json') or {}
             sc_json = _load(data_dir / 'season_comparison.json') or {}
             sb = _load(data_dir / 'scoreboard.json') or {}
-            _save(snap_path, {
+            pending.put(snap_path, safe_dumps({
                 'season': season, 'throughWeek': done,
                 'takenAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                 'teams': [{k: t.get(k) for k in ('abbr', 'record', 'games', 'perGame', 'yardsPerGame', 'rank')}
@@ -204,11 +203,12 @@ def build_history(data: dict, data_dir: Path) -> dict:
                 'crews': [{'name': c['name'], **(c.get('current') or {})} for c in sc_json.get('crewChiefs', [])],
                 'league': (sc_json.get('league') or {}).get('current'),
                 'scoreboardSeason': next((f for f in sb.get('frames', []) if f['key'] == 'season'), None),
-            })
+            }))
             print(f"   ✓ League snapshot saved: {season} through Week {done}")
 
     index['weeks'] = sorted(idx.values(), key=lambda w: (w['season'], w['week']), reverse=True)
     index['generatedAt'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
-    _save(hist / 'index.json', index)
+    pending.put(hist / 'index.json', safe_dumps(index))
+    pending.commit()
     print(f"   ✓ {written} week file(s) written, {corrected} correction(s), {len(index['weeks'])} weeks in the ledger")
     return index

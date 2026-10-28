@@ -25,7 +25,7 @@ from zoneinfo import ZoneInfo
 import numpy as np
 import pandas as pd
 
-from jsonsafe import dumps as safe_dumps
+from jsonsafe import PendingWrites, dumps as safe_dumps
 
 SEASON_WEIGHTS = {0: 1.0, 1: 0.6, 2: 0.3}   # seasons back -> weight
 TEAM_PRIOR_GAMES = 6        # weighted team-games of "league average" mixed into team factors
@@ -84,6 +84,8 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
     are public before kickoff). Writes nothing; returns that week's result."""
     if not as_of:
         print("\n🔮 Building game previews...")
+    # Build every file first, write them all at the end (a failure leaves the old set, #81)
+    pending = PendingWrites('previews:mid')
 
     schedules = data.get('schedules', pd.DataFrame())
     penalties = data.get('penalties', pd.DataFrame())
@@ -458,10 +460,9 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
         if as_of:
             return result
         out_dir = data_dir / 'previews'
-        out_dir.mkdir(parents=True, exist_ok=True)
         fname = f'{season}-week-{week:02d}.json'
         result['file'] = f'previews/{fname}'
-        (out_dir / fname).write_text(safe_dumps(result))
+        pending.put(out_dir / fname, safe_dumps(result))
         print(f"   ✓ {season} Week {week}{' (remaining games)' if remaining_only else ''}: {len(previews)} games, "
               f"crews assigned for {result['assignments']['assigned']}")
         print(f"   💾 previews/{fname}")
@@ -475,7 +476,7 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
         return results[0]
 
     out_dir = data_dir / 'previews'
-    (out_dir / 'latest.json').write_text(safe_dumps({
+    pending.put(out_dir / 'latest.json', safe_dumps({
         'season': season,
         'weeks': [{'week': r['week'], 'file': r['file'], 'remainingOnly': r['remainingOnly'],
                    'games': len(r['games'])} for r in results],
@@ -483,4 +484,5 @@ def build_previews(data: dict, slugify, team_info, name_fixes: dict, data_dir: P
         'week': results[0]['week'], 'file': results[0]['file'],
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }, indent=2))
+    pending.commit()
     return {'weeks': results}

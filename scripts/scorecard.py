@@ -22,6 +22,8 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 
+from jsonsafe import PendingWrites
+
 ET = ZoneInfo('America/New_York')
 
 
@@ -78,22 +80,21 @@ def _num(x):
     return x is not None and not (isinstance(x, float) and x != x)
 
 
-def _save(path, obj):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(_clean(obj), indent=2, default=str, allow_nan=False))
+def _text(obj):
+    return json.dumps(_clean(obj), indent=2, default=str, allow_nan=False)
 
 
 # -----------------------------------------------------------------------------
 # 1. Freeze
 # -----------------------------------------------------------------------------
 
-def freeze(preview_results, data_dir: Path, project_dir: Path):
+def freeze(preview_results, data_dir: Path, project_dir: Path, pending: PendingWrites):
     live_dir = data_dir / 'scorecard' / 'live'
     now = datetime.now(ET)
     frozen = 0
     for wk in preview_results or []:
         path = live_dir / f"{wk['season']}-week-{wk['week']:02d}.json"
-        live = _load(path)
+        live = pending.read_json(path, {})
         for g in wk['games']:
             ko = _kickoff(g.get('gameday'), g.get('gametime'))
             if ko is None or now >= ko:
@@ -101,7 +102,7 @@ def freeze(preview_results, data_dir: Path, project_dir: Path):
             live[g['gameId']] = _record(g, wk['model'], 'live')
             frozen += 1
         if live:
-            _save(path, live)
+            pending.put(path, _text(live))
 
     # Projections already posted on social (Flag Watch) count as published, if the
     # pipeline didn't capture that game itself.
@@ -109,7 +110,7 @@ def freeze(preview_results, data_dir: Path, project_dir: Path):
     for snap_file in sorted((project_dir / 'social' / 'snapshots').glob('*.json')):
         season, week = snap_file.stem.split('-week-')
         path = live_dir / f'{season}-week-{int(week):02d}.json'
-        live = _load(path)
+        live = pending.read_json(path, {})
         changed = False
         for gid, sn in _load(snap_file).items():
             if gid in live:
@@ -123,7 +124,7 @@ def freeze(preview_results, data_dir: Path, project_dir: Path):
             changed = True
             imported += 1
         if changed:
-            _save(path, live)
+            pending.put(path, _text(live))
     print(f"   ✓ Froze {frozen} upcoming projections" + (f", imported {imported} posted" if imported else ''))
 
 
@@ -131,7 +132,7 @@ def freeze(preview_results, data_dir: Path, project_dir: Path):
 # 2. Backtest
 # -----------------------------------------------------------------------------
 
-def backtest(data, build_previews_fn, args, data_dir: Path):
+def backtest(data, build_previews_fn, args, data_dir: Path, pending: PendingWrites):
     sched = data['schedules']
     reg = sched[sched['game_type'] == 'REG']
     played = set(data['games_played']['game_id'])
@@ -144,12 +145,12 @@ def backtest(data, build_previews_fn, args, data_dir: Path):
             if not ids or not ids <= played:          # only fully played weeks
                 continue
             path = bt_dir / f'{s}-week-{int(w):02d}.json'
-            if path.exists():
+            if pending.exists(path):
                 continue                               # cached: past weeks don't change
             res = build_previews_fn(data, *args, as_of=(s, int(w)))
             if not res:
                 continue
-            _save(path, {g['gameId']: _record(g, res['model'], 'backtest') for g in res['games']})
+            pending.put(path, _text({g['gameId']: _record(g, res['model'], 'backtest') for g in res['games']}))
             built += 1
     print(f"   ✓ Backtest: {built} new week(s) reconstructed")
 
@@ -218,17 +219,17 @@ def by_week(rows):
     return [{'season': int(s), 'week': int(w), **summarize(g)} for (s, w), g in sorted(groups.items())]
 
 
-def grade(data, data_dir: Path):
+def grade(data, data_dir: Path, pending: PendingWrites):
     actuals = _actuals(data)
     officials = data['officials']
     crews = (officials[officials['position'] == 'Referee'].dropna(subset=['game_id'])
              .drop_duplicates('game_id').set_index('game_id')['name'].to_dict())
     sc = data_dir / 'scorecard'
 
-    def collect(sub):
+    def collect(sub):   # includes this run's backtest weeks, not yet written
         recs = []
-        for f in sorted((sc / sub).glob('*.json')):
-            recs += list(_load(f).values())
+        for f in pending.glob(sc / sub, '*.json'):
+            recs += list(pending.read_json(f, {}).values())
         return recs
 
     bt_recs = collect('backtest')
@@ -265,7 +266,7 @@ def grade(data, data_dir: Path):
             'lastSeason': {'season': season - 1, 'summary': summarize(bt_last), 'byWeek': by_week(bt_last) if bt_last else []},
         },
     }
-    _save(sc / 'public.json', out)
+    pending.put(sc / 'public.json', _text(out))
     L, B = out['live']['summary'], out['backtest']['lastSeason']['summary']
     print(f"   ✓ Scorecard: live {L['games'] if L else 0} games"
           + (f" (avg miss {L['avgMiss']}, {L['hitRate']}% in range)" if L else '')
@@ -276,6 +277,15 @@ def grade(data, data_dir: Path):
 
 def run(data, build_previews_fn, preview_args, preview_results, data_dir: Path, project_dir: Path):
     print("\n📏 Prediction scorecard...")
-    freeze(preview_results, data_dir, project_dir)
-    backtest(data, build_previews_fn, preview_args, data_dir)
-    return grade(data, data_dir)
+    # Two batches (#81). live/ freezes are irreplaceable (once a game kicks off they can't
+    # be made again), so they're written as soon as freezing is done. backtest/ and
+    # public.json are derived and rebuilt every run, so they're written together at the
+    # end: a failure in backtest or grading leaves the old pair.
+    frozen = PendingWrites('scorecard:mid')
+    freeze(preview_results, data_dir, project_dir, frozen)
+    frozen.commit()
+    derived = PendingWrites('scorecard:after-freeze')
+    backtest(data, build_previews_fn, preview_args, data_dir, derived)
+    out = grade(data, data_dir, derived)
+    derived.commit()
+    return out

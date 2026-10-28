@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 
 from flag_impact import classify, offsetting_td_rows
+from jsonsafe import PendingWrites
 from weeks import completed_week
 
 OUT = Path(__file__).resolve().parent.parent / 'reports' / 'miner'
@@ -418,9 +419,10 @@ def build_stat_miner(data):
         items.append({**{k: c[k] for k in ('level', 'entity', 'metric', 'value', 'baseline', 'rank', 'of', 'scope') if k in c},
                       'p': float(c['p']), 'q': float(c['q']), 'score': round(float(c['score']), 2),
                       'sentence': _sentence(c), 'evidence': _evidence(c, fl), 'crew': c.get('crew')})
-    OUT.mkdir(parents=True, exist_ok=True)
+    # Build both files first, write them together at the end (a failure leaves the old pair, #81)
+    pending = PendingWrites('stat_miner:mid')
     stem = f'{season}-week-{week:02d}'
-    (OUT / f'{stem}.json').write_text(json.dumps({'season': season, 'week': week, 'candidates': int(len(df)),
+    pending.put(OUT / f'{stem}.json', json.dumps({'season': season, 'week': week, 'candidates': int(len(df)),
                                                   'kept': int(len(keep)), 'fdr': FDR_Q, 'items': items}, indent=2, default=str))
     md = [f"# Week {week} {season}: unusual stats (stat miner)", '',
           f"{len(df):,} standout candidates (each already in the top 1–5% of its comparables) scored; "
@@ -433,6 +435,7 @@ def build_stat_miner(data):
                   + f"  \n   <sub>{it['level']} · surprise p={it['p']:.1e} · q={it['q']:.2f}</sub>")
         for ev in it['evidence']:
             md.append(f"   - {ev}")
-    (OUT / f'{stem}.md').write_text('\n'.join(md) + '\n')
+    pending.put(OUT / f'{stem}.md', '\n'.join(md) + '\n')
+    pending.commit()
     print(f"   ✓ {len(df):,} candidates · {len(items)} kept → reports/miner/{stem}.md")
     return items

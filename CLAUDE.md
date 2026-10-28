@@ -105,3 +105,6 @@ unless the task is about data: `git restore frontend/data reports/miner`.
    a week (more on game days).
 7. Change files in `.github/workflows/` with the Edit tool only, never with a
    shell command (`sed`, redirection), so the ask rule applies.
+8. Run git push, gh pr create and gh pr merge as standalone commands: never in
+   a cd … && chain, never after a heredoc or other commands in the same call.
+   Write PR bodies to a file in a separate step first.

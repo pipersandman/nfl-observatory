@@ -198,8 +198,9 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
                 'bySeason': [{'season': int(sz), 'perGame': _r(per.get(sz, 0) / n)} for sz, n in games_by_season.items()],
             })
 
-        all_type_keys = set(t['type'] for t in committed_types) | set(trend_keys)
-        all_drawn_keys = set(t['type'] for t in drawn_types)
+        # Sorted: a set's order changes from run to run, which would rewrite every team file (#102)
+        all_type_keys = sorted(set(t['type'] for t in committed_types) | set(trend_keys))
+        all_drawn_keys = sorted(set(t['type'] for t in drawn_types))
         baselines = {}
         team_week = max(through_week, int(cur['week'].max()) if len(cur) else 0)
         for key, label, short, mask in baseline_defs:
@@ -308,7 +309,8 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             'opponents': opponents,
             'typeTrends': type_trends,
             'nextGame': next_game,
-            'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+            # No generatedAt here: teams/index.json has one, and a per-team timestamp would
+            # rewrite (and redeploy) all 32 files every run even when nothing changed (#102)
         }
         profiles[team] = profile
         if division in index:

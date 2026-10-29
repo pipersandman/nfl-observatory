@@ -6,7 +6,9 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–9 of 11 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Session 8: What Flags Cost (league block, team tiles, static pages, guide), `wp_tables.json`, `/gameday/` and the live strip. Session 9: full paths for every session 1–3 field (a "Full paths" clause in M1–M45) and M100 (published files no page reads). Session 10: the full coverage check across every published file, the cross-page pass, and the gameday worker test; session 11: decisions. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–10 of 11 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Session 8: What Flags Cost (league block, team tiles, static pages, guide), `wp_tables.json`, `/gameday/` and the live strip. Session 9: full paths for every session 1–3 field (a "Full paths" clause in M1–M45) and M100 (published files no page reads). Session 10: the full coverage check across every published file and the cross-page pass (C27); session 11: decisions.
+
+**Coverage (session 10, data at `64e6587`):** every published field is named in an entry by its full path after its file name: **1,270 of 1,270**, 0 unmapped, across 30 sources (24 kinds of `frontend/data/` file, the 5 CSVs from `build_static.py`, and the gameday feed). The check counts a field only as its full path after its own file name on the same line; a parent name never counts; one fake field per source is reported missing. In the early entries, names before each "Full paths" clause are shorthand (".x" after a path, a parent, a card id); the "Full paths" clause is the complete list. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -396,7 +398,7 @@ plays.").
 | Calculation | Scoreboard: `scripts/scoreboard.py` `stats()` (`topCrew`: `name`, `perGame`, `games`), for `frames[]` and `weekFrames[]`. Summary line: `build_static.py` `home_summary()` (first of `crews_now`, sorted by `current.perGame`). |
 | Rounding | 1 decimal |
 | Provenance | nflverse play-by-play, schedules and officials; Football Zebras assignments. Every data run. |
-| Limitations | **Small samples (for the small-sample label, V2.0a step 3, decision D13):** the "Since 2015" leader, Alex Moore (16.5 per game), has **22 games**, the fewest of the 28 crew chiefs in that frame. The other 27 have 43 to 178 regular-season games since 2015 (median 115); 7 have 150 or more (counts from `referee/<slug>.json` → `regularSeasonStats[].games`). The 3-game minimum lets a short career outrank long ones. In a week frame each crew chief has one game. The summary line shows no games count. **Fixed in #107 (D4):** the scoreboard used the schedule's `referee` column only, empty for 42 of 107 games in 2026 (Scott Novak was rated on 4 of his 7 games, 22.0). |
+| Limitations | **Small samples (for the small-sample label, V2.0a step 3, plan decision D13):** the "Since 2015" leader, Alex Moore (16.5 per game), has **22 games**, the fewest of the 28 crew chiefs in that frame. The other 27 have 43 to 178 regular-season games since 2015 (median 115); 7 have 150 or more (counts from `referee/<slug>.json` → `regularSeasonStats[].games`). The 3-game minimum lets a short career outrank long ones. In a week frame each crew chief has one game. The summary line shows no games count. **Fixed in #107 (D4):** the scoreboard used the schedule's `referee` column only, empty for 42 of 107 games in 2026 (Scott Novak was rated on 4 of his 7 games, 22.0). |
 | Where it appears | Scoreboard (`scoreboard.json` → `frames[].topCrew`, `weekFrames[].topCrew`); summary line **Full paths:** `scoreboard.json` → `{frames[],weekFrames[]}.topCrew.{name,perGame,games}`. |
 | Example | At `5091e57`: 2026 season, Scott Novak **20.1** over 7 games (scoreboard and summary line agree; `season_comparison.json` 20.14). Week 7: Craig Wrolstad 20.0, 1 game. "Since 2015": Alex Moore 16.5, 22 games. |
 | Conflicts | [D4](audits/metric-conflicts-2026-10-28.md#d4-scoreboard-crew-leader-uses-incomplete-crew-assignments) (fixed in #107), [C6](audits/metric-conflicts-2026-10-28.md#c6-wording-and-framing-section-17-on-the-home-page) |
@@ -553,7 +555,7 @@ see C6.
 | Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **Session 8:** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS['data-methodology']`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs about hourly on game nights and Sundays, on Tuesday and Wednesday, and on every merge to `main` ([D11](audits/metric-conflicts-2026-10-28.md#d11-how-is-this-data-collected-says-updated-weekly--on-tuesdays), text only). |
 | Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker): M98, M99. **Full paths:** `stats.json` → `lastUpdated`; not displayed: `totalPenalties`, `totalGames`, `totalReferees`, `seasonsRange`, `refereeVariance`. |
 | Example | `2026-10-28T23:25:59Z` |
-| Conflicts | None |
+| Conflicts | [D11](audits/metric-conflicts-2026-10-28.md#d11-how-is-this-data-collected-says-updated-weekly--on-tuesdays) |
 
 **`stats.json` fields not displayed anywhere:** `totalPenalties` (39,335),
 `totalGames` (3,135), `totalReferees` (28), `seasonsRange` ("2015-2026") and
@@ -631,7 +633,7 @@ below, M37–M45.
 | Limitations | A different rate from the crew chief's "2015–25" row on the card (M1, `all` baseline: regular season, seasons before this one): Vinovich 11.0 here vs 11.02 there, Moore 16.5 vs 16.12. The explainer calls crews "flag-heavy" or "let them play" (C13). **Fixed in #110 (D7):** the explainer said "League average is typically around 11-12 penalties per game" (12.59 for 2015–25; 14.67 in 2026); it no longer states a number. A crew chief's rate reflects the games and teams they drew (plan section 8). |
 | Where it appears | Home, Complete Crew Chief Stats: "Avg/Game". Crew pop-up: "Career" block. Card fallback (no season data). JSON: `referees.json` → `avg_per_game`; `referee/<slug>.json` → `stats.avgPerGame`. **Full paths:** `referees.json` → `[].avg_per_game`; not displayed: `[].total_penalties`; `referee/<slug>.json` → `stats.avgPerGame`; not displayed: `stats.totalPenalties`, `explanations.avgPerGame`. |
 | Example | Vinovich 11.0 (2,091 penalties in 190 games). Moore 16.5 (364 in 22). |
-| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) (fixed in #110) |
+| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) (fixed in #110), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages) |
 
 ### M27. Crew chief game range (fewest and most penalties in a game)
 
@@ -1284,7 +1286,7 @@ uses today's abbreviations (no `OAK`, `SD` or `STL` penalties in 2015).
 | Limitations | Ranks rates from 6 or 7 games with no sample label and no "observed" label ([C17](audits/metric-conflicts-2026-10-28.md#c17-small-samples-handled-four-ways), [C18](audits/metric-conflicts-2026-10-28.md#c18-wording-and-framing-section-17-on-team-pages)). Ties aren't marked: 8 tied groups in 2026 (CLE 9.00 in 7 games and LAC 9.00 in 6 are both #2; the next is #4). Teams with a bye are ranked on one game fewer. |
 | Where it appears | `teams/index.json` → `divisions[].teams[].rank`. `teams/<ABBR>.json` → `rank.current`, `rank.lastSeason`, `rank.of`, `history[].rank`. `teams_<season>.csv` → `rank`. |
 | Example | KC #22 (2026), #7 (2025); LV #27 (2026); LV 2016 (as Oakland) #1 at 9.19. Recomputed, a match. |
-| Conflicts | [C17](audits/metric-conflicts-2026-10-28.md#c17-small-samples-handled-four-ways), [C18](audits/metric-conflicts-2026-10-28.md#c18-wording-and-framing-section-17-on-team-pages) |
+| Conflicts | [C17](audits/metric-conflicts-2026-10-28.md#c17-small-samples-handled-four-ways), [C18](audits/metric-conflicts-2026-10-28.md#c18-wording-and-framing-section-17-on-team-pages), [C27](audits/metric-conflicts-2026-10-28.md#c27-two-tie-rules-for-ranks) |
 
 ### M55. Team penalty types committed per game
 
@@ -1646,7 +1648,7 @@ games, every crew chief assigned). Places covered: "Game Previews" (section
 "Projected flags", the home page source's pre-filled previews list, and the
 guide's "How projections work". The cards' "Track record" and the scorecard
 pop-up are session 7; the gameday worker's and the social images' use of
-`previews/latest.json` are session 8 (worker) or outside the site (social).
+`previews/latest.json` are M98 (worker) or outside the site (social).
 
 **One source, two kinds of number.** `scripts/previews.py`
 `build_previews()` writes `previews/latest.json` (which weeks to show) and
@@ -2194,7 +2196,7 @@ table and the pop-up. Examples below are after the fix.
 | Limitations | An estimate shown to 2 decimals with no interval ([C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased)). "Most costly" ranks reflect play volume and game situations as well as discipline. Ties don't share a rank (unlike M54). The pop-up badge is a percentage only (M2). |
 | Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].team`, `scopes.<scope>.teams[].pointsCostPerGame`, `scopes.<scope>.teams[].pointsCost`, `scopes.<scope>.teams[].games`, `scopes.<scope>.teams[].flags`, `scopes.<scope>.teams[].rank`, `scopes.<scope>.league.pointsCostPerTeamGame` |
 | Example | 2026: JAX 9.53 (57.2 in 6 games, #1), GB 8.46 (#4), NYJ 8.09 (#5); league 6.51. 2025: NE 5.45 (#19), league 5.57. Recomputed, a match. |
-| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased) |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased), [C27](audits/metric-conflicts-2026-10-28.md#c27-two-tie-rules-for-ranks) |
 
 ### M91. Win chances lost and "≈ Wins given away"
 

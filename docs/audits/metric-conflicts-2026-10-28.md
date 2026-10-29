@@ -8,7 +8,7 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 9 of 11 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history, What Flags Cost and gameday; full paths for sessions 1–3). The cross-page pass is session 10; Ty's decisions, session 11.
+**Status:** session 10 of 11 (every area; full paths; the full coverage check and the cross-page pass, which adds C27). Ty's decisions: session 11.
 Fields published but not displayed are listed after the conflicts. Data
 errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 (open), D11 and D12 are on #112 too (text-only fixes; later text-only errors go there).
@@ -33,7 +33,7 @@ errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 | C14 | Season-adjusted and raw career rates under one label | Session 3 | A: raw by default; adjusted labeled each time | |
 | C15 | Model estimates on crew style pages not labeled as estimates | Session 3 | A: label each estimate, observed count beside it | |
 | C16 | "Flags per game": a game total and one team's total under one label | Session 4 | A: separate names (and CSV column) | |
-| C17 | Small samples handled four ways | Session 4 | A: one threshold (D13), one visible label | |
+| C17 | Small samples handled four ways | Session 4 | A: one threshold (plan decision D13), one visible label | |
 | C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | |
 | C19 | Trend text: fixed answers and stated causes | Session 5 | A: answers from the data; causes as possibilities | |
 | C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | |
@@ -43,9 +43,12 @@ errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 | C24 | Live and backtest projections mixed in one week summary | Session 7 | A: split mixed weeks | |
 | C25 | What Flags Cost: model estimates, precision and "erased" | Session 8 | A: label every modeled number; 1 decimal | |
 | C26 | Live counts and win chances come from ESPN, final ones from nflverse | Session 8 | A: say so on the live strip too | |
+| C27 | Two tie rules for ranks | Session 10 (cross-page pass) | A: ties share the higher rank, shown "T-22" | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
-choices. Each gets its own issue; the dictionary entries note them.
+choices. (D-numbers here are data errors. The plan's decisions in
+`docs/adr/0001-v2-decisions.md` are a separate list, D1–D19; this file calls
+those "plan decision D<n>".) Each gets its own issue; the dictionary entries note them.
 
 | ID | Error | Where | Issue |
 |---|---|---|---|
@@ -225,7 +228,7 @@ and `calculate_referee_stats()`; dictionary entry M3.
 **Options:**
 - **A. Rebuild as a labeled spread:**
   - regular season only (with C1)
-  - crew chiefs above a minimum number of games (D13 threshold)
+  - crew chiefs above a minimum number of games (plan decision D13 threshold)
   - show the range in penalties per game with each end's games count, e.g.
     "11.0 to 16.5 penalties per game (190 and 22 games)"
   - descriptive wording, neutral styling
@@ -827,7 +830,7 @@ and a CSV column name is read without the page around it.
 
 **What differs:** rates from a few games are shown with four different rules:
 a minimum to appear, a dimmed badge, a footnote, or nothing. The plan's
-small-sample threshold (D13, V2.0a step 3) is still open.
+small-sample threshold (plan decision D13, V2.0a step 3) is still open.
 
 **Evidence (data at `53e0bd1`):**
 - **Minimum to appear:** team crew chief rows need 2 games
@@ -848,14 +851,14 @@ small-sample threshold (D13, V2.0a step 3) is still open.
   games vs 535 Sunday games, 2024–26 (M79).
 
 **Options:**
-- **A. One threshold (D13), one visible label everywhere:** below it, the
+- **A. One threshold (plan decision D13), one visible label everywhere:** below it, the
   number shows a "small sample" label and its games count; lists that rank by
   rate leave out or mark rows below it. Effect: no numbers change; labels and
   some list orders change.
 - **B. Keep each rule; add a games count wherever a rate is shown.**
   Effect: no numbers change; more columns.
 
-**Recommendation:** A, decided with D13 in V2.0a step 3 (plan section 7:
+**Recommendation:** A, decided with plan decision D13 in V2.0a step 3 (plan section 7:
 games always shown, a small-sample label below the threshold).
 
 **Ty's decision:**
@@ -1193,6 +1196,70 @@ nflverse's. The same game can show two flag counts and two costs.
 counts should follow).
 
 **Ty's decision:**
+
+---
+
+## C27. Two tie rules for ranks
+
+**What differs:** the site ranks teams in two places with different rules
+for ties, and both ranks sit in the same team pop-up.
+
+**Evidence (data at `64e6587`):**
+- **"Most-penalized rank"** (`team_pages.py`, M54): `rank(method='min')`,
+  tied teams share the higher rank. KC and CIN, both 6.83 per game: **#22**
+  each (the next is #24).
+- **"#<n> of 32 most costly"** (`flag_impact.py` `_team_block()`, M90):
+  sorted by the rounded points per game, then numbered 1, 2, 3…, so a tie is
+  broken by the order the teams were listed (alphabetical). CHI and KC, both
+  5.73: CHI **#21**, KC **#22**. 2025: ATL #21 and LAC #22 (5.21), BAL #24
+  and PIT #25 (4.87).
+- KC's pop-up shows both: "Most-penalized rank #22" (a shared rank) and "#22
+  of 32 most costly" (an unshared one, behind a team with the same value).
+- Neither rank says it's tied.
+
+**Options:**
+- **A. One rule: ties share the higher rank, shown as "T-22"**, for every
+  rank on the site (ranked on the unrounded value). Effect: some What Flags
+  Cost ranks change (KC #21 tied with CHI); tied ranks get a "T".
+- **B. Keep both, labeled:** "ranked by points per game; ties in table order".
+  Effect: a label only.
+
+**Recommendation:** A (section 17, rule 1: a ranking names its metric, and a
+tie shouldn't look like a difference).
+
+**Ty's decision:**
+
+---
+
+## Cross-page pass
+
+Session 10. Every idea used in more than one session, with the entries that
+use it and the conflicts that cover it. **New in this pass: C27.** Everything
+else is already covered; where several conflicts cover one idea, they should
+be decided together (session 11).
+
+| Idea | Entries | Covered by | Notes |
+|---|---|---|---|
+| "Flags per game" / "penalties per game" | M1, M18, M46, M47, M64, M65, M98 | C5, C16, C26 | A game total, one team's total, and live counts (penalties, not plays) under one label |
+| "League average" | M35, M47, M73, M85, M90 | C10, C16, C21 | Five benchmarks: league rate (14.67), mean of crews (12.80), per team (7.34), the model's level (14.3), points per team-game (6.51). Decide C10, C16 and C21 together, so each name means one thing |
+| "Season" and playoffs | M1, M16, M20–M22, M25–M31, M64 | C1 | `trends.json` and crew chief career figures include playoffs; every other page is regular season |
+| "All seasons", "Since 2015", "career" | M1, M37, M48, M67–M70 | C8, C11, C14 | "Since 2015" includes the current season; "All seasons (2015–25)" and "career" don't, except where C11 lists |
+| Home vs road | M15, M21, M28, M40, M52 | C12 | Four measures: share of flags, % more on road teams, the pts gap, per-game rates |
+| Same weeks and partial weeks | M1, M48, M64, M69, M97 | C4, C7 | The league and type trends compare a partial week with a completed one; crew chiefs and teams follow their own week; summary lines use all of last season |
+| Most common type | M16, M32, M55, M68, M77 | C1 | Card "Holding" (playoffs in) vs "Offensive Holding" everywhere else; the name shortening is recorded on M16 (wording step) |
+| Rank and ties | M19, M54, M77, M90 | **C27**, C17, C18, C25 | Two tie rules (new); no "observed" (C18); small samples (C17); estimates ranked (C25) |
+| Small samples | M2, M19, M52, M54, M60, M61, M63, M79 | C17 | One threshold is plan decision D13 (V2.0a step 3) |
+| Model estimates vs observed | M37–M44, M71–M76, M81–M86, M89–M91, M99 | C14, C15, C21, C22, C23, C25 | Decide together: one labeling rule for every estimate |
+| Red/green and arrows | M2, M28, M44, M49, M61, M82 | C13, C18 | Red = more penalties holds everywhere except Home Bias colors and quadrant colors (C13); "came out ahead" in green (C18) |
+| Rounding | most entries | — | Recorded per entry, not a conflict (issue scope); V2.0a step 8 applies the section 6 defaults |
+| Live vs final, frozen vs rebuilt | M71, M81, M87, M98, M99 | C9, C24, C26 | Live ESPN numbers, frozen projections, and rebuilt (backtest) ones, each labeled differently |
+| "Drawn" | M49, M50, M56, M77 | C18 | — |
+| Wording (section 17) | home page, crew chiefs, teams, trends, What Flags Cost | C6, C13, C18, C19, C25 | One wording step (V2.0a) for all five |
+| Fixed text about the data | M24, M35, M37, M72, M89 | C19, D7, D8, D11, D12 | Sentences that state a number or fact in code rather than from the data |
+
+**Links, both ways:** every C and D item is linked from at least one entry;
+every entry's links resolve; an entry that mentions a C or D number lists it
+under "Conflicts" (M24 now lists D11, M26 lists C13).
 
 ---
 

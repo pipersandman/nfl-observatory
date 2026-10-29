@@ -42,6 +42,7 @@ sys.path.insert(1, str(HERE.parent))
 from colors import matchup_colors  # noqa: E402
 import captions as C  # noqa: E402
 from seasons import nflverse_current_season  # noqa: E402
+from teams import normalize_teams  # noqa: E402  (schedule teams -> today's abbreviations, #105)
 
 SITE = 'nflobservatory.com'
 NAME_FIXES = {'Ronald Torbert': 'Ron Torbert', 'Adrian Hall': 'Adrian Hill'}
@@ -69,7 +70,7 @@ class Data:
     def __init__(self, season):
         import nflreadpy as nfl
         self.season = season
-        self.sched = nfl.load_schedules([season - 1, season]).to_pandas()
+        self.sched = normalize_teams(nfl.load_schedules([season - 1, season]).to_pandas())
         self.sched = self.sched[self.sched['game_type'] == 'REG'].copy()
         self.sched['referee'] = self.sched['referee'].replace(NAME_FIXES)
         frames = []

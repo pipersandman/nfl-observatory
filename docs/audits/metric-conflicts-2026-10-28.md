@@ -8,7 +8,7 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 5 of 8 (home page, crew chiefs, crew styles, teams, trends).
+**Status:** session 6 of 9 (home page, crew chiefs, crew styles, teams, trends, previews).
 Fields published but not displayed are listed after the conflicts. Data
 errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 
@@ -36,6 +36,8 @@ errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 | C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | |
 | C19 | Trend text: fixed answers and stated causes | Session 5 | A: answers from the data; causes as possibilities | |
 | C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | |
+| C21 | "League" in previews is the model's level, not the observed rate | Session 6 | A: name it the model's level; observed rate beside it | |
+| C22 | Model estimates in previews: labels and attribution | Session 6 | A: label each as a model estimate | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -172,7 +174,7 @@ season), while the site's wording elsewhere refers to accepted penalties.
   count built from `penalty == 1`). The effect is at most 6 plays in a season
   of about 3,400.
 - Separate from this: `update_data.py` keeps touchdowns wiped out by
-  offsetting penalties as `offsetting_tds` (for What Flags Cost, session 7).
+  offsetting penalties as `offsetting_tds` (for What Flags Cost, session 8).
 
 **Options:**
 - **A. Accepted penalties only.** Offsetting plays are never counted as
@@ -390,6 +392,9 @@ season as a whole (12.72), so the summary makes the rise look larger.
   NFL penalties up in 2026?" ("vs 12.7 in 2025", not labeled) use the same
   comparison (`build_static.py` `trends_page()`, `guide_page()`). The table
   just below the static summary uses the same weeks.
+- **Session 6:** the preview pop-up's "Team discipline" badge compares
+  each team's rate with all of last season (`previews.py` `discipline()`,
+  M77); the team pop-up defaults to the same weeks (M48).
 
 **Options:**
 - **A. Same weeks:** "(vs 14.2 in Weeks 1–7 of 2025)". Effect: the summary
@@ -796,6 +801,9 @@ small-sample threshold (D13, V2.0a step 3) is still open.
 - **Nothing:** current-season ranks from 6 or 7 games ("#2 of 32", ties
   unmarked, M54); home and road rates from 3 or 4 games each (M52); the
   current season's bar on the season chart (M63).
+- **Previews (session 6):** the context chips' averages show no window or
+  sample: "Thursday night (avg 13.4 flags vs 13.1 Sunday)" is 47 Thursday
+  games vs 535 Sunday games, 2024–26 (M79).
 
 **Options:**
 - **A. One threshold (D13), one visible label everywhere:** below it, the
@@ -829,6 +837,8 @@ don't show. Same type of issue as C6 and C13.
 - **Rankings without "observed":** "Most-penalized rank", "most and least
   penalized teams" (static `/team/` title), "#22 most in the NFL" (M54); the
   wording checklist asks for "observed" before a raw rate in a ranking.
+- **Previews (session 6):** the pop-up repeats "🏈 Team discipline",
+  "Watchlist" and "Drawn from opponents" (M77).
 - **Red badge on "Drawn/g":** red marks more penalties on opponents. It
   follows the color rule (red = more flags), but reads as bad for the team.
 
@@ -862,6 +872,11 @@ from the data, or give a cause the data doesn't test (section 17: rule 5 and
   plays" (quarter chart subtitle, its explainer, static `/trends/`); "partly
   because of resting starters and games with nothing at stake" (guide; the
   week explainer says "play a part"). Neither is measured.
+- **Previews (session 6):** the spread chip adds "(expected close — late
+  flags tend to drop)" for spreads of 3 or less (`openPreviewModal()`), not
+  measured anywhere on the site. The guide's "the chance of 15 or more
+  flags" is fixed text; the page's threshold is the model's league level
+  rounded, plus one (15 at `53e0bd1`, M72).
 - **Section subtitle:** "How officiating patterns have evolved across
   seasons" (`index.html`), while the week explainer says "The data can't
   separate player discipline from officiating or game context."
@@ -913,22 +928,91 @@ with its baseline and absolute change).
 
 ---
 
+## C21. "League" in previews is the model's level, not the observed rate
+
+**What differs:** the previews compare each projection with "league" and
+"league avg game", but that number is the model's own league level (this
+season mixed with 2024–25, weighted), not the league's observed rate shown
+everywhere else.
+
+**Evidence (data at `53e0bd1`):**
+- Cards "vs league **14.3**", pop-up "league avg game: 14.3", per-type badges
+  "Total vs league" (`previews/<week>` → `model.leagueAveragePerGame`,
+  `byType[].leagueTotal`; M73).
+- Observed 2026 league rate: **14.67** per game (home tiles, scoreboard,
+  season chart; M1, M64). Rebuilt model level: 14.25.
+- The explainer says each projection "starts from the league's current
+  penalty rate": it's the current season mixed with the 2024–26 weighted
+  level using a prior of 100 team-games (214 team-games played, so about
+  two-thirds current).
+- The chance tile's threshold ("15+") comes from the same level.
+- `scripts/scorecard.py` uses the same level as the "guess the league
+  average" baseline for its skill figure (session 7).
+
+**Options:**
+- **A. Name it for what it is:** "model's league level 14.3" (or "average
+  matchup"), with the observed rate beside it once in the pop-up ("league so
+  far: 14.7 in 107 games"). Effect: no numbers change; labels change.
+- **B. Compare with the observed league rate:** badges and the chance
+  threshold use M1's rate. Effect: every "vs league" badge and the threshold
+  change (14.67 rounds to 15, so "16+").
+
+**Recommendation:** A. The projection is built on the model's level, so that
+is the fair benchmark; the label must say it isn't the observed rate
+(section 17, rule 3).
+
+**Ty's decision:**
+
+---
+
+## C22. Model estimates in previews: labels and attribution
+
+**What differs:** the projections are labeled "projected" and "likely", but
+some labels present the model's split of its own estimate as an effect, and
+the range's coverage is named only in the explainer.
+
+**Evidence (`frontend/js/app.js` `openPreviewModal()`, `previewCard()`):**
+- **Attribution as cause:** "Crew effect on this game +0.8, flags vs an
+  average crew"; "What's driving the projection" (M76). The split is
+  order-dependent (crew first, then home, then away), so the same projection
+  could credit the crew differently.
+- **Coverage unnamed:** "10–23 likely" and "likely 4–14" don't say 80% (the
+  explainer does); the range covers game-to-game variation only, not
+  uncertainty in the factors (M72).
+- **Labeled well:** "projected flags" on the cards, pop-up, home page source
+  and `/assignments/`, and the static page's note "our model's expected
+  accepted penalties". Same type of issue as C15 (crew styles).
+
+**Options:**
+- **A. Label each as a model estimate:** "Model estimate: crew adds about
+  +0.8 flags" with "one way to split the projection" in the footnote; "80%
+  likely range". Effect: no numbers change; labels change.
+- **B. Remove the drivers and crew-effect tiles;** keep the projection and
+  range. Effect: two blocks disappear.
+
+**Recommendation:** A, with C15.
+
+**Ty's decision:**
+
+---
+
 ## Published but not displayed
 
 Fields written to `frontend/data/` that no page, chart or static page reads.
 They are deployed on every run. **Candidates to remove** (a decision for
-session 8); the dictionary entries mark them "not displayed".
+session 9); the dictionary entries mark them "not displayed".
 
 | ID | Field | Who uses it | Removing it would |
 |---|---|---|---|
 | P1 | `trends.json` → `byQuarterAndType` (shares by quarter for 6 types) | Nothing | Change nothing on the site. The quarter chart's type menu reads `type_trends.json` → `quarters.<scope>.types` (M67). |
 | P2 | `trends.json` → `byQuarter` (counts by quarter, playoffs in) | The pipeline uses the same values in memory for the "Let Them Play" card (M22) before writing the file; no page reads the file's copy | Change nothing on the site, if the card keeps its calculation. The quarter chart reads `type_trends.json` → `quarters` (M67). |
 | P3 | `trends.json` → `bySeason`, `homeVsAway`, `byType` | The pipeline (cards M20, M21, M16); the page reads them only in a fallback when `insights.json` is empty; `scripts/make_baseline.py` reads `bySeason` (local snapshot) | Remove the fallback cards' data and the baseline snapshot's source; decide with C1 (which season definition the cards use). |
+| P4 | `previews/<season>-week-NN.json` for past weeks (Weeks 4–7 at `53e0bd1`) | No page (the page reads only the weeks listed in `previews/latest.json`). `scripts/scorecard.py` reads `model.leagueAveragePerGame` from them as a fallback baseline (session 7) | Change nothing on the site; the scorecard would need its baseline from elsewhere. Decide with session 7's scorecard files. |
 
-Other "not displayed" fields from sessions 1–5 (samples such as
+Other "not displayed" fields from sessions 1–6 (samples such as
 `comparisons[].games`, timestamps, team yards and opponent counts) are listed
 in the dictionary. Most are samples the site should start showing (section
-7), not removal candidates; session 7's cross-page pass adds any that are
+7), not removal candidates; session 8's cross-page pass adds any that are
 neither.
 
 ---

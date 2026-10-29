@@ -6,7 +6,7 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–5 of 8 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–6 of 9 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -90,7 +90,7 @@ differently, the entry links to the conflict in
 | Rounding | `season_comparison.json`: stored to 2 decimals → shown to 1 decimal (`fmtNum(…, 1)`). `scoreboard.json`: stored to 1 decimal. Matches the default. |
 | Provenance | nflverse play-by-play (`penalty`, `season_type`), schedules (completed weeks) and officials (crew chief; filled from the schedule's `referee` column and Football Zebras assignments when the officials feed lags). Every data run. |
 | Limitations | Counts flagged **plays**, not flags: two accepted penalties on one play count once. It's a game total for both teams, not one team's rate: team pages use a different per-game rate (one team's penalties, M46), under similar labels (C16). A crew chief's rate reflects the games and teams they drew, not how strictly they call games (plan section 8). |
-| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. Team pages: a different rate (one team's penalties), M46. *Sessions 5–7 add trends, previews and What Flags Cost.* |
+| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. Team pages: a different rate (one team's penalties), M46. Trends: M64; previews compare with the model's level instead (M73). *Sessions 7–8 add the scorecard and What Flags Cost.* |
 | Example | League 2026 through Week 7: **14.67** per game (1,570 penalties in 107 games), shown as 14.7. 2025 Weeks 1–7: 14.21 (1,535 in 108). Recomputed from play-by-play: 1,570 plays with `penalty == 1` in 107 games, a match. |
 | Conflicts | [C4: partial-week games](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison); [C5: "penalties" counts plays](audits/metric-conflicts-2026-10-28.md#c5-penalties-counts-plays-with-an-accepted-penalty); [C7: summary line compares with all of last season](audits/metric-conflicts-2026-10-28.md#c7-the-home-summary-line-compares-with-all-of-last-season); [C8: "All seasons" vs "Since 2015"](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names); [C16: team and game "flags per game"](audits/metric-conflicts-2026-10-28.md#c16-flags-per-game-a-game-total-and-one-teams-total-under-one-label); [D4: scoreboard crew assignments](audits/metric-conflicts-2026-10-28.md#d4-scoreboard-crew-leader-uses-incomplete-crew-assignments) (fixed in #107) |
 
@@ -337,7 +337,7 @@ plays.").
 | Calculation | `stats()` (`firstDowns`, `firstDownsPerGame`) |
 | Rounding | Count integer; per game 1 decimal |
 | Provenance | nflverse play-by-play (`first_down_penalty`). Every data run. |
-| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. To check in session 7 against What Flags Cost's "key first down given". |
+| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. To check in session 8 against What Flags Cost's "key first down given". |
 | Where it appears | Scoreboard (`frames[].firstDowns`, `frames[].firstDownsPerGame`, `weeklyLog[].firstDowns`) |
 | Example | 2026 season: 432 (4.0 per game) |
 | Conflicts | None yet |
@@ -550,8 +550,8 @@ see C6.
 | Calculation | `scripts/update_data.py` `generate_hero_stats()` (`lastUpdated`, UTC); `frontend/js/livestrip.js` checks it every 5 minutes while the page is visible |
 | Rounding | Hour and minute |
 | Provenance | Pipeline run time. Every data run. |
-| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **For session 7 (gameday and update notice):** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs several times a week (more on game days) and on every merge to `main`. |
-| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker) is in session 7. |
+| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **For session 8 (gameday and update notice):** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs several times a week (more on game days) and on every merge to `main`. |
+| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker) is in session 8. |
 | Example | `2026-10-28T23:25:59Z` |
 | Conflicts | None |
 
@@ -864,7 +864,7 @@ assignment): the 2015–25 league values, the top-10 type list, Bill Vinovich's
 and Alex Moore's adjusted rates, yards per flag, home share, a shrunk
 roughing-the-passer rate, their quadrants, Moore's flags-per-game trait
 z-score, and both crew chiefs' "through Week 7" Style Map values: all 30
-match. Points per flag isn't recomputed here (What Flags Cost, session 7).
+match. Points per flag isn't recomputed here (What Flags Cost, session 8).
 
 ### M37. Crew style: flags per game (season-adjusted career; season; weekly)
 
@@ -918,7 +918,7 @@ match. Points per flag isn't recomputed here (What Flags Cost, session 7).
 | Calculation | Mean of `cost_epa` (`_profiles()`, `costPerFlag`; career adjusted as a per-flag measure). |
 | Rounding | Stored and shown to 2 decimals |
 | Provenance | nflverse play-by-play (EPA from nflverse's expected-points model) and `flag_impact.py`'s constants. Every data run. |
-| Limitations | **An estimate presented without the word** (C15): "points" isn't explained in the pop-up, and the trait states it as a fact. It mixes two methods by play type. Defined in full with What Flags Cost (session 7). |
+| Limitations | **An estimate presented without the word** (C15): "points" isn't explained in the pop-up, and the trait states it as a fact. It mixes two methods by play type. Defined in full with What Flags Cost (session 8). |
 | Where it appears | Crew pop-up "Crew style" (tile, traits, compare table). JSON: `crews[].costPerFlag`, `.raw.costPerFlag`, `.seasons.<season>.costPerFlag`, `league…costPerFlag`. |
 | Example | Moore 0.80 (league 0.89): "Cheaper flags: 0.80 points each (league 0.89)". Vinovich 0.87. |
 | Conflicts | [C15](audits/metric-conflicts-2026-10-28.md#c15-model-estimates-on-crew-style-pages-not-labeled-as-estimates) |
@@ -1091,7 +1091,7 @@ tiles, team cards, comparison buttons), the team pop-up, the static `/team/`
 and `/team/<ABBR>/` pages, the guide's team question, the home page's
 pre-filled division lists, and `teams_<season>.csv`. The pop-up's "What flags
 cost <team>" block and the static pages' "Points given away / game" come from
-`flag_impact.json`: What Flags Cost, session 7.
+`flag_impact.json`: What Flags Cost, session 8.
 
 **One source.** Every number here comes from `scripts/team_pages.py`
 `build_team_pages()`, which writes `teams/index.json` and `teams/<ABBR>.json`:
@@ -1469,7 +1469,7 @@ Type", "Which calls are rising?"), their `?` explainers, the static `/trends/`
 page, the guide's trend questions, and `flags_by_season.csv`,
 `flags_by_week.csv` and `penalty_types_by_season.csv`. Also in section 04 but
 covered elsewhere: "Crew Chief Flag Rates" (M35), "Crew Chief Style Map"
-(M37–M44), What Flags Cost (session 7).
+(M37–M44), What Flags Cost (session 8).
 
 **Two files.**
 - **`type_trends.json`** (`scripts/type_trends.py` `build_type_trends()`)
@@ -1637,13 +1637,268 @@ season from 2015 (2024 closest: 13.2 vs 13.0).
 | Example | Comparisons: 2025 through Week 7 (108 games), all of 2025 (272), 2015–25 (2,895). |
 | Conflicts | [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
 
-## Previews, scorecard and history
+## Game previews
 
-*To do in session 6.*
+Session 6. **Examples are from `53e0bd1`** (2026-10-29: Week 8 previews, 14
+games, every crew chief assigned). Places covered: "Game Previews" (section
+03: title, subtitle, crew note, cards, credit line), the preview pop-up, the
+"How projections work" explainer, the static `/assignments/` page's
+"Projected flags", the home page source's pre-filled previews list, and the
+guide's "How projections work". The cards' "Track record" and the scorecard
+pop-up are session 7; the gameday worker's and the social images' use of
+`previews/latest.json` are session 8 (worker) or outside the site (social).
+
+**One source, two kinds of number.** `scripts/previews.py`
+`build_previews()` writes `previews/latest.json` (which weeks to show) and
+one file per week, `previews/<season>-week-NN.json`.
+- **Model estimates** (M71–M76): projected flags, the likely range, the
+  chance of N+ flags, projected yards and quarters, the league level, the
+  drivers and the crew effect. Model `v1.0`.
+- **Observed numbers** (M77–M79): team discipline, recent meetings, game
+  context averages. The team numbers are the team pages' numbers (M46–M54):
+  equal for all 28 Week 8 teams, 224 of 224 values.
+- **Old week files** (Weeks 4–7) stay published; the page reads only the
+  weeks in `latest.json`. `scripts/scorecard.py` reads them (session 7).
+- **Paths:** `previews/<week>` stands for every week file. Braces as in Teams;
+  `teams.{home,away}` means both sides.
+
+**The model, once** (`build_previews()`, module notes):
+- **League level:** flags per team-game, regular season 2024–2026, seasons
+  weighted 0.3 / 0.6 / 1.0; the current season is mixed with that weighted
+  level using a prior of 100 team-games; split by type (10 most common plus
+  "Other") and by home and away.
+- **Factors**, per type, each a ratio to the league over the same games and
+  weights, shrunk toward 1.0 (team: a prior of 6 team-games; crew chief: 10
+  games) and clamped to 0.5–2.0: the team's **commit** rate, the opponent's
+  **draw** rate (opponents' flags in its games), and the crew chief's **call**
+  rate (1.0 when the crew is TBA).
+- **Projection** for each side and type = league level × team commit ×
+  opponent draw × crew call. Quarters use league quarter shares, tilted by the
+  crew chief's own (prior of 300 flags). Yards use the league's average yards
+  per flag of each type.
+- **Range and chance:** a negative binomial with the projected mean and a
+  dispersion (variance ÷ mean of real game totals, 2025–26, clamped to
+  1.05–3.0): the 10th and 90th percentiles, and the chance of more than the
+  rounded league level.
+
+**Spot checks** (separate code, from nflverse play-by-play, schedules,
+officials and the saved assignments):
+- **Observed:** team inputs vs team pages, 224 of 224 equal; one meeting
+  (2025 CAR @ GB: 12 flags, 7 on GB); the four context averages (Thursday,
+  Sunday, division, non-division, 2024–26).
+- **Model arithmetic, rebuilt:** the league level (14.25, shown 14.3) and the
+  dispersion (1.47) from play-by-play; for all 14 games, total, home, away,
+  yards, quarters, drivers, the crew's overall factor and driver, the range
+  and the chance of N+ from the published rows (168 of 168); every crew
+  chief's games in the model (14 of 14).
+- **25 of 25 checks pass.** These check the arithmetic, not whether the model
+  is right: that is the scorecard's job (session 7).
+
+### M71. Projected flags (game, home team, away team)
+
+| Field | Value |
+|---|---|
+| Label on site | **Cards:** big number, "projected flags · 10–23 likely"; split bar "CAR **7.3** … **8.8** GB" (team colors); ranked "most flags first". **Pop-up:** tiles "Projected flags" (16.1), "On CAR (away)" (7.3), "On GB (home)" (8.8); "Projected penalties by type" ("Type", "On CAR", "On GB", "Total vs league", "Yards"); footnote "Projection uses 2026, 2025, 2024 regular seasons, weighted toward 2026." **Static `/assignments/`:** "Projected flags"; summary "Projected most flags: CAR @ GB with Scott Novak (16.1); …"; note "Projections are our model's expected accepted penalties for the game". **Home page source:** "projected 16.1 flags". **Guide:** "How projections work". |
+| Kind | **Model estimate** |
+| Numerator | Expected accepted penalties (as counted, Terms) by each team in the game |
+| Denominator | One game |
+| Population | One upcoming regular-season game; inputs from regular-season games 2024–2026 |
+| Time window | Inputs: every game played before the data run, seasons weighted 0.3 / 0.6 / 1.0. A game's projection updates every run until kickoff (C9, session 7). |
+| Inclusion rules | As in Terms, penalties naming a team |
+| Benchmark | The model's league level (M73) |
+| Calculation | See "The model, once" above. `projection.total` = home + away; each `byType[]` row has `home`, `away`, `total`, `leagueTotal` and the five `factors`. Games sorted by total. |
+| Rounding | Total, home, away stored 1 decimal → shown 1; type rows stored 2 → shown 1; factors stored 2 |
+| Provenance | nflverse play-by-play, schedules and officials; Football Zebras assignments. Every data run. |
+| Limitations | **An estimate**, labeled "projected" on the cards, pop-up, static page and home page source; the static page says "our model's expected accepted penalties". Nothing says how far off projections usually are, except the separate Track record. "Crew TBA" uses a neutral crew (all crew factors 1.0). At Week 8 a team's 2024–25 games still carry about two-thirds of the weight (17 × 0.6 + 17 × 0.3 = 15.3, vs 7 × 1.0 this season), so earlier rosters still count. |
+| Where it appears | `previews/<week>` → `games[].projection.total`, `games[].projection.home`, `games[].projection.away`, `games[].byType[].type`, `games[].byType[].home`, `games[].byType[].away`, `games[].byType[].total`, `games[].byType[].leagueTotal`, `model.seasons[]`, `model.version` (not displayed), `model.seasonWeights.<season>` (not displayed), `model.regularSeasonOnly` (not displayed); not displayed: `games[].byType[].factors.homeCommit`, `games[].byType[].factors.awayCommit`, `games[].byType[].factors.homeDraw`, `games[].byType[].factors.awayDraw`, `games[].byType[].factors.crew`, `games[].teams.{home,away}.gamesInModel` |
+| Example | CAR @ GB: 16.1 (GB 8.8, CAR 7.3), Scott Novak. Offensive holding row: 4.00 (GB 2.38, CAR 1.61), league 2.90, crew factor 1.23. Lowest: BAL @ BUF 12.9. Arithmetic rebuilt from the rows, a match. |
+| Conflicts | [C9](audits/metric-conflicts-2026-10-28.md#c9-scorecard-which-projection-is-graded), [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution) |
+
+### M72. Likely range and chance of N+ flags
+
+| Field | Value |
+|---|---|
+| Label on site | Cards: "10–23 likely", range bar (one shared scale). Pop-up: "likely 10–23" under each tile; "Chance of **15+** flags": "61%", "league avg game: 14.3". Explainer: "The range covers 80% of likely outcomes, based on how much real game totals vary." Guide: "The projection includes a likely range and the chance of 15 or more flags." |
+| Kind | **Model estimate** (interval and probability) |
+| Numerator | — |
+| Denominator | — |
+| Population | As M71 |
+| Time window | Dispersion from regular-season games 2025–26 |
+| Inclusion rules | As M71 |
+| Benchmark | Threshold = the model's league level, rounded (14 → "15+") |
+| Calculation | Negative binomial with mean = the projection and variance = dispersion × mean: 10th and 90th percentiles (`range`, `homeRange`, `awayRange`); `probOver` = chance of at least threshold + 1; `overThreshold`; `model.dispersion`. |
+| Rounding | Range whole flags; chance stored 3 decimals → whole percent |
+| Provenance | As M71 |
+| Limitations | "Likely" doesn't say 80% on the cards or pop-up (the explainer does). The range reflects game-to-game variation only, not uncertainty in the factors. **The guide's "15 or more" is fixed text:** it matches the threshold only while the league level rounds to 14 ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). The scorecard grades the range's hit rate (target about 80%, session 7). |
+| Where it appears | `previews/<week>` → `games[].projection.range[]`, `games[].projection.homeRange[]`, `games[].projection.awayRange[]`, `games[].projection.overThreshold`, `games[].projection.probOver`, `model.dispersion` (not displayed) |
+| Example | CAR @ GB: 10–23 (GB 4–14, CAR 3–12); chance of 15+: 61%. Dispersion 1.47. Recomputed with separate code, a match. |
+| Conflicts | [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes), [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution) |
+
+### M73. League level in previews ("vs league", "league avg game")
+
+| Field | Value |
+|---|---|
+| Label on site | Cards: badge and "vs league 14.3". Pop-up: badge under "Projected flags"; "league avg game: 14.3"; per-type badges in "Total vs league". |
+| Kind | **Model estimate** (the model's expected flags in a league-average game); the badges are derived |
+| Numerator | The model's league level per type, home plus away |
+| Denominator | One game |
+| Population | League, regular season 2024–2026 |
+| Time window | Current season mixed with the weighted 2024–26 level (prior of 100 team-games) |
+| Inclusion rules | As M71 |
+| Benchmark | It is the benchmark for M71 |
+| Calculation | `league_game` = sum of the home and away base rates → `model.leagueAveragePerGame`, `games[].projection.leagueAverage`; `games[].projection.vsLeaguePct` = total ÷ level − 1 (unrounded). The page's badges compute the percentage again from the rounded values (`pctBadge(16.1, 14.3)`: +12.6%; stored +13.3%). |
+| Rounding | Stored 1 decimal (level), 1 decimal (percent) |
+| Provenance | As M71 |
+| Limitations | **Labeled as the league average, but it's the model's level:** 14.25 (shown 14.3), while the observed 2026 league rate on the home page is 14.67 (M1) ([C21](audits/metric-conflicts-2026-10-28.md#c21-league-in-previews-is-the-models-level-not-the-observed-rate)). The badges show the percentage only, no absolute difference (M2). |
+| Where it appears | `previews/<week>` → `model.leagueAveragePerGame`, `games[].byType[].leagueTotal`; not displayed: `games[].projection.leagueAverage`, `games[].projection.vsLeaguePct` |
+| Example | Week 8: 14.3. Rebuilt from play-by-play: 14.25, a match (observed 2026: 14.67). |
+| Conflicts | [C10](audits/metric-conflicts-2026-10-28.md#c10-league-average-means-three-things-on-crew-chief-pages), [C21](audits/metric-conflicts-2026-10-28.md#c21-league-in-previews-is-the-models-level-not-the-observed-rate) |
+
+### M74. Projected penalty yards
+
+| Field | Value |
+|---|---|
+| Label on site | Cards: "~133 penalty yds". Pop-up tiles: "~60 yds", "~72 yds"; type table "Yards" ("38 yds"). |
+| Kind | **Model estimate** |
+| Numerator | Projected flags of each type × the league's average yards per flag of that type |
+| Denominator | One game |
+| Population, Time window | As M71 (yards per flag: 2024–26, weighted) |
+| Inclusion rules | As M71; yards as M7 |
+| Benchmark | None |
+| Calculation | `yards`, `homeYards`, `awayYards` = Σ type projection × `yardsEach` |
+| Rounding | Whole yards |
+| Provenance | As M71 |
+| Limitations | Uses league yards per flag for every team and crew: a crew's or team's own yardage (M38, M53) doesn't enter. |
+| Where it appears | `previews/<week>` → `games[].projection.yards`, `games[].projection.homeYards`, `games[].projection.awayYards`, `games[].byType[].yardsEach` |
+| Example | CAR @ GB: 133 (GB 72, CAR 60); offensive holding 9.6 yards each. Rebuilt from the rows, a match. |
+| Conflicts | [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution) |
+
+### M75. Projected flags by quarter
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up: "⏱️ Quarter by quarter": stacked bars (team colors), total per quarter, "CAR 1.6 · GB 2.0", labels from `qLabel()` |
+| Kind | **Model estimate** |
+| Numerator | Projected flags of each type × the league's quarter shares for that type, tilted by the crew chief's quarter shares |
+| Denominator | One game |
+| Population, Time window | As M71; quarters 1–4 (overtime left out of the shares) |
+| Inclusion rules | As M71 |
+| Benchmark | None |
+| Calculation | `byQuarter[]` (`home`, `away`); `crew.quarterTilt[]` = the crew chief's quarter shares ÷ the league's, with a prior of 300 flags |
+| Rounding | Stored 2 decimals → shown 1 |
+| Provenance | As M71 |
+| Limitations | The four quarters add up to the full projection, so overtime flags are spread across regulation. The crew's tilt isn't shown. |
+| Where it appears | `previews/<week>` → `games[].projection.byQuarter[].quarter`, `games[].projection.byQuarter[].home`, `games[].projection.byQuarter[].away`; not displayed: `games[].crew.quarterTilt[]` |
+| Example | CAR @ GB, 2nd quarter: 4.57 (GB 2.49, CAR 2.08); Novak's tilt 1.04 / 0.96 / 1.05 / 0.97. |
+| Conflicts | None |
+
+### M76. "What's driving the projection" and the crew effect
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up: "What's driving the projection": rows "Crew chief", "<home> discipline & what it draws", "<away> discipline & what it draws" with "+0.8" etc.; footnote "Extra or fewer flags vs a league-average matchup with an average crew." "The crew: <name>": tile "Crew effect on this game" "+0.8", "flags vs an average crew (6%)"; type tilts with badges ("Offensive Holding ▲ 23%"); footnote "Tilts compare how often this crew calls each type vs the league (last 3 seasons, 41 games, shrunk toward average)." |
+| Kind | **Model estimate** (a split of M71 into three parts) |
+| Numerator | Crew: projection with the crew factor only, minus the league level. Home: adding the home team's commit and draw factors. Away: adding the away team's. |
+| Denominator | One game |
+| Population, Time window | As M71; crew chief games 2024–26 |
+| Inclusion rules | As M71 |
+| Benchmark | A league-average matchup with an average crew |
+| Calculation | `drivers[]`: L1 − L0, L2 − L1, L3 − L2 (they add up to total − league level). `crew.overallFactor` = L1 ÷ L0; `crew.typeTilts[]` = the 4 types whose crew factor is furthest from 1.0; `crew.gamesInModel`. |
+| Rounding | Drivers stored 2 decimals → shown 1; factor 3 decimals → whole percent |
+| Provenance | As M71 |
+| Limitations | **Order matters:** the crew is applied first and each team's part is measured on top of the earlier ones, so effects that multiply (a heavy-calling crew with a team that commits that type) are credited to the later step. "Crew effect on this game" and "What's driving" read as causes; they're the model's split of its own estimate ([C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution)). Same crew rates as the crew style block (M41), measured differently (3 seasons, shrunk with 10 games). |
+| Where it appears | `previews/<week>` → `games[].projection.drivers[].label`, `games[].projection.drivers[].value`, `games[].crew.overallFactor`, `games[].crew.typeTilts[].type`, `games[].crew.typeTilts[].factor`, `games[].crew.gamesInModel` |
+| Example | CAR @ GB: crew +0.82, GB +0.09, CAR +0.99 (sum 1.90; the type rows give 16.15 − 14.26 = 1.89); Novak overall 1.057 ("6%"), 41 games. Rebuilt from the type rows, a match. |
+| Conflicts | [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution) |
+
+### M77. Team discipline in previews
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up: "🏈 Team discipline (2026)", one column per team: "Penalties/game" (badge vs last season, dimmed under 4 games), "Most-penalized rank" ("#1 of 32"), "Offense / Defense", "Drawn from opponents", "Penalty yds/game", "Most common", "Watchlist (2026)" (top 4, or "No individual penalties yet"). |
+| Kind | Observed: exposure rates, rank, raw counts |
+| Numerator / Denominator | As M46 (per game), M51 (offense / defense), M49 (drawn), M53 (yards), M54 (rank), M59 (players) |
+| Population | The team's regular-season games this season |
+| Time window | Current season so far; badge vs all of last season |
+| Inclusion rules | As M46 |
+| Benchmark | Last season's rate (badge) |
+| Calculation | `discipline()` and `watchlist()` in `previews.py`: computed again from the same data as `team_pages.py`. `mostCommon` = the team's most frequent type this season. |
+| Rounding | Per game 1 decimal; yards per game whole (team pages: whole in the pop-up, 1 decimal on static pages) |
+| Provenance | nflverse play-by-play. Every data run. |
+| Limitations | **The same numbers as the team pages** (224 of 224 equal at `53e0bd1`), calculated a second time in a second script. The badge compares with all of last season, while the team pop-up defaults to the same weeks (M48). "Team discipline" and "Watchlist" ([C18](audits/metric-conflicts-2026-10-28.md#c18-wording-and-framing-section-17-on-team-pages)). |
+| Where it appears | `previews/<week>` → `games[].teams.{home,away}.perGame`, `games[].teams.{home,away}.games`, `games[].teams.{home,away}.rank`, `games[].teams.{home,away}.offensePerGame`, `games[].teams.{home,away}.defensePerGame`, `games[].teams.{home,away}.drawnPerGame`, `games[].teams.{home,away}.yardsPerGame`, `games[].teams.{home,away}.lastSeasonPerGame`, `games[].teams.{home,away}.mostCommon`, `games[].teams.{home,away}.watchlist[].player`, `games[].teams.{home,away}.watchlist[].count`, `games[].teams.{home,away}.watchlist[].yards`, `games[].teams.{home,away}.watchlist[].types[].type`, `games[].teams.{home,away}.watchlist[].types[].count` |
+| Example | GB: 9.29 per game (7 games), #1, 5.00 / 4.29, drawn 6.43, 78 yards, last season 6.18; equal to `teams/GB.json`. |
+| Conflicts | [C7](audits/metric-conflicts-2026-10-28.md#c7-the-home-summary-line-compares-with-all-of-last-season), [C18](audits/metric-conflicts-2026-10-28.md#c18-wording-and-framing-section-17-on-team-pages) |
+
+### M78. Recent meetings (preview head to head)
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up: "Recent meetings": "CAR @ GB", score, "2025 Wk 9 · Land Clark", flags "12", "CAR 5 · GB 7" |
+| Kind | Raw counts |
+| Numerator | Flags in each meeting: all, and on each team |
+| Denominator | None |
+| Population | The last 3 regular-season meetings of the two teams with play-by-play, any season |
+| Time window | Every season from 2015 |
+| Inclusion rules | As in Terms; the total counts every penalty play, including any with no team named |
+| Benchmark | None |
+| Calculation | `head_to_head()` |
+| Rounding | Whole numbers |
+| Provenance | nflverse schedules and play-by-play; crew from the merged assignment |
+| Limitations | A different table from the team pop-up's "By opponent" (M61: every meeting, per game). No small-sample note. |
+| Where it appears | `previews/<week>` → `games[].headToHead[].away`, `games[].headToHead[].home`, `games[].headToHead[].awayScore`, `games[].headToHead[].homeScore`, `games[].headToHead[].season`, `games[].headToHead[].week`, `games[].headToHead[].crew`, `games[].headToHead[].flags`, `games[].headToHead[].awayFlags`, `games[].headToHead[].homeFlags`; not displayed: `games[].headToHead[].gameId` |
+| Example | 2025 Week 9 CAR @ GB, 16–13: 12 flags (GB 7, CAR 5), Land Clark. Recomputed, a match. |
+| Conflicts | None |
+
+### M79. Game context and its reference averages
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up "Context" chips: "Primetime", "Thursday night (avg 13.4 flags vs 13.1 Sunday)", "Division game (avg 12.9 vs 13.2)", "Neutral site", "Roof: outdoors", "Surface: grass", "Rest: CAR 4d · GB 4d", "Spread: GB −3.5" (and "(expected close — late flags tend to drop)" when within 3), "O/U 47.5", "<temp>°F", "Wind <n> mph", "QBs: …"; footnote "Shown for reference; not added into the projection." |
+| Kind | Observed: game facts; the averages are exposure rates |
+| Numerator | Averages: flags by both teams in the games of that kind |
+| Denominator | Games of that kind |
+| Population | Regular-season games 2024–2026 with play-by-play |
+| Time window | 2024 to now (unweighted) |
+| Inclusion rules | Penalties naming a team |
+| Benchmark | Thursday vs Sunday; division vs non-division |
+| Calculation | `contextReference` (`ctx_avg()`); context fields from the nflverse schedule (`spread_line`, `total_line`, `roof`, `surface`, `temp`, `wind`, rest, QBs, coaches, stadium) |
+| Rounding | Averages 1 decimal |
+| Provenance | nflverse schedules (betting lines as published there) and play-by-play |
+| Limitations | **The averages show no window or sample** (Thursday: 47 games; Sunday 535; division 225; non-division 426; [C17](audits/metric-conflicts-2026-10-28.md#c17-small-samples-handled-four-ways)). "Late flags tend to drop" in close games isn't measured here ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). Thursday includes every Thursday game, not only Thursday night. |
+| Where it appears | `previews/<week>` → `contextReference.thursday`, `contextReference.sunday`, `contextReference.division`, `contextReference.nonDivision`, `games[].context.primetime`, `games[].context.divisionGame`, `games[].context.neutralSite`, `games[].context.roof`, `games[].context.surface`, `games[].context.homeRest`, `games[].context.awayRest`, `games[].context.spread`, `games[].context.total`, `games[].context.temp`, `games[].context.wind`, `games[].context.homeQB`, `games[].context.awayQB`; not displayed: `games[].context.stadium`, `games[].context.homeCoach`, `games[].context.awayCoach` |
+| Example | Thursday 13.4 (47 games) vs Sunday 13.1 (535); division 12.9 vs 13.2. Recomputed, a match. |
+| Conflicts | [C17](audits/metric-conflicts-2026-10-28.md#c17-small-samples-handled-four-ways), [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes) |
+
+### M80. Preview weeks, games and crew assignments
+
+| Field | Value |
+|---|---|
+| Label on site | Title "Week 8 Previews" (or "Week 7 Finale & Week 8 Previews"); groups "Week 8 · 14 games", "Week 7 · Tonight / Remaining"; subtitle "Projected penalties for every upcoming game, ranked most flags first. All crews assigned." (or "Week 8 crews assigned for <n> of <n> games." / "Week 8 crew assignments usually post Tuesday — projections update automatically."); card header (teams, logos, "home", "Today", "Thu · Oct 29 · 8:15 PM ET · Prime"); "Crew: <name>" / "Crew TBA"; credit "Crew assignments via Football Zebras." Static `/assignments/`: "14 of 14 Week 8 games have a crew chief assigned", columns "Game", "Date", "TV", "Crew chief", "Crew 2026 flags / game" (M1), "Crew career style" (M44). |
+| Kind | Raw counts (games, games with a crew assigned) and game facts |
+| Numerator | Games with a crew chief assigned |
+| Denominator | Games in the week (or those still to play) |
+| Population | Upcoming regular-season games |
+| Time window | The first week with games still to play (US Eastern dates), plus the next week when the first is part-played |
+| Inclusion rules | — |
+| Benchmark | — |
+| Calculation | `build_previews()` target weeks; `assignments` from `frontend/data/assignments/<season>-week-NN.json` (M45) |
+| Rounding | — |
+| Provenance | nflverse schedules; Football Zebras |
+| Limitations | The static page uses the first week file only. Old week files stay published (see the section notes). |
+| Where it appears | `previews/latest.json` → `season`, `week`, `file`, `weeks[].week`, `weeks[].file`, `weeks[].remainingOnly`, `weeks[].games`, `generatedAt` (not displayed). `previews/<week>` → `season`, `week`, `file`, `remainingOnly`, `assignments.assigned`, `assignments.games`, `assignments.source.url`, `games[].gameId`, `games[].season`, `games[].week`, `games[].gameday`, `games[].gametime`, `games[].weekday`, `games[].network`, `games[].homeTeam.abbr`, `games[].homeTeam.name`, `games[].homeTeam.logo`, `games[].awayTeam.abbr`, `games[].awayTeam.name`, `games[].awayTeam.logo`, `games[].crew.name`, `games[].crew.slug` (link); not displayed: `assignments.source.name`, `assignments.source.published`, `generatedAt` |
+| Example | Week 8: 14 games, 14 assigned (Football Zebras, posted Tue 27 Oct 2026 16:19 UTC). |
+| Conflicts | None |
+
+## Scorecard and history
+
+*To do in session 7* (the cards' "Track record", the scorecard pop-up, the
+history weeks, the guide's "How accurate are the penalty projections?", and
+C9's evidence).
 
 ## What Flags Cost and gameday (including the live strip)
 
-*To do in session 7.*
+*To do in session 8.*
 
 ---
 
@@ -1714,10 +1969,10 @@ season from 2015 (2024 closest: 13.2 vs 13.0).
 | Team pop-up | Tiles "Most-penalized rank", "Offense / Defense", "Home / Away", "Flag margin" | `rank.current`, `rank.lastSeason`, `rank.of`; `current.offensePerGame`, `.defensePerGame`, `.homePerGame`, `.awayPerGame`, `.netPerGame` | M54, M51, M52, M50 |
 | Team pop-up | "Penalties per game by season (regular season)" chart and tooltip | `history[]`; `baselines.<key>.perGame` | M63, M54 |
 | Team pop-up | "What they get flagged for", "Which calls are rising", "What they draw from opponents", "⏱️ When they get flagged" | `committedTypes[]`, `typeTrends[]`, `drawnTypes[]`, `quarters[]`; `baselines.<key>.types`, `.drawnTypes`, `.quarters` | M55, M58, M56, M57 |
-| Team pop-up | "What flags cost <team>" | `flag_impact.json` | What Flags Cost (session 7) |
+| Team pop-up | "What flags cost <team>" | `flag_impact.json` | What Flags Cost (session 8) |
 | Team pop-up | "Flags on <team> by crew chief", "Watchlist", "By opponent", "<season> game log" | `crews[]`, `players[]`, `opponents[]`, `games[]`; `priorSeasons[]` | M60, M59, M61, M62 |
-| Static `/team/` | Summary (most, least, league average), table ("Rank", "Team", "Games", "<season> flags / game", "<season − 1> flags / game", "Points given away / game"), note | `teams/index.json` → `divisions[].teams[]` (`rank`, `games`, `perGame`, `lastSeasonPerGame`), `leaguePerGame`; `flag_impact.json` | M54, M46, M47; points: session 7 |
-| Static `/team/<ABBR>/` | Summary; tiles "Flags / game", "Opponent flags / game", "Penalty yards / game", "Points given away / game"; "Most common penalties"; "Game log"; "By crew chief (since 2015)"; FAQ | `teams/<ABBR>.json` → `current`, `lastSeason`, `rank.current`, `committedTypes[]`, `games[]`, `crews[]`; `teams/index.json` → `leaguePerGame`; `flag_impact.json` | M46, M47, M49, M53, M54, M55, M62, M60; points: session 7 |
+| Static `/team/` | Summary (most, least, league average), table ("Rank", "Team", "Games", "<season> flags / game", "<season − 1> flags / game", "Points given away / game"), note | `teams/index.json` → `divisions[].teams[]` (`rank`, `games`, `perGame`, `lastSeasonPerGame`), `leaguePerGame`; `flag_impact.json` | M54, M46, M47; points: session 8 |
+| Static `/team/<ABBR>/` | Summary; tiles "Flags / game", "Opponent flags / game", "Penalty yards / game", "Points given away / game"; "Most common penalties"; "Game log"; "By crew chief (since 2015)"; FAQ | `teams/<ABBR>.json` → `current`, `lastSeason`, `rank.current`, `committedTypes[]`, `games[]`, `crews[]`; `teams/index.json` → `leaguePerGame`; `flag_impact.json` | M46, M47, M49, M53, M54, M55, M62, M60; points: session 8 |
 | Static `/guide/` | "Which NFL team commits the most penalties in <season>?" | `teams/index.json` → `divisions[].teams[].perGame` | M46 |
 | Home (search-engine page source) | Pre-filled division lists ("<team> <rate> flags/game") | `build_static.py` `home_prefill()` → `DIVISIONS` (`teams/index.json`) | M46 |
 | `/data/exports/teams_<season>.csv` | `team`, `games`, `flags_per_game`, `last_season_flags_per_game`, `rank` | `teams/index.json` → `divisions[].teams[]` (`abbr`, `games`, `perGame`, `lastSeasonPerGame`, `rank`) | M46, M54 |
@@ -1730,9 +1985,21 @@ season from 2015 (2024 closest: 13.2 vs 13.0).
 | Home, The Big Picture | `?` explainers: season-trend, quarter-penalties, week-of-season, penalty-types | `app.js` `EXPLAINERS` (fixed text) | M64, M67, M65, M68; C19 |
 | Static `/trends/` | Summary (this season vs all of last season, plays with a flag, biggest increases, fade) | `scoreboard.json` → `frames[season]`, `frames[lastSeason]` (`perGame`, `pctPlays`, `flagEveryPlays`); `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M12, M69, M66; C7 |
 | Static `/trends/` | "Penalties per game by season" table and note; "Which penalties are increasing?"; "When are penalties called?" | `type_trends.json` → `seasonCompare[]`, `types[]`, `comparisons[]`, `quarters.all.total` | M64, M69, M67 |
-| Static `/trends/` | "Home vs road"; "What penalties cost" | `scoreboard.json` → `frames[season].homeShare`; `crew_styles.json` → `league.homeShare`; `flag_impact.json` | M15, M40; C12; points: session 7 |
+| Static `/trends/` | "Home vs road"; "What penalties cost" | `scoreboard.json` → `frames[season].homeShare`; `crew_styles.json` → `league.homeShare`; `flag_impact.json` | M15, M40; C12; points: session 8 |
 | Static `/guide/` | "Are NFL penalties up in <season>?", "Do refs call more penalties early in the season?", methodology "Comparisons" | `scoreboard.json` → `frames[season]`, `frames[lastSeason]`; `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M69, M66; C7, C19 |
 | `/data/exports/flags_by_season.csv` | `season`, `games`, `flags_per_game_full_season`, `flags_per_game_same_early_weeks` | `type_trends.json` → `seasonCompare[]` | M64 |
 | `/data/exports/flags_by_week.csv` | `season`, `week`, `games`, `flags_per_game` | `type_trends.json` → `weekly.seasons[].weeks[]` | M65 |
 | `/data/exports/penalty_types_by_season.csv` | `penalty_type`, `season`, `per_game` | `type_trends.json` → `types[].bySeason[]` | M69 |
 | (not displayed) | — | `trends.json` → `byQuarterAndType`; `bySeason`, `homeVsAway`, `byType`, `byQuarter` (pipeline and fallback only); `type_trends.json` → `comparisons[].games`, `weekly.priorAverage[].games`, `generatedAt` | M64–M70 notes; conflicts file, "Published but not displayed" |
+| Home, Game Previews | Title, group headers, subtitle and crew note, credit line | `previews/latest.json` → `weeks[]`; `previews/<week>` → `week`, `remainingOnly`, `assignments` | M80 |
+| Home, Game Previews | Card: matchup, kickoff, network, "Today"; "projected flags · <lo>–<hi> likely"; range bar; badge "vs league"; split bar; "Crew: <name>"; "~<n> penalty yds" | `previews/<week>` → `games[]` (`projection.total`, `.home`, `.away`, `.range`, `.yards`; `crew.name`); `model.leagueAveragePerGame` | M80, M71, M72, M73, M74 |
+| Preview pop-up | Tiles "Projected flags", "On <away> (away)", "On <home> (home)", "Chance of <n>+ flags" | `games[].projection` (`total`, `away`, `home`, `range`, `awayRange`, `homeRange`, `awayYards`, `homeYards`, `overThreshold`, `probOver`); `model.leagueAveragePerGame` | M71, M72, M73, M74 |
+| Preview pop-up | "What's driving the projection"; "Projected penalties by type"; "⏱️ Quarter by quarter" | `games[].projection.drivers[]`, `games[].byType[]`, `games[].projection.byQuarter[]` | M76, M71, M73, M74, M75 |
+| Preview pop-up | "The crew": "Crew effect on this game", "<season> pen/game", type tilts, crew style note, footnote | `games[].crew` (`overallFactor`, `typeTilts`, `gamesInModel`); `season_comparison.json` → `crewChiefs[].current`; `crew_styles.json` | M76, M1, M44 |
+| Preview pop-up | "🏈 Team discipline (<season>)" and "Watchlist" | `games[].teams.{home,away}` | M77 |
+| Preview pop-up | "Context" chips; "Recent meetings"; model footnote | `games[].context`, `contextReference`, `games[].headToHead[]`, `model.seasons` | M79, M78, M71 |
+| Home, Game Previews | "How projections work" explainer | `app.js` `EXPLAINERS['previews']` (fixed text) | M71, M72, M73; C21 |
+| Static `/assignments/` | "Projected flags" column; "Projected most flags" summary | `previews/<week>` → `games[].projection.total` | M71 |
+| Home (search-engine page source) | Pre-filled previews list ("<away> @ <home>: crew chief <name>, projected <n> flags") | `build_static.py` `home_prefill()` → `PREVIEWS` | M71, M80 |
+| Static `/guide/` | "How projections work" | fixed text | M71, M72; C19 |
+| (not displayed) | — | `previews/<week>` → `byType[].factors`, `crew.quarterTilt`, `teams.*.gamesInModel`, `projection.leagueAverage`, `.vsLeaguePct`, `headToHead[].gameId`, `context.stadium`, `.homeCoach`, `.awayCoach`, `model.version`, `.seasonWeights`, `.regularSeasonOnly`, `.dispersion`, `assignments.source.name`, `.published`, `generatedAt`; past week files (P4) | M71–M80 notes |

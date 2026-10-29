@@ -6,7 +6,7 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–2 of 7 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`); the crew style fields and `/assignments/` move to session 3. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–3 of 8 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -89,8 +89,8 @@ differently, the entry links to the conflict in
 | Calculation | `penalties ÷ games`, from per-game totals of penalty plays. Games with no penalties count (as 0). `scripts/update_data.py` `calculate_season_comparison()` → `_season_block()`. **The scoreboard computes it again** in `scripts/scoreboard.py` `stats()` (`flags ÷ games` per timeframe and week), leaving out penalty plays with no `penalty_team` (0 in 2026). The summary line takes the scoreboard's value (`scripts/build_static.py` `home_summary()`). |
 | Rounding | `season_comparison.json`: stored to 2 decimals → shown to 1 decimal (`fmtNum(…, 1)`). `scoreboard.json`: stored to 1 decimal. Matches the default. |
 | Provenance | nflverse play-by-play (`penalty`, `season_type`), schedules (completed weeks) and officials (crew chief; filled from the schedule's `referee` column and Football Zebras assignments when the officials feed lags). Every data run. |
-| Limitations | Counts flagged **plays**, not flags: two accepted penalties on one play count once. It's a game total for both teams, not one team's rate: team pages use a different per-game rate (one team's penalties), under similar labels; to check in session 3. A crew chief's rate reflects the games and teams they drew, not how strictly they call games (plan section 8). |
-| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. *Sessions 3–6 add the team pages, trends and previews.* |
+| Limitations | Counts flagged **plays**, not flags: two accepted penalties on one play count once. It's a game total for both teams, not one team's rate: team pages use a different per-game rate (one team's penalties), under similar labels; to check in session 4 (teams). A crew chief's rate reflects the games and teams they drew, not how strictly they call games (plan section 8). |
+| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. *Sessions 4–7 add the team pages, trends, previews and What Flags Cost.* |
 | Example | League 2026 through Week 7: **14.67** per game (1,570 penalties in 107 games), shown as 14.7. 2025 Weeks 1–7: 14.21 (1,535 in 108). Recomputed from play-by-play: 1,570 plays with `penalty == 1` in 107 games, a match. |
 | Conflicts | [C4: partial-week games](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison); [C5: "penalties" counts plays](audits/metric-conflicts-2026-10-28.md#c5-penalties-counts-plays-with-an-accepted-penalty); [C7: summary line compares with all of last season](audits/metric-conflicts-2026-10-28.md#c7-the-home-summary-line-compares-with-all-of-last-season); [C8: "All seasons" vs "Since 2015"](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names); [D4: scoreboard crew assignments](audits/metric-conflicts-2026-10-28.md#d4-scoreboard-crew-leader-uses-incomplete-crew-assignments) (fixed in #107) |
 
@@ -110,7 +110,7 @@ differently, the entry links to the conflict in
 | Rounding | One decimal below 10%, whole number from 10% (`pctText()`). Matches the default. |
 | Provenance | Computed in the browser from `season_comparison.json` |
 | Limitations | **Shows only the percentage:** the absolute change and the baseline value sit beside it on the league tiles, but the crew chief table and bar labels show the percentage alone (rule 3 in `CLAUDE.md`; V2.0a step 4). Within ±2% the badge is gray "●" (`PCT_NEUTRAL`); above, red "▲" (more) or green "▼" (fewer): the arrow is the shape that goes with the color. Crew chiefs with fewer than 4 games this season get a dimmed badge (`MIN_GAMES_FOR_PCT`), with no text label saying why. |
-| Where it appears | **Home, This Season vs Last:** league tiles (penalties per game, penalty yards per game, yards per penalty); bar-end labels on both crew chief charts; "Pen / Game" and "Yds / Game" columns of the crew chief table. **Crew chiefs (session 2):** Meet The Officials cards ("vs 2025", "vs 2015–25") and the crew pop-up ("Pen/g vs 2025", "Yds/g vs 2025", "vs 2015–25"; the per-type and per-quarter bars, M33 and M34). *Session 3 adds the team pop-up.* |
+| Where it appears | **Home, This Season vs Last:** league tiles (penalties per game, penalty yards per game, yards per penalty); bar-end labels on both crew chief charts; "Pen / Game" and "Yds / Game" columns of the crew chief table. **Crew chiefs (session 2):** Meet The Officials cards ("vs 2025", "vs 2015–25") and the crew pop-up ("Pen/g vs 2025", "Yds/g vs 2025", "vs 2015–25"; the per-type and per-quarter bars, M33 and M34). *Session 4 adds the team pop-up.* |
 | Example | League penalties per game, 2026 vs 2025 Weeks 1–7: (14.67 − 14.21) ÷ 14.21 = **+3.2%**, shown "▲ 3.2%" in red. The absolute change (+0.46 per game) isn't shown. |
 | Conflicts | [C4: partial-week games](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison) |
 
@@ -337,7 +337,7 @@ plays.").
 | Calculation | `stats()` (`firstDowns`, `firstDownsPerGame`) |
 | Rounding | Count integer; per game 1 decimal |
 | Provenance | nflverse play-by-play (`first_down_penalty`). Every data run. |
-| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. To check in session 6 against What Flags Cost's "key first down given". |
+| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. To check in session 7 against What Flags Cost's "key first down given". |
 | Where it appears | Scoreboard (`frames[].firstDowns`, `frames[].firstDownsPerGame`, `weeklyLog[].firstDowns`) |
 | Example | 2026 season: 432 (4.0 per game) |
 | Conflicts | None yet |
@@ -374,11 +374,11 @@ plays.").
 | Time window | The timeframe (scoreboard); the current season so far (summary line) |
 | Inclusion rules | As in Terms |
 | Benchmark | None |
-| Calculation | **Scoreboard:** `stats()`: team games from the schedule's `home_team`/`away_team` (mapped to today's abbreviations as the schedule is loaded, `scripts/teams.py`), flags from play-by-play `penalty_team` (`mostFlaggedTeam`, `cleanestTeam`). **Summary line:** `teams/index.json` → highest `perGame` (`team_pages.py`; session 3). |
+| Calculation | **Scoreboard:** `stats()`: team games from the schedule's `home_team`/`away_team` (mapped to today's abbreviations as the schedule is loaded, `scripts/teams.py`), flags from play-by-play `penalty_team` (`mostFlaggedTeam`, `cleanestTeam`). **Summary line:** `teams/index.json` → highest `perGame` (`team_pages.py`; session 4). |
 | Rounding | 1 decimal |
 | Provenance | nflverse schedules and play-by-play. Every data run. |
 | Limitations | A team's own penalties, under the same "flags per game" label as M1's game total (both teams), at about half the value. No games count is shown. "Cleanest" reads as a judgment (C6). In a week frame each team has one game. **Fixed in #105 (D1):** relocated teams' seasons before the move were split off ("Since 2015": LV 12.0, STL 0.0). |
-| Where it appears | Scoreboard leaders (`scoreboard.json` → `frames[].mostFlaggedTeam`, `frames[].cleanestTeam`). Summary line (`index.html` `SEO:SUMMARY`). *Session 3 adds the team pages.* |
+| Where it appears | Scoreboard leaders (`scoreboard.json` → `frames[].mostFlaggedTeam`, `frames[].cleanestTeam`). Summary line (`index.html` `SEO:SUMMARY`). *Session 4 adds the team pages.* |
 | Example | At `5091e57`: 2026 season GB 9.3 (most), IND 5.1 (fewest). "Since 2015": LV 6.9, CIN 5.7. |
 | Conflicts | [D1](audits/metric-conflicts-2026-10-28.md#d1-relocated-teams-two-team-abbreviations-joined) (fixed in #105), [C5](audits/metric-conflicts-2026-10-28.md#c5-penalties-counts-plays-with-an-accepted-penalty), [C6](audits/metric-conflicts-2026-10-28.md#c6-wording-and-framing-section-17-on-the-home-page) |
 
@@ -550,8 +550,8 @@ see C6.
 | Calculation | `scripts/update_data.py` `generate_hero_stats()` (`lastUpdated`, UTC); `frontend/js/livestrip.js` checks it every 5 minutes while the page is visible |
 | Rounding | Hour and minute |
 | Provenance | Pipeline run time. Every data run. |
-| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). |
-| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker) is in session 6. |
+| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **For session 7 (gameday and update notice):** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs several times a week (more on game days) and on every merge to `main`. |
+| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker) is in session 7. |
 | Example | `2026-10-28T23:25:59Z` |
 | Conflicts | None |
 
@@ -588,11 +588,10 @@ field below, match. The assignment has one crew chief for each of the 3,135
 games, no repeated rows, and no game without a penalty (so the career join
 that drops penalty-free games drops none).
 
-**Not yet covered here (session 3):** the style fingerprint and trajectory in
-the pop-up, the Crew Chief Style Map, and every `crew_styles.json` field on
-the static pages ("Calling style", traits, "Calls most like", "Penalty types
-vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
-`/assignments/` page.
+**Crew styles** (the pop-up's style block and trajectory, the Crew Chief
+Style Map, every `crew_styles.json` field on the static pages and the CSV's
+`career_style`) and the `/assignments/` page: see "Crew styles (session 3)"
+below, M37–M45.
 
 ### M25. Crew chief career games
 
@@ -609,10 +608,10 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 | Calculation | Count of games per crew chief. `calculate_referee_stats()` (`games`) → `referees.json` → `games`; `referee/<slug>.json` → `stats.games`. |
 | Rounding | Integer |
 | Provenance | nflverse officials, schedules and play-by-play; Football Zebras. Every data run. |
-| Limitations | **Includes playoffs**, while the card's rate rows beside it, the season table and the static pages count regular-season games only. The "Games" explainer says "Total number of regular-season games this crew chief has led in the data (2015 onward)", which is wrong for this number (D6). |
+| Limitations | **Includes playoffs**, while the card's rate rows beside it, the season table and the static pages count regular-season games only. The "Games Worked" explainer says so: "Total number of games this crew chief has led in the data (2015 onward), including playoff games." **Fixed in #110 (D6):** it said "regular-season games"; the table subtitle said "All active head referees" (it lists all 28; now "Every crew chief since 2015, most games first"). |
 | Where it appears | Home, Meet The Officials: card header. Home, Complete Crew Chief Stats: "Games" column. Crew pop-up: subtitle. JSON: `referees.json` → `games`; `referee/<slug>.json` → `stats.games`. |
 | Example | Bill Vinovich **190** (177 regular season + 13 playoff). Alex Moore 22 (all regular season). |
-| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D6](audits/metric-conflicts-2026-10-28.md#d6-crew-chief-table-labels-dont-match-what-it-shows) |
+| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D6](audits/metric-conflicts-2026-10-28.md#d6-crew-chief-table-labels-dont-match-what-it-shows) (fixed in #110) |
 
 ### M26. Crew chief career penalties per game
 
@@ -625,14 +624,14 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 | Population | As M25 (playoffs included) |
 | Time window | As M25 |
 | Inclusion rules | As in Terms |
-| Benchmark | None on the table. The table's legend ("Above average", "Below average") belongs to the Home Bias colors, not to this column (D5). |
+| Benchmark | None on the table. The explainer points to where the league average for the same seasons is shown (the Crew Chief Flag Rates chart and each crew chief's profile, M35), with no number of its own. |
 | Calculation | Mean of per-game totals, **rounded to 1 decimal** in `calculate_referee_stats()` (`avg_per_game`). Also the input to M3 (Referee Variance), M23 (Crew Chief Spread) and the career tendency (M35). |
 | Rounding | 1 decimal. Matches the default. |
 | Provenance | As M25 |
-| Limitations | A different rate from the crew chief's "2015–25" row on the card (M1, `all` baseline: regular season, seasons before this one): Vinovich 11.0 here vs 11.02 there, Moore 16.5 vs 16.12. The explainer says "League average is typically around **11-12** penalties per game", which the data doesn't support today (D7), and calls crews "flag-heavy" or "let them play" (C13). A crew chief's rate reflects the games and teams they drew (plan section 8). |
+| Limitations | A different rate from the crew chief's "2015–25" row on the card (M1, `all` baseline: regular season, seasons before this one): Vinovich 11.0 here vs 11.02 there, Moore 16.5 vs 16.12. The explainer calls crews "flag-heavy" or "let them play" (C13). **Fixed in #110 (D7):** the explainer said "League average is typically around 11-12 penalties per game" (12.59 for 2015–25; 14.67 in 2026); it no longer states a number. A crew chief's rate reflects the games and teams they drew (plan section 8). |
 | Where it appears | Home, Complete Crew Chief Stats: "Avg/Game". Crew pop-up: "Career" block. Card fallback (no season data). JSON: `referees.json` → `avg_per_game`; `referee/<slug>.json` → `stats.avgPerGame`. |
 | Example | Vinovich 11.0 (2,091 penalties in 190 games). Moore 16.5 (364 in 22). |
-| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) |
+| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) (fixed in #110) |
 
 ### M27. Crew chief game range (fewest and most penalties in a game)
 
@@ -657,7 +656,7 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 
 | Field | Value |
 |---|---|
-| Label on site | Card footer: "Home bias **+2.5%**". Table column: "Home Bias" (explainer "What is Home Bias?"), red above 5, green below 0. Pop-up "Career" block: "Home Bias". |
+| Label on site | Card footer: "Home bias **+2.5 pts**". Table column: "Home Bias" (explainer "What is Home Bias?"), red above 5, green below 0; legend "Home Bias above 5 pts" / "Home Bias below 0". Pop-up "Career" block: "Home Bias". Explainer: "the road teams' share of the crew's penalties minus the home teams' share, in percentage points (pts). For example, +4 pts means 52% of the flags went against road teams and 48% against home teams." |
 | Kind | Derived: difference between two shares of a raw count |
 | Numerator | Penalties on the road team minus penalties on the home team, in the crew chief's games |
 | Denominator | All penalties in those games |
@@ -665,12 +664,12 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 | Inclusion rules | As in Terms; home = play-by-play `home_team` |
 | Benchmark | None shown. The league's own value for the same population is 2.8 (`trends.json` → `homeVsAway.bias_pct`, M21). |
 | Calculation | `(road − home) ÷ (road + home) × 100`: the road share minus the home share, in **percentage points**. `calculate_referee_stats()` (`home_bias_pct`) → `stats.homeBiasPct`. Per season: `seasonStats[].homeBias` (not displayed). |
-| Rounding | 1 decimal, shown with "%" |
+| Rounding | 1 decimal, shown with "pts" (was "%" before #110) |
 | Provenance | As M25 |
-| Limitations | **The explainer misstates the number** (D5): "measures how much more (or less) the away team gets penalized compared to the home team, shown as a percentage". Moore's +8.2 is a gap of 8.2 points; road teams drew **18.0% more** flags in his games (197 vs 167). Vinovich: +2.5 shown, 5.2% more. The colors use fixed cut-offs (above 5, below 0), not the league value, and the legend calls them "Above average" / "Below average". Red marks road teams penalized more, not more penalties (C13). "Bias", and the explainer's "likely reflects crowd influence" and "Research shows home bias is strongest in Q1", claim causes the data doesn't test (C13). A different measure from the league card (M21, relative difference since #107) and from the style profile's home share (session 3) ([C12](audits/metric-conflicts-2026-10-28.md#c12-three-measures-of-home-vs-road-for-one-idea)). No counts shown. |
+| Limitations | A gap in points, not "how much more": Moore's +8.2 pts means road teams drew **18.0% more** flags in his games (197 vs 167); Vinovich +2.5 pts, 5.2% more. The colors use fixed cut-offs (above 5 pts, below 0), not the league value. Red marks road teams penalized more, not more penalties (C13). "Bias", and the explainer's "likely reflects crowd influence" and "Research shows home bias is strongest in Q1", claim causes the data doesn't test (C13). A different measure from the league card (M21, relative difference since #107) and from the style profile's home share (M40) ([C12](audits/metric-conflicts-2026-10-28.md#c12-three-measures-of-home-vs-road-for-one-idea)). No counts shown. **Fixed in #110 (D5):** the explainer said the number "measures how much more (or less) the away team gets penalized … shown as a percentage", the values showed "%", and the legend read "Above average" / "Below average". |
 | Where it appears | Home, Meet The Officials: card footer. Home, Complete Crew Chief Stats: "Home Bias". Crew pop-up: "Career" → "Home Bias". Pre-filled page source (`build_static.py` `home_prefill()`, `DATA_TABLE`). JSON: `referees.json` → `home_bias_pct`; `referee/<slug>.json` → `stats.homeBiasPct`. |
-| Example | Vinovich +2.5 (road 1,072, home 1,019). Moore +8.2 (road 197, home 167). |
-| Conflicts | [D5](audits/metric-conflicts-2026-10-28.md#d5-crew-chief-home-bias-explained-as-how-much-more), [C12](audits/metric-conflicts-2026-10-28.md#c12-three-measures-of-home-vs-road-for-one-idea), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages), [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season) |
+| Example | Vinovich +2.5 pts (road 1,072, home 1,019). Moore +8.2 pts (road 197, home 167). |
+| Conflicts | [D5](audits/metric-conflicts-2026-10-28.md#d5-crew-chief-home-bias-explained-as-how-much-more) (fixed in #110), [C12](audits/metric-conflicts-2026-10-28.md#c12-three-measures-of-home-vs-road-for-one-idea), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages), [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season) |
 
 ### M29. Consistency (crew chief style label)
 
@@ -802,10 +801,10 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 | Calculation | Season line: `pctChange()` and `pctBadge()` in `app.js` `openRefereeModal()`; wording bands ±5%. Static page: `(crew ÷ league − 1) × 100`, whole percent (`build_static.py` `crew_pages()`). Career line: `generate_referee_profiles()` `tendencies` (`avgVsLeague`, `avgVsLeaguePct` not displayed; `description` from bands ±5% and ±10%). Chart: `renderPenaltiesByRefChart()`, at least 1 game (current) or 10 (2015–25). |
 | Rounding | Rates 1 decimal; change as M2 (pop-up) or whole percent (static page) |
 | Provenance | As M25 and M1 |
-| Limitations | **Two different league averages in one panel** (C10): the career line's 12.80 (mean of crews, playoffs in) vs the league's 12.59 (2015–25 regular season, games-weighted) and 14.67 (2026). The career line compares a career rate including 2026 with a career mean. The descriptions ("Flag-heavy crew", "Let-them-play style", "Tends to let minor infractions go", "one of the more flag-heavy crews", "letting them play more than most") describe a calling style the rate alone doesn't show (C13). The season line shows the percentage without the absolute difference (rule 3). |
-| Where it appears | Crew pop-up ("2026 so far", "Career:" / "Tendencies"). Static `/crew/<slug>/` summary and FAQ ("the 2026 league average is 14.7"). Home, League Trends: "Crew Chief Flag Rates" chart (marker, colors, "(<n> g)" labels). JSON: `referee/<slug>.json` → `tendencies.description`; `season_comparison.json` → `league.current.perGame`, `league.baselines.all.perGame`, `crewChiefs[].current`, `crewChiefs[].baselines.all`. |
+| Limitations | **Two different league averages in one panel** (C10): the career line's 12.80 (mean of crews, playoffs in) vs the league's 12.59 (2015–25 regular season, games-weighted) and 14.67 (2026). The career line compares a career rate including 2026 with a career mean. The descriptions ("Flag-heavy crew", "Let-them-play style", "Tends to let minor infractions go", "one of the more flag-heavy crews", "letting them play more than most") describe a calling style the rate alone doesn't show (C13). The season line shows the percentage without the absolute difference (rule 3). The "Average Penalties Per Game" explainer points here instead of stating a league average (since #110, D7). |
+| Where it appears | Crew pop-up ("2026 so far", "Career:" / "Tendencies"). Static `/crew/<slug>/` summary and FAQ ("the 2026 league average is 14.7"). Static `/crew/` former crew chiefs note ("league average 12.6 per game in 2015–25, 14.7 in 2026 through Week 7", from `league.baselines.all.perGame` and `league.current.perGame`, `build_static.py` `league_levels()`, since #110). Home, League Trends: "Crew Chief Flag Rates" chart (marker, colors, "(<n> g)" labels). JSON: `referee/<slug>.json` → `tendencies.description`; `season_comparison.json` → `league.current.perGame`, `league.baselines.all.perGame`, `crewChiefs[].current`, `crewChiefs[].baselines.all`. |
 | Example | Vinovich: season line 13.67 vs 14.67, ▼ 6.8%; static page "7% below"; career line −1.8 (11.0 vs 12.80, −14.1%). Moore: career line +3.7 (16.5 vs 12.80, +28.9%), "Flag-heavy crew". |
-| Conflicts | [C10](audits/metric-conflicts-2026-10-28.md#c10-league-average-means-three-things-on-crew-chief-pages), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) |
+| Conflicts | [C10](audits/metric-conflicts-2026-10-28.md#c10-league-average-means-three-things-on-crew-chief-pages), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages), [D7](audits/metric-conflicts-2026-10-28.md#d7-fixed-league-average-text-out-of-date) (fixed in #110) |
 
 ### M36. Recent games (per-game penalties)
 
@@ -827,6 +826,223 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 | Example | See each profile. |
 | Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season) |
 
+### Crew styles (session 3)
+
+Session 3. **Examples are from `53e0bd1`** (2026-10-29: 2026 regular season
+through Week 7). Source: `crew_styles.json`, built by
+`scripts/crew_styles.py` `build_crew_styles()`. Places: the crew pop-up's
+"Crew style" block (tabs "2026 style", "Career 2015–25", "Compare years",
+with the trajectory chart), the "Crew Chief Style Map" (League Trends,
+section 04), the static `/crew/` and `/crew/<slug>/` pages, the CSV's
+`career_style`, `/assignments/`, and the one-line style note in game
+previews.
+
+**Population and windows** (all entries below):
+- **Regular season only**; penalty plays with a `penalty_team`; active crew
+  chiefs only (those with a game this season); crew chief from the merged
+  assignment.
+- **Career** = every regular season **before** the current one (2015–25), at
+  least **10 games** (`MIN_GAMES`). **Season** = one regular season, at least
+  1 game. **Weekly** (Style Map only) = the current season "through Week N"
+  (cumulative) or "Week N only".
+- **Benchmarks:** `league` (2015–25), `leagueBySeason.<season>`,
+  `leagueCurrent` (the current season) and `weekly.<through|only>.<week>.league`,
+  each over the same games as the crew figures it's compared with.
+
+**Season adjustment (career only).** League levels moved a lot over the
+window (13.82 per game in 2015, 11.18 in 2022). For career figures each crew
+chief is compared with the league **in the seasons they worked**, then
+expressed at the 2015–25 league level (`_profiles()`):
+- per-game rates: `league rate × crew count ÷ expected count from its seasons`;
+- per-flag measures (yards, points, shares): `league value + (crew value −
+  league value in its seasons, weighted by the crew's flags)`.
+- Unadjusted values are kept in `raw` and shown only in the pop-up's career
+  footnote ("Unadjusted: 16.1 flags per game, 7.9 yards per flag").
+
+Spot checks (recomputed with separate code from play-by-play and the merged
+assignment): the 2015–25 league values, the top-10 type list, Bill Vinovich's
+and Alex Moore's adjusted rates, yards per flag, home share, a shrunk
+roughing-the-passer rate, their quadrants, Moore's flags-per-game trait
+z-score, and both crew chiefs' "through Week 7" Style Map values: all 30
+match. Points per flag isn't recomputed here (What Flags Cost, session 7).
+
+### M37. Crew style: flags per game (season-adjusted career; season; weekly)
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up "Crew style" tile "Flags / game" ("16.0", "league 12.6"). Style Map x-axis "Flags per game →", tooltip "<name>: 16.0 flags/game · 8.28 yds/flag (16 games)". Trajectory x-axis "Flags vs that season's league average →" (tooltip "+27% flags vs league"). Trait "More flags: 16.0 per game (league 12.6)". "Compare years" table row "Flags / game". |
+| Kind | **Career: derived (season-adjusted exposure rate).** Season and weekly: exposure rate. Trajectory: derived (relative to that season's league). |
+| Numerator | Penalties in the crew chief's games (career: adjusted to the 2015–25 league level) |
+| Denominator | The crew chief's games in the window |
+| Population / Time window | See the section notes: career 2015–25 (10+ games), one season, or the current season through / in a week |
+| Inclusion rules | As in Terms, plus penalty plays with a `penalty_team` |
+| Benchmark | The league over the same games (`league`, `leagueBySeason`, `leagueCurrent`, `weekly…league`); the Style Map's dashed vertical line |
+| Calculation | `crew_styles.py` `_profiles()` (`perGame`; career adjusted as in the section notes); `vsLeague.perGamePct = (crew ÷ league − 1) × 100`; weekly `period()`. |
+| Rounding | Stored 2 decimals (`vsLeague` 1); shown 1 decimal (tiles, tooltip), whole percent (trajectory tooltip) |
+| Provenance | nflverse play-by-play, officials, schedules; Football Zebras. Every data run. |
+| Limitations | **The career value is adjusted, but sits beside raw rates under the same label** (C14): in one pop-up, Moore's "2015–25" row (M1) says 16.1 and the Crew style tile says 16.0, both "flags per game". Season and weekly views rest on few games: the pop-up opens on the current season (6 games for most crew chiefs), flagged "Only <n> games…" below 8 games; the Style Map's "Week N only" is one game per crew, which its subtitle says. The Style Map explainer says career views use "about 95 games each"; the active crew chiefs average 128 (median 125, range 16–172) (D8). |
+| Where it appears | Crew pop-up "Crew style" (career, season, compare, trajectory); Home, League Trends: "Crew Chief Style Map" (every period). JSON: `crew_styles.json` → `crews[].perGame`, `crews[].raw.perGame`, `crews[].vsLeague.perGamePct`, `crews[].seasons.<season>.perGame`, `.vsLeague.perGamePct`, `weekly.through.<week>.crews.<name>.perGame`, `weekly.only.<week>.crews.<name>.perGame`, the `league…perGame` fields. |
+| Example | Moore career 15.96 adjusted (raw 16.12, 16 games; league 12.59; +26.7%). Vinovich 11.02 (raw 11.02, 171 games; −12.5%). Through Week 7, 2026: Moore 17.67 (6 games), league 14.67. |
+| Conflicts | [C14](audits/metric-conflicts-2026-10-28.md#c14-season-adjusted-and-raw-career-rates-under-one-label), [C11](audits/metric-conflicts-2026-10-28.md#c11-career-means-three-different-windows), [D8](audits/metric-conflicts-2026-10-28.md#d8-style-map-explainer-about-95-games-each) |
+
+### M38. Crew style: yards per flag
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up tile "Yards / flag" ("8.3", "league 8.4"). Style Map y-axis "Yards per flag (bigger calls) →". Trajectory y-axis "Yards per flag vs league →" (tooltip "−0.14 yds/flag"). Traits "Bigger calls: …" / "Smaller calls: …". |
+| Kind | Career: derived (season-adjusted average size of a penalty). Season and weekly: derived (yards ÷ penalties, as M8). |
+| Numerator | Penalty yards (as M5) |
+| Denominator | Penalties (as M4) |
+| Population / Time window | As M37 |
+| Inclusion rules | As M5 |
+| Benchmark | As M37; the Style Map's dashed horizontal line |
+| Calculation | `_profiles()` (`yardsPerFlag`; career adjusted); `vsLeague.yardsPerFlagDiff = crew − league`. |
+| Rounding | Stored 2 decimals; shown 1 decimal (tiles), 2 decimals (map tooltip) |
+| Provenance | As M37 |
+| Limitations | The adjustment can be larger than the differences between crews: Moore's raw 7.89 becomes 8.28 adjusted, while every crew's career value lies between 8.07 and 8.74 (the explainer says "under a yard per flag between crews", which holds). The y-axis is zoomed, so small gaps look large; the explainer says so. Yards depend on where fouls happen as well as which. |
+| Where it appears | As M37. JSON: `crews[].yardsPerFlag`, `.raw.yardsPerFlag`, `.vsLeague.yardsPerFlagDiff`, `.seasons.<season>.yardsPerFlag`, `weekly.<through|only>.<week>.crews.<name>.yardsPerFlag`, `league…yardsPerFlag`. |
+| Example | Moore 8.28 adjusted (raw 7.89); Vinovich 8.23 (raw 8.22); league 8.42. |
+| Conflicts | [C14](audits/metric-conflicts-2026-10-28.md#c14-season-adjusted-and-raw-career-rates-under-one-label) |
+
+### M39. Crew style: points per flag
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up tile "Points / flag" ("0.80", "league 0.89"). Traits "Costlier flags: <v> points each (league <l>)" / "Cheaper flags: …". |
+| Kind | **Model estimate** (average expected-points cost of a flag) |
+| Numerator | Sum of each flag's cost to the penalized team, in expected points (`flag_impact.py` `classify()` → `cost_epa`): for plays wiped out by the foul, nflverse's EPA of the play (sign by side); otherwise penalty yards × a fixed points-per-yard rate; two-point tries and nullified touchdowns handled separately |
+| Denominator | Penalties |
+| Population / Time window | As M37 |
+| Inclusion rules | As M37 |
+| Benchmark | `league.costPerFlag` (and per season) |
+| Calculation | Mean of `cost_epa` (`_profiles()`, `costPerFlag`; career adjusted as a per-flag measure). |
+| Rounding | Stored and shown to 2 decimals |
+| Provenance | nflverse play-by-play (EPA from nflverse's expected-points model) and `flag_impact.py`'s constants. Every data run. |
+| Limitations | **An estimate presented without the word** (C15): "points" isn't explained in the pop-up, and the trait states it as a fact. It mixes two methods by play type. Defined in full with What Flags Cost (session 7). |
+| Where it appears | Crew pop-up "Crew style" (tile, traits, compare table). JSON: `crews[].costPerFlag`, `.raw.costPerFlag`, `.seasons.<season>.costPerFlag`, `league…costPerFlag`. |
+| Example | Moore 0.80 (league 0.89): "Cheaper flags: 0.80 points each (league 0.89)". Vinovich 0.87. |
+| Conflicts | [C15](audits/metric-conflicts-2026-10-28.md#c15-model-estimates-on-crew-style-pages-not-labeled-as-estimates) |
+
+### M40. Crew style: shares (pre-snap, fourth quarter, on offense, on home team)
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up tiles "Pre-snap", "4th quarter", "On offense", "On home team" ("34%", "league 35%"). Traits ("More pre-snap fouls: 40% of flags (league 35%)", "Busier 4th quarters…", "More flags on defenses: 50% on offenses (league 54%)", "More flags on road teams: 42% on home teams (league 50%)"). Static `/crew/<slug>/` FAQ: "In 2015–25, 49% of the flags in his games were on the home team (league: 49%)". |
+| Kind | Derived: shares of the crew chief's penalties (career: season-adjusted) |
+| Numerator | Penalties that are pre-snap (a fixed list of 13 types), in the 4th quarter, on the offense (`penalty_team == posteam`), or on the home team |
+| Denominator | The crew chief's penalties |
+| Population / Time window | As M37 |
+| Inclusion rules | As M37 |
+| Benchmark | The league share over the same games |
+| Calculation | `_profiles()` (`preSnapShare`, `q4Share`, `offenseShare`, `homeShare`; career adjusted as per-flag measures). |
+| Rounding | Stored 3 decimals; shown whole percent |
+| Provenance | As M37 |
+| Limitations | Same names as the scoreboard's shares (M15) over different windows. "On offense" follows `posteam`, which on kicks is the kicking team. The home share is a third home-vs-road measure (C12). A trait needs a 3-point gap and a z-score of 1 across crews, so it can rest on a few games in a season view (Moore's 2026 home-share trait is 6 games). |
+| Where it appears | Crew pop-up "Crew style"; static `/crew/<slug>/` FAQ (home share). JSON: `crews[].preSnapShare`, `.q4Share`, `.offenseShare`, `.homeShare`, `.raw.*`, `.seasons.<season>.*`, `league…*`. |
+| Example | Vinovich: pre-snap 39.5% (league 35.4%), home 48.9% (league 48.6%). Moore: offense 50.0% (league 54.5%). |
+| Conflicts | [C12](audits/metric-conflicts-2026-10-28.md#c12-three-measures-of-home-vs-road-for-one-idea), [C14](audits/metric-conflicts-2026-10-28.md#c14-season-adjusted-and-raw-career-rates-under-one-label) |
+
+### M41. Crew style: penalty-type rates vs the league (shrunk)
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up "How often they call each type vs the league" (bars, "+79%"). "Compare years" rows under "Penalty types vs that season's league rate". Traits "Calls more roughing the passer: 79% above the league rate". Static `/crew/<slug>/`: table "Penalty types vs the league (2015–25, season-adjusted, per game)" ("Penalty", "Per game", "vs league rate"); FAQ "What penalties does <name> call most? Per game, 2015–25: …". |
+| Kind | **Model estimate** (rate shrunk toward the league), plus a relative difference |
+| Numerator | Penalties of the type in the crew chief's games (career: adjusted to the 2015–25 level), **plus 20 games' worth of the league rate** (`SHRINK = 20`) |
+| Denominator | The crew chief's games plus 20 |
+| Population / Time window | As M37; the same 10 types (the most common in 2015–25) in every view |
+| Inclusion rules | As M37 |
+| Benchmark | The league's per-game rate of the type over the same games (`types.<type>.league`) |
+| Calculation | `_profiles()`: `shrunk = (count + 20 × league rate) ÷ (games + 20)`; `diffPct = (shrunk ÷ league − 1) × 100`. |
+| Rounding | Rate stored 3 decimals, shown 2 (static table); difference whole percent |
+| Provenance | As M37 |
+| Limitations | **Shown as observed, not labeled as estimates** (C15): Moore's "79% above" is the shrunk value; observed, he had 15 in 16 games (0.94 per game vs the league's 0.41, +129%). The pop-up's footnote says rates are "pulled toward the league average" but doesn't call them estimates; the static FAQ gives the shrunk rates as "per game". Shrinkage matters most for short careers and single seasons. "Calls more" attributes the rate to the crew chief (C13). |
+| Where it appears | Crew pop-up (fingerprint bars, compare table, traits); static `/crew/<slug>/` (type table, FAQ). JSON: `crews[].types.<type>.perGame`, `.league`, `.diffPct`; `crews[].seasons.<season>.types.<type>.*`; `types[]` (the list). |
+| Example | Roughing the passer: Moore 0.732 shrunk (raw 0.938), +79%; Vinovich 0.205 (raw 0.181), −50%; league 0.409. |
+| Conflicts | [C15](audits/metric-conflicts-2026-10-28.md#c15-model-estimates-on-crew-style-pages-not-labeled-as-estimates), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages) |
+
+### M42. Crew style traits
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up bullet list under the tiles (up to 4); "Close to the league average on everything we track" when none. Static `/crew/<slug>/` list and FAQ ("Compared with other crews: …"). Game previews: the first trait in the crew's style note. |
+| Kind | Derived: a selection of M37–M41 written as sentences |
+| Numerator / Denominator | — (each trait quotes one metric and its league value) |
+| Population / Time window | As M37 (career or one season); compared across **active crew chiefs only** |
+| Inclusion rules | A metric qualifies when it differs from the league by a minimum (flags per game 5% relative; yards 0.2; points 0.03; shares 3 points; a type 15%) **and** its z-score across active crews is at least 1; the 4 largest by z-score are kept |
+| Benchmark | The league value (in the text) and the other active crews (the z-score) |
+| Calculation | `build_crew_styles()` `styles_for()` → `traits[]` (`text`, `key`, `z`, `direction`); wording in `TRAIT_TEXT`. |
+| Rounding | Values in the text: 1 decimal (per game, yards), 2 (points), whole percent (shares, types) |
+| Provenance | As M37 |
+| Limitations | Relative to whichever crews are active this year, so a trait can appear or vanish when the group changes. Type traits quote shrunk estimates as facts (C15). Season traits can rest on 6 games. Phrases like "Calls more …" and "Busier 4th quarters" describe the crew chief, not the games (C13). |
+| Where it appears | Crew pop-up; static `/crew/<slug>/`; game previews (`previewCrewStyleHtml()`). JSON: `crews[].traits[].text` (`.key`, `.z`, `.direction` not displayed); `crews[].seasons.<season>.traits[]`. |
+| Example | Moore career: "Cheaper flags: 0.80 points each (league 0.89)", "More flags: 16.0 per game (league 12.6)" (z 3.0), "Calls more roughing the passer: 79% above the league rate", "More flags on defenses: 50% on offenses (league 54%)". |
+| Conflicts | [C15](audits/metric-conflicts-2026-10-28.md#c15-model-estimates-on-crew-style-pages-not-labeled-as-estimates), [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages) |
+
+### M43. Crew style: "Calls most like" (similar crew chiefs)
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up (career tab): "Calls most like: John Hussey · Clay Martin". Static `/crew/<slug>/`: "Calls most like: …". |
+| Kind | Derived: nearest neighbours on the career fingerprint |
+| Numerator / Denominator | — |
+| Population / Time window | Active crew chiefs, career (2015–25, 10+ games) |
+| Inclusion rules | — |
+| Benchmark | The other active crew chiefs |
+| Calculation | Distance between crews on the standardized career metrics (M37–M41: 7 metrics and 10 type rates, each as a z-score across active crews, equally weighted); the two smallest (`crews[].similar[]`: `name`, `slug`, `distance`). |
+| Rounding | Names only; `distance` stored 2 decimals, not displayed |
+| Provenance | As M37 |
+| Limitations | Equal weights make the 10 type rates count for more than the 7 other metrics together. A short career's shrunk type rates sit near the league, which pulls it toward the middle. Nothing says how close "most like" is. |
+| Where it appears | Crew pop-up; static `/crew/<slug>/`. JSON: `crews[].similar[].name`, `.slug` (`.distance` not displayed). |
+| Example | Vinovich: John Hussey (4.92), Clay Martin (5.09). Moore: Clete Blakeman (6.77), Alex Kemp (6.88). |
+| Conflicts | None |
+
+### M44. Crew style quadrant ("Game-changers", "Stop-and-start", "Few but costly", "Let them play")
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up badge and line ("Let them play" · "fewer flags, smaller calls"). Style Map and trajectory quadrant labels and dot colors. "Compare years" row "Style". Static `/crew/`: column "Career style"; `/crew/<slug>/`: "Calling style": "Career (2015–25): **Let them play**, fewer flags, smaller calls. 2026 so far: **Let them play**." `/assignments/`: "Crew career style". `crew_chiefs_<season>.csv`: `career_style`. Game previews: the style note. |
+| Kind | Derived: a label from two comparisons |
+| Numerator / Denominator | — |
+| Population / Time window | As M37 (career, each season, each Style Map period) |
+| Inclusion rules | — |
+| Benchmark | The league's flags per game and yards per flag over the same games |
+| Calculation | `QUADS[(perGame > league, yardsPerFlag > league)]`: more flags + bigger calls "Game-changers"; more + smaller "Stop-and-start"; fewer + bigger "Few but costly"; fewer + smaller "Let them play". Style Map colors: red, yellow, blue, green. |
+| Rounding | Label only |
+| Provenance | As M37 |
+| Limitations | Any difference counts, however small: a crew 0.01 yards above the league is "bigger calls". It can change with a few games (Moore: "Stop-and-start" career, "Game-changers" in 2026 over 6 games). The names describe a style or effect ("Game-changers", "Let them play") that two averages don't show (C13). Red marks "Game-changers" but yellow marks "Stop-and-start", also more flags (C13). |
+| Where it appears | As the label row. JSON: `crews[].archetype` (`key`, `title`, `description`), `crews[].seasons.<season>.archetype`. |
+| Example | Career: 8 "Game-changers", 4 "Few but costly", 3 "Let them play", 2 "Stop-and-start" (17 active crew chiefs). |
+| Conflicts | [C13](audits/metric-conflicts-2026-10-28.md#c13-wording-and-framing-section-17-on-crew-chief-pages) |
+
+### M45. Games with a crew chief assigned (this week)
+
+| Field | Value |
+|---|---|
+| Label on site | Static `/assignments/`: "14 of 14 Week 8 games have a crew chief assigned." Table "Game", "Date", "TV", "Crew chief" ("TBA" when none). |
+| Kind | Raw count |
+| Numerator | This week's games with a published crew chief |
+| Denominator | This week's games |
+| Population | The upcoming week in `previews/latest.json` |
+| Time window | One week |
+| Inclusion rules | Crew chief from Football Zebras assignments, matched to the schedule (`previews.py`) |
+| Benchmark | None |
+| Calculation | `build_static.py` `assignments_page()`: count of `games[]` with a `crew`. The previews' own count is `previews/<week>.json` → `assignments.assigned`, `.games` (previews session). |
+| Rounding | Integers |
+| Provenance | Football Zebras (`fetch_assignments.py` → `assignments/<season>-week-<nn>.json`); nflverse schedules. Every data run. |
+| Limitations | Shows the latest published assignments; a late change appears on the next run. |
+| Where it appears | Static `/assignments/` summary and table. The page's other columns: "Crew 2026 flags / game" (M1), "Crew career style" (M44), "Projected flags" (model estimate; previews session). `assignments/*.json` files are pipeline inputs (crew chief fallback, previews); the site doesn't read them directly. |
+| Example | Week 8: 14 of 14 (source posted Tue 27 Oct 2026). |
+| Conflicts | None |
+
+**Crew style fields not displayed anywhere:** `crew_styles.json` →
+`crews[].slug` (link), `crews[].current` (a copy of the current season's rates; the map and pop-up read `seasons.<season>`), `.traits[].key`, `.z`, `.direction`,
+`.similar[].distance`, `.seasonAdjusted`, `.raw.*` other than the career
+footnote's two values, `.archetype.key` (styling), `careerSeasons` (used
+for labels), `season`, `weekly.complete` (menu notes "cumulative" / "in
+progress"), `weekly.weeks`, `weekly.season`, `notes`, `generatedAt`;
+`assignments/<season>-week-<nn>.json` (all fields).
+
 **Season figures on crew chief pages** use session 1's entries:
 - **Card rows** ("2026", "2025", "2015–25": "Pen/g", "Yds/g", "<n> g") and
   the pop-up's "2026 vs history" block ("Pen/g", "Yds/g", "Yds/pen"): M1,
@@ -837,12 +1053,12 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
   M2. Under 4 games this season the badge is dimmed and the card adds "Only
   <n> games this season — early numbers swing a lot."
 - **Static `/crew/`:** table "Crew chief", "2026 games" (M6), "2026 flags /
-  game" (M1), "2015–25 flags / game" (M1, `all`), "Career style" (session
-  3); top-3 summary (M1); former crew chiefs: "Seasons in the data" (M30),
-  "Games" and "Flags / game" (M6, M1 `all`). Its note "league levels varied
-  by season (about 13.5 per game in 2015–19, 11–13 since)" is fixed text: it
-  matches 2015–19 (13.50) and 2020–25 (11.18 to 12.86 a season), but not
-  2026 (14.67).
+  game" (M1), "2015–25 flags / game" (M1, `all`), "Career style" (M44);
+  top-3 summary (M1); former crew chiefs: "Seasons in the data" (M30),
+  "Games" and "Flags / game" (M6, M1 `all`). Its note "league levels vary by
+  season (league average 12.6 per game in 2015–25, 14.7 in 2026 through Week
+  7)" takes both numbers from `season_comparison.json` (M35; since #110 it
+  replaced the fixed "about 13.5 per game in 2015–19, 11–13 since").
 - **Static `/crew/<slug>/` tiles:** "2026 flags / game" (M1, with games and
   "league 14.7"), "2026 yards / game" (M7), "2025 flags / game", "2015–25
   flags / game" (M1, with games).
@@ -853,7 +1069,7 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
   crew chiefs, most flags per game first): `crew_chief`, `games_<season>`
   (M6), `flags_per_game_<season>` (M1), `yards_per_game_<season>` (M7),
   `career_games_2015_25` (M6, `all`), `career_flags_per_game_2015_25` (M1,
-  `all`), `career_style` (session 3). Values are stored precision (2
+  `all`), `career_style` (M44). Values are stored precision (2
   decimals), not rounded for display.
 
 **Fields in these files not displayed anywhere:** `referees.json` →
@@ -863,24 +1079,25 @@ vs the league", the home-team FAQ answer, the CSV's `career_style`); and the
 `tendencies.avgVsLeaguePct`, `explanations.*`, `penaltyTypeComparison[]`
 counts, `quarterDistribution[].count`, `regularSeasonStats[]` penalties and
 yards, and `recentGames[]` `gameType`, `stadium`, `weather`, `temp`. They are
-public in the JSON. `explanations.homeBiasPct` repeats D5's wording ("How much
-more the away team is penalized vs home team").
+public in the JSON. `explanations.homeBiasPct` matches the explainer since
+#110 ("Road teams' share of this crew's penalties minus home teams' share, in
+percentage points").
 
 ## Teams
 
-*To do in session 3.*
+*To do in session 4.*
 
 ## The Big Picture (trends)
 
-*To do in session 4.*
+*To do in session 5.*
 
 ## Previews, scorecard and history
 
-*To do in session 5.*
+*To do in session 6.*
 
 ## What Flags Cost and gameday (including the live strip)
 
-*To do in session 6.*
+*To do in session 7.*
 
 ---
 
@@ -933,11 +1150,14 @@ more the away team is penalized vs home team").
 | Crew pop-up | "⏱️ When flags fly: 2026 vs 2015–25" / "⏱️ Penalties By Quarter" | `referee/<slug>.json` → `quarterComparison[]` / `quarterDistribution[]` | M34 |
 | Crew pop-up | "Career (all games incl. playoffs, 2015–2026)": "Avg/Game", "Range", "Home Bias", "Style" | `referee/<slug>.json` → `firstSeason`, `lastSeason`, `stats.avgPerGame`, `stats.minGame`, `stats.maxGame`, `stats.homeBiasPct`, `stats.consistency` | M30, M26, M27, M28, M29 |
 | Crew pop-up | "Recent Games" | `referee/<slug>.json` → `recentGames[]` | M36 |
-| Crew pop-up | Style fingerprint and trajectory | `crew_styles.json` | session 3 |
-| Static `/crew/` | Summary, table ("2026 games", "2026 flags / game", "2015–25 flags / game", "Career style"), former crew chiefs table and note | `season_comparison.json` → `crewChiefs[]`, `inactiveCrewChiefs[]`, `league.current.perGame`, `throughWeek`; `referees.json` → `first_season`, `last_season`; `crew_styles.json` → `archetype` (session 3) | M1, M6, M30; session 3 |
+| Crew pop-up | "Crew style": tabs, quadrant badge, tiles ("Flags / game", "Yards / flag", "Points / flag", "Pre-snap", "4th quarter", "On offense", "On home team", each with "league"), traits, "Calls most like", type bars, footnote; "Compare years" chips, table and trajectory chart | `crew_styles.json` → `crews[]` (career fields, `seasons.<season>`, `raw`, `vsLeague`, `types`, `traits`, `similar`, `archetype`), `league`, `leagueBySeason`, `careerSeasons`, `season`, `types[]` | M37–M44 |
+| Home, League Trends | "Crew Chief Style Map": period menu, subtitle, dots, tooltip, quadrant labels and colors, league lines | `crew_styles.json` → `crews[]` (career, `seasons.<season>`), `weekly.through.<week>`, `weekly.only.<week>`, `weekly.complete`, `league`, `leagueBySeason`, `careerSeasons` | M37, M38, M44 |
+| Game previews | Crew style note (quadrant, description, first trait) | `crew_styles.json` → `crews[].archetype`, `.traits[0].text` | M44, M42 |
+| Static `/crew/` | Summary, table ("2026 games", "2026 flags / game", "2015–25 flags / game", "Career style"), former crew chiefs table and note | `season_comparison.json` → `crewChiefs[]`, `inactiveCrewChiefs[]`, `league.current.perGame`, `throughWeek`; `referees.json` → `first_season`, `last_season`; `crew_styles.json` → `crews[].archetype.title` | M1, M6, M30, M44 |
 | Static `/crew/<slug>/` | Summary, tiles ("2026 flags / game", "2026 yards / game", "2025 flags / game", "2015–25 flags / game"), FAQ (per game, yards) | `season_comparison.json` → `crewChiefs[]` (`current`, `baselines.lastSeason`, `baselines.all`), `league.current` | M1, M7, M6, M35 |
 | Static `/crew/<slug>/` | "Season by season", "Recent games" | `referee/<slug>.json` → `seasonStats[]`, `recentGames[]` | M31, M36 |
-| Static `/crew/<slug>/` | "Calling style", traits, "Calls most like", "Penalty types vs the league", home-team FAQ | `crew_styles.json` | session 3 |
+| Static `/crew/<slug>/` | "Calling style" (career and current-season quadrant), traits list, "Calls most like", "Penalty types vs the league (2015–25, season-adjusted, per game)", FAQ (types per game, "Compared with other crews", home share) | `crew_styles.json` → `crews[].archetype`, `.seasons.<season>.archetype`, `.traits[].text`, `.similar[]`, `.types.<type>.perGame`, `.diffPct`, `.homeShare`, `league.homeShare`, `careerSeasons` | M44, M42, M43, M41, M40 |
+| Static `/assignments/` | Summary ("<n> of <n> Week <n> games have a crew chief assigned", projected most flags), table ("Game", "Date", "TV", "Crew chief", "Crew 2026 flags / game", "Crew career style", "Projected flags"), note | `previews/latest.json` → week file `games[]` (`awayTeam`, `homeTeam`, `gameday`, `network`, `crew`, `projection.total`); `season_comparison.json` → `crewChiefs[].current.perGame`; `crew_styles.json` → `crews[].archetype.title` | M45, M1, M44; projections: previews session |
 | Home (search-engine page source) | Pre-filled crew chiefs list and Complete Crew Chief Stats rows | `build_static.py` `home_prefill()` → `REFEREES` (`season_comparison.json`), `DATA_TABLE` (`referees.json`) | M1, M25–M29 |
-| `/data/exports/crew_chiefs_<season>.csv` | `crew_chief`, `games_<season>`, `flags_per_game_<season>`, `yards_per_game_<season>`, `career_games_2015_25`, `career_flags_per_game_2015_25`, `career_style` | `season_comparison.json` → `crewChiefs[]`; `crew_styles.json` → `archetype.title` | M6, M1, M7; session 3 |
+| `/data/exports/crew_chiefs_<season>.csv` | `crew_chief`, `games_<season>`, `flags_per_game_<season>`, `yards_per_game_<season>`, `career_games_2015_25`, `career_flags_per_game_2015_25`, `career_style` | `season_comparison.json` → `crewChiefs[]`; `crew_styles.json` → `crews[].archetype.title` | M6, M1, M7, M44 |
 | (not displayed) | — | `referees.json` → `total_penalties`, `std_dev`, `slug`; `referee/<slug>.json` → `stats.totalPenalties`, `stats.stdDev`, `seasonStats[].penalties`, `.homeBias`, `currentSeasonGames`, `priorSeasonGames`, `tendencies.avgVsLeague`, `.avgVsLeaguePct`, `explanations.*`, `penaltyTypeComparison[].currentCount`, `.priorCount`, `quarterDistribution[].count`, `regularSeasonStats[].penalties`, `.yards`, `.yardsPerGame`, `recentGames[].gameType`, `.stadium`, `.weather`, `.temp`, `generatedAt` | M25–M36 notes |

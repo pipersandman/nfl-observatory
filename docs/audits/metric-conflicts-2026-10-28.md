@@ -8,8 +8,9 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 2 of 7 (home page, crew chiefs). C1's trends evidence is
-completed in session 4. Data errors are listed at the end; D1–D4 are fixed.
+**Status:** session 3 of 8 (home page, crew chiefs, crew styles). C1's trends
+evidence is completed in the trends session. Data errors are listed at the
+end; D1–D7 are fixed, D8 is drafted.
 
 ## Summary
 
@@ -28,6 +29,8 @@ completed in session 4. Data errors are listed at the end; D1–D4 are fixed.
 | C11 | "Career" means three different windows | Session 2 | A: 2015 to last season, regular season | |
 | C12 | Three measures of home vs road for one idea | Session 2 | B: home share with the league share beside it | |
 | C13 | Wording and framing (section 17) on crew chief pages | Session 2 | A: descriptive wording, listed per item | |
+| C14 | Season-adjusted and raw career rates under one label | Session 3 | A: raw by default; adjusted labeled each time | |
+| C15 | Model estimates on crew style pages not labeled as estimates | Session 3 | A: label each estimate, observed count beside it | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -38,9 +41,10 @@ choices. Each gets its own issue; the dictionary entries note them.
 | D2 | "Home Field Bias" card misstates its number | `update_data.py` `generate_insights()` | #107: **fixed** (PR #109, merged 2026-10-29) |
 | D3 | "Most Common Call" card uses the wrong denominator | `update_data.py` `generate_insights()` | #107: **fixed** (PR #109, merged 2026-10-29) |
 | D4 | Scoreboard crew leader uses incomplete crew assignments | `scoreboard.py` | #107: **fixed** (PR #109, merged 2026-10-29) |
-| D5 | Crew chief Home Bias explained as "how much more" | `app.js` `EXPLAINERS['home-bias']`, table legend | (drafted, session 2) |
-| D6 | Crew chief table labels don't match what it shows | `app.js` `EXPLAINERS['games']`, `index.html` | (drafted, session 2) |
-| D7 | Fixed league-average text out of date | `app.js` `EXPLAINERS['avg-per-game']` | (drafted, session 2) |
+| D5 | Crew chief Home Bias explained as "how much more" | `app.js` `EXPLAINERS['home-bias']`, table legend | #110: **fixed** (PR #111, merged 2026-10-29) |
+| D6 | Crew chief table labels don't match what it shows | `app.js` `EXPLAINERS['games']`, `index.html` | #110: **fixed** (PR #111, merged 2026-10-29) |
+| D7 | Fixed league-average text out of date | `app.js` `EXPLAINERS['avg-per-game']`, `build_static.py` `/crew/` note | #110: **fixed** (PR #111, merged 2026-10-29) |
+| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | (drafted, session 3) |
 
 ## How to read a conflict
 
@@ -67,7 +71,7 @@ choices. Each gets its own issue; the dictionary entries note them.
 **What differs:** some numbers labeled by season include playoff games; others
 are regular season only.
 
-**Evidence (session 1; trends side completed in session 4):**
+**Evidence (sessions 1–2; trends side completed in session 5):**
 - **Regular season only:** `season_comparison.json` (the "This Season vs Last"
   section, M1), which states `regularSeasonOnly: true`.
   `scripts/update_data.py` `calculate_season_comparison()` filters
@@ -149,7 +153,7 @@ season), while the site's wording elsewhere refers to accepted penalties.
   count built from `penalty == 1`). The effect is at most 6 plays in a season
   of about 3,400.
 - Separate from this: `update_data.py` keeps touchdowns wiped out by
-  offsetting penalties as `offsetting_tds` (for What Flags Cost, session 6).
+  offsetting penalties as `offsetting_tds` (for What Flags Cost, session 7).
 
 **Options:**
 - **A. Accepted penalties only.** Offsetting plays are never counted as
@@ -580,10 +584,21 @@ wording checklist). Same type of issue as C6, for session 2's pages.
   "Wildcard crew" (explainer `consistency`).
 - **"Bias" as a label:** "Home Bias" column, card footer and pop-up stat
   (M28).
-- **Colors:** Home Bias is red above 5 and green below 0. Red is the site's
-  color for more penalties; here it marks road teams flagged more, with a
-  legend reading "Above average" / "Below average" (D5).
+- **Colors:** Home Bias is red above 5 pts and green below 0. Red is the
+  site's color for more penalties; here it marks road teams flagged more
+  (the legend was fixed in #110, D5; the colors are unchanged).
 - **Consistency called "Style"** in the pop-up (M29).
+- **Crew styles (session 3, `scripts/crew_styles.py`, `app.js`):**
+  - Quadrant names "Game-changers" and "Let them play" (`QUADS`, M44)
+    describe an effect on games and a calling attitude; two averages above
+    or below the league's show neither. The same names label the Style Map,
+    the pop-up, the static pages, `/assignments/`, the CSV's `career_style`
+    and game previews.
+  - Quadrant colors: "Game-changers" red and "Let them play" green, but
+    "Stop-and-start" (also more flags) yellow and "Few but costly" blue: red
+    and green don't consistently mean more and fewer penalties.
+  - Traits attribute rates to the crew chief: "Calls more roughing the
+    passer", "Busier 4th quarters", "Cheaper flags" (`TRAIT_TEXT`, M42).
 
 **Options:**
 - **A. Descriptive wording, listed per item:** state the number and its
@@ -596,6 +611,87 @@ wording checklist). Same type of issue as C6, for session 2's pages.
 
 **Recommendation:** A, as for C6. Wording changes go in V2.0a's wording step
 with C6.
+
+**Ty's decision:**
+
+---
+
+## C14. Season-adjusted and raw career rates under one label
+
+**What differs:** a crew chief's 2015–25 rates appear twice, once raw and
+once season-adjusted, under the same labels ("flags per game", "yards per
+flag"), sometimes in the same panel.
+
+**Evidence (data at `53e0bd1`):**
+- **Raw:** `season_comparison.json` → `crewChiefs[].baselines.all` (M1):
+  the card's and pop-up's "2015–25" row, the static `/crew/` and
+  `/crew/<slug>/` "2015–25 flags / game", the CSV's
+  `career_flags_per_game_2015_25`.
+- **Season-adjusted:** `crew_styles.json` → `crews[]` (M37, M38, M40): the
+  pop-up's "Crew style" career tiles, the Style Map's career view, traits,
+  the quadrant (M44).
+- **Example, Alex Moore (16 games), one pop-up:** "2015–25" row **16.1**
+  flags per game; "Crew style" tile **16.0** "Flags / game". Yards per flag:
+  7.89 raw, **8.28** adjusted. Vinovich (171 games): 11.02 both ways.
+- The pop-up's career footnote and the Style Map's subtitle say
+  "season-adjusted"; the tiles, traits and static pages' style section
+  don't (the type table's heading does).
+
+**Options:**
+- **A. Raw by default; adjusted only where it's labeled each time** (tile
+  label "Flags / game, season-adjusted", with the raw value beside it).
+  Effect: labels change; the quadrant and traits keep using adjusted values,
+  labeled.
+- **B. Adjusted everywhere for career figures**, raw only in a footnote.
+  Effect: the card rows, static tiles and CSV change slightly.
+- **C. Raw everywhere**; drop the adjustment. Effect: career styles and
+  quadrants shift for crew chiefs whose seasons had unusual league levels
+  (Moore's yards per flag 8.28 → 7.89).
+
+**Recommendation:** A. The adjustment is useful for comparing crews across
+eras, but a visitor reading one number twice should see why it differs.
+
+**Ty's decision:**
+
+---
+
+## C15. Model estimates on crew style pages not labeled as estimates
+
+**What differs:** rule 4 ("label model estimates as estimates; never present
+them as observed facts"). Two crew style figures are estimates but read as
+observed counts and rates.
+
+**Evidence (data at `53e0bd1`):**
+- **Shrunk penalty-type rates** (M41): each type's rate is pulled toward the
+  league by 20 games' worth of the league rate (`crew_styles.py`
+  `SHRINK = 20`). They appear as "How often they call each type vs the
+  league" (pop-up), traits ("Calls more roughing the passer: 79% above the
+  league rate"), the static type table ("Per game", "vs league rate") and
+  the static FAQ ("What penalties does <name> call most? Per game, 2015–25:
+  …").
+  - **Example, Moore, roughing the passer:** shown **+79%** (0.73 per
+    game). Observed: 15 in 16 games, **0.94** per game, +129% vs the
+    league's 0.41.
+  - The pop-up's footnote says rates are "pulled toward the league average
+    so a few calls can't dominate", but no value is called an estimate, and
+    the static pages don't say it.
+- **Points per flag** (M39): built from nflverse's expected-points model
+  for plays wiped out by the foul, and a fixed points-per-yard rate
+  otherwise. Shown as "Points / flag" and "Cheaper flags: 0.80 points each
+  (league 0.89)" with no explanation.
+
+**Options:**
+- **A. Label each as an estimate, with the observed count beside it:**
+  "Roughing the passer: 15 in 16 games (0.94 per game); estimated 0.73 after
+  adjusting for the small sample". Points per flag labeled "estimated cost
+  in expected points" with a link to the method. Effect: no numbers change;
+  labels and a count are added.
+- **B. Show observed rates; use the shrunk values only to choose traits.**
+  Effect: displayed type rates and "vs league" percentages change; traits
+  quote observed values.
+
+**Recommendation:** A. Shrinkage is the right tool for small samples (section
+7), so keep it, and say what it is.
 
 **Ty's decision:**
 
@@ -691,6 +787,14 @@ mistake as D2. Entry M28.
 - The choice of measure is C12; this error is only that the explanation
   doesn't match the number shown.
 
+**Fixed:** #110, PR #111 (merged 2026-10-29). The explainer says the number
+is "the road teams' share of the crew's penalties minus the home teams'
+share, in percentage points (pts)", with a generic example; values show
+**"pts"** on the cards, the table, the pop-up and the pre-filled table; the
+legend reads "Home Bias above 5 pts" / "Home Bias below 0";
+`explanations.homeBiasPct` has the same wording. At `53e0bd1`: Moore
+**+8.2 pts**, Vinovich **+2.5 pts** (values unchanged).
+
 ## D6. Crew chief table labels don't match what it shows
 
 **What's wrong:** two labels on the Complete Crew Chief Stats table
@@ -704,6 +808,11 @@ set of numbers from the one shown.
   table lists all **28** crew chiefs since 2015, including the 11 not active
   in 2026 (17 active).
 
+**Fixed:** #110, PR #111 (merged 2026-10-29). The explainer reads "Total
+number of games this crew chief has led in the data (2015 onward), including
+playoff games"; the subtitle reads "Every crew chief since 2015, most games
+first".
+
 ## D7. Fixed league-average text out of date
 
 **What's wrong:** the "Average Penalties Per Game" explainer (`app.js`
@@ -715,3 +824,22 @@ M35.
 - Similar fixed text on the static `/crew/` page ("about 13.5 per game in
   2015–19, 11–13 since") is right for 2015–25 (13.50; 11.18 to 12.86 a
   season) but not for 2026 (14.67).
+
+**Fixed:** #110, PR #111 (merged 2026-10-29). **No hard-coded number:** the
+explainer reads "The league average for the same seasons is shown on the Crew
+Chief Flag Rates chart and in each crew chief's profile". The `/crew/` note
+takes its numbers from `season_comparison.json`, with windows: at `53e0bd1`,
+"league average **12.6** per game in 2015–25, **14.7** in 2026 through Week 7".
+
+## D8. Style Map explainer: "about 95 games each"
+
+**What's wrong:** the "Crew Chief Style Map" explainer (`frontend/js/app.js`
+`EXPLAINERS['crew-style-map']`) says "Career view uses each crew's regular
+seasons before this one (**about 95 games each**)". At `53e0bd1` the 17
+active crew chiefs have **128** career games on average (median 125, range
+16 to 172; `crew_styles.json` → `crews[].games`). Entries M37, M38.
+- The explainer's other claim, "under a yard per flag between crews", holds:
+  career yards per flag run from 8.07 to 8.74.
+- Same rule as D7: the fix shouldn't hard-code a new number. Either take it
+  from `crew_styles.json`, which the page already loads, or say it without a
+  number.

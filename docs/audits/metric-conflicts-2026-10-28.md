@@ -8,9 +8,9 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 3 of 8 (home page, crew chiefs, crew styles). C1's trends
+**Status:** session 4 of 8 (home page, crew chiefs, crew styles, teams). C1's trends
 evidence is completed in the trends session. Data errors are listed at the
-end; D1–D7 are fixed, D8 is drafted.
+end; D1–D7 are fixed, D8 is #112 (open).
 
 ## Summary
 
@@ -31,6 +31,9 @@ end; D1–D7 are fixed, D8 is drafted.
 | C13 | Wording and framing (section 17) on crew chief pages | Session 2 | A: descriptive wording, listed per item | |
 | C14 | Season-adjusted and raw career rates under one label | Session 3 | A: raw by default; adjusted labeled each time | |
 | C15 | Model estimates on crew style pages not labeled as estimates | Session 3 | A: label each estimate, observed count beside it | |
+| C16 | "Flags per game": a game total and one team's total under one label | Session 4 | A: separate names (and CSV column) | |
+| C17 | Small samples handled four ways | Session 4 | A: one threshold (D13), one visible label | |
+| C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -44,7 +47,7 @@ choices. Each gets its own issue; the dictionary entries note them.
 | D5 | Crew chief Home Bias explained as "how much more" | `app.js` `EXPLAINERS['home-bias']`, table legend | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D6 | Crew chief table labels don't match what it shows | `app.js` `EXPLAINERS['games']`, `index.html` | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D7 | Fixed league-average text out of date | `app.js` `EXPLAINERS['avg-per-game']`, `build_static.py` `/crew/` note | #110: **fixed** (PR #111, merged 2026-10-29) |
-| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | (drafted, session 3) |
+| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | #112 (open; batch with other text-only fixes) |
 
 ## How to read a conflict
 
@@ -233,6 +236,12 @@ The same-weeks comparison stops at the last completed week.
   the league tiles compare the two windows as if they matched.
 - At `9add749` there's no partial week, so no effect. On a Friday after a
   Thursday game, 2026 would have one more game than 2025's window.
+- **Team pages (session 4, data at `53e0bd1`):** teams follow the crew chief
+  rule. `scripts/team_pages.py` compares each team through the later of the
+  league's last completed week and the team's latest game (`team_week`,
+  M48). The index's button label uses the league's week, so on a day with a
+  partial week a team card can read "2025 Wk 1–8" under a "2025 thru Wk 7"
+  button. At `53e0bd1` every team's week is 7.
 
 **Options:**
 - **A. Compare through the same last week:** the league comparison includes
@@ -692,6 +701,113 @@ observed counts and rates.
 
 **Recommendation:** A. Shrinkage is the right tool for small samples (section
 7), so keep it, and say what it is.
+
+**Ty's decision:**
+
+---
+
+## C16. "Flags per game": a game total and one team's total under one label
+
+**What differs:** "penalties per game" and "flags per game" mean both teams'
+penalties in a game (league, crew chiefs) and one team's penalties (team
+pages, scoreboard team leaders). The second is about half the first, and
+each has its own "league average".
+
+**Evidence (data at `53e0bd1`):**
+- **Game total (M1):** home tile "Penalties per game" **14.7**; scoreboard
+  "Flags per game" 14.7; crew chiefs "Pen / Game", "flags / game";
+  `flags_by_season.csv` → `flags_per_game`.
+- **One team (M46, M18):** team cards "penalties/game", pop-up "Pen/g",
+  static `/team/<ABBR>/` tile "Flags / game", scoreboard "Most flagged team …
+  9.3 flags per game"; `teams_<season>.csv` → `flags_per_game`.
+- **Two league averages:** team cards "vs league avg **7.3**" and static
+  team pages "league 7.3" (`teams/index.json` → `leaguePerGame`, per team per
+  game, M47) beside the home page's league 14.7. Only the static `/team/`
+  page says "per team per game".
+- **Same column name, two meanings, one download page:** `flags_per_game` is
+  14.7-scale in `flags_by_season.csv` and 7.3-scale in `teams_2026.csv`.
+
+**Options:**
+- **A. Separate names:** "per game" stays the game total (both teams); team
+  rates become "flags on <team> per game" with "league average per team"
+  beside them; the team CSV column becomes `team_flags_per_game`. Effect: no
+  numbers change; labels and one CSV column name change.
+- **B. Keep the labels, add a definition** under each team number ("one
+  team's penalties; a game averages 14.7 for both teams"). Effect: no
+  numbers or names change.
+
+**Recommendation:** A. A label should mean one thing site-wide (section 6),
+and a CSV column name is read without the page around it.
+
+**Ty's decision:**
+
+---
+
+## C17. Small samples handled four ways
+
+**What differs:** rates from a few games are shown with four different rules:
+a minimum to appear, a dimmed badge, a footnote, or nothing. The plan's
+small-sample threshold (D13, V2.0a step 3) is still open.
+
+**Evidence (data at `53e0bd1`):**
+- **Minimum to appear:** team crew chief rows need 2 games
+  (`team_pages.py` `MIN_CREW_GAMES`); the scoreboard's crew leader needs 3
+  (M19).
+- **Dimmed badge, no words:** under 4 games (`MIN_GAMES_FOR_PCT`): 175 of the
+  847 team crew chief rows have 2 or 3 games. The static `/team/<ABBR>/`
+  table lists the top 8 by rate, so it leads with small samples: LV's first
+  row is Terry McAulay, 14.3 flags per game in 3 games (M60).
+- **Footnote only:** "By opponent": "Few meetings = small samples"; 56 of 992
+  rows rest on 2 meetings, none marked (M61). Pop-up: "Only <n> games this
+  season — early numbers swing a lot" appears below 4 games only.
+- **Nothing:** current-season ranks from 6 or 7 games ("#2 of 32", ties
+  unmarked, M54); home and road rates from 3 or 4 games each (M52); the
+  current season's bar on the season chart (M63).
+
+**Options:**
+- **A. One threshold (D13), one visible label everywhere:** below it, the
+  number shows a "small sample" label and its games count; lists that rank by
+  rate leave out or mark rows below it. Effect: no numbers change; labels and
+  some list orders change.
+- **B. Keep each rule; add a games count wherever a rate is shown.**
+  Effect: no numbers change; more columns.
+
+**Recommendation:** A, decided with D13 in V2.0a step 3 (plan section 7:
+games always shown, a small-sample label below the threshold).
+
+**Ty's decision:**
+
+---
+
+## C18. Wording and framing (section 17) on team pages
+
+**What differs:** labels on team pages judge or imply a cause the numbers
+don't show. Same type of issue as C6 and C13.
+
+**Evidence (`frontend/index.html`, `frontend/js/app.js`, `scripts/build_static.py`):**
+- **"Team Discipline"** (section title, `index.html`): penalties per game
+  reflect opponents, crews and play style as well as discipline.
+- **"Watchlist (<season>)"** for the players flagged most (M59).
+- **"Drawn":** "Drawn/g", "What they draw from opponents", "drew more than
+  committed per game" (M49, M50, M56): describes opponents' flags as the
+  team's doing.
+- **"Came out ahead"** with green for a positive net in "By opponent" (M61):
+  a flag count framed as a result.
+- **Rankings without "observed":** "Most-penalized rank", "most and least
+  penalized teams" (static `/team/` title), "#22 most in the NFL" (M54); the
+  wording checklist asks for "observed" before a raw rate in a ranking.
+- **Red badge on "Drawn/g":** red marks more penalties on opponents. It
+  follows the color rule (red = more flags), but reads as bad for the team.
+
+**Options:**
+- **A. Descriptive wording, listed per item:** "Team penalties", "Players
+  flagged most", "Opponent flags", "Opponents flagged more per game",
+  "Observed rank (most flags per game)"; net shown without green/"ahead".
+  Effect: no numbers change; labels change.
+- **B. Keep the sports terms ("drawn" is common usage), add definitions.**
+  Effect: no wording changes except "Watchlist" and "came out ahead".
+
+**Recommendation:** A, with C6 and C13 in V2.0a's wording step.
 
 **Ty's decision:**
 

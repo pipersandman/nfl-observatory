@@ -29,7 +29,15 @@ def build_scoreboard(data: dict) -> dict:
     if 'season_type' in gp.columns:
         gp = gp[gp['season_type'] == 'REG']
     games = gp[['game_id']].drop_duplicates().merge(
-        reg[['game_id', 'season', 'week', 'home_team', 'away_team', 'referee']], on='game_id')
+        reg[['game_id', 'season', 'week', 'home_team', 'away_team']], on='game_id')
+    # Crew chief from the merged assignment (officials feed, then schedule, then
+    # Football Zebras), the same source as season_comparison.json
+    off = data['officials']
+    chiefs = (off[off['position'] == 'Referee'][['game_id', 'name']]
+              .dropna(subset=['game_id'])
+              .drop_duplicates('game_id')
+              .rename(columns={'name': 'referee'}))
+    games = games.merge(chiefs, on='game_id', how='left')
     games = games.merge(data['plays'], on='game_id', how='left').fillna({'plays': 0})
 
     pen = data['penalties']
@@ -74,6 +82,7 @@ def build_scoreboard(data: dict) -> dict:
         crews = gm.dropna(subset=['referee']).groupby('referee')['game_id'].apply(set)
         crew_pg = {c: len(p[p['game_id'].isin(g)]) / len(g) for c, g in crews.items() if len(g) >= (1 if n <= 16 else 3)}
         top_crew = max(crew_pg.items(), key=lambda x: x[1]) if crew_pg else None
+        top_crew_games = len(crews[top_crew[0]]) if top_crew else None
         return {
             'games': n, 'plays': plays, 'penalties': flags, 'yards': yards,
             'pctPlays': _r(flags / plays * 100, 1) if plays else None,
@@ -88,7 +97,7 @@ def build_scoreboard(data: dict) -> dict:
             'mostCommon': {'type': vc.index[0], 'count': int(vc.iloc[0]), 'pct': _r(vc.iloc[0] / flags * 100, 0)} if flags else None,
             'mostFlaggedTeam': {'team': tpg.index[0], 'perGame': _r(tpg.iloc[0], 1)} if len(tpg) else None,
             'cleanestTeam': {'team': tpg.index[-1], 'perGame': _r(tpg.iloc[-1], 1)} if len(tpg) else None,
-            'topCrew': {'name': top_crew[0], 'perGame': _r(top_crew[1], 1)} if top_crew else None,
+            'topCrew': {'name': top_crew[0], 'perGame': _r(top_crew[1], 1), 'games': top_crew_games} if top_crew else None,
         }
 
     out_frames = []

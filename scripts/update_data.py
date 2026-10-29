@@ -474,7 +474,10 @@ def calculate_league_trends(data: dict) -> dict:
     trends['homeVsAway'] = {
         'home': home_count,
         'away': away_count,
-        'bias_pct': round((away_count - home_count) / len(penalties) * 100, 1)
+        # Road teams' share minus home teams' share, in percentage points
+        'bias_pct': round((away_count - home_count) / len(penalties) * 100, 1),
+        # How many more penalties road teams get than home teams, in percent
+        'awayMorePct': round((away_count / home_count - 1) * 100, 1) if home_count else None,
     }
     
     print("   ✓ Generated trend data")
@@ -524,12 +527,13 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     # 2. Home field bias
     home_away = trends.get('homeVsAway', {})
     bias = home_away.get('bias_pct', 0)
+    away_more = home_away.get('awayMorePct') or 0
     insights.append({
         'id': 'home_bias',
         'icon': '',
         'title': 'Home Field Bias',
-        'value': f"{'+' if bias > 0 else ''}{bias}%",
-        'description': f"Away teams are penalized {abs(bias):.1f}% more than home teams",
+        'value': f"{'+' if away_more > 0 else ''}{away_more}%",
+        'description': f"Away teams are penalized {abs(away_more):.1f}% more than home teams",
         'explanation': "Home Field Bias measures how much more (or less) the away team gets penalized compared to the home team. Positive = away team penalized more. This likely reflects crowd influence on officials, not intentional favoritism.",
         'isPositive': abs(bias) < 3
     })
@@ -572,7 +576,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     types = trends.get('byType', [])
     if types:
         top = types[0]
-        total_penalties = sum(t['count'] for t in types)
+        total_penalties = len(data['penalties'])  # all penalties, not just the top 10 types
         insights.append({
             'id': 'top_penalty',
             'icon': '',

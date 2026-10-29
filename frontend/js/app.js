@@ -39,7 +39,7 @@ const EXPLAINERS = {
             <p>Important: The play-by-play data tells us <em>that</em> a penalty occurred, but not <em>which specific 
             official</em> threw the flag. That's why we track by <strong>Crew Chief</strong> — the head referee who 
             sets the standard for their crew.</p>
-            <p>Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football.</p>
+            <p>Updated automatically during and after every game day.</p>
         `
     },
     'crew-chief': {
@@ -106,8 +106,8 @@ const EXPLAINERS = {
             calls are in yards (up). Dashed lines are the league averages, splitting four styles:
             <strong>Game-changers</strong> (lots of flags, big ones), <strong>Stop-and-start</strong> (lots of flags, small ones),
             <strong>Few but costly</strong> and <strong>Let them play</strong>.</p>
-            <p>Career view uses each crew's regular seasons before this one (about 95 games each). The yardage
-            range is narrow (under a yard per flag between crews), so the vertical axis is zoomed in. Tap a crew for its full style profile.</p>
+            <p>Career view uses each crew's regular seasons before this one; the number of games varies by crew and shows when
+            you tap a dot. The yardage range between crews is narrow, so the vertical axis is zoomed in. Tap a crew for its full style profile.</p>
         `
     },
     'week-of-season': {
@@ -1809,7 +1809,7 @@ function renderFlagCost() {
                 ${costliestHtml(list.slice(0, 8))}
                 <p class="modal-footnote">${byWp ? 'Ranked by win chances lost: flags late in close games count most. ' : 'Ranked by expected points lost, whatever the score and clock. '}Win chance = how much the flag changed the penalized team's chance of winning (nflverse win-probability model; for a wiped-out touchdown, the chance had it stood, assuming the extra point).</p></div>`;
         })()}
-        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">How it's valued: when a flag erases the play, its cost is the change in expected points (nflverse's model). When a flag is added on top of a play that counts, only the penalty yards are charged (about 0.06 points per yard). Two-point tries use the 46.8% conversion rate. "Drives stalled" shows flags on drives that came up empty, not proof the flag caused it. Click a team for its profile.</p>`;
+        <p class="modal-footnote" style="padding: 0 1.25rem 1rem">How it's valued: when a flag erases the play, its cost is the change in expected points (nflverse's model). When a flag is added on top of a play that counts, only the penalty yards are charged, at the league's expected points per yard. A flag that wipes out the offense's own touchdown is charged the touchdown's value (with the extra point), less the expected points before the play and anything the play kept. A flag that erases a failed two-point try is worth a retry at the league's two-point conversion rate. "Drives stalled" shows flags on drives that came up empty, not proof the flag caused it. Click a team for its profile.</p>`;
 }
 
 function teamFlagCostHtml(abbr) {
@@ -2062,6 +2062,14 @@ function stylePeriodData(cs, key) {
     return lg ? { lg, pts: cs.crews.map(c => ({ c, v: c.seasons?.[key] })) } : null;
 }
 
+// "15–16 games" or "16 games": the range of games behind the dots on the map (D13)
+function gamesPerCrew(pts) {
+    const g = pts.map(p => p.games).filter(n => n != null);
+    if (!g.length) return 'games vary';
+    const lo = Math.min(...g), hi = Math.max(...g);
+    return `${lo === hi ? lo : `${lo}–${hi}`} game${hi === 1 ? '' : 's'}`;
+}
+
 function renderStyleMap() {
     const canvas = document.getElementById('styleMap');
     const cs = state.crewStyles;
@@ -2085,7 +2093,7 @@ function renderStyleMap() {
         : m && m[1] === 'only' ? `${cs.season} Week ${m[2]} only: one game per crew, so this is a snapshot, not a style. Lines are that week's league averages. ${tap}`
         : m ? `${cs.season} through Week ${m[2]}, against the league average over the same games. Early weeks have only a few games per crew. ${tap}`
         : key === String(cs.season) ? `${cs.season} so far: only a few games per crew, so expect big swings. Lines are this season's league averages. ${tap}`
-        : `${key} regular season (about 17 games per crew), against that season's league averages. ${tap}`);
+        : `${key} regular season (${gamesPerCrew(pts)} per crew), against that season's league averages. ${tap}`);
     // axes centered on the period's league averages so the four quadrants are the same size
     const xSpan = Math.max(...pts.map(p => Math.abs(p.x - lg.perGame))) * 1.15 || 1;
     const ySpan = Math.max(...pts.map(p => Math.abs(p.y - lg.yardsPerFlag))) * 1.35 || 0.1;

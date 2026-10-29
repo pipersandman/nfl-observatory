@@ -126,7 +126,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
         <div class="container">
             <div class="footer-content">
                 <div class="footer-disclaimer"><strong>Data Note:</strong> Statistics reflect crew chief assignments, not individual
-                    flag-throwers. Regular season, accepted penalties, from NFL play-by-play via nflverse. Updated weekly. Last updated {NOW.strftime('%B %-d, %Y')}.</div>
+                    flag-throwers. Regular season, accepted penalties, from NFL play-by-play via nflverse. Updated automatically during and after every game day. Last updated {NOW.strftime('%B %-d, %Y')}.</div>
                 <div class="footer-links"><a href="/guide/#methodology">Methodology</a><a href="/guide/#about">About</a><a href="/dataset/">Data</a></div>
             </div>
             <p class="footer-copyright">NFL Officiating Observatory. Not affiliated with the NFL. For educational purposes only.</p>
@@ -485,7 +485,7 @@ def dataset_page():
     schema = [{'@context': 'https://schema.org', '@type': 'Dataset',
                'name': 'NFL Officiating Observatory: NFL penalty and referee (crew chief) statistics',
                'description': (f'Accepted penalties in NFL regular-season games since {START}, aggregated by crew chief (head referee), team, season, '
-                               'week and penalty type, updated weekly during the season. Includes penalties per game, penalty yards, calling-style '
+                               'week and penalty type. Updated automatically during and after every game day. Includes penalties per game, penalty yards, calling-style '
                                'measures and the expected-points cost of penalties.'),
                'url': f'{SITE}/dataset/', 'sameAs': SITE,
                'keywords': ['NFL', 'penalties', 'referees', 'crew chief', 'officiating', 'football statistics', 'sports data'],
@@ -500,7 +500,7 @@ def dataset_page():
     rows = [[f'<a href="/data/exports/{n}">{e(n)}</a>', e(d), r] for n, d, r in files]
     body = f"""<p class="section-number">FULL DATA</p>
     <h1 class="section-title">NFL penalty and referee data (downloads)</h1>
-    {tldr(f"Free CSV downloads of NFL penalty statistics: by crew chief, team, season, week and penalty type, regular season since {START}, updated weekly. "
+    {tldr(f"Free CSV downloads of NFL penalty statistics: by crew chief, team, season, week and penalty type, regular season since {START}. Updated automatically during and after every game day. "
           "Please credit nflobservatory.com.")}
     {table(['File', 'What it contains', 'Rows'], rows)}
     <h2>About the data</h2>
@@ -508,7 +508,7 @@ def dataset_page():
     Counts are accepted penalties in regular-season games. Declined and offsetting penalties are not counted. See the <a href="/guide/#methodology">methodology</a>.</p>
     {open_app('data', 'See the full interactive tables')}"""
     page('/dataset/', 'NFL Penalty & Referee Data: Free CSV Downloads | NFL Officiating Observatory',
-         f'Free, weekly-updated CSV downloads of NFL penalty statistics by crew chief, team, season, week and penalty type since {START}.',
+         f'Free CSV downloads of NFL penalty statistics by crew chief, team, season, week and penalty type since {START}. Updated automatically during and after every game day.',
          body, schema, crumbs=[('/', 'Home'), ('/dataset/', 'Data')])
 
 
@@ -579,8 +579,9 @@ def guide_page():
     and the chance of 15 or more flags. Every projection is saved before kickoff and graded after the game in the public track record.</p>
     <h3 id="flag-cost">How a penalty's cost is measured</h3>
     <p>When a flag erases the play, its cost is the change in expected points (nflverse's model) charged to the penalized team. When a flag is added on top
-    of a play that counts, only the penalty yards are charged, at about 0.06 points per yard. A flag that erases a failed two-point try is worth a retry
-    (2 × the 46.8% conversion rate).</p>
+    of a play that counts, only the penalty yards are charged, at the league's expected points per yard. A flag that wipes out the offense's own touchdown
+    is charged the touchdown's value (with the extra point), less the expected points before the play and anything the play kept. A flag that erases a
+    failed two-point try is worth a retry at the league's two-point conversion rate.</p>
     <h3 id="styles">Crew styles</h3>
     <p>Each crew chief is placed by flags per game and yards per flag against the league average: <strong>game-changers</strong> (more flags, bigger calls),
     <strong>stop-and-start</strong> (more flags, smaller calls), <strong>few but costly</strong> and <strong>let them play</strong>. A trait is only listed when the
@@ -597,7 +598,7 @@ def guide_page():
         <dt>Same-weeks comparison</dt><dd>Comparing a season in progress with past seasons over the same weeks.</dd>
     </dl>
     <h2 id="about">About</h2>
-    <p>The NFL Officiating Observatory is an independent, data-driven project tracking NFL penalties and officiating patterns, updated weekly during the season.
+    <p>The NFL Officiating Observatory is an independent, data-driven project tracking NFL penalties and officiating patterns. Updated automatically during and after every game day.
     It is not affiliated with the NFL. Data is free to use with credit; see <a href="/dataset/">the data page</a>. Follow <a href="https://x.com/NFLObservatory" rel="noopener">@NFLObservatory</a>.</p>
     {open_app('season', 'Explore the live dashboard')}"""
     page('/guide/', 'NFL Referee & Penalty Stats Guide: Methodology, Glossary and FAQ | NFL Officiating Observatory',
@@ -692,7 +693,7 @@ def sitemap_and_llms():
     top = ', '.join(f"{c['name']} ({f1(c['current']['perGame'])}/game)" for c in crews_now[:3])
     llms = f"""# NFL Officiating Observatory
 
-> Independent, data-driven tracking of NFL penalties and officiating: accepted penalties in regular-season games since {START}, by crew chief (head referee), team, season, week and penalty type, with pre-game flag projections and a public track record. Updated weekly. Not affiliated with the NFL.
+> Independent, data-driven tracking of NFL penalties and officiating: accepted penalties in regular-season games since {START}, by crew chief (head referee), team, season, week and penalty type, with pre-game flag projections and a public track record. Updated automatically during and after every game day. Not affiliated with the NFL.
 
 Current numbers ({SEASON}, {thru_txt}): {f1(season_frame.get('perGame'))} accepted penalties per game (vs {f1(last_frame.get('perGame'))} in {SEASON - 1}). Most flags per game by crew chief: {top}.
 

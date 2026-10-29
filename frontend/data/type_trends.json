@@ -7,19 +7,22 @@
       "key": "sameWeeks",
       "label": "2025 through Week 7",
       "short": "2025 Wk 1\u20137",
-      "games": 108
+      "games": 108,
+      "button": "2025 thru Wk 7"
     },
     {
       "key": "lastSeason",
       "label": "All of 2025",
       "short": "2025",
-      "games": 272
+      "games": 272,
+      "button": "All of 2025"
     },
     {
       "key": "allPrior",
       "label": "All seasons (2015\u201325)",
       "short": "2015\u201325 avg",
-      "games": 2895
+      "games": 2895,
+      "button": "All seasons (2015\u201325)"
     }
   ],
   "defaultComparison": "sameWeeks",
@@ -2548,6 +2551,18 @@
     ],
     "priorLabel": "2015\u201325 avg"
   },
+  "fadeWindows": {
+    "early": {
+      "from": 1,
+      "to": 4,
+      "label": "Weeks 1\u20134"
+    },
+    "late": {
+      "from": 15,
+      "to": 18,
+      "label": "Weeks 15\u201318"
+    }
+  },
   "seasonCompare": [
     {
       "season": 2015,
@@ -2921,5 +2936,5 @@
     "all": "Since 2015"
   },
   "notes": "Regular season. Accepted penalties per game, all teams combined.",
-  "generatedAt": "2026-10-29T20:47:19+00:00"
+  "generatedAt": "2026-10-29T22:56:40+00:00"
 }

@@ -3,6 +3,41 @@
   "previousSeason": 2025,
   "throughWeek": 7,
   "partialWeek": null,
+  "windows": {
+    "season": 2026,
+    "previous": 2025,
+    "dataStart": 2015,
+    "throughWeek": 7,
+    "partialWeek": null,
+    "weeksLabel": "Weeks 1\u20137",
+    "sameWeeks": {
+      "label": "2025 through Week 7",
+      "short": "2025 Wk 1\u20137",
+      "button": "2025 thru Wk 7"
+    },
+    "prior": {
+      "seasons": [
+        2015,
+        2025
+      ],
+      "label": "2015\u201325"
+    },
+    "last3": {
+      "seasons": [
+        2023,
+        2025
+      ],
+      "count": 3,
+      "label": "2023\u201325"
+    },
+    "career": {
+      "seasons": [
+        2015,
+        2025
+      ],
+      "label": "2015\u201325"
+    }
+  },
   "regularSeasonOnly": true,
   "baselines": [
     {
@@ -11,7 +46,8 @@
       "short": "2025 Wk 1\u20137",
       "seasons": [
         2025
-      ]
+      ],
+      "button": "2025 thru Wk 7"
     },
     {
       "key": "lastSeason",
@@ -19,22 +55,24 @@
       "short": "2025",
       "seasons": [
         2025
-      ]
+      ],
+      "button": "All of 2025"
     },
     {
       "key": "last3",
-      "label": "Last 3 seasons (2023\u20132025)",
-      "short": "2023\u20132025 avg",
+      "label": "Last 3 seasons (2023\u201325)",
+      "short": "2023\u201325 avg",
       "seasons": [
         2023,
         2024,
         2025
-      ]
+      ],
+      "button": "Last 3 seasons"
     },
     {
       "key": "all",
-      "label": "All seasons (2015\u20132025)",
-      "short": "2015\u20132025 avg",
+      "label": "All seasons (2015\u201325)",
+      "short": "2015\u201325 avg",
       "seasons": [
         2015,
         2016,
@@ -47,7 +85,8 @@
         2023,
         2024,
         2025
-      ]
+      ],
+      "button": "All seasons"
     }
   ],
   "defaultBaseline": "sameWeeks",
@@ -1103,5 +1142,5 @@
       }
     }
   ],
-  "generatedAt": "2026-10-29T20:47:18.076947Z"
+  "generatedAt": "2026-10-29T22:56:38.900510Z"
 }

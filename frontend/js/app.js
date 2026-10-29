@@ -61,8 +61,9 @@ const EXPLAINERS = {
     'home-bias': {
         title: 'What is Home Bias?',
         content: `
-            <p><strong>Home Bias</strong> measures how much more (or less) the away team gets penalized compared to 
-            the home team, shown as a percentage.</p>
+            <p><strong>Home Bias</strong> is the road teams' share of the crew's penalties minus the home teams' share,
+            in percentage points (pts). For example, +4 pts means 52% of the flags went against road teams and 48%
+            against home teams.</p>
             <p><strong>Positive number</strong> = Away team penalized more (typical)<br>
             <strong>Negative number</strong> = Home team penalized more (unusual)</p>
             <p>This likely reflects <strong>crowd influence</strong> on officials — not intentional favoritism. 
@@ -73,7 +74,8 @@ const EXPLAINERS = {
         title: 'Average Penalties Per Game',
         content: `
             <p>The average number of <strong>accepted penalties</strong> in games worked by this crew chief.</p>
-            <p>League average is typically around <strong>11-12 penalties per game</strong>. Crew chiefs with 
+            <p>The league average for the same seasons is shown on the Crew Chief Flag Rates chart and in each
+            crew chief's profile. Crew chiefs with
             higher averages run "flag-heavy" crews, while lower averages indicate a "let them play" style.</p>
             <p>This metric helps predict how many penalties to expect when a particular crew is assigned.</p>
         `
@@ -92,7 +94,7 @@ const EXPLAINERS = {
     'games': {
         title: 'Games Worked',
         content: `
-            <p>Total number of regular-season games this crew chief has led in the data (2015 onward).</p>
+            <p>Total number of games this crew chief has led in the data (2015 onward), including playoff games.</p>
             <p>More games = more reliable statistics. Crew chiefs typically work <strong>16-18 games per season</strong> 
             during the regular season, plus playoffs for top-rated officials.</p>
         `
@@ -2590,7 +2592,7 @@ function renderRefereeCards() {
         const small = active && cur.games < MIN_GAMES_FOR_PCT;
 
         const bias = `<span class="${ref.home_bias_pct > 5 ? 'cell-high' : ref.home_bias_pct < 0 ? 'cell-low' : ''}">
-                        ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct}%</span>`;
+                        ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct} pts</span>`;
 
         return `
             <div class="referee-card ${active ? '' : 'referee-card-inactive'}" onclick="openRefereeModal('${ref.slug}')" data-index="${index}">
@@ -2897,7 +2899,7 @@ function renderDataTable() {
             <td>${ref.avg_per_game}</td>
             <td>${ref.min_penalties}-${ref.max_penalties}</td>
             <td class="${ref.home_bias_pct > 5 ? 'cell-high' : ref.home_bias_pct < 0 ? 'cell-low' : ''}">
-                ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct}%
+                ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct} pts
             </td>
             <td>${ref.consistency}</td>
         </tr>
@@ -3037,7 +3039,7 @@ async function openRefereeModal(slug) {
                     <div class="modal-stat-label">Range</div>
                 </div>
                 <div class="modal-stat">
-                    <div class="modal-stat-value">${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct}%</div>
+                    <div class="modal-stat-value">${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct} pts</div>
                     <div class="modal-stat-label">Home Bias</div>
                 </div>
                 <div class="modal-stat">

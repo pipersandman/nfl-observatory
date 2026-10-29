@@ -973,7 +973,7 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             },
             'explanations': {
                 'avgPerGame': 'Average number of accepted penalties per game this referee has worked.',
-                'homeBiasPct': 'How much more the away team is penalized vs home team. Positive = away penalized more.',
+                'homeBiasPct': "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
                 'consistency': 'Based on standard deviation of penalties per game. Lower variance = more predictable.',
                 'penaltyTypes': 'Breakdown of the most common penalty types called in games this referee works.',
                 'quarterDistribution': 'When penalties occur during games — shows if ref is more active early or late.'

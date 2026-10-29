@@ -38,6 +38,8 @@ from weeks import HISTORICAL_START
 GAIN_RE = re.compile(r'for (-?\d+) yards?')
 POINTS_PER_YARD = 0.0615      # expected points per yard, 1st & 10 between the 20s, 2020-25 (measured)
 TWO_POINT_RATE = 0.468        # two-point conversion success rate, 2020-25 regular season (measured)
+TWO_POINTS = 2                # points for a successful two-point try
+TD_POINTS = 7                 # a touchdown with the extra point
 SPECIAL = {'kickoff', 'punt', 'field_goal', 'extra_point'}
 SCORELESS = {'Punt', 'Turnover', 'Turnover on downs', 'Missed field goal', 'End of half', 'Opp touchdown', 'Safety'}
 
@@ -113,7 +115,7 @@ def classify(pen, wp_tables=None):
     erased_fail_2pt = two & ~on_off & p['desc'].str.contains('ATTEMPT FAILS', na=False)
     epa_cost = np.where(on_off, -p['epa'], p['epa'])                  # positive = hurt the penalized team
     yards_cost = p['penalty_yards'] * POINTS_PER_YARD
-    p['cost_epa'] = np.where(erased_fail_2pt, 2 * TWO_POINT_RATE,
+    p['cost_epa'] = np.where(erased_fail_2pt, TWO_POINTS * TWO_POINT_RATE,
                     np.where(two, yards_cost,
                     np.where(no_play, epa_cost, yards_cost)))
     p['cost_method'] = np.where(erased_fail_2pt, 'two-point retry',
@@ -128,7 +130,7 @@ def classify(pen, wp_tables=None):
     # Touchdowns wiped out (whether recorded as 'no play' or enforced at the spot): charge the
     # touchdown's value minus what the offense actually got
     if 'ep' in p.columns:
-        td_cost = (7 - pd.to_numeric(p['ep'], errors='coerce')) - pd.to_numeric(p['epa'], errors='coerce')
+        td_cost = (TD_POINTS - pd.to_numeric(p['ep'], errors='coerce')) - pd.to_numeric(p['epa'], errors='coerce')
         m = p['td_erased'] & td_cost.notna()
         p.loc[m, 'cost_epa'] = td_cost[m].clip(lower=0)
         p.loc[m, 'cost_method'] = 'touchdown value'
@@ -288,7 +290,10 @@ def build_flag_impact(data: dict) -> dict:
             'pointsCost': 'Expected points the flag cost the penalized team (nflverse EPA model)',
             'winProbCost': 'Win chances (percentage points) the flag cost the penalized team: the change in nflverse win probability when the flag erases the play; for a wiped-out touchdown, the chance had it stood (similar kickoffs since ' + str(HISTORICAL_START) + ', assuming the extra point) minus the chance after the play; otherwise the points cost times what a point is worth at that score and clock (measured since ' + str(HISTORICAL_START) + ')',
             'winsGivenAway': 'Sum of win chances lost to flags, in wins',
-            'method': 'play value = the erased play\'s change in expected points; penalty yards = flag added on top of a play that counts, valued at ~0.06 points per yard; two-point retry = 2 x the 46.8% conversion rate',
+            'method': ("play value = the erased play's change in expected points; penalty yards = flag added on top of a play that counts, "
+                       f"valued at ~{POINTS_PER_YARD:.2f} points per yard; touchdown value = a touchdown wiped out by the offense's own flag, "
+                       f'valued at {TD_POINTS} points less the expected points before the play and what the play kept (at least 0); '
+                       f'two-point retry = {TWO_POINTS} x the {TWO_POINT_RATE * 100:.1f}% conversion rate'),
             'keyFirstDownsGiven': 'Defensive flags that gave the offense a first down on 3rd or 4th down',
             'drivesKilled': 'Drives stalled: offensive flags inside the opponent 40 on drives that then did not score (the flag may or may not be why)',
             'bigPlaysErased': 'Offensive flags that wiped out a 15+ yard gain or a touchdown',

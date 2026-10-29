@@ -12,8 +12,8 @@ records the conflicts and the decisions; it changes nothing on the site.
 
 **Status:** session 11 of 11: Ty's decisions recorded (2026-10-29). The gameday worker test (session 10, Part 5) is still open.
 Fields published but not displayed are listed after the conflicts. Data
-errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
-(open), D11 and D12 are on #112 too (text-only fixes; later text-only errors go there).
+errors are listed at the end; D1–D13 are fixed (D8, D11, D12 and D13 by #112,
+the text-only fixes).
 
 ## Summary
 
@@ -61,11 +61,12 @@ those "plan decision D<n>".) Each gets its own issue; the dictionary entries not
 | D5 | Crew chief Home Bias explained as "how much more" | `app.js` `EXPLAINERS['home-bias']`, table legend | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D6 | Crew chief table labels don't match what it shows | `app.js` `EXPLAINERS['games']`, `index.html` | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D7 | Fixed league-average text out of date | `app.js` `EXPLAINERS['avg-per-game']`, `build_static.py` `/crew/` note | #110: **fixed** (PR #111, merged 2026-10-29) |
-| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | #112 (open; text-only fixes) |
+| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | #112: **fixed** (text-only fixes, 2026-10-29) |
 | D9 | Touchdowns lost to offsetting penalties counted twice | `app.js` `renderFlagCost()`, `teamFlagCostHtml()` | #114: **fixed** (PR #115, merged 2026-10-29) |
 | D10 | What Flags Cost: "≈ Wins given away" and "Own turnovers erased" columns swapped | `app.js` `renderFlagCost()` | #114: **fixed** (PR #115, merged 2026-10-29) |
-| D11 | "How is this data collected?" says "updated weekly … on Tuesdays" | `app.js` `EXPLAINERS['data-methodology']` | #112 (open; text-only fixes, comment) |
-| D12 | Cost method text leaves out "touchdown value" | `app.js` `renderFlagCost()`, `build_static.py` `guide_page()`, `flag_impact.py` `definitions` | #112 (open; text-only fixes, comment) |
+| D11 | "How is this data collected?" says "updated weekly … on Tuesdays" | `app.js` `EXPLAINERS['data-methodology']` | #112: **fixed** (text-only fixes, 2026-10-29) |
+| D12 | Cost method text leaves out "touchdown value" | `app.js` `renderFlagCost()`, `build_static.py` `guide_page()`, `flag_impact.py` `definitions` | #112: **fixed** (text-only fixes, 2026-10-29) |
+| D13 | Style Map subtitle: "about 17 games per crew" | `app.js` `renderStyleMap()` | #112: **fixed** (text-only fixes, 2026-10-29) |
 
 ## How to read a conflict
 
@@ -1451,6 +1452,9 @@ active crew chiefs have **128** career games on average (median 125, range
   from `crew_styles.json`, which the page already loads, or say it without a
   number.
 
+**Fixed:** #112 (text-only fixes, 2026-10-29): the explainer says it without
+numbers (games vary by crew and show on tap; the yardage range is narrow).
+
 ## D9. Touchdowns lost to offsetting penalties counted twice
 
 **What's wrong:** `flag_impact.json` → `tdsErased` already includes
@@ -1487,7 +1491,12 @@ UTC) and Wednesday (15:00 UTC), and on every push to `main`: 44 runs from
 fixed schedule ("updated during and after every game day"), or from
 `stats.json` → `lastUpdated`, which the page already shows.
 
-**Issue:** #112 (text-only fixes; comment added 2026-10-29).
+**Fixed:** #112 (text-only fixes, 2026-10-29): "Updated automatically during and
+after every game day." in the explainer, and the same sentence replaces every
+"updated weekly" / "Updated every week" on the home page (meta, Open Graph,
+schema, TL;DR, Team Discipline subtitle, footer) and the static pages (footer,
+`/dataset/`, the guide's About, `llms.txt`). (The page doesn't show
+`lastUpdated` except in the "new results" notice, so the fix doesn't point to it.)
 
 ## D12. Cost method text leaves out "touchdown value"
 
@@ -1501,4 +1510,22 @@ play value, penalty yards and two-point tries, but not **touchdown value**
 1,570 flags, and 9 of the 10 costliest the page lists. Entries M89, M96.
 Text only: no number changes.
 
-**Issue:** #112 (text-only fixes; comment added 2026-10-29).
+**Fixed:** #112 (text-only fixes, 2026-10-29): the footnote and the guide add
+touchdown value and describe the method in words, with no fixed numbers;
+`definitions.method` lists all four methods, its numbers built from the code's
+constants (`POINTS_PER_YARD`, `TWO_POINT_RATE`, and new `TD_POINTS`, `TWO_POINTS`).
+
+## D13. Style Map subtitle: "about 17 games per crew"
+
+**What's wrong:** with a past season picked on the Crew Chief Style Map, the
+subtitle (`frontend/js/app.js` `renderStyleMap()`) said "<season> regular
+season (**about 17 games per crew**)". The number was typed in. At
+`d8c0624`, active crew chiefs worked 15 games in 2015–2019 (one had 16 in
+2016), 13–16 in 2020, and 14–17 in 2021–2025, usually 16; no season has a
+typical crew at 17 (`crew_styles.json` → `crews[].seasons.<season>.games`).
+Entry M37. Text only: no number changes. Found in #116. (Data error D13, not
+plan decision D13.)
+
+**Fixed:** #112 (text-only fixes, 2026-10-29): the subtitle shows the range
+of games behind the dots on the map, e.g. "2020 regular season (13–16 games
+per crew)".

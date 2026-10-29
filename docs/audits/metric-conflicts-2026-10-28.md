@@ -4,11 +4,13 @@ Places where the site calculates or labels the same idea in different ways.
 Found while building the metric dictionary ([`../METRICS.md`](../METRICS.md))
 in V2.0a step 1 (#104).
 
+**Ty's decisions are recorded (2026-10-29, session 11).** One rule for all of them: **no hard-coded years, windows or values in labels or text.** Every label that has a year or a value is computed from the data (for example C8's "2015–25").
+
 **For each conflict, Ty picks one definition.** V2.0a step 2 then changes the
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 10 of 11 (every area; full paths; the full coverage check and the cross-page pass, which adds C27). Ty's decisions: session 11.
+**Status:** session 11 of 11: Ty's decisions recorded (2026-10-29). The gameday worker test (session 10, Part 5) is still open.
 Fields published but not displayed are listed after the conflicts. Data
 errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 (open), D11 and D12 are on #112 too (text-only fixes; later text-only errors go there).
@@ -17,33 +19,33 @@ errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 
 | ID | Conflict | Found in | Recommended | Ty's decision |
 |---|---|---|---|---|
-| C1 | Two meanings of "season" (playoffs in or out) | Known gap 3 | A: regular season only, everywhere | |
-| C2 | Offsetting-penalty plays counted as flags | Known gap 4 | A: accepted penalties only | |
-| C3 | Referee Variance card (#76) | #76 | A: rebuild as a labeled spread | |
-| C4 | Current season includes partial-week games; the same-weeks comparison doesn't | Session 1 | A: compare through the same last week | |
-| C5 | "Penalties" counts plays with an accepted penalty | Session 1 | B: keep "penalties", define it | |
-| C6 | Wording and framing (section 17) on the home page | Session 1 | A: descriptive wording, listed per item | |
-| C7 | The home summary line compares with all of last season | Session 1 | A: same weeks, as the section below | |
-| C8 | "All seasons" vs "Since 2015": two windows, similar names | Session 1 | A: prior seasons only, one name | |
-| C9 | Scorecard grades each game's last projection before kickoff (updates until then) | After PR #108 | A: keep it, say so plainly, show `frozenAt` | |
-| C10 | "League average" means three things on crew chief pages | Session 2 | A: the league's own rate, same games and window | |
-| C11 | "Career" means three different windows | Session 2 | A: 2015 to last season, regular season | |
-| C12 | Three measures of home vs road for one idea | Session 2 | B: home share with the league share beside it | |
-| C13 | Wording and framing (section 17) on crew chief pages | Session 2 | A: descriptive wording, listed per item | |
-| C14 | Season-adjusted and raw career rates under one label | Session 3 | A: raw by default; adjusted labeled each time | |
-| C15 | Model estimates on crew style pages not labeled as estimates | Session 3 | A: label each estimate, observed count beside it | |
-| C16 | "Flags per game": a game total and one team's total under one label | Session 4 | A: separate names (and CSV column) | |
-| C17 | Small samples handled four ways | Session 4 | A: one threshold (plan decision D13), one visible label | |
-| C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | |
-| C19 | Trend text: fixed answers and stated causes | Session 5 | A: answers from the data; causes as possibilities | |
-| C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | |
-| C21 | "League" in previews is the model's level, not the observed rate | Session 6 | A: name it the model's level; observed rate beside it | |
-| C22 | Model estimates in previews: labels and attribution | Session 6 | A: label each as a model estimate | |
-| C23 | "In the likely range": target ≈ 80% vs the range's design | Session 7 | A: state the model's expected share | |
-| C24 | Live and backtest projections mixed in one week summary | Session 7 | A: split mixed weeks | |
-| C25 | What Flags Cost: model estimates, precision and "erased" | Session 8 | A: label every modeled number; 1 decimal | |
-| C26 | Live counts and win chances come from ESPN, final ones from nflverse | Session 8 | A: say so on the live strip too | |
-| C27 | Two tie rules for ranks | Session 10 (cross-page pass) | A: ties share the higher rank, shown "T-22" | |
+| C1 | Two meanings of "season" (playoffs in or out) | Known gap 3 | A: regular season only, everywhere | A: regular season only, everywhere (2026-10-29) |
+| C2 | Offsetting-penalty plays counted as flags | Known gap 4 | A: accepted penalties only | A: accepted penalties only (2026-10-29) |
+| C3 | Referee Variance card (#76) | #76 | A: rebuild as a labeled spread | A: rebuild as a labeled spread (2026-10-29) |
+| C4 | Current season includes partial-week games; the same-weeks comparison doesn't | Session 1 | A: compare through the same last week | A: compare through the same last week (2026-10-29) |
+| C5 | "Penalties" counts plays with an accepted penalty | Session 1 | B: keep "penalties", define it | B: keep "penalties", define it (2026-10-29) |
+| C6 | Wording and framing (section 17) on the home page | Session 1 | A: descriptive wording, listed per item | A: descriptive wording (2026-10-29) |
+| C7 | The home summary line compares with all of last season | Session 1 | A: same weeks, as the section below | A: same weeks (2026-10-29) |
+| C8 | "All seasons" vs "Since 2015": two windows, similar names | Session 1 | A: prior seasons only, one name | A: prior seasons only, one name (2026-10-29) |
+| C9 | Scorecard grades each game's last projection before kickoff (updates until then) | After PR #108 | A: keep it, say so plainly, show `frozenAt` | A: keep it, say so, show the save time (2026-10-29) |
+| C10 | "League average" means three things on crew chief pages | Session 2 | A: the league's own rate, same games and window | A: the league's own rate, same games and window (2026-10-29) |
+| C11 | "Career" means three different windows | Session 2 | A: 2015 to last season, regular season | A: 2015 to last season, regular season (2026-10-29) |
+| C12 | Three measures of home vs road for one idea | Session 2 | B: home share with the league share beside it | **A, adjusted**: % more on road teams, league figure beside it (2026-10-29) |
+| C13 | Wording and framing (section 17) on crew chief pages | Session 2 | A: descriptive wording, listed per item | A: descriptive wording (2026-10-29) |
+| C14 | Season-adjusted and raw career rates under one label | Session 3 | A: raw by default; adjusted labeled each time | A: raw by default; adjusted labeled (2026-10-29) |
+| C15 | Model estimates on crew style pages not labeled as estimates | Session 3 | A: label each estimate, observed count beside it | A: label each estimate (2026-10-29) |
+| C16 | "Flags per game": a game total and one team's total under one label | Session 4 | A: separate names (and CSV column) | A: separate names (and CSV column) (2026-10-29) |
+| C17 | Small samples handled four ways | Session 4 | A: one threshold (plan decision D13), one visible label | A: one threshold, one label (approach now) (2026-10-29) |
+| C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | A: descriptive wording (2026-10-29) |
+| C19 | Trend text: fixed answers and stated causes | Session 5 | A: answers from the data; causes as possibilities | A: answers from the data (2026-10-29) |
+| C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | A: games-weighted, both rates (2026-10-29) |
+| C21 | "League" in previews is the model's level, not the observed rate | Session 6 | A: name it the model's level; observed rate beside it | A: name it the model's level (2026-10-29) |
+| C22 | Model estimates in previews: labels and attribution | Session 6 | A: label each as a model estimate | A: label as model estimates (2026-10-29) |
+| C23 | "In the likely range": target ≈ 80% vs the range's design | Session 7 | A: state the model's expected share | A: state the expected share (2026-10-29) |
+| C24 | Live and backtest projections mixed in one week summary | Session 7 | A: split mixed weeks | A: split mixed weeks (2026-10-29) |
+| C25 | What Flags Cost: model estimates, precision and "erased" | Session 8 | A: label every modeled number; 1 decimal | A: label every modeled number (2026-10-29) |
+| C26 | Live counts and win chances come from ESPN, final ones from nflverse | Session 8 | A: say so on the live strip too | A: say so on the live strip too (2026-10-29) |
+| C27 | Two tie rules for ranks | Session 10 (cross-page pass) | A: ties share the higher rank, shown "T-22" | A: ties share the higher rank, "T-22" (2026-10-29) |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. (D-numbers here are data errors. The plan's decisions in
@@ -166,7 +168,7 @@ crew chief comparisons to crews' own games, and lets every "per season" number
 be compared with every other. Partial seasons are labeled as partial
 (plan section 9, point 5).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Regular season only, everywhere; playoffs shown separately where they're useful. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -202,7 +204,7 @@ season), while the site's wording elsewhere refers to accepted penalties.
 a different metric ("flags thrown"); if it's wanted, it can be added later as
 its own entry.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Accepted penalties only. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -247,7 +249,7 @@ and `calculate_referee_stats()`; dictionary entry M3.
 can use ("who's calling my game"). The coefficient of variation is hard to
 read without an explanation, and two cards showing one range is redundant.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Rebuild the card as a labeled spread (range in penalties per game, each end's games count, crew chiefs above the plan decision D13 threshold, regular season); the fix stays in #76. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -290,7 +292,7 @@ The same-weeks comparison stops at the last completed week.
 **Recommendation:** A, matching the crew chief rule, so both sides of every
 comparison cover the same weeks (section 9).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Compare through the same last week. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -354,7 +356,7 @@ accepted penalty. Two accepted penalties on one play count once.
 doesn't change the displayed rates, while renaming every label makes the site
 harder to read. One sentence in the definition makes it accurate.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** B. Keep "penalties" and define it once: a play with at least one accepted penalty, counted once. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -389,7 +391,7 @@ data doesn't support (section 17: rule 5 and the wording checklist; rule 5 in
 **Recommendation:** A. Titles are what people quote; the explanations alone
 can't carry the caveat.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Descriptive wording, item by item. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -421,7 +423,7 @@ season as a whole (12.72), so the summary makes the rise look larger.
 
 **Recommendation:** A (section 9: same weeks by default).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Same weeks, as the section below. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -454,7 +456,7 @@ every season including the current one.
 **Recommendation:** A. A frame for comparing against is clearer when it never
 contains the season being compared.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Prior seasons only, one name; the label (for example "2015–25") is computed from the data. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -532,7 +534,7 @@ whether it was the Tuesday number or one from minutes before kickoff.
 information (final crew assignment, latest data), and it's what a visitor saw
 just before the game. The fix needed is transparency, not a different rule.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Keep "last projection before kickoff", say so plainly, and show each graded projection's save time (`frozenAt`, "projection as of"). Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -573,7 +575,7 @@ pop-up panel.
 it's compared with (section 7), and one panel shouldn't show two league
 averages.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. The league's own rate for the same games and window, everywhere. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -610,7 +612,7 @@ chief's games.
 
 **Recommendation:** A, which follows from C1 and C8 option A.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. "Career" = 2015 to last season, regular season, with the window computed from the data; the current season shown separately. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -648,7 +650,7 @@ directly, compares crews fairly, already appears on the scoreboard and the
 static pages, and doesn't need the word "bias" (C13). The home card's wording
 is #76 and C6.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** **A, adjusted** (not the recommended B): "% more on road teams", with the league figure beside it, everywhere, matching the home card fixed in #107. "Bias" leaves the labels. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -704,7 +706,7 @@ wording checklist). Same type of issue as C6, for session 2's pages.
 **Recommendation:** A, as for C6. Wording changes go in V2.0a's wording step
 with C6.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Descriptive wording, listed per item; red/green only for more/fewer penalties. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -743,7 +745,7 @@ flag"), sometimes in the same panel.
 **Recommendation:** A. The adjustment is useful for comparing crews across
 eras, but a visitor reading one number twice should see why it differs.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Raw by default; season-adjusted only where labeled each time. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -785,7 +787,7 @@ observed counts and rates.
 **Recommendation:** A. Shrinkage is the right tool for small samples (section
 7), so keep it, and say what it is.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Label each estimate, with the observed count beside it. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -822,7 +824,7 @@ each has its own "league average".
 **Recommendation:** A. A label should mean one thing site-wide (section 6),
 and a CSV column name is read without the page around it.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Separate names: "per game" stays the game total; team rates are "flags on <team> per game" with "league average per team"; the team CSV column becomes `team_flags_per_game`. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -861,7 +863,7 @@ small-sample threshold (plan decision D13, V2.0a step 3) is still open.
 **Recommendation:** A, decided with plan decision D13 in V2.0a step 3 (plan section 7:
 games always shown, a small-sample label below the threshold).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A, the approach now: one threshold and one visible label everywhere. The threshold itself is set with plan decision D13 (V2.0a step 3). Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -897,7 +899,7 @@ don't show. Same type of issue as C6 and C13.
 
 **Recommendation:** A, with C6 and C13 in V2.0a's wording step.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Descriptive wording, listed per item. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -946,7 +948,7 @@ from the data, or give a cause the data doesn't test (section 17: rule 5 and
 
 **Recommendation:** A, with C6, C13 and C18 in V2.0a's wording step.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Answers computed from the data; causes worded as possibilities or removed. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -978,7 +980,7 @@ also shown as a percentage without its two rates.
 **Recommendation:** A (section 9 comparable periods; rule 2: a percentage
 with its baseline and absolute change).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Games-weighted, with both rates shown. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1019,7 +1021,7 @@ everywhere else.
 is the fair benchmark; the label must say it isn't the observed rate
 (section 17, rule 3).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Name it the model's league level, with the observed rate beside it. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1050,7 +1052,7 @@ the range's coverage is named only in the explainer.
 
 **Recommendation:** A, with C15.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Label each as a model estimate. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1092,7 +1094,7 @@ than 80% of games inside it.
 makes the comparison fair: a hit rate is judged against what the model
 claimed for those games.
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. State the model's expected share beside the actual hit rate. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1125,7 +1127,7 @@ has, and it says so only when the whole week is backtest.
 projections answer different questions (rule 3: estimates rebuilt afterward
 aren't what visitors saw).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Split mixed weeks: published and reconstructed figures on separate lines. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1164,7 +1166,7 @@ plays.
 
 **Recommendation:** A, with C15 and C22 (section 17, rule 3).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Label every modeled number, per-game points to 1 decimal, and show the notes sentence. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1195,7 +1197,7 @@ nflverse's. The same game can show two flag counts and two costs.
 **Recommendation:** A now; B with C5's decision (if C5 keeps "plays", live
 counts should follow).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. Say so on the live strip too, and mark live numbers as live. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1227,7 +1229,7 @@ for ties, and both ranks sit in the same team pop-up.
 **Recommendation:** A (section 17, rule 1: a ranking names its metric, and a
 tie shouldn't look like a difference).
 
-**Ty's decision:**
+**Ty's decision (2026-10-29):** A. One rule: ties share the higher rank, shown "T-22", ranked on the unrounded value. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
 ---
 
@@ -1266,8 +1268,7 @@ under "Conflicts" (M24 now lists D11, M26 lists C13).
 ## Published but not displayed
 
 Fields written to `frontend/data/` that no page, chart or static page reads.
-They are deployed on every run. **Candidates to remove** (a decision for
-session 11); the dictionary entries mark them "not displayed".
+They are deployed on every run. The dictionary entries mark them "not displayed" (M100 lists every field).
 
 | ID | Field | Who uses it | Removing it would |
 |---|---|---|---|
@@ -1280,6 +1281,15 @@ session 11); the dictionary entries mark them "not displayed".
 | P7 | `history/snapshots/` (the league after each week) | Nothing reads them yet | Lose a record that can't be rebuilt later ("as it stood that week"). **Keep**; the deploy is optional. |
 | P8 | `run_status.json` (each run's modules, warnings and raw capture) | The data workflow's "Fail if any module failed" step; no page | Lose the workflow's check. **Keep**; only deploying is optional. |
 | P9 | `source_stamp.json` (play-by-play version and check time) | The pipeline (deciding whether nflverse changed); no page | Lose the change check. **Keep**; only deploying is optional. |
+
+**Ty's decisions (2026-10-29):**
+- **P1:** remove.
+- **P2:** remove the file copy; keep the in-memory calculation (the "Let Them Play" card).
+- **P3:** follows C1 (regular season).
+- **P4:** keep.
+- **P5, P6, P7:** keep, and keep deploying them: they're the evidence behind the scorecard, for the plan's "Verify" layer; Data & Methods will link to them later.
+- **P8, P9:** keep.
+
 
 Not in `frontend/data`, but also published and never shown: the gameday
 feed's `games[].preview.low` and `.high` are always empty (the worker reads

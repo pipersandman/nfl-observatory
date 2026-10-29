@@ -171,6 +171,8 @@ be compared with every other. Partial seasons are labeled as partial
 
 **Ty's decision (2026-10-29):** A. Regular season only, everywhere; playoffs shown separately where they're useful. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
+**Fixed:** #117: `trends.json` (`bySeason`, `homeVsAway`, `byType`), the four cards built from it and every crew chief career number count the regular season only; `seasonStats` and `recentGames` too. Playoff games worked are shown separately on each crew chief's pop-up and static page ("Playoff games worked: N (mixed crews; not included in rates)"). Left as is (Ty, 2026-10-29): `stats.json` → `totalPenalties`, `totalGames` (not displayed) still include playoffs.
+
 ---
 
 ## C2. Offsetting-penalty plays counted as flags
@@ -578,6 +580,8 @@ averages.
 
 **Ty's decision (2026-10-29):** A. The league's own rate for the same games and window, everywhere. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
+**Fixed:** #117: the pop-up's "Career:" sentence compares with the league's own regular-season rate over the career window (`season_comparison.json` → `league.baselines.all`), not the mean of crew chiefs' averages.
+
 ---
 
 ## C11. "Career" means three different windows
@@ -614,6 +618,8 @@ chief's games.
 **Recommendation:** A, which follows from C1 and C8 option A.
 
 **Ty's decision (2026-10-29):** A. "Career" = 2015 to last season, regular season, with the window computed from the data; the current season shown separately. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
+
+**Fixed:** #117: "career" = regular season, seasons before the current one, on the crew table, cards, pop-up and static pages, with the window computed from the data. Seasons worked (`first_season`, `last_season`, `experience`) still count every season (Ty, 2026-10-29); the career window has its own fields (`career_first_season`, `career_last_season`, `careerSeasons`).
 
 ---
 
@@ -1284,9 +1290,9 @@ They are deployed on every run. The dictionary entries mark them "not displayed"
 | P9 | `source_stamp.json` (play-by-play version and check time) | The pipeline (deciding whether nflverse changed); no page | Lose the change check. **Keep**; only deploying is optional. |
 
 **Ty's decisions (2026-10-29):**
-- **P1:** remove.
-- **P2:** remove the file copy; keep the in-memory calculation (the "Let Them Play" card).
-- **P3:** follows C1 (regular season).
+- **P1:** remove. **Done in #117.**
+- **P2:** remove the file copy; keep the in-memory calculation (the "Let Them Play" card). **Done in #117.**
+- **P3:** follows C1 (regular season). **Done in #117.**
 - **P4:** keep.
 - **P5, P6, P7:** keep, and keep deploying them: they're the evidence behind the scorecard, for the plan's "Verify" layer; Data & Methods will link to them later.
 - **P8, P9:** keep.

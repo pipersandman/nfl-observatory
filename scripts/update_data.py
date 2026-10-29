@@ -32,6 +32,7 @@ except ImportError:
 
 import raw_capture  # noqa: E402  (raw pulls to R2; never stops the update)
 from jsonsafe import atomic_write, forced_failure  # noqa: E402  (atomic writes; NFLOBS_FAIL test hook)
+from teams import normalize_teams  # noqa: E402  (schedule teams -> today's abbreviations, #105)
 
 # =============================================================================
 # CONFIGURATION
@@ -99,7 +100,6 @@ NFL_TEAMS = {
     'NO': {'name': 'New Orleans Saints', 'abbr': 'NO', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png'},
     'NYG': {'name': 'New York Giants', 'abbr': 'NYG', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png'},
     'NYJ': {'name': 'New York Jets', 'abbr': 'NYJ', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png'},
-    'OAK': {'name': 'Las Vegas Raiders', 'abbr': 'LV', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png'},
     'PHI': {'name': 'Philadelphia Eagles', 'abbr': 'PHI', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png'},
     'PIT': {'name': 'Pittsburgh Steelers', 'abbr': 'PIT', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png'},
     'SEA': {'name': 'Seattle Seahawks', 'abbr': 'SEA', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png'},
@@ -159,7 +159,9 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
         forced_failure('load_schedules')
         sched_pl = nfl.load_schedules(schedule_seasons)
         raw_capture.get().capture_frame('nflverse-schedules', f'games_{min(schedule_seasons)}-{max(schedule_seasons)}', sched_pl)
-        schedules = sched_pl.to_pandas()
+        # Raw capture keeps the schedule as received; from here on its teams use today's
+        # abbreviations, like play-by-play (STL/SD/OAK -> LA/LAC/LV, #105)
+        schedules = normalize_teams(sched_pl.to_pandas())
     except Exception as e:
         raise DataLoadError(f"schedules: {short_error(e)}") from e
     # nflreadpy returns no rows (no error) for a season it hasn't published

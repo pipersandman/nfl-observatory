@@ -275,3 +275,10 @@ with separate code (not the pipeline's):
     only restricts deletions and blocks force pushes, because the data bot's
     `GITHUB_TOKEN` can't bypass stricter rules. A merge with a red `checks` job
     is possible until #78 is done.
+13. **~~Relocated teams joined under two abbreviations.~~** Fixed in #105:
+    play-by-play uses today's abbreviations for every season, schedules the
+    ones of the time (STL, SD, OAK). `scripts/teams.py` `normalize_teams()` maps
+    the schedule to today's (STL→LA, SD→LAC, OAK→LV) where it's loaded
+    (`update_data.py` `load_all_data()`, `scorecard_report.py`,
+    `social/generate.py`); raw capture keeps the schedule as received. Game ids
+    keep their original form.

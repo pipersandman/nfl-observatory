@@ -42,9 +42,9 @@
     "yardsPerGame": 57.7,
     "offensePerGame": 3.35,
     "defensePerGame": 3.14,
-    "drawnPerGame": 5.85,
-    "drawnYardsPerGame": 47.9,
-    "netPerGame": -0.64,
+    "drawnPerGame": 5.96,
+    "drawnYardsPerGame": 48.9,
+    "netPerGame": -0.54,
     "homePerGame": 6.28,
     "awayPerGame": 6.7
   },
@@ -198,9 +198,9 @@
       "yardsPerGame": 57.7,
       "offensePerGame": 3.35,
       "defensePerGame": 3.14,
-      "drawnPerGame": 5.85,
-      "drawnYardsPerGame": 47.9,
-      "netPerGame": -0.64,
+      "drawnPerGame": 5.96,
+      "drawnYardsPerGame": 48.9,
+      "netPerGame": -0.54,
       "homePerGame": 6.28,
       "awayPerGame": 6.7,
       "types": {
@@ -522,7 +522,7 @@
       "slug": "john-parry",
       "games": 5,
       "perGame": 7.0,
-      "opponentPerGame": 5.2,
+      "opponentPerGame": 8.0,
       "lastSeason": 2018
     },
     {
@@ -570,7 +570,7 @@
       "slug": "walt-coleman",
       "games": 2,
       "perGame": 6.5,
-      "opponentPerGame": 4.5,
+      "opponentPerGame": 7.0,
       "lastSeason": 2017
     },
     {
@@ -677,15 +677,15 @@
       "perGame": 8.12,
       "yardsPerGame": 69.5,
       "drawnPerGame": 6.94,
-      "rank": 4
+      "rank": 5
     },
     {
       "season": 2016,
       "games": 16,
       "perGame": 6.69,
       "yardsPerGame": 60.6,
-      "drawnPerGame": 5.31,
-      "rank": 15
+      "drawnPerGame": 6.5,
+      "rank": 16
     },
     {
       "season": 2017,
@@ -693,7 +693,7 @@
       "perGame": 6.56,
       "yardsPerGame": 60.1,
       "drawnPerGame": 6.75,
-      "rank": 16
+      "rank": 17
     },
     {
       "season": 2018,
@@ -701,7 +701,7 @@
       "perGame": 5.88,
       "yardsPerGame": 58.7,
       "drawnPerGame": 5.31,
-      "rank": 26
+      "rank": 27
     },
     {
       "season": 2019,
@@ -709,7 +709,7 @@
       "perGame": 7.5,
       "yardsPerGame": 64.8,
       "drawnPerGame": 5.75,
-      "rank": 5
+      "rank": 6
     },
     {
       "season": 2020,
@@ -915,33 +915,6 @@
       }
     },
     {
-      "opponent": "LV",
-      "games": 4,
-      "seasons": [
-        2020,
-        2022,
-        2024,
-        2026
-      ],
-      "flagsPerGame": 8.25,
-      "oppFlagsPerGame": 4.25,
-      "yardsPerGame": 69.2,
-      "oppYardsPerGame": 27.8,
-      "netPerGame": -4.0,
-      "totalFlags": 33,
-      "totalOppFlags": 17,
-      "homeGames": 3,
-      "lastMet": {
-        "season": 2026,
-        "week": 3,
-        "home": true,
-        "score": "27-35",
-        "result": "L",
-        "flags": 8,
-        "oppFlags": 5
-      }
-    },
-    {
       "opponent": "TEN",
       "games": 5,
       "seasons": [
@@ -967,6 +940,34 @@
         "result": "W",
         "flags": 6,
         "oppFlags": 4
+      }
+    },
+    {
+      "opponent": "LV",
+      "games": 5,
+      "seasons": [
+        2016,
+        2020,
+        2022,
+        2024,
+        2026
+      ],
+      "flagsPerGame": 8.0,
+      "oppFlagsPerGame": 6.2,
+      "yardsPerGame": 66.0,
+      "oppYardsPerGame": 50.4,
+      "netPerGame": -1.8,
+      "totalFlags": 40,
+      "totalOppFlags": 31,
+      "homeGames": 4,
+      "lastMet": {
+        "season": 2026,
+        "week": 3,
+        "home": true,
+        "score": "27-35",
+        "result": "L",
+        "flags": 8,
+        "oppFlags": 5
       }
     },
     {
@@ -1224,30 +1225,6 @@
       }
     },
     {
-      "opponent": "OAK",
-      "games": 1,
-      "seasons": [
-        2016
-      ],
-      "flagsPerGame": 7.0,
-      "oppFlagsPerGame": 0.0,
-      "yardsPerGame": 53.0,
-      "oppYardsPerGame": 0.0,
-      "netPerGame": -7.0,
-      "totalFlags": 7,
-      "totalOppFlags": 0,
-      "homeGames": 1,
-      "lastMet": {
-        "season": 2016,
-        "week": 1,
-        "home": true,
-        "score": "34-35",
-        "result": "L",
-        "flags": 7,
-        "oppFlags": 0
-      }
-    },
-    {
       "opponent": "NYG",
       "games": 8,
       "seasons": [
@@ -1404,18 +1381,19 @@
     },
     {
       "opponent": "LAC",
-      "games": 2,
+      "games": 3,
       "seasons": [
+        2016,
         2020,
         2024
       ],
       "flagsPerGame": 6.0,
-      "oppFlagsPerGame": 2.5,
-      "yardsPerGame": 63.0,
-      "oppYardsPerGame": 22.0,
-      "netPerGame": -3.5,
-      "totalFlags": 12,
-      "totalOppFlags": 5,
+      "oppFlagsPerGame": 3.33,
+      "yardsPerGame": 53.3,
+      "oppYardsPerGame": 30.0,
+      "netPerGame": -2.67,
+      "totalFlags": 18,
+      "totalOppFlags": 10,
       "homeGames": 1,
       "lastMet": {
         "season": 2024,
@@ -1425,30 +1403,6 @@
         "result": "L",
         "flags": 7,
         "oppFlags": 4
-      }
-    },
-    {
-      "opponent": "SD",
-      "games": 1,
-      "seasons": [
-        2016
-      ],
-      "flagsPerGame": 6.0,
-      "oppFlagsPerGame": 0.0,
-      "yardsPerGame": 34.0,
-      "oppYardsPerGame": 0.0,
-      "netPerGame": -6.0,
-      "totalFlags": 6,
-      "totalOppFlags": 0,
-      "homeGames": 0,
-      "lastMet": {
-        "season": 2016,
-        "week": 4,
-        "home": false,
-        "score": "35-34",
-        "result": "W",
-        "flags": 6,
-        "oppFlags": 0
       }
     },
     {

@@ -8,7 +8,7 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 6 of 9 (home page, crew chiefs, crew styles, teams, trends, previews).
+**Status:** session 7 of 9 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history).
 Fields published but not displayed are listed after the conflicts. Data
 errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 
@@ -38,6 +38,8 @@ errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 | C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | |
 | C21 | "League" in previews is the model's level, not the observed rate | Session 6 | A: name it the model's level; observed rate beside it | |
 | C22 | Model estimates in previews: labels and attribution | Session 6 | A: label each as a model estimate | |
+| C23 | "In the likely range": target ≈ 80% vs the range's design | Session 7 | A: state the model's expected share | |
+| C24 | Live and backtest projections mixed in one week summary | Session 7 | A: split mixed weeks | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -470,6 +472,34 @@ whether it was the Tuesday number or one from minutes before kickoff.
     minutes** (WAS @ SF, Week 6, at 8:07 pm ET for an 8:15 pm kickoff).
   - Measured by commit time; each file was written a few seconds before its
     commit.
+  - **Corrected in session 7:** this check counted a change to *any* field
+    of the record as a projection change. WAS @ SF's 8:07 pm change was to
+    its `context` only (betting lines and similar); its projected numbers
+    last changed at 11:33 am that day. The recount below separates the
+    definitions.
+- **Recount (session 7, up to `53e0bd1`, the same 98 commits plus 2):** 100
+  commits, 56 live games, 42 played.
+
+  | What counts as a change (played games) | Changes | Games changed after first save | Last change before kickoff: median | Closest |
+  |---|---|---|---|---|
+  | **Graded and shown:** total, home, away, range | 93 | 28 of 42 | **118 hours** | **45 min** (LA @ LV, Week 7) |
+  | Any projection field (adds types, quarters, chance, yards, drivers, team ranges, league level) | 147 | 29 of 42 | 42 hours | 25 min (DEN @ ARI, Week 7) |
+  | Any field except `frozenAt` (adds context, crew, model version) | 187 | 29 of 42 | 42 hours | 7 min (WAS @ SF, Week 6) |
+
+  - Changes after kickoff: still **0**; `frozenAt` after kickoff: **0**.
+  - **"Exactly as they appeared on the site":** every final live record
+    equals the last preview committed before that game's kickoff (total,
+    home, away, range): **56 of 56**.
+  - **A frozen record keeps the model inputs of its last save:** BUF @ LV
+    (Week 6) was saved on 2026-10-17 with dispersion 1.47, giving 8–19; the
+    week's final preview file has 1.48, which gives 8–20. The graded 8–19 is
+    what the site showed (working as built).
+  - **Two graded projections come from social posts** (`live-post`, ATL @ NO
+    and TB @ DAL), both saved before kickoff; the site calls them
+    "published" like the rest (M81).
+  - **`frozenAt` is shown nowhere:** not on the scorecard, its tables or the
+    history ledger (`history/<week>` → `prediction.frozenAt` is stored, not
+    displayed).
 
 **Options:**
 - **A. Keep "last projection before kickoff", and say so:** state it plainly
@@ -947,7 +977,11 @@ everywhere else.
   two-thirds current).
 - The chance tile's threshold ("15+") comes from the same level.
 - `scripts/scorecard.py` uses the same level as the "guess the league
-  average" baseline for its skill figure (session 7).
+  average" baseline for its skill figure (session 7, M85): the live guesses
+  were 13.7–14.5, while the observed 2026 rate before each week was
+  14.4–15.0. Skill is **+3.3%** against the model's level and **+5.2%**
+  against the observed rate (3.48 vs 3.60 and 3.67 flags of average miss, 44
+  games). The guide calls it "guessing the league average".
 
 **Options:**
 - **A. Name it for what it is:** "model's league level 14.3" (or "average
@@ -996,6 +1030,81 @@ the range's coverage is named only in the explainer.
 
 ---
 
+## C23. "In the likely range": target ≈ 80% vs the range's design
+
+**What differs:** the scorecard says the share of games inside the likely
+range has a "target ≈ 80%", and the preview explainer says the range "covers
+80% of likely outcomes". The range is built so that the model expects **more**
+than 80% of games inside it.
+
+**Evidence (`scripts/previews.py` `_poisson_nb_quantiles()`,
+`scripts/scorecard.py` `_grade_games()`, data at `53e0bd1`):**
+- The range is the 10th to the 90th percentile of the projection's negative
+  binomial, in whole flags, and a game counts as inside when low ≤ actual ≤
+  high (both ends). So the chance of landing inside is at least 90% − 10%,
+  and with whole flags always a little more.
+- **The model's own expected share**, using each week's dispersion: **83.5%**
+  for the 56 live projections. Over every mean from 8 to 20 flags and
+  dispersion from 1.1 to 3.0, the lowest is 80.5%: by design it can't be 80%.
+- **What that does to the readings:** live 88.6% (44 games) is about 5 points
+  above what the model expects (not 9 above the target); the 2025 backtest's
+  80.1% (272 games) is about 3 points *below*, shown as on target.
+- The hit rates themselves are computed correctly (M83: recomputed, a match).
+
+**Options:**
+- **A. State the expected share:** replace "target ≈ 80%" with the model's
+  expected share for the same games ("model expects 84%; actual 89%"), and
+  the explainer's "covers 80%" with "the model expects about 4 in 5 games, a
+  little more, inside it". Effect: no numbers change; one label and one
+  sentence change, plus one stored number per summary.
+- **B. Make the range an exact 80% interval:** choose the bounds so the
+  expected share is as close to 80% as whole flags allow (for example 10th
+  to 90th percentile with one end exclusive, or a narrower pair). Effect:
+  every range changes (narrower), every hit rate changes, and graded live
+  projections can't be rebuilt, so live and backtest history would mix two
+  definitions.
+
+**Recommendation:** A. It keeps every published range as it was, and it
+makes the comparison fair: a hit rate is judged against what the model
+claimed for those games.
+
+**Ty's decision:**
+
+---
+
+## C24. Live and backtest projections mixed in one week summary
+
+**What differs:** the scorecard keeps live and backtest projections apart
+everywhere, but the history ledger's week summary averages whatever each game
+has, and it says so only when the whole week is backtest.
+
+**Evidence (`scripts/history.py` `_summary()`, `app.js`
+`renderHistoryWeek()`, data at `53e0bd1`):**
+- **2026 Week 4:** 16 games graded, **1 published** (ATL @ NO, a social post)
+  and **15 backtest**; the week shows "4.4 avg miss · 75% in range" with no
+  note (the "predates live tracking" footnote needs every game to be
+  backtest). Each row has a "published" tag or not.
+- The scorecard's live block counts only that one Week 4 game (3.0 miss, in
+  range); its backtest block counts the other 15.
+- Every other week is a single source at `53e0bd1` (2025 and 2026 Weeks 1–3
+  all backtest; Weeks 5–7 all published).
+
+**Options:**
+- **A. Split mixed weeks:** the summary shows published and reconstructed
+  figures on separate lines (or published only, with the count of
+  reconstructed games). Effect: one week's summary changes; future
+  first-weeks-of-tracking too.
+- **B. Keep one summary, labeled:** "16 games: 1 published, 15
+  reconstructed". Effect: a label only.
+
+**Recommendation:** A, matching the scorecard: published and reconstructed
+projections answer different questions (rule 3: estimates rebuilt afterward
+aren't what visitors saw).
+
+**Ty's decision:**
+
+---
+
 ## Published but not displayed
 
 Fields written to `frontend/data/` that no page, chart or static page reads.
@@ -1008,8 +1117,11 @@ session 9); the dictionary entries mark them "not displayed".
 | P2 | `trends.json` → `byQuarter` (counts by quarter, playoffs in) | The pipeline uses the same values in memory for the "Let Them Play" card (M22) before writing the file; no page reads the file's copy | Change nothing on the site, if the card keeps its calculation. The quarter chart reads `type_trends.json` → `quarters` (M67). |
 | P3 | `trends.json` → `bySeason`, `homeVsAway`, `byType` | The pipeline (cards M20, M21, M16); the page reads them only in a fallback when `insights.json` is empty; `scripts/make_baseline.py` reads `bySeason` (local snapshot) | Remove the fallback cards' data and the baseline snapshot's source; decide with C1 (which season definition the cards use). |
 | P4 | `previews/<season>-week-NN.json` for past weeks (Weeks 4–7 at `53e0bd1`) | No page (the page reads only the weeks listed in `previews/latest.json`). `scripts/scorecard.py` reads `model.leagueAveragePerGame` from them as a fallback baseline (session 7) | Change nothing on the site; the scorecard would need its baseline from elsewhere. Decide with session 7's scorecard files. |
+| P5 | `scorecard/live/` (frozen projections, one file per week) | `scorecard.py` (grading) and `history.py` (the ledger's predictions); no page | Remove the record the scorecard is graded from. **Keep:** once a game kicks off its live record can't be made again. Only the deploy is optional (it could stay in the repository and not be uploaded). |
+| P6 | `scorecard/backtest/` (rebuilt projections) | `scorecard.py`, `history.py` (earlier weeks); no page | They can be rebuilt (76 of 76 reproduced), so not deploying them loses nothing; keep them in the repository as the cache. |
+| P7 | `history/snapshots/` (the league after each week) | Nothing reads them yet | Lose a record that can't be rebuilt later ("as it stood that week"). **Keep**; the deploy is optional. |
 
-Other "not displayed" fields from sessions 1–6 (samples such as
+Other "not displayed" fields from sessions 1–7 (samples such as
 `comparisons[].games`, timestamps, team yards and opponent counts) are listed
 in the dictionary. Most are samples the site should start showing (section
 7), not removal candidates; session 8's cross-page pass adds any that are

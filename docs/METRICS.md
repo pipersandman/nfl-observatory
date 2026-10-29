@@ -6,7 +6,7 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–6 of 9 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–7 of 9 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -1729,10 +1729,10 @@ officials and the saved assignments):
 | Calculation | Negative binomial with mean = the projection and variance = dispersion × mean: 10th and 90th percentiles (`range`, `homeRange`, `awayRange`); `probOver` = chance of at least threshold + 1; `overThreshold`; `model.dispersion`. |
 | Rounding | Range whole flags; chance stored 3 decimals → whole percent |
 | Provenance | As M71 |
-| Limitations | "Likely" doesn't say 80% on the cards or pop-up (the explainer does). The range reflects game-to-game variation only, not uncertainty in the factors. **The guide's "15 or more" is fixed text:** it matches the threshold only while the league level rounds to 14 ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). The scorecard grades the range's hit rate (target about 80%, session 7). |
+| Limitations | "Likely" doesn't say 80% on the cards or pop-up (the explainer does). The range reflects game-to-game variation only, not uncertainty in the factors. **The guide's "15 or more" is fixed text:** it matches the threshold only while the league level rounds to 14 ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). The scorecard grades the range's hit rate against a "target ≈ 80%", but the model itself expects more than 80% inside the range (83.5% for the live projections; M83, [C23](audits/metric-conflicts-2026-10-28.md#c23-in-the-likely-range-target--80-vs-the-ranges-design)). |
 | Where it appears | `previews/<week>` → `games[].projection.range[]`, `games[].projection.homeRange[]`, `games[].projection.awayRange[]`, `games[].projection.overThreshold`, `games[].projection.probOver`, `model.dispersion` (not displayed) |
 | Example | CAR @ GB: 10–23 (GB 4–14, CAR 3–12); chance of 15+: 61%. Dispersion 1.47. Recomputed with separate code, a match. |
-| Conflicts | [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes), [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution) |
+| Conflicts | [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes), [C22](audits/metric-conflicts-2026-10-28.md#c22-model-estimates-in-previews-labels-and-attribution), [C23](audits/metric-conflicts-2026-10-28.md#c23-in-the-likely-range-target--80-vs-the-ranges-design) |
 
 ### M73. League level in previews ("vs league", "league avg game")
 
@@ -1892,9 +1892,201 @@ officials and the saved assignments):
 
 ## Scorecard and history
 
-*To do in session 7* (the cards' "Track record", the scorecard pop-up, the
-history weeks, the guide's "How accurate are the penalty projections?", and
-C9's evidence).
+Session 7. **Examples are from `53e0bd1`** (2026-10-29: 44 live projections
+graded, Weeks 4–7 of 2026; history ledger from 2025 Week 1 to 2026 Week 7).
+Places covered: the "Track record" box under the previews, the "Track
+Record" pop-up ("See every game"), its "Week by week" history block, and
+the guide's "How accurate are the penalty projections?". The live strip's use
+of `history/index.json` is session 8.
+
+**Three files on the page, three folders behind them.**
+- **`scorecard/public.json`** (`scripts/scorecard.py` `grade()`): the
+  graded summaries and every graded live projection.
+- **`history/index.json`** and **`history/games/<season>-week-NN.json`**
+  (`scripts/history.py` `build_history()`): one file per completed week, each
+  game's prediction, outcome and grade, written once and kept.
+- **Not read by any page** (they're what the two above are built from):
+  `scorecard/live/` (the frozen projections), `scorecard/backtest/` (the
+  rebuilt ones) and `history/snapshots/` (the league as it stood after each
+  week). See P5–P7 in the conflicts file.
+- **Actual flags** everywhere here are penalties as counted (Terms) that name
+  a team, regular season, overtime included in the totals.
+- **Paths:** `history/<week>` stands for every history week file; `<type>`
+  is a penalty type.
+
+**Three sources of a graded projection** (M81): `live` (saved by the
+pipeline before kickoff), `live-post` (a projection posted on social media
+before kickoff, imported when the pipeline hadn't saved that game: 2 games)
+and `backtest` (rebuilt afterward from earlier games only).
+
+**Checks** (separate code, from nflverse play-by-play and git history):
+- **Backtest uses earlier games only:** five weeks (2025 Weeks 1, 10, 18;
+  2026 Weeks 3, 7) rebuilt from data cut off before each week equal the
+  full-data rebuild and the stored files in 76 of 76 games. The 336 backtest
+  records without a model version are reproduced exactly by today's model.
+- **Outcomes:** every 2026 Week 7 game's flags, yards, quarters (overtime
+  included), totals and types per team: 56 of 56 equal.
+- **Summaries rebuilt:** the live summary (44 games: average miss, in range,
+  within ±3, guess miss, skill), live Week 5, the 2025 backtest (272 games),
+  and the 2026 Week 7 history summary with its index row. **22 of 22 match.**
+- **Timing (C9):** no change after kickoff in 100 commits; every final live
+  record equals the last preview committed before kickoff (56 of 56).
+- **The range's own expected coverage:** 83.5% for the 56 live projections
+  (see M83).
+
+### M81. Graded projection sources: live, posted, backtest
+
+| Field | Value |
+|---|---|
+| Label on site | Track record rows: "Published before kickoff" ("<n> games graded so far"), "2025 full season (backtest)", "2026 so far (backtest)". Pop-up blocks with the same titles; "Projections exactly as they appeared on the site before each game. Grows every week."; "Rebuilt afterward, game by game, using only data that existed before each week. Shows how the model would have done."; "How it's graded": the definitions joined. History: "published" tag on live rows; "This week predates live tracking: projections were reconstructed afterward…" (only when every game of the week is backtest); footnote "Games marked "published" were projected live before kickoff; the rest were reconstructed." |
+| Kind | Definitions (which projection is graded) |
+| Numerator / Denominator | — |
+| Population | Regular-season games of the current and previous season |
+| Time window | **live:** saved by every data run until kickoff, the last save before kickoff is kept (C9). **live-post:** the social post's projection, when the pipeline has no live record for the game. **backtest:** every fully played week of the previous and current season, rebuilt with `build_previews(as_of=…)` from games before that week, with the crew that worked it; cached once per week. |
+| Inclusion rules | A live record is graded once the game has play-by-play |
+| Benchmark | — |
+| Calculation | `scorecard.py` `freeze()`, `backtest()`; `history.py` keeps each game's first recorded prediction (`live`, else `backtest`) |
+| Rounding | — |
+| Provenance | `scorecard/live/`, `scorecard/backtest/`, `social/snapshots/` |
+| Limitations | **A history week can mix sources** (2026 Week 4: 1 posted, 15 backtest) and its summary averages them together ([C24](audits/metric-conflicts-2026-10-28.md#c24-live-and-backtest-projections-mixed-in-one-week-summary)). "Published" covers both `live` and `live-post`. Backtest weeks are cached and not rebuilt if the model changes (today's model reproduces them). The time each graded projection was saved (`frozenAt`) isn't shown anywhere ([C9](audits/metric-conflicts-2026-10-28.md#c9-scorecard-which-projection-is-graded)). |
+| Where it appears | `scorecard/public.json` → `definitions.live`, `definitions.backtest`, `season`, `backtest.lastSeason.season`, `backtest.currentSeason.season`, `live.games[].source` (not displayed), `generatedAt` (not displayed). `history/<week>` → `games[].prediction.source`, `notes` (not displayed), `games[].prediction.frozenAt` (not displayed), `games[].prediction.modelVersion` (not displayed), `games[].recordedAt` (not displayed). |
+| Example | Live records: 56 `live`, 2 `live-post` (ATL @ NO, Week 4; TB @ DAL, Week 5); 44 graded. Backtest: 379 games (272 in 2025, 107 in 2026). |
+| Conflicts | [C9](audits/metric-conflicts-2026-10-28.md#c9-scorecard-which-projection-is-graded), [C24](audits/metric-conflicts-2026-10-28.md#c24-live-and-backtest-projections-mixed-in-one-week-summary) |
+
+### M82. Average miss (and each game's miss)
+
+| Field | Value |
+|---|---|
+| Label on site | Track record: "**3.5** avg miss". Pop-up tile "Average miss": "3.5", "flags per game". Table "Every published projection": "Miss" ("+2.1", red when more flags than projected); history "Miss", sorted "Biggest misses first"; week menu "3.5 avg miss"; pop-up "2026 by week (backtest)": "Avg miss". Guide: "missed the actual flag count by 3.48 on average". Definition: "Average gap between projected and actual accepted penalties per game". |
+| Kind | Derived: mean absolute error of a model estimate against an observed count |
+| Numerator | Σ \|actual − projected\| (game totals) |
+| Denominator | Graded games |
+| Population | The graded projections of one source (M81) |
+| Time window | Live: every graded live game so far. Backtest: one season. By week: one week. |
+| Inclusion rules | Actual flags as in the section notes |
+| Benchmark | The guess's miss (M85) |
+| Calculation | `summarize()` → `avgMiss`; per game `miss` = actual − projected (signed), `absMiss` |
+| Rounding | Stored 2 decimals → pop-up and track record 1, guide 2; per-game miss 1 |
+| Provenance | `scorecard/live/`, `scorecard/backtest/`; nflverse play-by-play |
+| Limitations | Measures the game total only (home and away misses are stored, not shown on the scorecard). Red/green on the miss follows the color rule (red = more flags than projected). |
+| Where it appears | `scorecard/public.json` → `live.summary.avgMiss`, `backtest.lastSeason.summary.avgMiss`, `backtest.currentSeason.summary.avgMiss`, `backtest.currentSeason.byWeek[].avgMiss`, `live.games[].miss`; not displayed: `live.byWeek[].avgMiss`, `backtest.lastSeason.byWeek[].avgMiss`, `definitions.avgMiss` (shown in "How it's graded"). `history/<week>` → `games[].grade.miss`, `games[].grade.absMiss` (sort order). `history/index.json` → `weeks[].avgMiss` (week menu). |
+| Example | Live: 3.48 (44 games); 2025 backtest: 3.43 (272); 2026 backtest: 3.53 (107). Recomputed, a match. |
+| Conflicts | None |
+
+### M83. In the likely range (hit rate)
+
+| Field | Value |
+|---|---|
+| Label on site | Track record: "**89%** in range". Pop-up tile "In the likely range": "89%", "target ≈ 80%". Tables: "In range" ✓ / ✗; history "92% in range"; week menu "… · 93% in range". Guide: "88.6% landed inside the projected range". Definition: "Share of games where the actual count landed inside the projected likely range (target ~80%)". |
+| Kind | Derived: share of graded games (coverage of a model interval) |
+| Numerator | Games where low ≤ actual ≤ high (both ends counted) |
+| Denominator | Graded games |
+| Population, Time window | As M82 |
+| Inclusion rules | As M82 |
+| Benchmark | "Target ≈ 80%" |
+| Calculation | `summarize()` → `hitRate`; per game `inRange` |
+| Rounding | Stored 1 decimal → whole percent (guide 1 decimal) |
+| Provenance | As M82 |
+| Limitations | **The stated target isn't what the range is built to give** ([C23](audits/metric-conflicts-2026-10-28.md#c23-in-the-likely-range-target--80-vs-the-ranges-design)): the range is the 10th to 90th percentile in whole flags with both ends counted, so the model itself expects **more** than 80% inside it: 83.5% for the 56 live projections, and never 80% or less for any mean and dispersion the model uses. Against that, live 88.6% is about 5 points above expectation, and the 2025 backtest's 80.1% slightly below. |
+| Where it appears | `scorecard/public.json` → `live.summary.hitRate`, `backtest.lastSeason.summary.hitRate`, `backtest.currentSeason.summary.hitRate`, `backtest.currentSeason.byWeek[].hitRate`, `live.games[].inRange`, `live.games[].low`, `live.games[].high`, `definitions.hitRate`; not displayed: `live.byWeek[].hitRate`, `backtest.lastSeason.byWeek[].hitRate`. `history/<week>` → `games[].grade.inRange`, `games[].prediction.range[]`. `history/index.json` → `weeks[].hitRate`. |
+| Example | Live 88.6% (39 of 44); 2025 backtest 80.1%; 2026 backtest 86.0%. Recomputed, a match. |
+| Conflicts | [C23](audits/metric-conflicts-2026-10-28.md#c23-in-the-likely-range-target--80-vs-the-ranges-design) |
+
+### M84. Within ±3 flags
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up tile "Within ±3 flags": "48%", "<n> games" |
+| Kind | Derived: share of graded games |
+| Numerator | Games with \|actual − projected\| ≤ 3 |
+| Denominator | Graded games |
+| Population, Time window, Inclusion rules | As M82 |
+| Benchmark | None |
+| Calculation | `summarize()` → `within3` |
+| Rounding | Stored 1 decimal → whole percent |
+| Provenance | As M82 |
+| Limitations | No benchmark beside it (what a guess would score isn't stored). |
+| Where it appears | `scorecard/public.json` → `live.summary.within3`, `backtest.lastSeason.summary.within3`, `backtest.currentSeason.summary.within3`, `live.summary.games`, `backtest.lastSeason.summary.games`, `backtest.currentSeason.summary.games`, `backtest.currentSeason.byWeek[].games`; not displayed: `live.byWeek[].within3`, `backtest.lastSeason.byWeek[].within3`, `backtest.currentSeason.byWeek[].within3`, `live.byWeek[].games`, `backtest.lastSeason.byWeek[].games` |
+| Example | Live 47.7% (44 games); 2025 backtest 51.8% (272). Recomputed, a match. |
+| Conflicts | None |
+
+### M85. Skill vs guessing the average
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up tile "vs guessing the average": "+3.3%", "league-average guess misses by 3.6". Guide: "Guessing the league average every game would have missed by 3.60." Definition: "How much smaller our average miss is than guessing the league average every game". |
+| Kind | Derived: relative reduction in average miss (model estimate vs a benchmark guess) |
+| Numerator | Guess miss − model miss |
+| Denominator | Guess miss |
+| Population, Time window | As M82 |
+| Inclusion rules | As M82 |
+| Benchmark | **The guess is the model's league level** (M73) for that week: the record's own, else the game's backtest, else that week's preview file, else the latest backtest week |
+| Calculation | Per game `baselineMiss` = \|actual − level\|; `baselineAvgMiss`; `skillPct` = (1 − avgMiss ÷ baselineAvgMiss) × 100 |
+| Rounding | Stored 1–2 decimals → 1 decimal |
+| Provenance | As M82; previews week files (P4) |
+| Limitations | **"League average" is the model's level**, not the observed rate ([C21](audits/metric-conflicts-2026-10-28.md#c21-league-in-previews-is-the-models-level-not-the-observed-rate)): the live guesses were 13.7–14.5, while the observed 2026 rate before each week was 14.4–15.0. Guessing the observed rate misses by 3.67, which would make skill +5.2%. A small edge: 0.12 flags per game on 44 games. A percentage without the absolute difference on the tile (the guess's miss is beside it). |
+| Where it appears | `scorecard/public.json` → `live.summary.skillPct`, `live.summary.baselineAvgMiss`, `backtest.lastSeason.summary.skillPct`, `backtest.lastSeason.summary.baselineAvgMiss`, `backtest.currentSeason.summary.skillPct`, `backtest.currentSeason.summary.baselineAvgMiss`, `definitions.skillPct`; not displayed: `live.games[].baselineMiss`, `live.byWeek[].skillPct`, `live.byWeek[].baselineAvgMiss`, `backtest.lastSeason.byWeek[].skillPct`, `backtest.lastSeason.byWeek[].baselineAvgMiss`, `backtest.currentSeason.byWeek[].skillPct`, `backtest.currentSeason.byWeek[].baselineAvgMiss`. `history/<week>` → `games[].prediction.leagueAverage` (not displayed). |
+| Example | Live: 3.48 vs 3.60 → +3.3%; 2025 backtest: 3.43 vs 3.49 → +1.8%. Recomputed, a match. |
+| Conflicts | [C21](audits/metric-conflicts-2026-10-28.md#c21-league-in-previews-is-the-models-level-not-the-observed-rate) |
+
+### M86. Every published projection, and the by-week tables
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up table "Every published projection": "Week", "Game", "Crew", "Projected" ("15.1 (9–21)"), "Actual", "Miss", "In range"; footnote "Miss = actual − projected: red means more flags than projected, green fewer." Table "2026 by week (backtest)": "Week", "Games", "Avg miss", "In range". |
+| Kind | Model estimate (projected) beside observed counts (actual); derived grades |
+| Numerator / Denominator | As M71 (projected) and M82–M83 (grades) |
+| Population | Every graded live projection, newest first; backtest weeks of the current season |
+| Time window | Current season |
+| Inclusion rules | As M82 |
+| Benchmark | — |
+| Calculation | `grade()` → `live.games[]`, `backtest.currentSeason.byWeek[]`; crew from the officials record, else the projection's |
+| Rounding | Projected 1 decimal; actual whole |
+| Provenance | As M82 |
+| Limitations | Clicking a row opens `openPreviewModal()`, which only knows the current week's previews, so past games open nothing. A live by-week table exists in the data but isn't shown. Home and away projected and actual aren't shown. |
+| Where it appears | `scorecard/public.json` → `live.games[].week`, `live.games[].away`, `live.games[].home`, `live.games[].crew`, `live.games[].projected`, `live.games[].actual`, `live.games[].gameId`, `backtest.currentSeason.byWeek[].week`; not displayed: `live.games[].season`, `live.games[].homeProjected`, `live.games[].awayProjected`, `live.games[].homeActual`, `live.games[].awayActual`, `live.byWeek[].season`, `live.byWeek[].week`, `backtest.lastSeason.byWeek[].season`, `backtest.lastSeason.byWeek[].week`, `backtest.currentSeason.byWeek[].season` |
+| Example | TB @ CAR, Week 7, Carl Cheffers: projected 15.1 (9–21), actual 10, miss −5.1, in range. |
+| Conflicts | None |
+
+### M87. History week summary
+
+| Field | Value |
+|---|---|
+| Label on site | Pop-up "Week by week": week menu "2026 Week 7" (items "2026 Week 7 · 3.5 avg miss · 86% in range", or "<n> games" when ungraded); stats "**3.5** avg miss", "**86%** in range", "**3** over · **11** under", "**12.6** flags/game". |
+| Kind | Derived summaries (as M82, M83) plus an observed rate (flags per game) |
+| Numerator | As M82, M83; over / under = games with actual above / below projected; flags per game = Σ actual |
+| Denominator | Graded games (grades); every game of the week (flags per game) |
+| Population | One completed regular-season week, every game, **whatever the prediction's source** |
+| Time window | 2025 Week 1 to the last completed week |
+| Inclusion rules | As in the section notes |
+| Benchmark | None |
+| Calculation | `history.py` `_summary()`; the index repeats each week's summary |
+| Rounding | Stored 2 decimals (1 for hit rate) → 1 decimal and whole percent |
+| Provenance | `history/games/`; nflverse play-by-play |
+| Limitations | **Mixes sources within a week:** 2026 Week 4's "4.4 avg miss, 75% in range" averages 1 posted and 15 backtest projections; the footnote appears only for all-backtest weeks ([C24](audits/metric-conflicts-2026-10-28.md#c24-live-and-backtest-projections-mixed-in-one-week-summary)). Flags per game here counts both teams (as M1). Bias and exact matches are stored, not shown. |
+| Where it appears | `history/index.json` → `weeks[].season`, `weeks[].week`, `weeks[].file`, `weeks[].games`, `weeks[].graded`, `weeks[].avgMiss`, `weeks[].hitRate`; not displayed: `weeks[].bias`, `weeks[].over`, `weeks[].under`, `weeks[].exact`, `weeks[].live`, `weeks[].flagsPerGame`, `generatedAt`. `history/<week>` → `season`, `week`, `summary.graded`, `summary.live` (footnote), `summary.avgMiss`, `summary.hitRate`, `summary.over`, `summary.under`, `summary.flagsPerGame`; not displayed: `summary.games`, `summary.bias`, `summary.exact`. |
+| Example | 2026 Week 7: 14 games, all live; 3.48 avg miss, bias −1.68, 85.7% in range, 3 over / 11 under, 12.57 flags per game. Recomputed, a match. |
+| Conflicts | [C24](audits/metric-conflicts-2026-10-28.md#c24-live-and-backtest-projections-mixed-in-one-week-summary) |
+
+### M88. History game record: prediction, outcome, grade
+
+| Field | Value |
+|---|---|
+| Label on site | History table: "Game" (+ "published"), "Final" ("TB 43–13 CAR"), "Crew", "Projected" ("15.1 (9–21)"), "Actual flags" ("10 TB 6 · CAR 4"), "Miss", ✓ / ✗ |
+| Kind | Observed outcome (counts, score, context); model estimate (the prediction, copied); derived grade |
+| Numerator | Outcome: each team's flags, yards, types and quarters (four quarters plus overtime) |
+| Denominator | None |
+| Population | Every game of a completed week |
+| Time window | 2025 Week 1 onward |
+| Inclusion rules | As in the section notes; yards as M7 |
+| Benchmark | The prediction |
+| Calculation | `history.py` `_outcome()`, `_grade()`: `miss`, `absMiss`, `inRange`, `homeMiss`, `awayMiss`, `typeErrors` (actual − projected per type, "Other" for the rest), `quarterErrors`. Crew: the officials record (`crewSource: official`), else the assignment from the prediction. **Corrections:** if nflverse later changes a game's outcome (`hash`), the new outcome replaces it and the old one goes into `corrections[]`. |
+| Rounding | Counts whole; errors 1–2 decimals |
+| Provenance | nflverse schedules (scores, closing lines, roof, weather, rest) and play-by-play; `scorecard/live/`, `scorecard/backtest/` |
+| Limitations | Most of the record isn't shown: per-team misses, type and quarter errors, yards, context, corrections. **No correction has been recorded yet** (0 at `53e0bd1`), and none would be visible on the page. |
+| Where it appears | `history/<week>` → `games[].gameId`, `games[].season`, `games[].week`, `games[].away`, `games[].home`, `games[].outcome.awayScore`, `games[].outcome.homeScore`, `games[].outcome.crew`, `games[].prediction.crew`, `games[].prediction.total`, `games[].outcome.total`, `games[].outcome.away.flags`, `games[].outcome.home.flags`. Not displayed: `games[].outcome.crewSource`, `games[].outcome.yards`, `games[].outcome.{home,away}.yards`, `games[].outcome.{home,away}.types.<type>`, `games[].outcome.{home,away}.quarters[]`, `games[].outcome.context.{gameday,weekday,gametime,divisionGame,overtime,closingSpread,closingTotal,roof,surface,temp,wind,homeRest,awayRest,stadium}`, `games[].outcome.hash`, `games[].grade.{homeMiss,awayMiss,quarterErrors}`, `games[].grade.quarterErrors[]`, `games[].grade.typeErrors.<type>`, `games[].corrections[]`, and the rest of the copied prediction: `games[].prediction.{gameId,season,week,away,home,gameday,gametime,home_proj,away_proj,yards,probOver,overThreshold,crewKnown,byQuarter}`, `games[].prediction.{homeRange,awayRange,byQuarter}[]`, `games[].prediction.byType.<type>`, `games[].prediction.byTypeTeams.<type>.{home,away}`, `games[].prediction.byTypeFactors.<type>.{homeCommit,awayCommit,homeDraw,awayDraw,crew}`, `games[].prediction.drivers[].{label,value}`, `games[].prediction.context.{primetime,divisionGame,neutralSite,roof,surface,temp,wind,homeRest,awayRest,spread,total,stadium,homeQB,awayQB,homeCoach,awayCoach}` |
+| Example | 2026 Week 7 TB @ CAR: 10 flags (TB 6, CAR 4), projected 15.1 (9–21), miss −5.1. Every Week 7 outcome recomputed, 56 of 56 equal. |
+| Conflicts | None |
 
 ## What Flags Cost and gameday (including the live strip)
 
@@ -2003,3 +2195,9 @@ C9's evidence).
 | Home (search-engine page source) | Pre-filled previews list ("<away> @ <home>: crew chief <name>, projected <n> flags") | `build_static.py` `home_prefill()` → `PREVIEWS` | M71, M80 |
 | Static `/guide/` | "How projections work" | fixed text | M71, M72; C19 |
 | (not displayed) | — | `previews/<week>` → `byType[].factors`, `crew.quarterTilt`, `teams.*.gamesInModel`, `projection.leagueAverage`, `.vsLeaguePct`, `headToHead[].gameId`, `context.stadium`, `.homeCoach`, `.awayCoach`, `model.version`, `.seasonWeights`, `.regularSeasonOnly`, `.dispersion`, `assignments.source.name`, `.published`, `generatedAt`; past week files (P4) | M71–M80 notes |
+| Home, Game Previews | "Track record" box: "Published before kickoff", "<season − 1> full season (backtest)", "<season> so far (backtest)" ("<n> avg miss · <n>% in range", games), "See every game →" | `scorecard/public.json` → `live.summary`, `backtest.lastSeason`, `backtest.currentSeason` (`season`, `summary.avgMiss`, `.hitRate`, `.games`) | M81, M82, M83 |
+| Track Record pop-up | "Week by week": week menu, week stats, game table, footnotes | `history/index.json` → `weeks[]`; `history/<week>` → `summary`, `games[]` (`prediction`, `outcome`, `grade`) | M87, M88, M81 |
+| Track Record pop-up | Blocks "Published before kickoff", "<season − 1> full season (backtest)", "<season> so far (backtest)": tiles "Average miss", "In the likely range", "Within ±3 flags", "vs guessing the average" | `scorecard/public.json` → `live.summary`, `backtest.*.summary` | M82, M83, M84, M85 |
+| Track Record pop-up | "Every published projection"; "<season> by week (backtest)"; "How it's graded" | `scorecard/public.json` → `live.games[]`, `backtest.currentSeason.byWeek[]`, `definitions` | M86, M82, M83, M81 |
+| Static `/guide/` | "How accurate are the penalty projections?" | `scorecard/public.json` → `live.summary` (`avgMiss`, `hitRate`, `games`, `baselineAvgMiss`) | M82, M83, M85; C21, C23 |
+| (not displayed) | — | `scorecard/public.json` → `live.byWeek[]`, `backtest.lastSeason.byWeek[]`, `live.games[]` home/away and baseline fields, `generatedAt`; `history/<week>` → most of `prediction`, `outcome`, `grade`, `corrections`, `recordedAt`; `scorecard/live/`, `scorecard/backtest/`, `history/snapshots/` (P5–P7) | M81–M88 notes |

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from weeks import completed_week
+import weeks
 
 TOP_N = 18
 
@@ -20,21 +20,21 @@ def _r(x, d=2):
 def build_type_trends(data: dict) -> dict:
     print("\n📈 Building penalty type trends...")
     sched = data['schedules']
-    reg = sched[sched['game_type'] == 'REG']
+    reg = weeks.regular_season(sched, 'game_type')
     season = int(reg['season'].max())
     gp = data['games_played']
     if 'season_type' in gp.columns:
-        gp = gp[gp['season_type'] == 'REG']
+        gp = weeks.regular_season(gp)
     games = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'week']], on='game_id')
     pen = data['penalties']
     if 'season_type' in pen.columns:
-        pen = pen[pen['season_type'] == 'REG']
+        pen = weeks.regular_season(pen)
     pen = pen[pen['penalty_team'].notna() & pen['game_id'].isin(games['game_id'])]
     pen = pen.merge(games.rename(columns={'season': 's', 'week': 'w'}), on='game_id')
 
-    through, _ = completed_week(sched, gp, season)
+    through, _ = weeks.completed_week(sched, gp, season)
     seasons = sorted(int(x) for x in games['season'].unique())
-    prior = [x for x in seasons if x < season]
+    prior = weeks.prior_seasons(seasons, season)
     n_games = games.groupby('season').size()
 
     def rate(mask_games, mask_pen):
@@ -46,13 +46,13 @@ def build_type_trends(data: dict) -> dict:
     cur_rates, cur_n = rate(games['season'] == season, pen['s'] == season)
     comps = {}
     if (season - 1) in prior:
-        comps['sameWeeks'] = (f"{season - 1} through Week {through}", f"{season - 1} Wk 1–{through}",
+        comps['sameWeeks'] = (weeks.through_label(season - 1, through), weeks.short_through(season - 1, through),
                               *rate((games['season'] == season - 1) & (games['week'] <= through),
                                     (pen['s'] == season - 1) & (pen['w'] <= through)))
         comps['lastSeason'] = (f"All of {season - 1}", f"{season - 1}",
                                *rate(games['season'] == season - 1, pen['s'] == season - 1))
     if prior:
-        span = f"{prior[0]}–{str(prior[-1])[2:]}"
+        span = weeks.span_label(prior)
         comps['allPrior'] = (f"All seasons ({span})", f"{span} avg",
                              *rate(games['season'].isin(prior), pen['s'].isin(prior)))
 
@@ -89,7 +89,7 @@ def build_type_trends(data: dict) -> dict:
         'priorRange': [{'week': int(w), 'low': _r(r['min'], 2), 'high': _r(r['max'], 2)} for w, r in rng.iterrows()],
         'seasons': weekly_seasons,
         'priorAverage': [{'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size'])} for w, r in pw.iterrows()],
-        'priorLabel': f"{prior[0]}–{str(prior[-1])[2:]} avg" if prior else None,
+        'priorLabel': f"{weeks.span_label(prior)} avg" if prior else None,
     }
     # ---- Charts for League Trends (regular season only) ----
     # Full season vs the same early weeks for every season (fair comparison for a
@@ -132,14 +132,17 @@ def build_type_trends(data: dict) -> dict:
     print(f"   ✓ {len(types)} penalty types, {len(seasons)} seasons, weekly profile, trend charts")
     return {
         'season': season, 'throughWeek': through, 'currentGames': cur_n,
-        'comparisons': [{'key': k, 'label': v[0], 'short': v[1], 'games': v[3]} for k, v in comps.items()],
+        'comparisons': [{'key': k, 'label': v[0], 'short': v[1], 'games': v[3],
+                         'button': weeks.button_through(season - 1, through) if k == 'sameWeeks' else v[0]}
+                        for k, v in comps.items()],
         'defaultComparison': 'sameWeeks' if 'sameWeeks' in comps else next(iter(comps), None),
         'types': types,
         'weekly': weekly,
+        'fadeWindows': weeks.fade_windows(int(pw.index.max())) if len(pw) else None,
         'seasonCompare': season_compare,
         'quarters': quarters,
         'typeShare': shares,
-        'scopeLabels': {'current': f'{season} season', 'all': f'Since {seasons[0]}'},
+        'scopeLabels': {'current': f'{season} season', 'all': weeks.since_label(seasons[0])},
         'notes': 'Regular season. Accepted penalties per game, all teams combined.',
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }

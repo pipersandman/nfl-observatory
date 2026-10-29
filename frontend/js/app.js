@@ -94,7 +94,7 @@ const EXPLAINERS = {
     'games': {
         title: 'Games Worked',
         content: `
-            <p>Total number of games this crew chief has led in the data (2015 onward), including playoff games.</p>
+            <p>Total number of games this crew chief has led in the data ({dataStart} onward), including playoff games.</p>
             <p>More games = more reliable statistics. Crew chiefs typically work <strong>16-18 games per season</strong> 
             during the regular season, plus playoffs for top-rated officials.</p>
         `
@@ -137,7 +137,7 @@ const EXPLAINERS = {
         content: `
             <p>Each call's share of all accepted penalties, with its rate per game. The ten most common calls are shown;
             everything else is combined into "All other".</p>
-            <p>Switch between this season and every season in the data (2015 onward). The two biggest calls are highlighted.</p>
+            <p>Switch between this season and every season in the data ({dataStart} onward). The two biggest calls are highlighted.</p>
         `
     },
     'quarter-penalties': {
@@ -257,6 +257,9 @@ async function loadAllData() {
     ]);
     
     state.season = season;
+    // Fixed page text that names a window: filled from the data (#116)
+    const ds = windows().dataStart;
+    if (ds) document.querySelectorAll('[data-window="dataStart"]').forEach(el => { el.textContent = `since ${ds}`; });
 
     // Next week's previews (latest.json points at the current week's file)
     state.teamsIndex = await fetchJSON('teams/index.json');
@@ -318,6 +321,14 @@ function fmtNum(n, digits = 0) {
 // Red = more flags/yards, green = fewer, gray = within ±PCT_NEUTRAL (noise).
 const PCT_NEUTRAL = 2;      // percent
 const MIN_GAMES_FOR_PCT = 4; // crews below this get a dimmed badge (small sample)
+
+// Shared windows and labels (#116). Built by scripts/weeks.py and read from
+// season_comparison.json → windows; these helpers format the same way.
+const windows = () => state.season?.windows || {};
+const spanLabel = (a, b) => (a === b || b == null) ? `${a}` : `${a}–${String(b).slice(2)}`;
+const weeksLabel = (last, first = 1) => first === last ? `Week ${first}` : `Weeks ${first}–${last}`;
+const shortThrough = (season, last, first = 1) => `${season} Wk ${first}–${last}`;
+const fillWindows = html => html.replace(/\{dataStart\}/g, windows().dataStart ?? '');
 
 function pctChange(cur, base) {
     if (cur === null || cur === undefined || !base) return null;
@@ -400,10 +411,7 @@ function renderSeasonComparison() {
     document.getElementById('baselineToggle').innerHTML = d.baselines.map(b => `
         <button class="baseline-btn ${b.key === state.seasonBaseline ? 'active' : ''}"
                 data-key="${b.key}" aria-pressed="${b.key === state.seasonBaseline}">
-            ${b.key === 'sameWeeks' ? `${b.seasons[0]} thru Wk ${d.throughWeek}`
-              : b.key === 'lastSeason' ? `All of ${b.seasons[0]}`
-              : b.key === 'last3' ? 'Last 3 seasons'
-              : 'All seasons'}
+            ${b.button ?? b.label}
         </button>
     `).join('');
     document.querySelectorAll('#baselineToggle .baseline-btn').forEach(btn => {
@@ -1504,10 +1512,12 @@ function renderWeekChart() {
         const usual = doneWeeks.map(w => wk.priorAverage.find(p => p.week === w.week)?.perGame).filter(v => v != null);
         const usualAvg = usual.reduce((a, v) => a + v, 0) / usual.length;
         const pct = (curAvg / usualAvg - 1) * 100;
-        const late = wk.priorAverage.filter(p => p.week >= 15), early = wk.priorAverage.filter(p => p.week <= 4);
+        const fw = state.typeTrends?.fadeWindows;
+        const late = fw ? wk.priorAverage.filter(p => p.week >= fw.late.from && p.week <= fw.late.to) : [];
+        const early = fw ? wk.priorAverage.filter(p => p.week >= fw.early.from && p.week <= fw.early.to) : [];
         const fade = early.length && late.length
             ? (1 - (late.reduce((a, p) => a + p.perGame, 0) / late.length) / (early.reduce((a, p) => a + p.perGame, 0) / early.length)) * 100 : null;
-        take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fade ? ` (Weeks 15–18 average about ${fmtNum(fade, 0)}% fewer than Weeks 1–4)` : ''}. ` +
+        take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fade ? ` (${fw.late.label} average about ${fmtNum(fade, 0)}% fewer than ${fw.early.label})` : ''}. ` +
             `Through Week ${doneWeeks.at(-1).week}, ${cur} is averaging <strong class="y">${fmtNum(curAvg, 1)}</strong> per game, ` +
             `<strong>${fmtNum(Math.abs(pct), 0)}% ${pct >= 0 ? 'above' : 'below'}</strong> the usual ${fmtNum(usualAvg, 1)} for those weeks.` +
 '';
@@ -1682,7 +1692,7 @@ function renderTypeTrends() {
     // Rising first: biggest increase in flags per game vs the comparison
     const rows = tt.types.map(t => ({ ...t, base: t.compare[key], diff: (t.current ?? 0) - (t.compare[key] ?? 0) }))
         .sort((a, b) => b.diff - a.diff);
-    const btn = c => c.key === 'sameWeeks' ? c.label.replace(' through Week ', ' thru Wk ') : c.label;
+    const btn = c => c.button ?? c.label;
     box.innerHTML = `
         <div class="table-header tt-head">
             <div>
@@ -1871,7 +1881,7 @@ const STYLE_METRICS = [
 
 function crewStyleInner(c) {
     const cs = state.crewStyles;
-    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
+    const span = spanLabel(...cs.careerSeasons);
     const cur = String(cs.season);
     const view = crewStyleView(c);
     const tabs = [
@@ -2014,7 +2024,7 @@ function drawCrewTrajectory(c) {
 function setStyleScope(k) { state.styleScope = k; renderStyleMap(); }
 
 function stylePeriods(cs) {
-    const span = `${cs.careerSeasons[0]}–${String(cs.careerSeasons[1]).slice(2)}`;
+    const span = spanLabel(...cs.careerSeasons);
     const seasons = Object.keys(cs.leagueBySeason || {}).sort().reverse();
     const wk = cs.weekly || {};
     const items = [{ value: 'career', label: `Career ${span}`, meta: 'all prior seasons' }];
@@ -2071,7 +2081,7 @@ function renderStyleMap() {
     const m = /^(through|only)-(\d+)$/.exec(key);
     const tap = window.innerWidth < 640 ? 'Tap a dot for the crew\'s name, tap again for its profile.' : 'Tap a crew for its profile.';
     setSub('styleMapSub',
-        key === 'career' ? `Each active crew chief's ${cs.careerSeasons[0]}–${cs.careerSeasons[1]} regular seasons, season-adjusted (each game compared with its own season's league average). Note the narrow yardage range. ${tap}`
+        key === 'career' ? `Each active crew chief's ${spanLabel(...cs.careerSeasons)} regular seasons, season-adjusted (each game compared with its own season's league average). Note the narrow yardage range. ${tap}`
         : m && m[1] === 'only' ? `${cs.season} Week ${m[2]} only: one game per crew, so this is a snapshot, not a style. Lines are that week's league averages. ${tap}`
         : m ? `${cs.season} through Week ${m[2]}, against the league average over the same games. Early weeks have only a few games per crew. ${tap}`
         : key === String(cs.season) ? `${cs.season} so far: only a few games per crew, so expect big swings. Lines are this season's league averages. ${tap}`
@@ -2225,7 +2235,7 @@ function renderDivisionTeams() {
                 </div>
                 <div class="cc-foot">
                     <span>Most-penalized rank <strong>${t.rank ? `#${t.rank}` : '—'}</strong></span>
-                    <span>${bKey === 'sameWeeks' && t.throughWeek ? `${idx.season - 1} Wk 1–${t.throughWeek}` : (bDef ? bDef.short : 'Last season')} ${fmtNum(t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
+                    <span>${bKey === 'sameWeeks' && t.throughWeek ? shortThrough(idx.season - 1, t.throughWeek) : (bDef ? bDef.short : 'Last season')} ${fmtNum(t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, 1)}/g ${pctBadge(t.perGame, t.baselinePerGame?.[bKey] ?? t.lastSeasonPerGame, { small: t.games < MIN_GAMES_FOR_PCT })}</span>
                 </div>
             </div>`).join('')}
         </div>`;
@@ -2256,8 +2266,7 @@ function teamBaselineKey(t) {
 }
 
 function teamToggleHtml(baselines, active, onclickFn) {
-    const label = (b) => b.key === 'sameWeeks' ? b.label.replace(' through Week ', ' thru Wk ')
-        : b.key === 'lastSeason' ? b.label : b.key === 'last3' ? 'Last 3 seasons' : 'All seasons';
+    const label = (b) => b.button ?? b.label;
     return `<div class="baseline-toggle team-toggle" role="group" aria-label="Compare against">${baselines.map(b => `
         <button class="baseline-btn ${b.key === active ? 'active' : ''}" aria-pressed="${b.key === active}"
                 onclick="${onclickFn}('${b.key}')">${label(b)}</button>`).join('')}</div>`;
@@ -2724,7 +2733,7 @@ function renderSeasonTrendChart() {
     if (state.charts.season) state.charts.season.destroy();
     const wk = state.typeTrends.throughWeek;
     const cur = sc.find(x => !x.complete);
-    setSub('seasonChartSub', `Regular season. ${cur ? `${cur.season} is only ${wk} weeks in, so compare the <strong class="y">yellow</strong> bars: every season's Weeks 1–${wk}. ` : ''}` +
+    setSub('seasonChartSub', `Regular season. ${cur ? `${cur.season} is only ${wk} weeks in, so compare the <strong class="y">yellow</strong> bars: every season's ${weeksLabel(wk)}. ` : ''}` +
         `Gray bars are full seasons. Axis starts at zero.`);
     state.charts.season = new Chart(ctx, {
         type: 'bar',
@@ -2734,7 +2743,7 @@ function renderSeasonTrendChart() {
             datasets: [
                 { label: 'Full season', data: sc.map(x => x.complete ? x.fullSeason : null), backgroundColor: '#5c616a', borderRadius: 4,
                   _valueLabel: v => fmtNum(v, 1), _labelColor: 'rgba(255,255,255,0.6)', _insideColor: '#f5f4f0' },
-                { label: `Weeks 1–${wk}`, data: sc.map(x => x.early), backgroundColor: CONFIG.chartColors.flag, borderRadius: 4,
+                { label: weeksLabel(wk), data: sc.map(x => x.early), backgroundColor: CONFIG.chartColors.flag, borderRadius: 4,
                   _valueLabel: v => fmtNum(v, 1), _labelColor: CONFIG.chartColors.flag, _insideColor: '#111' }
             ]
         },
@@ -2744,7 +2753,7 @@ function renderSeasonTrendChart() {
                 tooltip: { callbacks: { label: c => {
                     const row = sc[c.dataIndex];
                     return c.datasetIndex === 0 ? `Full season: ${fmtNum(c.raw, 2)} flags/game (${row.games} games)`
-                        : `Weeks 1–${wk}: ${fmtNum(c.raw, 2)} flags/game (${row.earlyGames} games)`;
+                        : `${weeksLabel(wk)}: ${fmtNum(c.raw, 2)} flags/game (${row.earlyGames} games)`;
                 } } } },
             scales: { x: { grid: { display: false }, ticks: { color: axisColor } },
                       y: { beginAtZero: true, title: { display: true, text: 'Flags per game', color: axisColor }, grid: { color: gridColor }, ticks: { color: axisColor } } }
@@ -3028,7 +3037,7 @@ async function openRefereeModal(slug) {
         ${quartersHtml}
 
         <div class="modal-section">
-            <h4>Career (all games incl. playoffs, ${profile.firstSeason}–${profile.lastSeason})</h4>
+            <h4>Career (all games incl. playoffs, ${spanLabel(profile.firstSeason, profile.lastSeason)})</h4>
             <div class="modal-stats-grid">
                 <div class="modal-stat">
                     <div class="modal-stat-value">${profile.stats.avgPerGame}</div>
@@ -3761,7 +3770,7 @@ function openExplainer(key) {
     if (!explainer) return;
     
     document.getElementById('explainerTitle').textContent = explainer.title;
-    document.getElementById('explainerContent').innerHTML = explainer.content;
+    document.getElementById('explainerContent').innerHTML = fillWindows(explainer.content);
     document.getElementById('explainerModal').classList.add('active');
 }
 

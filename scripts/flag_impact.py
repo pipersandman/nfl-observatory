@@ -32,7 +32,8 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from weeks import completed_week
+import weeks
+from weeks import HISTORICAL_START
 
 GAIN_RE = re.compile(r'for (-?\d+) yards?')
 POINTS_PER_YARD = 0.0615      # expected points per yard, 1st & 10 between the 20s, 2020-25 (measured)
@@ -235,11 +236,11 @@ def _flag_row(r, games):
 def build_flag_impact(data: dict) -> dict:
     print("\n💸 Building flag impact...")
     sched = data['schedules']
-    reg = sched[sched['game_type'] == 'REG']
+    reg = weeks.regular_season(sched, 'game_type')
     season = int(reg['season'].max())
     pen = data['penalties']
     if 'season_type' in pen.columns:
-        pen = pen[pen['season_type'] == 'REG']
+        pen = weeks.regular_season(pen)
     # Touchdowns wiped out by offsetting penalties: no accepted flag on either team, but the
     # scoring team lost the touchdown (on kicks, nflverse's posteam is the returning team)
     offs = offsetting_td_rows(data.get('offsetting_tds'))
@@ -250,10 +251,10 @@ def build_flag_impact(data: dict) -> dict:
 
     gp = data['games_played']
     if 'season_type' in gp.columns:
-        gp = gp[gp['season_type'] == 'REG']
+        gp = weeks.regular_season(gp)
     g = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'week', 'home_team', 'away_team']], on='game_id')
     games = {r.game_id: {'away': r.away_team, 'home': r.home_team} for r in g.itertuples()}
-    done, _ = completed_week(sched, data['games_played'], season)
+    done, _ = weeks.completed_week(sched, data['games_played'], season)
 
     scopes = {}
     for key, s_ in (('current', season), ('lastSeason', season - 1)):
@@ -285,7 +286,7 @@ def build_flag_impact(data: dict) -> dict:
         'teamCostliest': team_flags,
         'definitions': {
             'pointsCost': 'Expected points the flag cost the penalized team (nflverse EPA model)',
-            'winProbCost': 'Win chances (percentage points) the flag cost the penalized team: the change in nflverse win probability when the flag erases the play; for a wiped-out touchdown, the chance had it stood (similar kickoffs since 2015, assuming the extra point) minus the chance after the play; otherwise the points cost times what a point is worth at that score and clock (measured since 2015)',
+            'winProbCost': 'Win chances (percentage points) the flag cost the penalized team: the change in nflverse win probability when the flag erases the play; for a wiped-out touchdown, the chance had it stood (similar kickoffs since ' + str(HISTORICAL_START) + ', assuming the extra point) minus the chance after the play; otherwise the points cost times what a point is worth at that score and clock (measured since ' + str(HISTORICAL_START) + ')',
             'winsGivenAway': 'Sum of win chances lost to flags, in wins',
             'method': 'play value = the erased play\'s change in expected points; penalty yards = flag added on top of a play that counts, valued at ~0.06 points per yard; two-point retry = 2 x the 46.8% conversion rate',
             'keyFirstDownsGiven': 'Defensive flags that gave the offense a first down on 3rd or 4th down',
@@ -295,6 +296,6 @@ def build_flag_impact(data: dict) -> dict:
             'tdsLostOffsetting': 'Of those, touchdowns wiped out by offsetting fouls (both teams flagged; no yards enforced)',
             'turnoversErased': 'Defensive flags that wiped out their own interception or fumble recovery',
         },
-        'notes': 'Regular season, accepted penalties. Points and win chances are estimates from nflverse\'s expected-points and win-probability models and league rates since 2015.',
+        'notes': 'Regular season, accepted penalties. Points and win chances are estimates from nflverse\'s expected-points and win-probability models and league rates since ' + str(HISTORICAL_START) + '.',
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }

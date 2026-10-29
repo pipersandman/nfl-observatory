@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from weeks import completed_week
+import weeks
 
 PRE_SNAP = {
     'False Start', 'Delay of Game', 'Defensive Offside', 'Neutral Zone Infraction', 'Encroachment',
@@ -22,12 +22,12 @@ def _r(x, d=1):
 def build_scoreboard(data: dict) -> dict:
     print("\n🏟️  Building scoreboard...")
     sched = data['schedules']
-    reg = sched[sched['game_type'] == 'REG']
+    reg = weeks.regular_season(sched, 'game_type')
     season = int(reg['season'].max())
 
     gp = data['games_played']
     if 'season_type' in gp.columns:
-        gp = gp[gp['season_type'] == 'REG']
+        gp = weeks.regular_season(gp)
     games = gp[['game_id']].drop_duplicates().merge(
         reg[['game_id', 'season', 'week', 'home_team', 'away_team']], on='game_id')
     # Crew chief from the merged assignment (officials feed, then schedule, then
@@ -42,15 +42,15 @@ def build_scoreboard(data: dict) -> dict:
 
     pen = data['penalties']
     if 'season_type' in pen.columns:
-        pen = pen[pen['season_type'] == 'REG']
+        pen = weeks.regular_season(pen)
     pen = pen[pen['penalty_team'].notna() & pen['game_id'].isin(games['game_id'])].copy()
     pen['penalty_yards'] = pd.to_numeric(pen['penalty_yards'], errors='coerce').fillna(0).abs()
     pen = pen.merge(games[['game_id', 'season', 'week']].rename(columns={'season': 's', 'week': 'w'}), on='game_id')
 
-    done_week, partial = completed_week(sched, gp, season)
+    done_week, partial = weeks.completed_week(sched, gp, season)
     seasons = sorted(int(x) for x in games['season'].unique())
-    prior = [x for x in seasons if x < season]
-    last3 = prior[-3:]
+    prior = weeks.prior_seasons(seasons, season)
+    last3 = weeks.last_n(prior, 3)
 
     frames = []
     if done_week:
@@ -61,9 +61,9 @@ def build_scoreboard(data: dict) -> dict:
         ('lastSeason', f'{season - 1}', f'{season - 1} regular season', lambda g: g['season'] == season - 1),
     ]
     if len(last3) == 3:
-        frames.append(('last3', f'{last3[0]}–{str(last3[-1])[2:]}', f'{last3[0]}–{last3[-1]} regular seasons',
+        frames.append(('last3', weeks.span_label(last3), f'{last3[0]}–{last3[-1]} regular seasons',
                        lambda g, s3=tuple(last3): g['season'].isin(s3)))
-    frames.append(('all', f'Since {seasons[0]}', f'Every regular-season game since {seasons[0]}', lambda g: g['season'] >= seasons[0]))
+    frames.append(('all', weeks.since_label(seasons[0]), f'Every regular-season game since {seasons[0]}', lambda g: g['season'] >= seasons[0]))
 
     def stats(gm):
         ids = set(gm['game_id'])

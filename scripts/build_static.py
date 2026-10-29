@@ -329,8 +329,9 @@ def crew_pages():
         {f'<ul class="st-list">{traits}</ul>' if traits else '<p>Close to the league average on every measure we track.</p>'}
         {f'<p>Calls most like: {sims}.</p>' if sims else ''}
         {f'<h2>Penalty types vs the league ({CAREER}, season-adjusted, per game)</h2>' + table(['Penalty', 'Per game', 'vs league rate'], type_rows) if type_rows else ''}
-        {'<h2>Season by season</h2>' + table(['Season', 'Games', 'Flags / game'], season_rows) if season_rows else ''}
-        {'<h2>Recent games</h2>' + table(['Date', 'Game', 'Score', 'Flags', 'By team'], rec_rows) if rec_rows else ''}
+        {'<h2>Season by season (regular season)</h2>' + table(['Season', 'Games', 'Flags / game'], season_rows) if season_rows else ''}
+        {'<h2>Recent games (regular season)</h2>' + table(['Date', 'Game', 'Score', 'Flags', 'By team'], rec_rows) if rec_rows else ''}
+        {f'<p class="st-note">Playoff games worked: {prof["playoffGames"]} (mixed crews; not included in rates).</p>' if prof.get('playoffGames') is not None else ''}
         <h2>Questions</h2>
         {faq_html}
         <p class="st-note">Statistics reflect the crew chief's assignment; crews change around the chief each year. Patterns, not motives.</p>

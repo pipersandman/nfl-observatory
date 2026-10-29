@@ -87,7 +87,7 @@ def main():
         'definitions': {
             'flag': 'A play-by-play row with penalty == 1 (nflverse), counted once per play. A second flag '
                     'on the same play (usually a declined one) is not counted again.',
-            'leagueBySeason': 'trends.json bySeason: all game types (regular season and playoffs); games = '
+            'leagueBySeason': 'trends.json bySeason: regular season only (since #117); games = '
                               'games with at least one flag.',
             'currentSeason': 'season_comparison.json: regular season only, accepted penalties, through the '
                              'last completed week.',

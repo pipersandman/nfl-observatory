@@ -94,7 +94,7 @@ const EXPLAINERS = {
     'games': {
         title: 'Games Worked',
         content: `
-            <p>Total number of games this crew chief has led in the data ({dataStart} onward), including playoff games.</p>
+            <p>Regular-season games this crew chief has led before this season ({dataStart} onward): the career window behind every career number in the table. Playoff games are listed separately in each crew chief's profile and aren't in any rate.</p>
             <p>More games = more reliable statistics. Crew chiefs typically work <strong>16-18 games per season</strong> 
             during the regular season, plus playoffs for top-rated officials.</p>
         `
@@ -260,6 +260,8 @@ async function loadAllData() {
     // Fixed page text that names a window: filled from the data (#116)
     const ds = windows().dataStart;
     if (ds) document.querySelectorAll('[data-window="dataStart"]').forEach(el => { el.textContent = `since ${ds}`; });
+    const car = windows().career?.label;
+    if (car) document.querySelectorAll('[data-window="career"]').forEach(el => { el.textContent = car; });
 
     // Next week's previews (latest.json points at the current week's file)
     state.teamsIndex = await fetchJSON('teams/index.json');
@@ -2616,7 +2618,7 @@ function renderRefereeCards() {
                 <div class="cc-head">
                     <div>
                         <div class="referee-name">${ref.name}</div>
-                        <div class="referee-meta">${ref.first_season}–${ref.last_season} • ${ref.games} games</div>
+                        <div class="referee-meta">${spanLabel(ref.first_season, ref.last_season)} • ${ref.career_first_season != null ? `career ${spanLabel(ref.career_first_season, ref.career_last_season)}: ${ref.games} games` : 'no career games yet'}</div>
                     </div>
                     <span class="cc-status ${active ? 'cc-status-active' : ''}">${active ? `Active ${cs}` : `Not active in ${cs ?? 'current season'}`}</span>
                 </div>
@@ -2641,7 +2643,7 @@ function renderRefereeCards() {
                 ` : `
                 <div class="referee-stats">
                     <div class="referee-stat">
-                        <div class="referee-stat-value">${ref.avg_per_game}</div>
+                        <div class="referee-stat-value">${ref.avg_per_game ?? '—'}</div>
                         <div class="referee-stat-label">Avg/Game</div>
                     </div>
                 </div>`}
@@ -2913,12 +2915,12 @@ function renderDataTable() {
         <tr onclick="openRefereeModal('${ref.slug}')">
             <td><strong>${ref.name}</strong></td>
             <td>${ref.games}</td>
-            <td>${ref.avg_per_game}</td>
-            <td>${ref.min_penalties}-${ref.max_penalties}</td>
+            <td>${ref.avg_per_game ?? '—'}</td>
+            <td>${ref.min_penalties != null ? `${ref.min_penalties}-${ref.max_penalties}` : '—'}</td>
             <td class="${ref.home_bias_pct > 5 ? 'cell-high' : ref.home_bias_pct < 0 ? 'cell-low' : ''}">
-                ${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct} pts
+                ${ref.home_bias_pct != null ? `${ref.home_bias_pct > 0 ? '+' : ''}${ref.home_bias_pct} pts` : '—'}
             </td>
-            <td>${ref.consistency}</td>
+            <td>${ref.consistency ?? '—'}</td>
         </tr>
     `).join('');
 }
@@ -2953,9 +2955,7 @@ async function openRefereeModal(slug) {
     const last = cmp?.baselines?.lastSeason || null;
     const all = cmp?.baselines?.all || null;
     const allBase = d?.baselines?.find(b => b.key === 'all');
-    const allLabel = allBase
-        ? `${allBase.seasons[0]}–${String(allBase.seasons[allBase.seasons.length - 1]).slice(2)}`
-        : 'Prior years';
+    const allLabel = allBase ? spanLabel(allBase.seasons[0], allBase.seasons.at(-1)) : 'Prior years';
     const lastLabel = d?.baselines?.find(b => b.key === 'lastSeason')?.seasons[0] ?? 'Last season';
     const active = !!cur;
     const small = active && cur.games < MIN_GAMES_FOR_PCT;
@@ -3045,25 +3045,26 @@ async function openRefereeModal(slug) {
         ${quartersHtml}
 
         <div class="modal-section">
-            <h4>Career (all games incl. playoffs, ${spanLabel(profile.firstSeason, profile.lastSeason)})</h4>
+            <h4>Career (regular season, ${profile.careerSeasons ? spanLabel(...profile.careerSeasons) : 'none yet'}${profile.careerSeasons ? `, ${profile.stats.games} games` : ''})</h4>
             <div class="modal-stats-grid">
                 <div class="modal-stat">
-                    <div class="modal-stat-value">${profile.stats.avgPerGame}</div>
+                    <div class="modal-stat-value">${profile.stats.avgPerGame ?? '—'}</div>
                     <div class="modal-stat-label">Avg/Game</div>
                 </div>
                 <div class="modal-stat">
-                    <div class="modal-stat-value">${profile.stats.minGame}-${profile.stats.maxGame}</div>
+                    <div class="modal-stat-value">${profile.stats.minGame != null ? `${profile.stats.minGame}-${profile.stats.maxGame}` : '—'}</div>
                     <div class="modal-stat-label">Range</div>
                 </div>
                 <div class="modal-stat">
-                    <div class="modal-stat-value">${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct} pts</div>
+                    <div class="modal-stat-value">${profile.stats.homeBiasPct != null ? `${profile.stats.homeBiasPct > 0 ? '+' : ''}${profile.stats.homeBiasPct} pts` : '—'}</div>
                     <div class="modal-stat-label">Home Bias</div>
                 </div>
                 <div class="modal-stat">
-                    <div class="modal-stat-value">${profile.stats.consistency}</div>
+                    <div class="modal-stat-value">${profile.stats.consistency ?? '—'}</div>
                     <div class="modal-stat-label">Style</div>
                 </div>
             </div>
+            ${profile.playoffGames != null ? `<p class="modal-footnote">Playoff games worked: ${profile.playoffGames} (mixed crews; not included in rates)</p>` : ''}
         </div>
 
         <div>
@@ -3149,7 +3150,7 @@ function renderPenaltyTypesBreakdown(penaltyTypes) {
                 `).join('')}
             </div>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
-                Percentage of all penalties in games this referee works
+                Percentage of all penalties in the regular-season games this referee worked before this season
             </p>
         </div>
     `;

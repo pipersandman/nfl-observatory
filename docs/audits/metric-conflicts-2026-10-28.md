@@ -8,7 +8,7 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 8 of 10 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history, What Flags Cost and gameday).
+**Status:** session 9 of 11 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history, What Flags Cost and gameday; full paths for sessions 1–3). The cross-page pass is session 10; Ty's decisions, session 11.
 Fields published but not displayed are listed after the conflicts. Data
 errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
 (open), D11 and D12 are on #112 too (text-only fixes; later text-only errors go there).
@@ -1200,7 +1200,7 @@ counts should follow).
 
 Fields written to `frontend/data/` that no page, chart or static page reads.
 They are deployed on every run. **Candidates to remove** (a decision for
-session 10); the dictionary entries mark them "not displayed".
+session 11); the dictionary entries mark them "not displayed".
 
 | ID | Field | Who uses it | Removing it would |
 |---|---|---|---|
@@ -1219,10 +1219,10 @@ feed's `games[].preview.low` and `.high` are always empty (the worker reads
 `projection.low` / `.high`, which don't exist; the range is
 `projection.range`; M98).
 
-Other "not displayed" fields from sessions 1–8 (samples such as
+Other "not displayed" fields from sessions 1–9 (samples such as
 `comparisons[].games`, timestamps, team yards and opponent counts) are listed
-in the dictionary. Most are samples the site should start showing (section
-7), not removal candidates; session 9's cross-page pass adds any that are
+in the dictionary; every field of P5–P9's files is listed in M100. Most are samples the site should start showing (section
+7), not removal candidates; session 10's cross-page pass adds any that are
 neither.
 
 ---

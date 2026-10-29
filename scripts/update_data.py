@@ -33,6 +33,8 @@ except ImportError:
 import raw_capture  # noqa: E402  (raw pulls to R2; never stops the update)
 from jsonsafe import atomic_write, forced_failure  # noqa: E402  (atomic writes; NFLOBS_FAIL test hook)
 from teams import normalize_teams  # noqa: E402  (schedule teams -> today's abbreviations, #105)
+import weeks  # noqa: E402  (shared windows and labels, #116)
+from weeks import HISTORICAL_START  # noqa: E402,F401  (first season in the data)
 
 # =============================================================================
 # CONFIGURATION
@@ -45,7 +47,6 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 CURRENT_YEAR = datetime.now().year          # calendar year: schedules go this far
 CURRENT_SEASON = nfl.get_current_season()   # nflverse's season (turns over the Thursday after Labor Day)
-HISTORICAL_START = 2015   # first season nflverse publishes all seven officials per game
 
 
 def season_plan(full: bool, current_season: int | None = None, calendar_year: int | None = None):
@@ -503,24 +504,26 @@ def generate_hero_stats(data: dict, ref_stats: pd.DataFrame) -> dict:
     return stats
 
 
+SURGE_BASELINE = 2022   # the "Penalty Surge" card's baseline season (#117 revisits this card)
+
+
 def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list:
     """Generate insight cards with explanations."""
     insights = []
     
-    # 1. Season trend (since 2022)
+    # 1. Season trend (since SURGE_BASELINE; the labels name the season actually used)
     seasons = trends.get('bySeason', [])
     if len(seasons) >= 2:
         latest = seasons[-1]
-        # Use 2022 as baseline to show multi-year trend
-        baseline = next((s for s in seasons if s['season'] == 2022), seasons[0])
+        baseline = next((s for s in seasons if s['season'] == SURGE_BASELINE), seasons[0])
         change = ((latest['avg_per_game'] - baseline['avg_per_game']) / baseline['avg_per_game'] * 100)
         insights.append({
             'id': 'season_trend',
             'icon': '',
-            'title': 'Penalty Surge Since 2022',
+            'title': f"Penalty Surge Since {baseline['season']}",
             'value': f"{'+' if change > 0 else ''}{change:.0f}%",
             'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
-            'explanation': "This compares the current season's penalty rate to 2022, showing the multi-year trend in officiating. The NFL has seen a significant increase in accepted penalties over recent seasons.",
+            'explanation': f"This compares the current season's penalty rate to {baseline['season']}, showing the multi-year trend in officiating. The NFL has seen a significant increase in accepted penalties over recent seasons.",
             'isPositive': change < 0
         })
         
@@ -641,19 +644,18 @@ def calculate_season_comparison(data: dict) -> dict:
         return {}
 
     if 'season_type' in games.columns:
-        games = games[games['season_type'] == 'REG']
-        penalties = penalties[penalties['season_type'] == 'REG']
+        games = weeks.regular_season(games)
+        penalties = weeks.regular_season(penalties)
 
     current = int(games['season'].max())
     previous = current - 1
-    prior_seasons = sorted(int(x) for x in games['season'].unique() if x < current)
+    prior_seasons = weeks.prior_seasons(games['season'].unique(), current)
     penalties = penalties[penalties['game_id'].isin(games['game_id'])].copy()
     penalties['penalty_yards'] = pd.to_numeric(penalties['penalty_yards'], errors='coerce').fillna(0).abs()
 
     # "Through Week N" = the last week whose games have ALL been played. A Thursday game
     # alone doesn't make it "through Week 5"; those early games are counted as extras.
-    from weeks import completed_week
-    through_week, partial = completed_week(data['schedules'], games, current)
+    through_week, partial = weeks.completed_week(data['schedules'], games, current)
 
     per_game = penalties.groupby('game_id').agg(
         penalties=('game_id', 'size'),
@@ -671,16 +673,15 @@ def calculate_season_comparison(data: dict) -> dict:
     def summarize(frame):
         return _season_block(len(frame), frame['penalties'].sum(), frame['yards'].sum())
 
-    def span(seasons):
-        return f"{seasons[0]}" if len(seasons) == 1 else f"{seasons[0]}–{seasons[-1]}"
+    span = weeks.span_label
 
     # Baseline definitions: key -> (row filter, labels). Only include ones the loaded data supports.
     baselines = []
     if previous in prior_seasons:
         baselines.append({
             'key': 'sameWeeks', 'seasons': [previous],
-            'label': f"{previous} through Week {through_week}",
-            'short': f"{previous} Wk 1–{through_week}",
+            'label': weeks.through_label(previous, through_week),
+            'short': weeks.short_through(previous, through_week),
             'mask': lambda f: (f['season'] == previous) & (f['week'] <= through_week),
         })
         baselines.append({
@@ -688,7 +689,7 @@ def calculate_season_comparison(data: dict) -> dict:
             'label': f"All of {previous}", 'short': f"{previous}",
             'mask': lambda f: f['season'] == previous,
         })
-    last3 = prior_seasons[-3:]
+    last3 = weeks.last_n(prior_seasons, 3)
     if len(last3) == 3:
         baselines.append({
             'key': 'last3', 'seasons': last3,
@@ -742,8 +743,10 @@ def calculate_season_comparison(data: dict) -> dict:
         'previousSeason': previous,
         'throughWeek': through_week,
         'partialWeek': partial,   # games already played in the next (unfinished) week
+        'windows': weeks.windows_block(games['season'].unique(), current, through_week, partial),
         'regularSeasonOnly': True,
-        'baselines': [{k: b[k] for k in ('key', 'label', 'short', 'seasons')} for b in baselines],
+        'baselines': [{**{k: b[k] for k in ('key', 'label', 'short', 'seasons')},
+                       'button': weeks.baseline_button(b['key'], b['seasons'], through_week)} for b in baselines],
         'defaultBaseline': 'sameWeeks' if previous in prior_seasons else (baselines[0]['key'] if baselines else None),
         'league': league,
         'crewChiefs': crews,

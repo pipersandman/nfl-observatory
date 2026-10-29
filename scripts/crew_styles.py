@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
+import weeks
 from flag_impact import classify
 
 SHRINK = 20          # games of league-average prior for per-type rates
@@ -147,23 +148,23 @@ def _meaningful(m, v, l):
 def build_crew_styles(data: dict, active_names) -> dict:
     print("\n🦓 Building crew styles...")
     sched = data['schedules']
-    reg = sched[sched['game_type'] == 'REG']
+    reg = weeks.regular_season(sched, 'game_type')
     season = int(reg['season'].max())
     off = data['officials']
     crew_by_game = (off[off['position'] == 'Referee'].dropna(subset=['game_id'])
                     .drop_duplicates('game_id').set_index('game_id')['name'].to_dict())
     gp = data['games_played']
     if 'season_type' in gp.columns:
-        gp = gp[gp['season_type'] == 'REG']
+        gp = weeks.regular_season(gp)
     games = gp[['game_id']].drop_duplicates().merge(reg[['game_id', 'season', 'week', 'home_team', 'away_team']], on='game_id')
     pen = data['penalties']
     if 'season_type' in pen.columns:
-        pen = pen[pen['season_type'] == 'REG']
+        pen = weeks.regular_season(pen)
     pen = pen[pen['penalty_team'].notna()].copy()
     pen['penalty_yards'] = pd.to_numeric(pen['penalty_yards'], errors='coerce').fillna(0).abs()
     pen = classify(pen)
 
-    career_games = games[games['season'] < season]
+    career_games = games[games['season'].isin(weeks.prior_seasons(games['season'].unique(), season))]
     seasons_all = sorted(int(x) for x in games['season'].unique())
 
     def styles_for(gset, min_games, types_fixed=None):
@@ -270,7 +271,7 @@ def build_crew_styles(data: dict, active_names) -> dict:
             weekly['through'][str(w)] = t
         if o:
             weekly['only'][str(w)] = o
-    span = sorted(career_games['season'].unique())
+    span = weeks.career_window(games['season'].unique(), season)
     print(f"   ✓ {len(crews)} crew styles ({span[0]}-{span[-1]}), {len(types)} penalty types in the fingerprint")
     return {
         'season': season, 'careerSeasons': [int(span[0]), int(span[-1])],

@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 from jsonsafe import PendingWrites, dumps as safe_dumps
+import weeks
 
 DIVISION_ORDER = ['AFC East', 'AFC North', 'AFC South', 'AFC West',
                   'NFC East', 'NFC North', 'NFC South', 'NFC West']
@@ -37,7 +38,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
         print("   ✗ Missing data")
         return {}
 
-    reg = schedules[schedules['game_type'] == 'REG'].copy()
+    reg = weeks.regular_season(schedules, 'game_type').copy()
     season = int(reg['season'].max())
 
     # Divisions (current 32 teams, as they appear in this season's schedule)
@@ -51,7 +52,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     # ---- Team-game table (one row per team per regular-season game with pbp) ----
     gp = games_played
     if 'season_type' in gp.columns:
-        gp = gp[gp['season_type'] == 'REG']
+        gp = weeks.regular_season(gp)
     gp = gp[['game_id']].drop_duplicates().merge(
         reg[['game_id', 'season', 'week', 'gameday', 'home_team', 'away_team', 'home_score', 'away_score']],
         on='game_id', how='inner')
@@ -61,7 +62,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
 
     pen = penalties[penalties['game_id'].isin(gp['game_id'])].copy()
     if 'season_type' in pen.columns:
-        pen = pen[pen['season_type'] == 'REG']
+        pen = weeks.regular_season(pen)
     pen = pen[pen['penalty_team'].notna()]
     pen['penalty_yards'] = pd.to_numeric(pen['penalty_yards'], errors='coerce').fillna(0).abs()
     pen['offense'] = pen['penalty_team'] == pen['posteam']
@@ -111,7 +112,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
 
     cur_pen = pen[pen['season'] == season]
     prior_pen = pen[pen['season'] < season]
-    prior_seasons = sorted(int(s) for s in tg['season'].unique() if s < season)
+    prior_seasons = weeks.prior_seasons(tg['season'].unique(), season)
 
     def per_game_types(df, team_col, n_games):
         if not n_games:
@@ -125,14 +126,13 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     # latest week played this season, so it moves forward automatically every week.
     # League "through week" = last week with every game played (a lone Thursday game doesn't
     # count). Each team then compares through its own latest game if that's later.
-    from weeks import completed_week
-    through_week, _partial = completed_week(schedules, games_played, season)
-    span = lambda ss: f"{ss[0]}" if len(ss) == 1 else f"{ss[0]}–{str(ss[-1])[2:]}"
-    last3 = prior_seasons[-3:]
+    through_week, _partial = weeks.completed_week(schedules, games_played, season)
+    span = weeks.span_label
+    last3 = weeks.last_n(prior_seasons, 3)
     baseline_defs = []
     if (season - 1) in prior_seasons:
         if through_week or len(tg[tg['season'] == season]):
-            baseline_defs.append(('sameWeeks', f"{season - 1} through Week {through_week}", f"{season - 1} Wk 1–{through_week}",
+            baseline_defs.append(('sameWeeks', weeks.through_label(season - 1, through_week), weeks.short_through(season - 1, through_week),
                                   None))   # filled in per team below (its own week)
         baseline_defs.append(('lastSeason', f"All of {season - 1}", f"{season - 1}", lambda r: r['season'] == season - 1))
     if len(last3) == 3:
@@ -140,6 +140,10 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     if len(prior_seasons) > 3:
         baseline_defs.append(('all', f"All seasons ({span(prior_seasons)})", f"{span(prior_seasons)} avg",
                               lambda r: r['season'].isin(prior_seasons)))
+
+    def team_button(key, week):
+        seasons = {'sameWeeks': [season - 1], 'lastSeason': [season - 1], 'last3': last3}.get(key, prior_seasons)
+        return weeks.baseline_button(key, seasons, week)
 
     for team in current_teams:
         rows = tg[tg['team'] == team]
@@ -205,7 +209,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
         team_week = max(through_week, int(cur['week'].max()) if len(cur) else 0)
         for key, label, short, mask in baseline_defs:
             if key == 'sameWeeks':
-                label, short = f"{season - 1} through Week {team_week}", f"{season - 1} Wk 1–{team_week}"
+                label, short = weeks.through_label(season - 1, team_week), weeks.short_through(season - 1, team_week)
                 mask = (lambda tw: (lambda r: (r['season'] == season - 1) & (r['week'] <= tw)))(team_week)
             brows = rows[mask(rows)]
             n = len(brows)
@@ -214,7 +218,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
             mine, theirs = bp[bp['penalty_team'] == team], bp[bp['penalty_team'] != team]
             tvc, dvc = mine['penalty_type'].value_counts(), theirs['penalty_type'].value_counts()
             baselines[key] = {
-                'label': label, 'short': short, **(block(brows) or {'games': 0}),
+                'label': label, 'short': short, 'button': team_button(key, team_week), **(block(brows) or {'games': 0}),
                 'types': {t: _r(tvc.get(t, 0) / n) if n else None for t in all_type_keys},
                 'drawnTypes': {t: _r(dvc.get(t, 0) / n) if n else None for t in all_drawn_keys},
                 'quarters': [_r((mine['qtr'] == q).sum() / n) if n else None for q in (1, 2, 3, 4)],
@@ -335,7 +339,7 @@ def build_team_pages(data: dict, team_info, slugify, data_dir: Path) -> dict:
     pending.put(out / 'index.json', safe_dumps({
         'season': season, 'leaguePerGame': _r(league_pg), 'divisions': divisions,
         'throughWeek': through_week,
-        'baselines': [{'key': k, 'label': l, 'short': sh} for k, l, sh, _ in baseline_defs],
+        'baselines': [{'key': k, 'label': l, 'short': sh, 'button': team_button(k, through_week)} for k, l, sh, _ in baseline_defs],
         'defaultBaseline': 'sameWeeks' if any(k == 'sameWeeks' for k, *_ in baseline_defs) else (baseline_defs[0][0] if baseline_defs else None),
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
     }, indent=2))

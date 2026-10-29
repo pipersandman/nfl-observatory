@@ -26,6 +26,9 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
+import weeks
+from weeks import HISTORICAL_START
+
 ROOT = Path(__file__).resolve().parent.parent / 'frontend'
 DATA = ROOT / 'data'
 SITE = 'https://nflobservatory.com'
@@ -183,10 +186,23 @@ SEASON = sc.get('currentSeason') or styles.get('season')
 THRU = sc.get('throughWeek')
 LG = (sc.get('league') or {}).get('current') or {}
 style_by_name = {c['name']: c for c in styles.get('crews', [])}
-_cs = styles.get('careerSeasons') or [2015, (SEASON or 2026) - 1]
-CAREER = f"{_cs[0]}–{str(_cs[1])[2:]}"          # e.g. 2015–25: the career window (seasons before this one)
-CAREER_US = f"{_cs[0]}_{str(_cs[1])[2:]}"
-START = _cs[0]                                     # first season in the data
+WIN = sc.get('windows') or {}                      # shared windows and labels (scripts/weeks.py, #116)
+_cs = (styles.get('careerSeasons') or (WIN.get('career') or {}).get('seasons')
+       or [HISTORICAL_START, (SEASON or HISTORICAL_START + 1) - 1])
+CAREER = weeks.span_label(_cs)                     # the career window (seasons before this one)
+CAREER_US = CAREER.replace('–', '_')
+START = WIN.get('dataStart') or _cs[0]             # first season in the data
+
+
+def fade_lists():
+    """The fade comparison's windows (type_trends.json → fadeWindows) and the prior-season
+    average per game for each week in them."""
+    fw = tt.get('fadeWindows') or {}
+    wk = tt.get('weekly', {}).get('priorAverage', [])
+    pick = lambda k: [w['perGame'] for w in wk if fw and fw[k]['from'] <= w['week'] <= fw[k]['to']]  # noqa: E731
+    return fw, pick('early'), pick('late')
+
+
 crews_now = sorted([c for c in sc.get('crewChiefs', []) if c.get('current', {}).get('games')],
                    key=lambda c: -c['current']['perGame'])
 teams = []
@@ -415,9 +431,7 @@ def trends_page():
     rising = sorted(tt.get('types', []), key=lambda r: -((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)))
     rrows = [[e(r['type']), f2(r.get('current')), f2((r.get('compare') or {}).get(comp.get('key'))),
               f"{((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)):+.2f}"] for r in rising]
-    wk = tt.get('weekly', {}).get('priorAverage', [])
-    early = [w['perGame'] for w in wk if w['week'] <= 4]
-    late = [w['perGame'] for w in wk if w['week'] >= 15]
+    fw, early, late = fade_lists()
     q = (tt.get('quarters') or {}).get('all') or {}
     cost = ((fi.get('scopes') or {}).get('current') or {})
     sea, lastsea = season_frame, last_frame
@@ -426,9 +440,9 @@ def trends_page():
     {tldr(f"{SEASON} games average <strong>{f1(sea.get('perGame'))} accepted penalties</strong> {thru_txt}, vs {f1(lastsea.get('perGame'))} across all of {SEASON - 1}. "
           f"About {f1(sea.get('pctPlays'))}% of plays draw a flag (one every {f1(sea.get('flagEveryPlays'))} plays). "
           + (f"The biggest increases vs {e(comp.get('label', 'last season'))}: " + ', '.join(f"{e(r['type'].lower())}" for r in rising[:3]) + '. ' if rising else '')
-          + (f"Flags usually fade as the season goes on: Weeks 15–18 average {abs(1 - (sum(late) / len(late)) / (sum(early) / len(early))) * 100:.0f}% fewer than Weeks 1–4." if early and late else ''))}
+          + (f"Flags usually fade as the season goes on: {fw['late']['label']} average {abs(1 - (sum(late) / len(late)) / (sum(early) / len(early))) * 100:.0f}% fewer than {fw['early']['label']}." if early and late else ''))}
     <h2>Penalties per game by season</h2>
-    {table(['Season', 'Games', 'Full season / game', f"Weeks 1–{tt.get('throughWeek')} / game"], rows)}
+    {table(['Season', 'Games', 'Full season / game', f"{weeks.weeks_label(tt.get('throughWeek'))} / game"], rows)}
     <p class="st-note">Regular season. The early-weeks column compares every season over the same weeks as the current one, the fair comparison while a season is in progress.</p>
     <h2>Which penalties are increasing?</h2>
     {table(['Penalty', f'{SEASON} / game', f"{e(comp.get('short', 'Comparison'))} / game", 'Change'], rrows)}
@@ -505,9 +519,7 @@ def guide_page():
     top_now = crews_now[:3]
     car = sorted(style_by_name.values(), key=lambda c: -c['perGame'])[:3]
     live = (card.get('live') or {}).get('summary') or {}
-    wk = tt.get('weekly', {}).get('priorAverage', [])
-    early = [w['perGame'] for w in wk if w['week'] <= 4]
-    late = [w['perGame'] for w in wk if w['week'] >= 15]
+    fw, early, late = fade_lists()
     comp = next((c for c in tt.get('comparisons', []) if c['key'] == tt.get('defaultComparison')), {})
     rising = sorted(tt.get('types', []), key=lambda r: -((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)))[:3]
     cost = ((fi.get('scopes') or {}).get('current') or {})
@@ -536,7 +548,7 @@ def guide_page():
          f"<p>Yes. {SEASON} games average {f1(season_frame.get('perGame'))} accepted penalties {thru_txt}, vs {f1(last_frame.get('perGame'))} in {SEASON - 1}. "
          + ('The biggest increases are in ' + ', '.join(e(r['type'].lower()) for r in rising) + '. ' if rising else '') + '<a href="/trends/">League trends</a>.</p>'),
         ('Do refs call more penalties early in the season?',
-         (f"<p>Usually. Since {START}, Weeks 1–4 average {f1(sum(early) / len(early))} flags per game and Weeks 15–18 average {f1(sum(late) / len(late))}. "
+         (f"<p>Usually. Since {START}, {fw['early']['label']} average {f1(sum(early) / len(early))} flags per game and {fw['late']['label']} average {f1(sum(late) / len(late))}. "
           "The last two weeks are lowest of all, partly because of resting starters and games with nothing at stake.</p>") if early and late else '<p>Data not available.</p>'),
         ('How much does a penalty cost a team?',
          f"<p>About {f2((cost.get('league') or {}).get('pointsCostPerTeamGame'))} expected points per team per game in {SEASON}. The most costly flags are pass interference "

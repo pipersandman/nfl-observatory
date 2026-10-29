@@ -8,7 +8,7 @@ differently, the entry links to the conflict in
 
 **Status:** sessions 1–11 of 11 done; Ty's decisions on C1–C27 and P1–P9 are recorded in the conflicts file (2026-10-29). Still open: the gameday worker test (session 10, Part 5). Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Session 8: What Flags Cost (league block, team tiles, static pages, guide), `wp_tables.json`, `/gameday/` and the live strip. Session 9: full paths for every session 1–3 field (a "Full paths" clause in M1–M45) and M100 (published files no page reads). Session 10: the full coverage check across every published file and the cross-page pass (C27); session 11: decisions.
 
-**Coverage (session 10, data at `64e6587`):** every published field is named in an entry by its full path after its file name: **1,270 of 1,270**, 0 unmapped, across 30 sources (24 kinds of `frontend/data/` file, the 5 CSVs from `build_static.py`, and the gameday feed). The check counts a field only as its full path after its own file name on the same line; a parent name never counts; one fake field per source is reported missing. In the early entries, names before each "Full paths" clause are shorthand (".x" after a path, a parent, a card id); the "Full paths" clause is the complete list. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Coverage (session 10, data at `64e6587`):** every published field is named in an entry by its full path after its file name: **1,270 of 1,270**, 0 unmapped, across 30 sources (24 kinds of `frontend/data/` file, the 5 CSVs from `build_static.py`, and the gameday feed). The check counts a field only as its full path after its own file name on the same line; a parent name never counts; one fake field per source is reported missing. In the early entries, names before each "Full paths" clause are shorthand (".x" after a path, a parent, a card id); the "Full paths" clause is the complete list. **#116 (2026-10-29)** adds 26 label fields, each named by its full path in M9, M48, M66 or M70: `season_comparison.json` → `windows` (16) and `baselines[].button`, `teams/index.json` → `baselines[].button`, `teams/<ABBR>.json` → `baselines.<key>.button`, `type_trends.json` → `comparisons[].button` and `fadeWindows` (6). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -47,6 +47,20 @@ differently, the entry links to the conflict in
 - **Through Week N:** the last regular-season week in which every scheduled
   game has been played (`scripts/weeks.py`, `completed_week()`). Games already
   played in the next week are the **partial week**.
+- **Windows and their labels (#116):** `scripts/weeks.py` defines every window
+  once and builds its label from the data; no script or page writes a year or
+  window by hand (`scripts/check.py` → "No hard-coded years or windows").
+  - **Regular season:** `regular_season()` (`season_type` or `game_type` = REG).
+  - **Prior seasons:** every season in the data before the current one
+    (`prior_seasons()`); **last 3:** the last three of them (`last_n()`).
+  - **Career:** the prior seasons (`career_window()`), for crew styles and the
+    `/crew/` career columns. (The crew chief card and pop-up still use every
+    game including playoffs until #117; C11.)
+  - **Labels:** a span of seasons is written "2015–25" (`span_label()`); weeks
+    "Weeks 1–7" (`weeks_label()`); the same-weeks window "2025 through Week 7",
+    short "2025 Wk 1–7", button "2025 thru Wk 7".
+  - **Published once for the pages:** `season_comparison.json` → `windows`
+    (M9); each comparison's button text is `button` on its baseline.
 
 ## Entry template
 
@@ -220,18 +234,18 @@ differently, the entry links to the conflict in
 
 | Field | Value |
 |---|---|
-| Label on site | Section subtitle: "Regular season through Week 7 (plus <k> games from Week 8), compared with 2025 through week 7." (the part in brackets only while a week is in progress). Toggle button "2025 thru Wk 7". Section title "<season> Season". Scoreboard: "Week 7" button; week menu "in progress · <k> of <n>". Summary line: "through Week 7". |
+| Label on site | Section subtitle: "Regular season through Week 7 (plus <k> games from Week 8), compared with 2025 through week 7." (the part in brackets only while a week is in progress). Toggle buttons "2025 thru Wk 7", "All of 2025", "Last 3 seasons", "All seasons" (from `baselines[].button`). Section title "<season> Season". Scoreboard: "Week 7" button; week menu "in progress · <k> of <n>". Summary line: "through Week 7". |
 | Kind | Time window marker (not a metric) |
 | Numerator / Denominator | None |
 | Population | League schedule, regular season |
 | Time window | The last regular-season week in which every scheduled game has been played; games already played in a later week are the partial week |
 | Inclusion rules | A game counts as played when it has play-by-play |
 | Benchmark | None |
-| Calculation | `scripts/weeks.py` `completed_week()`, used by `calculate_season_comparison()` (`throughWeek`, `partialWeek`), `scoreboard.py` (`throughWeek`, `partialWeek`, `defaultWeek`) and `team_pages.py` |
+| Calculation | `scripts/weeks.py` `completed_week()`, used by `calculate_season_comparison()` (`throughWeek`, `partialWeek`), `scoreboard.py` (`throughWeek`, `partialWeek`, `defaultWeek`), `team_pages.py`, `type_trends.py` and `flag_impact.py`. Labels from `weeks.py` (`through_label()`, `short_through()`, `span_label()`, `baseline_button()`); `windows_block()` writes `windows` (#116). |
 | Rounding | Integer week |
 | Provenance | nflverse schedules and play-by-play. Every data run. |
 | Limitations | "Week" is the NFL schedule week, not a calendar week. A postponed game holds the completed week back until it's played. The subtitle lowercases the comparison label's first letter, which leaves "2025 through week 7" with a lowercase "week". |
-| Where it appears | `season_comparison.json` → `currentSeason`, `previousSeason`, `throughWeek`, `partialWeek`, `baselines[].label`/`short`/`seasons`; `scoreboard.json` → `throughWeek`, `partialWeek`, `defaultWeek`, `frames[].label`/`description`, `weekFrames[].complete`/`scheduled`. Summary line and pre-filled page source (`SEASON_SUB`). **Full paths:** `season_comparison.json` → `currentSeason`, `previousSeason`, `throughWeek`, `partialWeek`, `baselines[].key`, `baselines[].label`, `baselines[].short`, `baselines[].seasons[]`, `defaultBaseline`, `crewChiefs[].throughWeek`; not displayed: `regularSeasonOnly`, `generatedAt`. |
+| Where it appears | `season_comparison.json` → `currentSeason`, `previousSeason`, `throughWeek`, `partialWeek`, `baselines[].label`/`short`/`seasons`; `scoreboard.json` → `throughWeek`, `partialWeek`, `defaultWeek`, `frames[].label`/`description`, `weekFrames[].complete`/`scheduled`. Summary line and pre-filled page source (`SEASON_SUB`). **Full paths:** `season_comparison.json` → `currentSeason`, `previousSeason`, `throughWeek`, `partialWeek`, `baselines[].key`, `baselines[].label`, `baselines[].short`, `baselines[].seasons[]`, `baselines[].button`, `defaultBaseline`, `crewChiefs[].throughWeek`; windows for the pages (#116): `season_comparison.json` → `windows.season`, `season_comparison.json` → `windows.previous`, `season_comparison.json` → `windows.dataStart` ("since 2015" in the crew table subtitle, "2015 onward" in two explainers), `season_comparison.json` → `windows.throughWeek`, `season_comparison.json` → `windows.partialWeek`, `season_comparison.json` → `windows.weeksLabel`, `season_comparison.json` → `windows.sameWeeks.label`, `season_comparison.json` → `windows.sameWeeks.short`, `season_comparison.json` → `windows.sameWeeks.button`, `season_comparison.json` → `windows.prior.seasons[]`, `season_comparison.json` → `windows.prior.label`, `season_comparison.json` → `windows.last3.seasons[]`, `season_comparison.json` → `windows.last3.count`, `season_comparison.json` → `windows.last3.label`, `season_comparison.json` → `windows.career.seasons[]`, `season_comparison.json` → `windows.career.label` (`build_static.py` reads `dataStart` and `career`; the rest are not displayed yet); not displayed: `regularSeasonOnly`, `generatedAt`. |
 | Example | Week 7, no partial week |
 | Conflicts | [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison) |
 
@@ -256,7 +270,7 @@ plays.").
 | Time window | `latestWeek`: the completed week (any week of the current season from the menu, including one in progress). `season`: every current-season game so far, including partial-week games. `lastSeason`: all of last season. `last3`: the three seasons before this one. **`all`: every season from 2015, including the current one.** |
 | Inclusion rules | As in Terms |
 | Benchmark | None: frames are shown one at a time, not compared |
-| Calculation | `build_scoreboard()` `frames`, `weekFrames`, `weeklyLog` |
+| Calculation | `build_scoreboard()` `frames`, `weekFrames`, `weeklyLog`; windows and labels from `scripts/weeks.py` (`prior_seasons()`, `last_n()`, `span_label()`, `since_label()`; #116) |
 | Rounding | — |
 | Provenance | nflverse schedules and play-by-play. Every data run. |
 | Limitations | "Since 2015" includes the current season, while the comparison toggle's "All seasons" doesn't (C8). The default frame is the season so far. |
@@ -1169,11 +1183,11 @@ uses today's abbreviations (no `OAK`, `SD` or `STL` penalties in 2015).
 | Time window | `sameWeeks`: previous season, Weeks 1 to the **team's own week** = the later of the league's last completed week and the team's latest game this season. `lastSeason`: all of the previous regular season. `last3`: the three previous seasons. `all`: every season from 2015 to last season. Default: `sameWeeks`. |
 | Inclusion rules | As M46 |
 | Benchmark | — |
-| Calculation | `baseline_defs`, `team_week`; each baseline holds the `block()` fields plus `types`, `drawnTypes`, `quarters` (M55–M57). Multi-season windows are games-weighted. |
+| Calculation | `baseline_defs`, `team_week`; windows and labels from `scripts/weeks.py` (#116), button text `team_button()` → `baseline_button()` with the team's own week; each baseline holds the `block()` fields plus `types`, `drawnTypes`, `quarters` (M55–M57). Multi-season windows are games-weighted. |
 | Rounding | — |
 | Provenance | `scripts/weeks.py` `completed_week()` and the schedule |
 | Limitations | **Teams follow the crew chief rule** (a team that has played into a partial week is compared through that week; [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison)); the index's button label uses the league's week, so on a day with a partial week a card can read "Wk 1–8" under a "thru Wk 7" button. At `53e0bd1` every team's week is 7. "Same weeks" means the same calendar weeks, not the same number of games: KC has 6 games in 2026 (bye) and 7 in 2025 Weeks 1–7 (both are per-game rates). |
-| Where it appears | `teams/index.json` → `baselines[].key`, `baselines[].label`, `baselines[].short`, `defaultBaseline`, `throughWeek`, `divisions[].teams[].baselinePerGame.<key>`, `divisions[].teams[].throughWeek`. `teams/<ABBR>.json` → `baselines.<key>.label`, `baselines.<key>.short`, `defaultBaseline`, `throughWeek`, `priorSeasons[]` (start year of the crew chief and opponent headings, "2015–2026"). |
+| Where it appears | `teams/index.json` → `baselines[].key`, `baselines[].label`, `baselines[].short`, `teams/index.json` → `baselines[].button`, `defaultBaseline`, `throughWeek`, `divisions[].teams[].baselinePerGame.<key>`, `divisions[].teams[].throughWeek`. `teams/<ABBR>.json` → `baselines.<key>.label`, `baselines.<key>.short`, `teams/<ABBR>.json` → `baselines.<key>.button`, `defaultBaseline`, `throughWeek`, `priorSeasons[]` (start year of the crew chief and opponent headings, "2015–2026"). |
 | Example | KC same weeks: 2025 Weeks 1–7, 7 games, 6.71 per game; last 3 (2023–25): 51 games, 6.06; all (2015–25): 181 games, 6.54. LV same weeks: 6.43 (recomputed: 6.429). |
 | Conflicts | [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison), [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
 
@@ -1552,11 +1566,11 @@ season from 2015 (2024 closest: 13.2 vs 13.0).
 | Time window | 2015–25 (the weekly averages); the current season's complete weeks |
 | Inclusion rules | As in Terms |
 | Benchmark | Weeks 1–4; the usual for the same weeks |
-| Calculation | `app.js` `renderWeekChart()` and `build_static.py` (`trends_page()`, `guide_page()`): **plain means of the weekly averages** (each week counts once, whatever its games); this season's figure is games-weighted. |
+| Calculation | `app.js` `renderWeekChart()` and `build_static.py` (`trends_page()`, `guide_page()`, through `fade_lists()`): the early and late windows and their labels come from `type_trends.json` → `fadeWindows` (`scripts/weeks.py` `fade_windows()`: Weeks 1–4, and Week 15 to the last week in the prior-season averages; #116). **Plain means of the weekly averages** (each week counts once, whatever its games); this season's figure is games-weighted. |
 | Rounding | Percent whole; rates 1 decimal |
 | Provenance | Computed from `type_trends.json` → `weekly` |
 | Limitations | **Averages of averages** ([C20](audits/metric-conflicts-2026-10-28.md#c20-averages-of-averages-in-the-week-of-season-text)): Week 18 (5 seasons) counts as much as Week 15 (11 seasons). Games-weighted, Weeks 15–18 average 11.31 and the fade is 16.5%, not 19%. The fade's percentage is shown without the two rates on the chart and the static page (the guide shows them, without the percentage). The causes given ("resting starters and games with nothing at stake") aren't measured ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). "Since 2015" in the guide means 2015–25. |
-| Where it appears | `type_trends.json` → `weekly.priorAverage[].week`, `weekly.priorAverage[].perGame`, `weekly.seasons[].weeks[].perGame`, `weekly.seasons[].weeks[].games`, `weekly.seasons[].weeks[].complete` |
+| Where it appears | `type_trends.json` → `weekly.priorAverage[].week`, `weekly.priorAverage[].perGame`, `weekly.seasons[].weeks[].perGame`, `weekly.seasons[].weeks[].games`, `weekly.seasons[].weeks[].complete`; the windows: `type_trends.json` → `fadeWindows.early.from`, `type_trends.json` → `fadeWindows.early.to`, `type_trends.json` → `fadeWindows.early.label`, `type_trends.json` → `fadeWindows.late.from`, `type_trends.json` → `fadeWindows.late.to`, `type_trends.json` → `fadeWindows.late.label` |
 | Example | Weeks 1–4: 13.55; Weeks 15–18: 11.02 (plain mean) → 18.7% fewer, shown "about 19%". 2026 Weeks 1–7: 14.67 vs 13.27 → +10.6%, shown "11% above the usual 13.3". |
 | Conflicts | [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes), [C20](audits/metric-conflicts-2026-10-28.md#c20-averages-of-averages-in-the-week-of-season-text) |
 
@@ -1631,11 +1645,11 @@ season from 2015 (2024 closest: 13.2 vs 13.0).
 | Time window | `throughWeek` = the league's last completed week (`scripts/weeks.py` `completed_week()`); `currentGames` = every current-season game so far |
 | Inclusion rules | — |
 | Benchmark | — |
-| Calculation | `build_type_trends()`: `comparisons[]` (`key`, `label`, `short`, `games`), `defaultComparison` (`sameWeeks`), `scopeLabels`, `notes`, `season`, `generatedAt` |
+| Calculation | `build_type_trends()`: `comparisons[]` (`key`, `label`, `short`, `games`, `button`), windows and labels from `scripts/weeks.py` (#116), `defaultComparison` (`sameWeeks`), `scopeLabels`, `notes`, `season`, `generatedAt` |
 | Rounding | — |
 | Provenance | As M64 |
 | Limitations | Two "all" windows in one section: "Since 2015" (2015–2026) for the charts and "All seasons (2015–25)" for the table ([C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names)). Each comparison's games count is stored but not shown. |
-| Where it appears | `type_trends.json` → `comparisons[].key`, `comparisons[].label`, `comparisons[].short`, `defaultComparison`, `scopeLabels.<scope>`, `notes`, `currentGames`, `season`, `throughWeek`; not displayed: `comparisons[].games`, `generatedAt` |
+| Where it appears | `type_trends.json` → `comparisons[].key`, `comparisons[].label`, `comparisons[].short`, `type_trends.json` → `comparisons[].button`, `defaultComparison`, `scopeLabels.<scope>`, `notes`, `currentGames`, `season`, `throughWeek`; not displayed: `comparisons[].games`, `generatedAt` |
 | Example | Comparisons: 2025 through Week 7 (108 games), all of 2025 (272), 2015–25 (2,895). |
 | Conflicts | [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
 
@@ -2323,7 +2337,7 @@ table and the pop-up. Examples below are after the fix.
 | Time window | `current` = the current season (every game so far; "through Week N" = the last completed week); `lastSeason` = the previous season |
 | Inclusion rules | — |
 | Benchmark | — |
-| Calculation | `build_flag_impact()` |
+| Calculation | `build_flag_impact()`; regular season and the completed week from `scripts/weeks.py` (#116). The "since <first season>" in `definitions.winProbCost` and `notes` comes from `weeks.HISTORICAL_START`. |
 | Rounding | — |
 | Provenance | As M89 |
 | Limitations | "Through Week 7" is the last completed week, but the current scope includes any partial-week games (as C4). |

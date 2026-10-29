@@ -5961,7 +5961,7 @@
     "pointsCost": "Expected points the flag cost the penalized team (nflverse EPA model)",
     "winProbCost": "Win chances (percentage points) the flag cost the penalized team: the change in nflverse win probability when the flag erases the play; for a wiped-out touchdown, the chance had it stood (similar kickoffs since 2015, assuming the extra point) minus the chance after the play; otherwise the points cost times what a point is worth at that score and clock (measured since 2015)",
     "winsGivenAway": "Sum of win chances lost to flags, in wins",
-    "method": "play value = the erased play's change in expected points; penalty yards = flag added on top of a play that counts, valued at ~0.06 points per yard; two-point retry = 2 x the 46.8% conversion rate",
+    "method": "play value = the erased play's change in expected points; penalty yards = flag added on top of a play that counts, valued at ~0.06 points per yard; touchdown value = a touchdown wiped out by the offense's own flag, valued at 7 points less the expected points before the play and what the play kept (at least 0); two-point retry = 2 x the 46.8% conversion rate",
     "keyFirstDownsGiven": "Defensive flags that gave the offense a first down on 3rd or 4th down",
     "drivesKilled": "Drives stalled: offensive flags inside the opponent 40 on drives that then did not score (the flag may or may not be why)",
     "bigPlaysErased": "Offensive flags that wiped out a 15+ yard gain or a touchdown",
@@ -5970,5 +5970,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-10-29T22:56:40+00:00"
+  "generatedAt": "2026-10-29T23:13:43+00:00"
 }

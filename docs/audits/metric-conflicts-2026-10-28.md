@@ -8,9 +8,9 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 4 of 8 (home page, crew chiefs, crew styles, teams). C1's trends
-evidence is completed in the trends session. Data errors are listed at the
-end; D1–D7 are fixed, D8 is #112 (open).
+**Status:** session 5 of 8 (home page, crew chiefs, crew styles, teams, trends).
+Fields published but not displayed are listed after the conflicts. Data
+errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 
 ## Summary
 
@@ -34,6 +34,8 @@ end; D1–D7 are fixed, D8 is #112 (open).
 | C16 | "Flags per game": a game total and one team's total under one label | Session 4 | A: separate names (and CSV column) | |
 | C17 | Small samples handled four ways | Session 4 | A: one threshold (D13), one visible label | |
 | C18 | Wording and framing (section 17) on team pages | Session 4 | A: descriptive wording, listed per item | |
+| C19 | Trend text: fixed answers and stated causes | Session 5 | A: answers from the data; causes as possibilities | |
+| C20 | Averages of averages in the week-of-season text | Session 5 | A: games-weighted, with both rates | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -74,7 +76,7 @@ choices. Each gets its own issue; the dictionary entries note them.
 **What differs:** some numbers labeled by season include playoff games; others
 are regular season only.
 
-**Evidence (sessions 1–2; trends side completed in session 5):**
+**Evidence (sessions 1, 2 and 5):**
 - **Regular season only:** `season_comparison.json` (the "This Season vs Last"
   section, M1), which states `regularSeasonOnly: true`.
   `scripts/update_data.py` `calculate_season_comparison()` filters
@@ -118,6 +120,20 @@ are regular season only.
     page and **12.0 in 15** in the pop-up chart.
   - The pop-up labels one block "Career (all games incl. playoffs,
     2015–2026)"; the static page's season table doesn't say.
+- **League trends (session 5, data at `53e0bd1`):** two by-season files with
+  different rules.
+  - **Regular season only:** `type_trends.json` (`scripts/type_trends.py`):
+    every chart and table in The Big Picture, the static `/trends/` page, the
+    guide and the three trend CSVs (M64–M70). The season explainer says
+    "playoffs excluded".
+  - **Playoffs included:** `trends.json`, which no chart reads; four home
+    page cards are built from it (M16, M20, M21, M22).
+  - **Example, 2025:** the season chart shows **12.72** per game (3,461
+    penalties in 272 regular-season games); `trends.json` has **12.5** (3,559
+    in 285 games, 13 of them playoffs, rounded to 1 decimal).
+  - **Most common type:** the "Most Common Call" card says "Holding", 20%
+    (7,671 of 39,335, playoffs in); the share chart's "Since 2015" says
+    offensive holding 19.7% (7,481 of 38,028, regular season).
 
 **Options:**
 - **A. Regular season only, everywhere.** Playoffs shown separately where
@@ -242,6 +258,12 @@ The same-weeks comparison stops at the last completed week.
   M48). The index's button label uses the league's week, so on a day with a
   partial week a team card can read "2025 Wk 1–8" under a "2025 thru Wk 7"
   button. At `53e0bd1` every team's week is 7.
+- **League trends (session 5):** "Which calls are rising?" works like the
+  league tiles: the current rate includes partial-week games, the same-weeks
+  comparison stops at the league's last completed week
+  (`scripts/type_trends.py`, M69). The season chart is the exception: its
+  "Weeks 1–N" bars leave the partial week out of the current season too
+  (M64), so its two sides match.
 
 **Options:**
 - **A. Compare through the same last week:** the league comparison includes
@@ -363,6 +385,11 @@ it defaults to the same weeks.
 through Week 7 (vs 12.7 in 2025)". The section below shows 14.7 vs **14.2**
 (2025 Weeks 1–7). In 2025, Weeks 1–7 had more flags per game (14.21) than the
 season as a whole (12.72), so the summary makes the rise look larger.
+- **Session 5:** the static `/trends/` summary ("14.7 accepted penalties
+  through Week 7, vs 12.7 across all of 2025", labeled) and the guide's "Are
+  NFL penalties up in 2026?" ("vs 12.7 in 2025", not labeled) use the same
+  comparison (`build_static.py` `trends_page()`, `guide_page()`). The table
+  just below the static summary uses the same weeks.
 
 **Options:**
 - **A. Same weeks:** "(vs 14.2 in Weeks 1–7 of 2025)". Effect: the summary
@@ -388,6 +415,12 @@ every season including the current one.
 - `scripts/scoreboard.py`: `all` = `season >= 2015` (2015–2026): 12.7 per
   game, 3,002 games.
 - Both use the key `all` in their JSON.
+- **League trends (session 5):** both windows in one section.
+  `type_trends.json` → `scopeLabels.all` "Since 2015" (quarter and share
+  charts, 2015–2026, 3,002 games) and `comparisons[allPrior]` "All seasons
+  (2015–25)" ("Which calls are rising?", 2,895 games). The static
+  `/trends/` page's quarter line says "Since 2015" (2015–2026); the guide's
+  "Since 2015, Weeks 1–4 average …" uses 2015–25.
 
 **Options:**
 - **A. Prior seasons only, one name:** both mean 2015 to last season, labeled
@@ -810,6 +843,93 @@ don't show. Same type of issue as C6 and C13.
 **Recommendation:** A, with C6 and C13 in V2.0a's wording step.
 
 **Ty's decision:**
+
+---
+
+## C19. Trend text: fixed answers and stated causes
+
+**What differs:** some trend sentences are written in code rather than taken
+from the data, or give a cause the data doesn't test (section 17: rule 5 and
+"causal headlines"). Same type of issue as C6, C13 and C18.
+
+**Evidence (`scripts/build_static.py`, `frontend/js/app.js`, `frontend/index.html`):**
+- **Fixed answers:** the guide's "Are NFL penalties up in 2026?" always starts
+  "Yes." and "Do refs call more penalties early in the season?" always starts
+  "Usually." (`guide_page()`). Both hold at `53e0bd1` (14.7 vs 12.7; Weeks 1–4
+  above Weeks 15–18 in all 11 seasons), but neither is checked: a season with
+  fewer flags would still read "Yes."
+- **Causes stated:** "partly because the two-minute drill packs in extra
+  plays" (quarter chart subtitle, its explainer, static `/trends/`); "partly
+  because of resting starters and games with nothing at stake" (guide; the
+  week explainer says "play a part"). Neither is measured.
+- **Section subtitle:** "How officiating patterns have evolved across
+  seasons" (`index.html`), while the week explainer says "The data can't
+  separate player discipline from officiating or game context."
+
+**Options:**
+- **A. Answers from the data; causes as possibilities:** the guide's first
+  word is computed ("Up" / "Down" / "About the same", with both rates and the
+  window); causes are worded "possible reasons include …" or removed; the
+  subtitle describes the data ("How penalty rates have changed across
+  seasons"). Effect: no numbers change; sentences change.
+- **B. Keep the text; add a check** that fails the build if "Yes." stops
+  being true. Effect: no wording changes.
+
+**Recommendation:** A, with C6, C13 and C18 in V2.0a's wording step.
+
+**Ty's decision:**
+
+---
+
+## C20. Averages of averages in the week-of-season text
+
+**What differs:** the weekly chart's averages are games-weighted, but the
+sentences built from them average the weekly values as if every week had the
+same games, and Week 18 has 5 seasons where Weeks 1–17 have 11. The fade is
+also shown as a percentage without its two rates.
+
+**Evidence (data at `53e0bd1`; `app.js` `renderWeekChart()`,
+`build_static.py` `trends_page()`, `guide_page()`):**
+- "Weeks 15–18 average about **19%** fewer than Weeks 1–4" (chart takeaway,
+  static page): plain mean of four weekly averages, 11.02 vs 13.55.
+- Games-weighted (Week 18: 80 games; Weeks 15–17: about 176 each): Weeks
+  15–18 average **11.31**, **16.5%** fewer.
+- "11% above the usual 13.3 for those weeks": the usual is a plain mean of
+  the seven weekly averages (13.27); this season's 14.67 is games-weighted.
+- The chart and static page give the 19% without the rates; the guide gives
+  the rates (13.5, 11.0) without the percentage.
+
+**Options:**
+- **A. Games-weighted, with both rates:** "Weeks 15–18 average 11.3 flags per
+  game, 2.2 fewer than Weeks 1–4 (13.6), 16% fewer (2015–25)". Effect: the
+  fade changes from 19% to about 16%; the "usual" changes slightly.
+- **B. Keep plain means, say so:** "average of the weekly averages". Effect:
+  no numbers change.
+
+**Recommendation:** A (section 9 comparable periods; rule 2: a percentage
+with its baseline and absolute change).
+
+**Ty's decision:**
+
+---
+
+## Published but not displayed
+
+Fields written to `frontend/data/` that no page, chart or static page reads.
+They are deployed on every run. **Candidates to remove** (a decision for
+session 8); the dictionary entries mark them "not displayed".
+
+| ID | Field | Who uses it | Removing it would |
+|---|---|---|---|
+| P1 | `trends.json` → `byQuarterAndType` (shares by quarter for 6 types) | Nothing | Change nothing on the site. The quarter chart's type menu reads `type_trends.json` → `quarters.<scope>.types` (M67). |
+| P2 | `trends.json` → `byQuarter` (counts by quarter, playoffs in) | The pipeline uses the same values in memory for the "Let Them Play" card (M22) before writing the file; no page reads the file's copy | Change nothing on the site, if the card keeps its calculation. The quarter chart reads `type_trends.json` → `quarters` (M67). |
+| P3 | `trends.json` → `bySeason`, `homeVsAway`, `byType` | The pipeline (cards M20, M21, M16); the page reads them only in a fallback when `insights.json` is empty; `scripts/make_baseline.py` reads `bySeason` (local snapshot) | Remove the fallback cards' data and the baseline snapshot's source; decide with C1 (which season definition the cards use). |
+
+Other "not displayed" fields from sessions 1–5 (samples such as
+`comparisons[].games`, timestamps, team yards and opponent counts) are listed
+in the dictionary. Most are samples the site should start showing (section
+7), not removal candidates; session 7's cross-page pass adds any that are
+neither.
 
 ---
 

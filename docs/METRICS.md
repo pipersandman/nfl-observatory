@@ -6,7 +6,7 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–4 of 8 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–5 of 8 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -445,7 +445,7 @@ Also on the scoreboard: "Most common call" (M16), "Flags per game" (M1),
 | Rounding | Whole percent; rates 1 decimal. Matches the default, but rounding before dividing moves the result (11.1 and 14.7 give +32.4%; unrounded 11.10 and 14.67 give +32.2%). |
 | Provenance | nflverse play-by-play. Every data run. |
 | Limitations | Compares a full season including playoffs with a partial regular season. On the same basis (regular season, Weeks 1–7) the change is +21.6% (see C1). The title "Surge" and "jumped" are stronger than a description needs (C6). The card has red styling for an increase (`isPositive: change < 0`), which matches red = more penalties. |
-| Where it appears | **Home, What The Data Shows:** "Penalty Surge Since 2022" card. JSON: `insights.json` → `season_trend`. A fallback in `app.js` (`generateInsightsFromTrends()`, used only if `insights.json` is empty) computes a different comparison (latest vs previous season). |
+| Where it appears | **Home, What The Data Shows:** "Penalty Surge Since 2022" card. JSON: `insights.json` → `season_trend`, built from `trends.json` → `bySeason[].season`, `bySeason[].avg_per_game` (`bySeason[].penalties`, `bySeason[].games` not displayed; the page reads this file only in the fallback, [Published but not displayed](audits/metric-conflicts-2026-10-28.md#published-but-not-displayed)). The regular-season version is M64. A fallback in `app.js` (`generateInsightsFromTrends()`, used only if `insights.json` is empty) computes a different comparison (latest vs previous season). |
 | Example | +32%, "from 11.1 to 14.7" |
 | Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C6](audits/metric-conflicts-2026-10-28.md#c6-wording-and-framing-section-17-on-the-home-page) |
 
@@ -465,7 +465,7 @@ Also on the scoreboard: "Most common call" (M16), "Flags per game" (M1),
 | Rounding | 1 decimal (both fields) |
 | Provenance | nflverse play-by-play. Every data run. |
 | Limitations | The styling threshold (3) is on `bias_pct`, a different measure from the value shown: +5.8% is styled "positive" because `bias_pct` is 2.8 (left for C6 / #76). "Bias" and the explanation's "crowd influence" claim a cause (C6). No counts are shown. **Fixed in #107 (D2):** the card showed `bias_pct` (+2.8) as "% more". |
-| Where it appears | **Home, What The Data Shows:** "Home Field Bias" card. JSON: `insights.json` → `home_bias`; `trends.json` → `homeVsAway` (`home`, `away`, `awayMorePct`, `bias_pct`). |
+| Where it appears | **Home, What The Data Shows:** "Home Field Bias" card. JSON: `insights.json` → `home_bias`, built from `trends.json` → `homeVsAway.home`, `homeVsAway.away`, `homeVsAway.awayMorePct`, `homeVsAway.bias_pct` (read by the page only in the fallback, [Published but not displayed](audits/metric-conflicts-2026-10-28.md#published-but-not-displayed)). |
 | Example | At `5091e57`: **+5.8%** (20,218 road, 19,117 home: 20,218 ÷ 19,117 − 1 = 5.76%). `bias_pct` 2.8 (road share 51.4%, home 48.6%). |
 | Conflicts | [D2](audits/metric-conflicts-2026-10-28.md#d2-home-field-bias-card-misstates-its-number) (fixed in #107), [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C6](audits/metric-conflicts-2026-10-28.md#c6-wording-and-framing-section-17-on-the-home-page) |
 
@@ -485,7 +485,7 @@ Also on the scoreboard: "Most common call" (M16), "Flags per game" (M1),
 | Rounding | Whole percent |
 | Provenance | nflverse play-by-play. Every data run. |
 | Limitations | Counts, not rates: quarters with more plays get more penalties. The second quarter has the most (11,462), which a Q1/Q4 comparison doesn't show. The title and explanation describe a cause ("refs are reluctant to 'decide' games") that the number doesn't test, and the value (+24%: more flags in Q4) runs against the title (C6). |
-| Where it appears | **Home, What The Data Shows:** '"Let Them Play" Effect' card. JSON: `insights.json` → `let_them_play`; `trends.json` → `byQuarter`. |
+| Where it appears | **Home, What The Data Shows:** '"Let Them Play" Effect' card. JSON: `insights.json` → `let_them_play`, built from `trends.json` → `byQuarter[].quarter`, `byQuarter[].count` (the page doesn't read the file's copy; the pipeline uses the same values before writing it, [Published but not displayed](audits/metric-conflicts-2026-10-28.md#published-but-not-displayed)). The chart's per-game quarter rates are M67. |
 | Example | +24% (Q1 8,211, Q4 10,199) |
 | Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C6](audits/metric-conflicts-2026-10-28.md#c6-wording-and-framing-section-17-on-the-home-page) |
 
@@ -505,7 +505,7 @@ Also on the scoreboard: "Most common call" (M16), "Flags per game" (M1),
 | Rounding | Counts integer; share whole percent. Matches the default. |
 | Provenance | nflverse play-by-play. Every data run. |
 | Limitations | Dropping "Offensive" turns "Offensive Holding" into "Holding", which reads as offensive and defensive holding combined. **Fixed in #107 (D3):** the card's share was of the 10 most common types (26%), not of all penalties. |
-| Where it appears | **Home, What The Data Shows:** "Most Common Call" card (`insights.json` → `top_penalty`). **Home, The Scoreboard:** "Most common call" (`scoreboard.json` → `frames[].mostCommon.type`, `.count`, `.pct`). |
+| Where it appears | **Home, What The Data Shows:** "Most Common Call" card (`insights.json` → `top_penalty`, built from `trends.json` → `byType[].type`, `byType[].count`; read by the page only in the fallback, [Published but not displayed](audits/metric-conflicts-2026-10-28.md#published-but-not-displayed)). Share chart: M68. **Home, The Scoreboard:** "Most common call" (`scoreboard.json` → `frames[].mostCommon.type`, `.count`, `.pct`). |
 | Example | At `5091e57`: card, Holding, 7,671 of 39,335 = 19.5%, shown as "20%". Scoreboard, 2026 season: Offensive Holding, 348, 22%. |
 | Conflicts | [D3](audits/metric-conflicts-2026-10-28.md#d3-most-common-call-card-uses-the-wrong-denominator) (fixed in #107), [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season) |
 
@@ -1461,7 +1461,181 @@ uses today's abbreviations (no `OAK`, `SD` or `STL` penalties in 2015).
 
 ## The Big Picture (trends)
 
-*To do in session 5.*
+Session 5. **Examples are from `53e0bd1`** (2026-10-29: 2026 regular season
+through Week 7). Places covered: the "The Big Picture" section (04: "Penalties
+Per Game By Season", "Penalties Per Game By Quarter" with its penalty-type
+menu, "Penalties Per Game By Week Of Season", "Share Of All Flags By Penalty
+Type", "Which calls are rising?"), their `?` explainers, the static `/trends/`
+page, the guide's trend questions, and `flags_by_season.csv`,
+`flags_by_week.csv` and `penalty_types_by_season.csv`. Also in section 04 but
+covered elsewhere: "Crew Chief Flag Rates" (M35), "Crew Chief Style Map"
+(M37–M44), What Flags Cost (session 7).
+
+**Two files.**
+- **`type_trends.json`** (`scripts/type_trends.py` `build_type_trends()`)
+  feeds every chart and table in this section, the static page, the guide and
+  the CSVs. **Regular season only**; penalties as counted (Terms) that name a
+  `penalty_team` (none left out in any season); every game with play-by-play,
+  including games with no penalty.
+- **`trends.json`** (`scripts/update_data.py` `calculate_league_trends()`)
+  is not read by any chart. The pipeline computes it first and builds four
+  insight cards from it (M16, M20, M21, M22); the page reads it only in a
+  fallback, when `insights.json` is empty. **Regular season and playoffs**;
+  games are those with at least one penalty. `byQuarterAndType` is read by
+  nothing. See "Published but not displayed" in the conflicts file.
+- **Paths:** as in Teams (`file` → `path`, braces list alternatives).
+  `<scope>` is `current` (this season) or `all` ("Since 2015", this season
+  included); `<key>` is a comparison (`sameWeeks`, `lastSeason`,
+  `allPrior`); `<type>` is a penalty type.
+
+**Spot checks** (separate code, from nflverse play-by-play and schedules):
+season rates for 2016, 2025 and 2026 (full season, Weeks 1–7, games); 2026
+Week 3 and its 2015–25 average and range; quarter rates for both scopes,
+total and offensive holding; type shares (total, count, share, per game, "All
+other"); one "rising" row in four windows and 2016; `trends.json` 2025 and a
+quarter count. **42 of 42 match.** The explainers' claims hold at
+`53e0bd1`: the second quarter has the most flags in all 11 past seasons;
+Weeks 17 and 18 are the lowest weeks; Weeks 1–4 beat Weeks 15–18 in every
+season from 2015 (2024 closest: 13.2 vs 13.0).
+
+### M64. Penalties per game by season (full season and the same early weeks)
+
+| Field | Value |
+|---|---|
+| Label on site | Chart "Penalties Per Game By Season": gray bars "Full season", yellow bars "Weeks 1–7"; subtitle "Regular season. 2026 is only 7 weeks in, so compare the yellow bars: every season's Weeks 1–7. Gray bars are full seasons. Axis starts at zero."; tooltip "Full season: 12.72 flags/game (272 games)", "Weeks 1–7: 14.21 flags/game (108 games)". Static `/trends/`: table "Penalties per game by season" ("Season", "Games", "Full season / game", "Weeks 1–7 / game"). |
+| Kind | Exposure rate, one per season (two windows) |
+| Numerator | Penalties by both teams in the games (as M1) |
+| Denominator | Games |
+| Population | League, regular season, overtime included |
+| Time window | **Full season:** every regular-season game; shown for complete seasons only (the current one is a dash). **Weeks 1–N:** Weeks 1 to the league's last completed week (N = 7), every season including the current one; a partial week's games are left out (unlike M1's current-season rate, [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison)). |
+| Inclusion rules | As in Terms |
+| Benchmark | Each other: every season over the same weeks |
+| Calculation | Mean flags per game. `seasonCompare[]` (`fullSeason`, `early`, `games`, `earlyGames`, `complete` = season before the current one). |
+| Rounding | Stored 2 decimals → bars 1 decimal, tooltip 2, static table 1; CSV 2 |
+| Provenance | nflverse play-by-play and schedules. Every data run. |
+| Limitations | **A second by-season rate with different rules:** `trends.json` → `bySeason` (M20's card) includes playoffs and counts only games with a penalty: 2025 is 12.5 there (3,559 in 285 games, 13 of them playoffs) and 12.72 here (3,461 in 272) ([C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season)). The CSV's `games` is the full-season count; the early-weeks sample (`earlyGames`) isn't in the CSV. Seasons before 2021 had 17 weeks, after it 18. Chronological, like M31. |
+| Where it appears | `type_trends.json` → `seasonCompare[].season`, `seasonCompare[].games`, `seasonCompare[].fullSeason`, `seasonCompare[].early`, `seasonCompare[].earlyGames`, `seasonCompare[].complete`, `throughWeek` (chart, static table). `flags_by_season.csv` → `season`, `games`, `flags_per_game_full_season` (blank for the current season), `flags_per_game_same_early_weeks`. |
+| Example | 2025: 12.72 full season (272 games), 14.21 in Weeks 1–7 (108); 2026: 14.67 (107); 2016: 13.42 and 13.92. Recomputed, a match. |
+| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison) |
+
+### M65. Penalties per game by week of season
+
+| Field | Value |
+|---|---|
+| Label on site | Chart "Penalties Per Game By Week Of Season": yellow line "2026"; white line "2015–25 average"; shaded band "Range" (tooltip "Past seasons ranged 10.5–15.6"); season buttons for each past season, "All seasons" / "Clear seasons"; axes "Week of the season", "Flags per game"; tooltip "<series>: 14.8 flags per game"; note "Week <n> is added once all of its games are played (<n> played so far)". |
+| Kind | Exposure rate, one per week and season; the average and range are derived |
+| Numerator | Penalties by both teams in that week's games |
+| Denominator | That week's games |
+| Population | League, regular season |
+| Time window | Each week of each season from 2015. **Average and range:** every season before the current one (2015–25). The current season's line shows complete weeks only. |
+| Inclusion rules | As in Terms |
+| Benchmark | The 2015–25 average and range for the same week |
+| Calculation | `weekly.seasons[].weeks[]` (`perGame`, `games`, `complete` = all scheduled games played); `weekly.priorAverage[]` = games-weighted mean over 2015–25 for that week; `weekly.priorRange[]` = the lowest and highest season's rate for that week; `weekly.priorLabel`. |
+| Rounding | Stored 2 decimals → tooltip 1 decimal; CSV 2 |
+| Provenance | As M64 |
+| Limitations | Week 18 exists only from 2021: its average and range rest on 5 seasons (80 games), Weeks 1–17 on 11. The CSV lists every week with its games count, but not whether the week is complete (the chart hides incomplete ones). No games count on the chart. |
+| Where it appears | `type_trends.json` → `weekly.seasons[].season`, `weekly.seasons[].weeks[].week`, `weekly.seasons[].weeks[].perGame`, `weekly.seasons[].weeks[].games` (note), `weekly.seasons[].weeks[].complete`, `weekly.priorAverage[].week`, `weekly.priorAverage[].perGame`, `weekly.priorRange[].week`, `weekly.priorRange[].low`, `weekly.priorRange[].high`, `weekly.priorLabel`; not displayed: `weekly.priorAverage[].games`. `flags_by_week.csv` → `season`, `week`, `games`, `flags_per_game` (199 rows). |
+| Example | 2026 Week 3: 14.81 (16 games); 2015–25 Week 3 average 13.38, range 10.50–15.62. Recomputed, a match. |
+| Conflicts | [C20](audits/metric-conflicts-2026-10-28.md#c20-averages-of-averages-in-the-week-of-season-text) |
+
+### M66. Early vs late season, and this season vs "the usual" (week-of-season text)
+
+| Field | Value |
+|---|---|
+| Label on site | Week chart takeaway: "Flags usually **fade as the season goes on** (Weeks 15–18 average about 19% fewer than Weeks 1–4). Through Week 7, 2026 is averaging **14.7** per game, **11% above** the usual 13.3 for those weeks." Static `/trends/` summary: "Flags usually fade as the season goes on: Weeks 15–18 average 19% fewer than Weeks 1–4." Guide: "Do refs call more penalties early in the season?" → "Usually. Since 2015, Weeks 1–4 average 13.5 flags per game and Weeks 15–18 average 11.0. The last two weeks are lowest of all…". |
+| Kind | Derived: averages of M65's weekly rates, and their relative difference |
+| Numerator | Fade: mean of the Weeks 15–18 averages. This season: the current season's flags in its complete weeks. |
+| Denominator | Fade: mean of the Weeks 1–4 averages. This season: the 2015–25 averages for the same weeks. |
+| Population | League, regular season |
+| Time window | 2015–25 (the weekly averages); the current season's complete weeks |
+| Inclusion rules | As in Terms |
+| Benchmark | Weeks 1–4; the usual for the same weeks |
+| Calculation | `app.js` `renderWeekChart()` and `build_static.py` (`trends_page()`, `guide_page()`): **plain means of the weekly averages** (each week counts once, whatever its games); this season's figure is games-weighted. |
+| Rounding | Percent whole; rates 1 decimal |
+| Provenance | Computed from `type_trends.json` → `weekly` |
+| Limitations | **Averages of averages** ([C20](audits/metric-conflicts-2026-10-28.md#c20-averages-of-averages-in-the-week-of-season-text)): Week 18 (5 seasons) counts as much as Week 15 (11 seasons). Games-weighted, Weeks 15–18 average 11.31 and the fade is 16.5%, not 19%. The fade's percentage is shown without the two rates on the chart and the static page (the guide shows them, without the percentage). The causes given ("resting starters and games with nothing at stake") aren't measured ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). "Since 2015" in the guide means 2015–25. |
+| Where it appears | `type_trends.json` → `weekly.priorAverage[].week`, `weekly.priorAverage[].perGame`, `weekly.seasons[].weeks[].perGame`, `weekly.seasons[].weeks[].games`, `weekly.seasons[].weeks[].complete` |
+| Example | Weeks 1–4: 13.55; Weeks 15–18: 11.02 (plain mean) → 18.7% fewer, shown "about 19%". 2026 Weeks 1–7: 14.67 vs 13.27 → +10.6%, shown "11% above the usual 13.3". |
+| Conflicts | [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes), [C20](audits/metric-conflicts-2026-10-28.md#c20-averages-of-averages-in-the-week-of-season-text) |
+
+### M67. Penalties per game by quarter (league)
+
+| Field | Value |
+|---|---|
+| Label on site | Chart "Penalties Per Game By Quarter": buttons "2026 season" / "Since 2015"; type menu ("All penalties" plus 8 types); subtitle "Accepted penalties per game in each quarter, regular season (2026 season, 107 games, overtime excluded). Busiest: **Q2**. The second quarter usually leads, partly because the two-minute drill packs in extra plays."; bars labeled to 2 decimals, the busiest in yellow. Static `/trends/`: "Since 2015, flags per game by quarter: Q1 2.65, Q2 3.69, Q3 2.98, Q4 3.28. The second quarter usually leads…". |
+| Kind | Exposure rate, one per quarter (all penalties or one type) |
+| Numerator | Penalties in quarter 1, 2, 3 or 4 (`qtr`), all or one `penalty_type` |
+| Denominator | Games in the scope |
+| Population | League, regular season, **overtime left out** |
+| Time window | `current`: this season so far. `all`: **every season from 2015, this season included** ("Since 2015"). |
+| Inclusion rules | As in Terms |
+| Benchmark | None (the busiest quarter is highlighted) |
+| Calculation | `quarters.<scope>.total[]` (4 values), `quarters.<scope>.types.<type>[]` for the scope's 8 most common types, `quarters.<scope>.games`. |
+| Rounding | Stored 2 decimals → shown 2 decimals (default: 1) |
+| Provenance | As M64 |
+| Limitations | **Still displayed, from `type_trends.json`:** the chart and its type menu read `quarters`. The older `trends.json` → `byQuarter` (counts, playoffs included) feeds only M22's card inside the pipeline; `trends.json` → `byQuarterAndType` (shares by quarter for 6 types) is read by nothing. The menu's types differ by scope (the scope's own top 8). "Since 2015" includes 2026, unlike "All seasons (2015–25)" in M69 ([C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names)). The two-minute-drill reason isn't measured ([C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes)). |
+| Where it appears | `type_trends.json` → `quarters.<scope>.total[]`, `quarters.<scope>.types.<type>[]`, `quarters.<scope>.games`, `scopeLabels.<scope>`. Not displayed: `trends.json` → `byQuarterAndType.quarters[]`, `byQuarterAndType.types[]`, `byQuarterAndType.data.<type>[]`. |
+| Example | 2026: Q1 3.16, Q2 4.24, Q4 3.76 (107 games); since 2015: Q1 2.65, Q2 3.69, Q4 3.28 (3,002 games). Offensive holding, Q2: 1.00 (2026), 0.70 (since 2015). Recomputed, a match. |
+| Conflicts | [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names), [C19](audits/metric-conflicts-2026-10-28.md#c19-trend-text-fixed-answers-and-stated-causes) |
+
+### M68. Share of all flags by penalty type
+
+| Field | Value |
+|---|---|
+| Label on site | Chart "Share Of All Flags By Penalty Type": buttons "2026 season" / "Since 2015"; subtitle "What share of all accepted penalties each call makes up, regular season (1,570 flags in 107 games, 14.7 per game). The top two calls alone are 40% of every flag."; bars "22.2%" and "3.25/g" (per game hidden on phones); "All other (38 types)"; axis "% of all flags"; tooltip "348 flags · 22.2% of all". |
+| Kind | Raw count and share (derived); per game is an exposure rate |
+| Numerator | Penalties of the type |
+| Denominator | All penalties in the scope (share); games in the scope (per game) |
+| Population | League, regular season |
+| Time window | As M67 (`current`, `all` = 2015 to now) |
+| Inclusion rules | As in Terms |
+| Benchmark | None |
+| Calculation | `typeShare.<scope>`: the 10 most common types, then one "All other" row (`other: true`, drawn darker); `total`, `games`, `perGame` for the scope |
+| Rounding | Share stored and shown to 1 decimal (default: whole numbers from 10%); per game 2 decimals |
+| Provenance | As M64 |
+| Limitations | **Same idea as M16's "Most Common Call" card on a different population:** the card is "Holding", 20% (playoffs in, 2015–2026); since 2015 here, offensive holding is 19.7% (regular season) ([C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season)). The code comment says "since 2020"; the chart uses 2015 onward (comment only). |
+| Where it appears | `type_trends.json` → `typeShare.<scope>.types[].type`, `typeShare.<scope>.types[].count`, `typeShare.<scope>.types[].pct`, `typeShare.<scope>.types[].perGame`, `typeShare.<scope>.types[].other`, `typeShare.<scope>.total`, `typeShare.<scope>.games`, `typeShare.<scope>.perGame`, `scopeLabels.<scope>` |
+| Example | 2026: offensive holding 348 of 1,570 = 22.2%, 3.25 per game; false start 17.5%. Since 2015: 7,481 of 38,028 = 19.7%. Recomputed, a match. |
+| Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season), [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
+
+### M69. "Which calls are rising?" (league penalty-type trends)
+
+| Field | Value |
+|---|---|
+| Label on site | Table "Which calls are rising?": subtitle "2026 accepted penalties per game vs 2025 through week 7, all teams · biggest increases first"; buttons "2025 thru Wk 7", "All of 2025", "All seasons (2015–25)"; columns "Penalty" ("<n> this season"), "2026 / game", "<comparison> / game", "Change" (absolute and badge), "Since 2015 ▾" (trend line); footnote "Regular season. Accepted penalties per game, all teams combined. Trend line: each season since 2015 … 2026 is 107 games in, so rare penalties can swing." Static `/trends/`: "Which penalties are increasing?" ("Penalty", "2026 / game", "2025 Wk 1–7 / game", "Change"); summary "The biggest increases vs 2025 through Week 7: …". Guide: "Are NFL penalties up in 2026?" ("The biggest increases are in …"). |
+| Kind | Exposure rate per type and window; Change is derived (difference) |
+| Numerator | Penalties of the type |
+| Denominator | Games in the window |
+| Population | League, regular season |
+| Time window | Current season so far (partial week included) vs `sameWeeks` (previous season, Weeks 1 to the league's last completed week), `lastSeason`, or `allPrior` (2015–25). Trend line: every season from 2015, current included. |
+| Inclusion rules | As in Terms |
+| Benchmark | The selected comparison |
+| Calculation | Types: the 18 most common over all seasons plus this season's top 8. `types[]` sorted by `current − compare.<key>`. |
+| Rounding | Stored 2 decimals → shown 2 |
+| Provenance | As M64 |
+| Limitations | Shows the absolute change and the baseline beside the percentage (rule 3 met). Same-weeks follows the league's week, not a partial one ([C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison)). The CSV gives per game by season with no games count, and its current season is partial. Same idea as the team version (M58). |
+| Where it appears | `type_trends.json` → `types[].type`, `types[].current`, `types[].currentCount`, `types[].compare.<key>`, `types[].bySeason[].season`, `types[].bySeason[].perGame`. `penalty_types_by_season.csv` → `penalty_type`, `season`, `per_game` (216 rows). |
+| Example | Offensive holding: 3.25 in 2026 (348), 2.80 in 2025 Weeks 1–7, 2.47 all of 2025, 2.46 in 2015–25, 2.74 in 2016. Top three rising vs same weeks: offensive holding (+0.45), delay of game (+0.25), neutral zone infraction (+0.15). Recomputed, a match. |
+| Conflicts | [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison), [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
+
+### M70. League trends: windows, labels and samples
+
+| Field | Value |
+|---|---|
+| Label on site | Comparison buttons and short labels (M69); scope buttons "2026 season" / "Since 2015" (M67, M68); "2026 is 107 games in" (footnote); "Regular season. Accepted penalties per game, all teams combined." |
+| Kind | Definitions of the windows (no number of their own) |
+| Numerator / Denominator | — |
+| Population | League, regular season |
+| Time window | `throughWeek` = the league's last completed week (`scripts/weeks.py` `completed_week()`); `currentGames` = every current-season game so far |
+| Inclusion rules | — |
+| Benchmark | — |
+| Calculation | `build_type_trends()`: `comparisons[]` (`key`, `label`, `short`, `games`), `defaultComparison` (`sameWeeks`), `scopeLabels`, `notes`, `season`, `generatedAt` |
+| Rounding | — |
+| Provenance | As M64 |
+| Limitations | Two "all" windows in one section: "Since 2015" (2015–2026) for the charts and "All seasons (2015–25)" for the table ([C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names)). Each comparison's games count is stored but not shown. |
+| Where it appears | `type_trends.json` → `comparisons[].key`, `comparisons[].label`, `comparisons[].short`, `defaultComparison`, `scopeLabels.<scope>`, `notes`, `currentGames`, `season`, `throughWeek`; not displayed: `comparisons[].games`, `generatedAt` |
+| Example | Comparisons: 2025 through Week 7 (108 games), all of 2025 (272), 2015–25 (2,895). |
+| Conflicts | [C8](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names) |
 
 ## Previews, scorecard and history
 
@@ -1501,7 +1675,7 @@ uses today's abbreviations (no `OAK`, `SD` or `STL` penalties in 2015).
 | Home, What The Data Shows | "Penalty Surge Since 2022" card | `insights.json` → `season_trend`; `trends.json` → `bySeason` | M20 |
 | Home, What The Data Shows | "Home Field Bias" card | `insights.json` → `home_bias`; `trends.json` → `homeVsAway` | M21 |
 | Home, What The Data Shows | "Referee Variance" card | `insights.json` → `ref_variance` | M3 |
-| Home, What The Data Shows | '"Let Them Play" Effect' card | `insights.json` → `let_them_play`; `trends.json` → `byQuarter` | M22 |
+| Home, What The Data Shows | '"Let Them Play" Effect' card | `insights.json` → `let_them_play`; `trends.json` → `byQuarter[]` (pipeline only) | M22 |
 | Home, What The Data Shows | "Most Common Call" card | `insights.json` → `top_penalty`; `trends.json` → `byType` | M16 |
 | Home, What The Data Shows | "Crew Chief Spread" card | `insights.json` → `crew_spread` | M23 |
 | Home (search-engine page source) | Pre-filled tiles, crew chief table, subtitle | `build_static.py` `home_prefill()` → `SEASON_SUB`, `SEASON_LEAGUE`, `SEASON_TABLE` (from `season_comparison.json`) | M1, M4–M9 |
@@ -1548,3 +1722,17 @@ uses today's abbreviations (no `OAK`, `SD` or `STL` penalties in 2015).
 | Home (search-engine page source) | Pre-filled division lists ("<team> <rate> flags/game") | `build_static.py` `home_prefill()` → `DIVISIONS` (`teams/index.json`) | M46 |
 | `/data/exports/teams_<season>.csv` | `team`, `games`, `flags_per_game`, `last_season_flags_per_game`, `rank` | `teams/index.json` → `divisions[].teams[]` (`abbr`, `games`, `perGame`, `lastSeasonPerGame`, `rank`) | M46, M54 |
 | (not displayed) | — | `teams/index.json` → `generatedAt`; `teams/<ABBR>.json` → `leaguePerGame`, `allPrior.*`, `{current,lastSeason,baselines.<key>}.penalties`, `.yards`, `.drawnYardsPerGame`, `{lastSeason,allPrior,baselines.<key>}` offense, defense, home, away and net fields, `committedTypes[].currentCount`, `history[].drawnPerGame`, `opponents[].yardsPerGame`, `.oppYardsPerGame`, `.totalOppFlags`, `.homeGames`, `games[].gameId`, `games[].date`, `nextGame.date` | M46–M63 notes |
+| Home, The Big Picture | "Penalties Per Game By Season" chart (subtitle, legend, bars, tooltip) | `type_trends.json` → `seasonCompare[]`, `throughWeek` | M64 |
+| Home, The Big Picture | "Penalties Per Game By Quarter" chart: scope buttons, type menu, subtitle, bars | `type_trends.json` → `quarters.<scope>` (`total`, `types`, `games`), `scopeLabels` | M67 |
+| Home, The Big Picture | "Penalties Per Game By Week Of Season": takeaway, season buttons, lines, band, tooltip, note | `type_trends.json` → `weekly` (`seasons[].weeks[]`, `priorAverage[]`, `priorRange[]`, `priorLabel`), `season` | M65, M66 |
+| Home, The Big Picture | "Share Of All Flags By Penalty Type": scope buttons, subtitle, bars, "All other" | `type_trends.json` → `typeShare.<scope>`, `scopeLabels` | M68 |
+| Home, The Big Picture | "Which calls are rising?": subtitle, comparison buttons, table, trend line, footnote | `type_trends.json` → `types[]`, `comparisons[]`, `defaultComparison`, `notes`, `currentGames` | M69, M70 |
+| Home, The Big Picture | `?` explainers: season-trend, quarter-penalties, week-of-season, penalty-types | `app.js` `EXPLAINERS` (fixed text) | M64, M67, M65, M68; C19 |
+| Static `/trends/` | Summary (this season vs all of last season, plays with a flag, biggest increases, fade) | `scoreboard.json` → `frames[season]`, `frames[lastSeason]` (`perGame`, `pctPlays`, `flagEveryPlays`); `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M12, M69, M66; C7 |
+| Static `/trends/` | "Penalties per game by season" table and note; "Which penalties are increasing?"; "When are penalties called?" | `type_trends.json` → `seasonCompare[]`, `types[]`, `comparisons[]`, `quarters.all.total` | M64, M69, M67 |
+| Static `/trends/` | "Home vs road"; "What penalties cost" | `scoreboard.json` → `frames[season].homeShare`; `crew_styles.json` → `league.homeShare`; `flag_impact.json` | M15, M40; C12; points: session 7 |
+| Static `/guide/` | "Are NFL penalties up in <season>?", "Do refs call more penalties early in the season?", methodology "Comparisons" | `scoreboard.json` → `frames[season]`, `frames[lastSeason]`; `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M69, M66; C7, C19 |
+| `/data/exports/flags_by_season.csv` | `season`, `games`, `flags_per_game_full_season`, `flags_per_game_same_early_weeks` | `type_trends.json` → `seasonCompare[]` | M64 |
+| `/data/exports/flags_by_week.csv` | `season`, `week`, `games`, `flags_per_game` | `type_trends.json` → `weekly.seasons[].weeks[]` | M65 |
+| `/data/exports/penalty_types_by_season.csv` | `penalty_type`, `season`, `per_game` | `type_trends.json` → `types[].bySeason[]` | M69 |
+| (not displayed) | — | `trends.json` → `byQuarterAndType`; `bySeason`, `homeVsAway`, `byType`, `byQuarter` (pipeline and fallback only); `type_trends.json` → `comparisons[].games`, `weekly.priorAverage[].games`, `generatedAt` | M64–M70 notes; conflicts file, "Published but not displayed" |

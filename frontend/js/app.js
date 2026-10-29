@@ -1785,7 +1785,7 @@ function renderFlagCost() {
                         <td><span class="fc-bar"><i style="width:${Math.min(100, (t.pointsCostPerGame / maxCost) * 100)}%"></i></span><strong>${fmtNum(t.pointsCostPerGame, 2)}</strong></td>
                         <td class="season-prev">${fmtNum(t.pointsCost, 1)} <span class="modal-muted">(${t.games} g)</span></td>
                         <td class="season-prev">${t.flags}</td>
-                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}${t.tdsLostOffsetting ? ` <span class="modal-muted" title="${t.tdsLostOffsetting} lost to offsetting penalties">(${t.tdsLostOffsetting} off.)</span>` : ''}</td><td>${t.turnoversErased}</td><td>${t.winsGivenAway != null ? fmtNum(t.winsGivenAway, 1) : '—'}</td>
+                        <td>${t.keyFirstDownsGiven}</td><td>${t.drivesKilled}</td><td>${t.bigPlaysErased}</td><td>${t.tdsErased ?? 0}${t.tdsLostOffsetting ? ` <span class="modal-muted" title="${t.tdsLostOffsetting} lost to offsetting penalties">(${t.tdsLostOffsetting} off.)</span>` : ''}</td><td>${t.winsGivenAway != null ? fmtNum(t.winsGivenAway, 1) : '—'}</td><td>${t.turnoversErased}</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
@@ -1816,7 +1816,7 @@ function teamFlagCostHtml(abbr) {
             ${tile('Key 1st downs given', t.keyFirstDownsGiven, '3rd/4th-down flags that moved the chains')}
             ${tile('Drives stalled / big plays erased', `${t.drivesKilled} / ${t.bigPlaysErased}`, 'offensive flags in scoring range / on 15+ yd gains or TDs')}
             ${t.winsGivenAway != null ? tile('≈ Wins given away', fmtNum(t.winsGivenAway, 1), 'win chances lost to flags, added up') : ''}
-            ${tile('Touchdowns erased', `${(t.tdsErased ?? 0) + (t.tdsLostOffsetting ?? 0)}`, t.tdsLostOffsetting ? `${t.tdsErased} by own flags, ${t.tdsLostOffsetting} by offsetting penalties` : 'wiped out by own flags')}
+            ${tile('Touchdowns erased', `${t.tdsErased ?? 0}`, t.tdsLostOffsetting ? `${(t.tdsErased ?? 0) - t.tdsLostOffsetting} by own flags, ${t.tdsLostOffsetting} by offsetting penalties` : 'wiped out by own flags')}
             ${tile('Own turnovers erased', t.turnoversErased, 'defensive flags that wiped out a takeaway')}
         </div>
         ${fi.teamCostliest?.[abbr]?.length ? `<div class="fc-sub">Costliest ${abbr} flags this season</div>${costliestHtml(fi.teamCostliest[abbr], false)}` : ''}

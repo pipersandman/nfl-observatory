@@ -215,6 +215,18 @@ def type_rate(crew, t, career=True):
 
 # --------------------------------------------------------------------------- pages
 
+def league_levels():
+    """League per-game levels from season_comparison.json, with their windows (no fixed numbers)."""
+    all_seasons = next((b.get('seasons') for b in sc.get('baselines', []) if b.get('key') == 'all'), None)
+    lg_all = (((sc.get('league') or {}).get('baselines') or {}).get('all') or {}).get('perGame')
+    parts = []
+    if all_seasons and lg_all is not None:
+        parts.append(f"{f1(lg_all)} per game in {all_seasons[0]}–{str(all_seasons[-1])[2:]}")
+    if LG.get('perGame') is not None:
+        parts.append(f"{f1(LG['perGame'])} in {SEASON} {thru_txt}")
+    return f" (league average {', '.join(parts)})" if parts else ''
+
+
 def crew_pages():
     rows = []
     for c in crews_now:
@@ -231,7 +243,7 @@ def crew_pages():
                     f1(((c.get('baselines') or {}).get('all') or {}).get('perGame'))] for c in former]
     former_html = ('<h2>Former crew chiefs (since ' + str(START) + ')</h2>'
                    + table(['Crew chief', 'Seasons in the data', 'Games', 'Flags / game'], former_rows)
-                   + '<p class="st-note">Flags per game are raw averages; league levels varied by season (about 13.5 per game in 2015–19, 11–13 since).</p>') if former_rows else ''
+                   + f'<p class="st-note">Flags per game are raw averages; league levels vary by season{league_levels()}.</p>') if former_rows else ''
     body = f"""<h1 class="section-title">NFL referee stats {SEASON}: penalties per game by crew chief</h1>
     {tldr(f"Through Week {THRU} of {SEASON}, NFL games average <strong>{f1(LG.get('perGame'))} accepted penalties</strong>. "
           + ("The most flags per game have come in games worked by " + ', '.join(f"{crew_link(c['name'])} ({f1(c['current']['perGame'])})" for c in top) + ". " if top else '')
@@ -652,7 +664,7 @@ def home_prefill():
     refs = load('referees.json') or []
     put('DATA_TABLE', ''.join(
         f"<tr><td>{crew_link(r['name'])}</td><td>{r.get('games')}</td><td>{f1(r.get('avg_per_game'))}</td>"
-        f"<td>{r.get('min_penalties')}–{r.get('max_penalties')}</td><td>{f1(r.get('home_bias_pct'))}%</td><td>{e(r.get('consistency', ''))}</td></tr>"
+        f"<td>{r.get('min_penalties')}–{r.get('max_penalties')}</td><td>{f1(r.get('home_bias_pct'))} pts</td><td>{e(r.get('consistency', ''))}</td></tr>"
         for r in refs))
     idx.write_text(s, encoding='utf-8')
 

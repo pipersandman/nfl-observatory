@@ -6,7 +6,7 @@ and how it is rounded. Built in V2.0a step 1 (#104); format from
 differently, the entry links to the conflict in
 [`audits/metric-conflicts-2026-10-28.md`](audits/metric-conflicts-2026-10-28.md).
 
-**Status:** sessions 1–7 of 9 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
+**Status:** sessions 1–8 of 10 done. Session 1: home page (summary line, This Season vs Last, The Scoreboard, What The Data Shows, update notice). Session 2: crew chiefs (cards, table, pop-up, Crew Chief Flag Rates chart, static `/crew/` pages, `crew_chiefs_<season>.csv`). Session 3: crew styles (pop-up style block and trajectory, Crew Chief Style Map, style fields on the static pages and CSV, game-preview style note) and `/assignments/`. Session 4: teams (Team Discipline cards, team pop-up, static `/team/` pages, `teams_<season>.csv`). Session 5: The Big Picture (season, quarter, week and type charts, "Which calls are rising?", static `/trends/`, the guide's trend questions, three trend CSVs). Session 6: game previews (cards, pop-up, `/assignments/` projections, the guide's "How projections work"). Session 7: scorecard and history (Track record, the scorecard pop-up and its week-by-week ledger, the guide's accuracy question). Session 8: What Flags Cost (league block, team tiles, static pages, guide), `wp_tables.json`, `/gameday/` and the live strip. Session 9: the cross-page pass and the full coverage check (with full paths for sessions 1–3); session 10: decisions. Areas still to do are marked below. Entries are numbered in the order they were written, so numbers jump between sections.
 
 ## How to read an entry
 
@@ -90,7 +90,7 @@ differently, the entry links to the conflict in
 | Rounding | `season_comparison.json`: stored to 2 decimals → shown to 1 decimal (`fmtNum(…, 1)`). `scoreboard.json`: stored to 1 decimal. Matches the default. |
 | Provenance | nflverse play-by-play (`penalty`, `season_type`), schedules (completed weeks) and officials (crew chief; filled from the schedule's `referee` column and Football Zebras assignments when the officials feed lags). Every data run. |
 | Limitations | Counts flagged **plays**, not flags: two accepted penalties on one play count once. It's a game total for both teams, not one team's rate: team pages use a different per-game rate (one team's penalties, M46), under similar labels (C16). A crew chief's rate reflects the games and teams they drew, not how strictly they call games (plan section 8). |
-| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. Team pages: a different rate (one team's penalties), M46. Trends: M64; previews compare with the model's level instead (M73). *Sessions 7–8 add the scorecard and What Flags Cost.* |
+| Where it appears | **Home, This Season vs Last:** league tile "Penalties per game" (value and "vs" comparison); "Penalties Per Game By Crew Chief" bar chart (current-season and comparison bars); "Crew Chiefs in <season>" table, "Pen / Game" column and the comparison column's "(x/g, n g)". JSON: `season_comparison.json` → `league.current.perGame`, `league.baselines.<key>.perGame`, `crewChiefs[].current.perGame`, `crewChiefs[].baselines.<key>.perGame`. **Home, The Scoreboard:** "Flags per game" cell, the week menu and the running log (`scoreboard.json` → `frames[].perGame`, `weekFrames[].perGame`, `weeklyLog[].perGame`). **Summary line** (`index.html` `SEO:SUMMARY`, from `scoreboard.json` `season` and `lastSeason` frames). **Pre-filled page source** for search engines (`build_static.py` `home_prefill()`: `SEASON_LEAGUE` tiles and `SEASON_TABLE`, from `season_comparison.json`). **Crew chiefs (session 2):** Meet The Officials card rows ("Pen/g") and the crew pop-up's "2026 vs history" block (`crewChiefs[]`/`inactiveCrewChiefs[]` → `current`, `baselines.lastSeason`, `baselines.all`); "Crew Chief Flag Rates" chart in League Trends (current or `all`, with the league marker, M35); static `/crew/` table, top-3 summary and former crew chiefs table; static `/crew/<slug>/` tiles, summary and FAQ; `crew_chiefs_<season>.csv` (`flags_per_game_<season>`, `career_flags_per_game_2015_25`); pre-filled `REFEREES`. Team pages: a different rate (one team's penalties), M46. Trends: M64; previews compare with the model's level instead (M73). Scorecard: M81–M88; What Flags Cost and gameday: M89–M99. |
 | Example | League 2026 through Week 7: **14.67** per game (1,570 penalties in 107 games), shown as 14.7. 2025 Weeks 1–7: 14.21 (1,535 in 108). Recomputed from play-by-play: 1,570 plays with `penalty == 1` in 107 games, a match. |
 | Conflicts | [C4: partial-week games](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison); [C5: "penalties" counts plays](audits/metric-conflicts-2026-10-28.md#c5-penalties-counts-plays-with-an-accepted-penalty); [C7: summary line compares with all of last season](audits/metric-conflicts-2026-10-28.md#c7-the-home-summary-line-compares-with-all-of-last-season); [C8: "All seasons" vs "Since 2015"](audits/metric-conflicts-2026-10-28.md#c8-all-seasons-and-since-2015-two-windows-similar-names); [C16: team and game "flags per game"](audits/metric-conflicts-2026-10-28.md#c16-flags-per-game-a-game-total-and-one-teams-total-under-one-label); [D4: scoreboard crew assignments](audits/metric-conflicts-2026-10-28.md#d4-scoreboard-crew-leader-uses-incomplete-crew-assignments) (fixed in #107) |
 
@@ -337,7 +337,7 @@ plays.").
 | Calculation | `stats()` (`firstDowns`, `firstDownsPerGame`) |
 | Rounding | Count integer; per game 1 decimal |
 | Provenance | nflverse play-by-play (`first_down_penalty`). Every data run. |
-| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. To check in session 8 against What Flags Cost's "key first down given". |
+| Limitations | "Handed over" says the penalty gave the first down; nflverse's field marks a first down awarded by penalty, and whether the offense would have gained one on the play anyway isn't recorded. Checked in session 8: equal to What Flags Cost's first downs given (M92: 432 in 2026, 973 in 2025), so every first-down penalty counted here is a defensive flag. |
 | Where it appears | Scoreboard (`frames[].firstDowns`, `frames[].firstDownsPerGame`, `weeklyLog[].firstDowns`) |
 | Example | 2026 season: 432 (4.0 per game) |
 | Conflicts | None yet |
@@ -550,8 +550,8 @@ see C6.
 | Calculation | `scripts/update_data.py` `generate_hero_stats()` (`lastUpdated`, UTC); `frontend/js/livestrip.js` checks it every 5 minutes while the page is visible |
 | Rounding | Hour and minute |
 | Provenance | Pipeline run time. Every data run. |
-| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **For session 8 (gameday and update notice):** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs several times a week (more on game days) and on every merge to `main`. |
-| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker) is in session 8. |
+| Limitations | It's the time the pipeline ran, not the time of the latest game in the data. No page shows "data through Week N, updated <time>" yet (V2.0a step 9). **Session 8:** the "How is this data collected?" explainer (`frontend/js/app.js` `EXPLAINERS['data-methodology']`) says "Data is updated weekly during the NFL season, typically on Tuesdays after Monday Night Football"; the data workflow runs about hourly on game nights and Sundays, on Tuesday and Wednesday, and on every merge to `main` ([D11](audits/metric-conflicts-2026-10-28.md#d11-how-is-this-data-collected-says-updated-weekly--on-tuesdays), text only). |
+| Where it appears | Home page update notice (`stats.json` → `lastUpdated`). The rest of the live strip (live game flags from the gameday worker): M98, M99. |
 | Example | `2026-10-28T23:25:59Z` |
 | Conflicts | None |
 
@@ -918,7 +918,7 @@ match. Points per flag isn't recomputed here (What Flags Cost, session 8).
 | Calculation | Mean of `cost_epa` (`_profiles()`, `costPerFlag`; career adjusted as a per-flag measure). |
 | Rounding | Stored and shown to 2 decimals |
 | Provenance | nflverse play-by-play (EPA from nflverse's expected-points model) and `flag_impact.py`'s constants. Every data run. |
-| Limitations | **An estimate presented without the word** (C15): "points" isn't explained in the pop-up, and the trait states it as a fact. It mixes two methods by play type. Defined in full with What Flags Cost (session 8). |
+| Limitations | **An estimate presented without the word** (C15): "points" isn't explained in the pop-up, and the trait states it as a fact. It mixes two methods by play type. Defined in full with What Flags Cost (M89; same `classify()` cost, averaged per flag). |
 | Where it appears | Crew pop-up "Crew style" (tile, traits, compare table). JSON: `crews[].costPerFlag`, `.raw.costPerFlag`, `.seasons.<season>.costPerFlag`, `league…costPerFlag`. |
 | Example | Moore 0.80 (league 0.89): "Cheaper flags: 0.80 points each (league 0.89)". Vinovich 0.87. |
 | Conflicts | [C15](audits/metric-conflicts-2026-10-28.md#c15-model-estimates-on-crew-style-pages-not-labeled-as-estimates) |
@@ -1091,7 +1091,7 @@ tiles, team cards, comparison buttons), the team pop-up, the static `/team/`
 and `/team/<ABBR>/` pages, the guide's team question, the home page's
 pre-filled division lists, and `teams_<season>.csv`. The pop-up's "What flags
 cost <team>" block and the static pages' "Points given away / game" come from
-`flag_impact.json`: What Flags Cost, session 8.
+`flag_impact.json`: What Flags Cost, M89–M97.
 
 **One source.** Every number here comes from `scripts/team_pages.py`
 `build_team_pages()`, which writes `teams/index.json` and `teams/<ABBR>.json`:
@@ -1469,7 +1469,7 @@ Type", "Which calls are rising?"), their `?` explainers, the static `/trends/`
 page, the guide's trend questions, and `flags_by_season.csv`,
 `flags_by_week.csv` and `penalty_types_by_season.csv`. Also in section 04 but
 covered elsewhere: "Crew Chief Flag Rates" (M35), "Crew Chief Style Map"
-(M37–M44), What Flags Cost (session 8).
+(M37–M44), What Flags Cost (M89–M97).
 
 **Two files.**
 - **`type_trends.json`** (`scripts/type_trends.py` `build_type_trends()`)
@@ -2090,7 +2090,284 @@ and `backtest` (rebuilt afterward from earlier games only).
 
 ## What Flags Cost and gameday (including the live strip)
 
-*To do in session 8.*
+Session 8. **Examples are from `64e6587`** (2026-10-29: 2026 regular season
+through Week 7, after PR #115). Places covered: the "What Flags Cost" block
+in The Big Picture (section 04: team table, season buttons, "Costliest
+flags", ranking toggle, footnotes), the team pop-up's "What flags cost
+<team>" tiles and list, "Points given away / game" on the static `/team/`
+and `/team/<ABBR>/` pages, `/trends/`'s "What penalties cost", the guide's
+"How much does a penalty cost a team?" and "How a penalty's cost is
+measured", the `/gameday/` page, and the home page's live strip.
+
+**Sources.**
+- **`flag_impact.json`** (`scripts/flag_impact.py` `build_flag_impact()`):
+  every accepted penalty naming a team, regular season, current and previous
+  season, valued from the penalized team's side. **Model estimates** (expected
+  points and win chances from nflverse's models) beside **observed counts**
+  (first downs, touchdowns and turnovers wiped out).
+- **`wp_tables.json`** (`build_wp_tables()`): two lookup tables measured from
+  every regular-season play since 2015, used for win chances here and by the
+  gameday worker.
+- **The gameday feed** (`worker/gameday/`, a Cloudflare Worker at
+  `…workers.dev/live`): ESPN's live scoreboard and play-by-play, parsed every
+  15 seconds while games are live, with each game's projection from
+  `previews/latest.json` and win-chance costs from ESPN's live win
+  probability plus `wp_tables.json`. Read by `/gameday/` (`gameday.js`) and
+  the live strip (`livestrip.js`). Paths below are written `gameday feed` →
+  `path`.
+- **Paths:** `<scope>` is `current` or `lastSeason`; `<team>` a team; `<cell>`
+  a table cell key; `<list>` one of `scopes.<scope>.costliest`,
+  `scopes.<scope>.costliestWinProb`, `week.costliest`,
+  `week.costliestWinProb`, `teamCostliest.<team>` (same row fields).
+
+**The cost model, once** (`classify()`; module notes and `definitions`):
+- **Points** (expected points lost by the penalized team):
+  - the flag wipes out the play (`no_play`): the play's change in expected
+    points (EPA), charged to the penalized team (**play value**)
+  - the flag is added on top of a play that counts: penalty yards × 0.0615
+    points (**penalty yards**)
+  - a touchdown wiped out by the offense's own flag (play text "TOUCHDOWN
+    NULLIFIED", or a "no play" touchdown): 7 − expected points before the play
+    − what the play kept, at least 0 (**touchdown value**)
+  - a defensive flag that wiped out a failed two-point try: 2 × 46.8%
+    (**two-point retry**); other two-point flags: penalty yards
+- **Win chances** (percentage points of the penalized team's chance of
+  winning): the play's change in nflverse win probability (play value); for
+  a wiped-out touchdown, the kicking team's chance had it stood (kickoff
+  table) minus the chance after the play; otherwise points × what a point is
+  worth at that score and clock (leverage table).
+- **2026 flags by method:** 1,127 play value, 413 penalty yards, 27
+  touchdown value, 3 two-point retry (1,570).
+
+**Spot checks** (my own implementation of the rules above, from nflverse
+play-by-play):
+- `wp_tables.json`: the number of kickoff and leverage cells, and one cell
+  of each, rebuilt from every regular-season play 2015–2026.
+- Every team figure for JAX, GB, NYJ and KC (2026) and NE and PHI (2025):
+  points per game, rank, flags, key first downs, drives stalled, big plays
+  erased, own turnovers erased, touchdowns erased (with offsetting), wins
+  given away; each season's league points per team-game, league touchdowns
+  erased, and the costliest flag. **71 of 71 match.**
+- First downs given (2026: 432; 2025: 973) equal the scoreboard's "First
+  downs by penalty" (M14).
+
+**Fixed during this session:** D9 and D10 (#114, PR #115, merged
+2026-10-29): the table's "≈ Wins given away" and "Own turnovers erased"
+columns were swapped, and offsetting touchdowns were counted twice in the
+table and the pop-up. Examples below are after the fix.
+
+### M89. Points given away (a flag's cost in expected points)
+
+| Field | Value |
+|---|---|
+| Label on site | "Costliest flags" rows: rank, type, player · team · "IND @ WAS, Wk 4", quarter and clock, labels ("Touchdown erased", "Key first down given", "<n>-yd gain erased"…), then "**9.0** pts" and "**28%** win chance". Ranking toggle "By points" / "By win chances"; footnote "Ranked by expected points lost, whatever the score and clock." and "How it's valued: when a flag erases the play, its cost is the change in expected points (nflverse's model). When a flag is added on top of a play that counts, only the penalty yards are charged (about 0.06 points per yard). Two-point tries use the 46.8% conversion rate." Guide: "How a penalty's cost is measured". |
+| Kind | **Model estimate** (nflverse's expected-points model), per flag |
+| Numerator | Expected points lost by the penalized team on the flagged play (see "The cost model, once") |
+| Denominator | One flag |
+| Population | Accepted penalties naming a team, regular season, current and previous season |
+| Time window | Each flag |
+| Inclusion rules | As in Terms; offsetting plays carry no accepted flag (they appear only as touchdowns erased, M94) |
+| Benchmark | None per flag |
+| Calculation | `classify()` → `cost_epa`, `cost_method` → each row's `pointsCost`, `method` |
+| Rounding | Stored 2 decimals → shown 1 (rows) |
+| Provenance | nflverse play-by-play (`epa`, `ep`, `penalty_yards`, `desc`, `play_type`, `two_point_attempt`). Every data run. |
+| Limitations | **The method description is incomplete** (D12): the footnote, the guide and `definitions.method` describe play value, penalty yards and two-point tries, but not **touchdown value**, the method behind 9 of 2026's 10 costliest flags. "Points" isn't called an estimate where it's shown ([C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased)). EPA describes the play as a whole, not the flag alone (module notes). |
+| Where it appears | `flag_impact.json` → `<list>[].pointsCost`, `<list>[].method` (not displayed), `definitions.pointsCost` (not displayed), `definitions.method` (not displayed), `notes` (not displayed). `wp_tables.json` → `pointsPerYard` (worker). |
+| Example | 2026's costliest flag by points: WAS illegal shift, Week 4 vs IND, 3rd quarter, 9.04 points (touchdown value; 28.2% win chance). By win chance: TB offensive holding, 33.6% (touchdown erased). 2026 averages: 0.89 points per flag; defensive pass interference 1.64; flags that erased a touchdown 4.16. Recomputed, a match. |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased), [D12](audits/metric-conflicts-2026-10-28.md#d12-cost-method-text-leaves-out-touchdown-value) |
+
+### M90. Points given away per game (team) and the league rate
+
+| Field | Value |
+|---|---|
+| Label on site | Table "What Flags Cost": subtitle "Not every flag hurts the same. Expected points each team has given away to penalties, and what those flags did. Regular season 2026, through Week 7. Most costly first."; buttons "2026" / "2025"; columns "#", "Team", "Points given away / game" (bar), "Season total" ("57.2 (6 g)"), "Flags". Team pop-up tile "Points given away / game": "9.53", "#1 of 32 most costly · league 6.51" with a badge. Static `/team/`: "Points given away / game"; static `/team/<ABBR>/`: tile ("#1 most costly"), summary "Their flags have cost 9.53 expected points per game." `/trends/`: "League-wide, flags cost each team about 6.51 expected points per game in 2026. Most costly: …". Guide: "About 6.51 expected points per team per game in 2026. The most costly flags are pass interference and personal fouls that hand the offense a first down on third down." |
+| Kind | **Model estimate** summed per team, then per game (exposure rate); rank derived |
+| Numerator | Σ points given away (M89) on the team's flags |
+| Denominator | The team's regular-season games |
+| Population | Each team; league = all teams (per team-game) |
+| Time window | Current season through the last completed week (buttons: current or previous season) |
+| Inclusion rules | As M89 |
+| Benchmark | The league's points per team-game (pop-up badge) |
+| Calculation | `_team_block()`: `pointsCost`, `pointsCostPerGame`, `games`, `flags`, `rank` (1 = most costly per game; ties by order, not shared); league `pointsCostPerTeamGame` = Σ cost ÷ (2 × games) |
+| Rounding | Per game 2 decimals (shown 2: false precision for an estimate); season total 1 |
+| Provenance | As M89 |
+| Limitations | An estimate shown to 2 decimals with no interval ([C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased)). "Most costly" ranks reflect play volume and game situations as well as discipline. Ties don't share a rank (unlike M54). The pop-up badge is a percentage only (M2). |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].team`, `scopes.<scope>.teams[].pointsCostPerGame`, `scopes.<scope>.teams[].pointsCost`, `scopes.<scope>.teams[].games`, `scopes.<scope>.teams[].flags`, `scopes.<scope>.teams[].rank`, `scopes.<scope>.league.pointsCostPerTeamGame` |
+| Example | 2026: JAX 9.53 (57.2 in 6 games, #1), GB 8.46 (#4), NYJ 8.09 (#5); league 6.51. 2025: NE 5.45 (#19), league 5.57. Recomputed, a match. |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased) |
+
+### M91. Win chances lost and "≈ Wins given away"
+
+| Field | Value |
+|---|---|
+| Label on site | Table column "≈ Wins given away" (hover "Win chances lost to flags, added up: about this many wins"); pop-up tile "≈ Wins given away" "1.8", "win chances lost to flags, added up". "Costliest flags" ranked "By win chances": rows "34% win chance" (hover "Win chances this flag cost the penalized team (nflverse win probability)"); footnote "Ranked by win chances lost: flags late in close games count most. Win chance = how much the flag changed the penalized team's chance of winning (nflverse win-probability model; for a wiped-out touchdown, the chance had it stood, assuming the extra point)." |
+| Kind | **Model estimate** (nflverse win probability plus `wp_tables.json`); sum across flags |
+| Numerator | Per flag: win-chance points lost (see "The cost model, once"); team: their sum |
+| Denominator | None (a season sum, read as "wins") |
+| Population, Time window | As M90 |
+| Inclusion rules | As M89; flags with no win-probability value count 0 |
+| Benchmark | None |
+| Calculation | `classify()` → `cost_wp`, `wp_method` → rows' `winProbCost` (×100), `winProbMethod`; teams' `winsGivenAway` = Σ `cost_wp`. Tables: `wp_tables.json` → `kick.<cell>` (kicking team's win chance by lead and clock, with games) and `lev.<cell>` (win chance per expected point by clock and margin). |
+| Rounding | Per flag 1 decimal (percent) → whole percent; wins 2 decimals → 1 |
+| Provenance | nflverse play-by-play (`wp`, `wpa`, `score_differential`, `game_seconds_remaining`); tables from every regular-season play 2015–2026 |
+| Limitations | Adding win chances across games and calling it "wins" assumes the changes are independent; it's an estimate, marked "≈" but not called one ([C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased)). The season pages use nflverse's model; the gameday page uses ESPN's (M99). **Fixed in #114 (D10):** the table showed own turnovers erased under this header. |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].winsGivenAway`, `<list>[].winProbCost`, `<list>[].winProbMethod` (not displayed), `definitions.winProbCost` (not displayed), `definitions.winsGivenAway` (not displayed). `wp_tables.json` → `kick.<cell>[]`, `lev.<cell>[]`, `seasons`, `note` (not displayed; read by the worker). |
+| Example | 2026: JAX 1.78, GB 1.45, NYJ 1.64 (shown 1.8, 1.5, 1.6); 2025 NE 2.47. Recomputed with rebuilt tables, a match. |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased), [D10](audits/metric-conflicts-2026-10-28.md#d10-what-flags-cost--wins-given-away-and-own-turnovers-erased-columns-swapped) (fixed in #114) |
+
+### M92. Key first downs given (and first downs given)
+
+| Field | Value |
+|---|---|
+| Label on site | Table "Key 1st downs given" (hover "Defensive flags that gave a first down on 3rd or 4th down"); pop-up tile "Key 1st downs given", "3rd/4th-down flags that moved the chains"; row label "Key first down given" / "First down given" |
+| Kind | Raw count (observed) |
+| Numerator | Defensive flags with `first_down_penalty` = 1 on 3rd or 4th down (all downs: first downs given) |
+| Denominator | None |
+| Population, Time window | As M90 |
+| Inclusion rules | As M89 |
+| Benchmark | None |
+| Calculation | `classify()` → `first_down_given`, `key_first_down` |
+| Rounding | Whole numbers |
+| Provenance | nflverse play-by-play |
+| Limitations | A season count, not per game: teams with a bye have one game fewer. **All first downs given equal the scoreboard's "First downs by penalty" (M14):** 432 in 2026, 973 in 2025, so every first-down penalty counted there is a defensive flag. |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].keyFirstDownsGiven`, `scopes.<scope>.league.keyFirstDownsGiven` (not displayed), `definitions.keyFirstDownsGiven` (not displayed); not displayed: `scopes.<scope>.teams[].firstDownsGiven` |
+| Example | 2026: GB 12, JAX 8, NYJ 7; league 173. Recomputed, a match. |
+| Conflicts | None |
+
+### M93. Drives stalled and big plays erased
+
+| Field | Value |
+|---|---|
+| Label on site | Table "Drives stalled" (hover "Offensive flags inside the opponent 40 on drives that then didn't score"), "Big plays erased" (hover "Offensive flags that wiped out a 15+ yard gain or a touchdown"); pop-up tile "Drives stalled / big plays erased", "offensive flags in scoring range / on 15+ yd gains or TDs"; row labels "Drive stalled after", "Big play erased"; footnote '"Drives stalled" shows flags on drives that came up empty, not proof the flag caused it.' |
+| Kind | Raw counts (observed) |
+| Numerator | Drives stalled: offensive flags on scrimmage plays inside the opponent's 40 on drives that ended without a score. Big plays erased: offensive flags that wiped out a 15+ yard gain ("for N yards" in the play text) or a touchdown. |
+| Denominator | None |
+| Population, Time window | As M90 |
+| Inclusion rules | As M89 |
+| Benchmark | None |
+| Calculation | `classify()` → `drive_killed`, `big_play_erased`; `gain_erased` from the play text before "PENALTY" |
+| Rounding | Whole numbers |
+| Provenance | nflverse play-by-play (`yardline_100`, `fixed_drive_result`, `desc`) |
+| Limitations | The footnote says "not proof the flag caused it"; the column title "Drives stalled" and the field name `drivesKilled` say more ([C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased)). The gain comes from parsing text. |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].drivesKilled`, `scopes.<scope>.teams[].bigPlaysErased`, `<list>[].labels[]`, `<list>[].gainErased` (not displayed), `scopes.<scope>.league.drivesKilled` (not displayed), `scopes.<scope>.league.bigPlaysErased` (not displayed), `definitions.drivesKilled` (not displayed), `definitions.bigPlaysErased` (not displayed) |
+| Example | 2026: JAX 4 / 4, GB 3 / 2, NYJ 1 / 2. Recomputed, a match. |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased) |
+
+### M94. Touchdowns erased (own flags and offsetting penalties)
+
+| Field | Value |
+|---|---|
+| Label on site | Table "TDs erased" ("5 (1 off.)"; hover "Touchdowns wiped out by the team's own flags (plus any lost to offsetting penalties)"); pop-up tile "Touchdowns erased": "5", "4 by own flags, 1 by offsetting penalties" (or "wiped out by own flags"); row label "Touchdown erased" |
+| Kind | Raw count (observed) |
+| Numerator | Touchdowns wiped out by the scoring team's own accepted flag ("TOUCHDOWN NULLIFIED" or a "no play" touchdown), plus touchdowns wiped out by offsetting fouls credited to the team that lost them |
+| Denominator | None |
+| Population, Time window | As M90 |
+| Inclusion rules | Offsetting plays have no accepted flag in nflverse; they come from the full play-by-play (`offsetting_tds`, C2) |
+| Benchmark | None |
+| Calculation | `_team_block()`: `tdsErased` = own-flag touchdowns + offsetting; `tdsLostOffsetting` = the offsetting ones (**of those**) |
+| Rounding | Whole numbers |
+| Provenance | nflverse play-by-play (`desc`) |
+| Limitations | The only place offsetting plays count (C2). **Fixed in #114 (D9):** the page added `tdsLostOffsetting` to `tdsErased` again (JAX showed 6, actual 5). |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].tdsErased`, `scopes.<scope>.teams[].tdsLostOffsetting`, `scopes.<scope>.league.tdsErased` (not displayed), `scopes.<scope>.league.tdsLostOffsetting` (not displayed), `definitions.tdsErased` (not displayed), `definitions.tdsLostOffsetting` (not displayed) |
+| Example | 2026: JAX 5 (4 + 1), GB 2 (1 + 1), NYJ 2; league 29 (2 offsetting). 2025: NE 3 (2 + 1). Recomputed, a match. |
+| Conflicts | [C2](audits/metric-conflicts-2026-10-28.md#c2-offsetting-penalty-plays-counted-as-flags), [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased), [D9](audits/metric-conflicts-2026-10-28.md#d9-touchdowns-lost-to-offsetting-penalties-counted-twice) (fixed in #114) |
+
+### M95. Own turnovers erased
+
+| Field | Value |
+|---|---|
+| Label on site | Table "Own turnovers erased" (hover "Defensive flags that wiped out their own interception or fumble recovery"); pop-up tile "Own turnovers erased", "defensive flags that wiped out a takeaway"; row label "Turnover erased" |
+| Kind | Raw count (observed) |
+| Numerator | Defensive flags on "no play" plays whose text before "PENALTY" has an interception or a recovered fumble |
+| Denominator | None |
+| Population, Time window | As M90 |
+| Inclusion rules | As M89 |
+| Benchmark | None |
+| Calculation | `classify()` → `to_erased` |
+| Rounding | Whole numbers |
+| Provenance | nflverse play-by-play (`desc`) |
+| Limitations | From play text. **Fixed in #114 (D10):** shown under "≈ Wins given away" in the table before the fix. |
+| Where it appears | `flag_impact.json` → `scopes.<scope>.teams[].turnoversErased`, `scopes.<scope>.league.turnoversErased` (not displayed), `definitions.turnoversErased` (not displayed) |
+| Example | 2026: GB 3, NYJ 3, JAX 1; 2025 NE 0. Recomputed, a match. |
+| Conflicts | [D10](audits/metric-conflicts-2026-10-28.md#d10-what-flags-cost--wins-given-away-and-own-turnovers-erased-columns-swapped) (fixed in #114) |
+
+### M96. Costliest flags (season, week, team)
+
+| Field | Value |
+|---|---|
+| Label on site | "Costliest flags of Week 7" (current season) or "of 2025"; rows: rank, type, player · team · "away @ home, Wk N" (team list: "Wk N vs/@ opponent"), quarter and clock, cost, labels; 8 shown. Team pop-up: "Costliest <team> flags this season" (5). Live strip, between game weeks: last week's costliest flag by win chance. |
+| Kind | A list of flags with their model estimates (M89, M91) and observed details |
+| Numerator / Denominator | — |
+| Population | Season lists: the 10 costliest flags of the scope; week lists: the last completed week; team lists: the team's 5 costliest this season |
+| Time window | As named |
+| Inclusion rules | As M89 |
+| Benchmark | — |
+| Calculation | `_flag_row()`; sorted by `cost_epa` (or `cost_wp` for the win-chance lists) |
+| Rounding | As M89, M91 |
+| Provenance | As M89 |
+| Limitations | Mostly touchdown-erasing offensive flags (9 of 2026's 10 by points), valued by the method the footnote leaves out (D12). |
+| Where it appears | `flag_impact.json` → `<list>[].type`, `<list>[].player`, `<list>[].team`, `<list>[].away`, `<list>[].home`, `<list>[].week`, `<list>[].qtr`, `<list>[].time`, `<list>[].labels[]`, `<list>[].gameId` (not displayed), `<list>[].side` (not displayed), `<list>[].yards` (not displayed), `<list>[].twoPoint` (not displayed), `week.week` |
+| Example | 2026 top 10 by points: offensive holding 5, plus illegal shift, offensive and defensive pass interference, illegal formation, face mask; 9 erased a touchdown. |
+| Conflicts | [D12](audits/metric-conflicts-2026-10-28.md#d12-cost-method-text-leaves-out-touchdown-value) |
+
+### M97. What Flags Cost: windows and labels
+
+| Field | Value |
+|---|---|
+| Label on site | Season buttons "2026" / "2025"; subtitle "Regular season 2026, through Week 7"; pop-up heading "What flags cost <team> (2026)" |
+| Kind | Definitions of the windows |
+| Numerator / Denominator | — |
+| Population | Regular season |
+| Time window | `current` = the current season (every game so far; "through Week N" = the last completed week); `lastSeason` = the previous season |
+| Inclusion rules | — |
+| Benchmark | — |
+| Calculation | `build_flag_impact()` |
+| Rounding | — |
+| Provenance | As M89 |
+| Limitations | "Through Week 7" is the last completed week, but the current scope includes any partial-week games (as C4). |
+| Where it appears | `flag_impact.json` → `season`, `throughWeek`, `scopes.<scope>.season`, `scopes.<scope>.games` (not displayed), `scopes.<scope>.flags` (not displayed), `generatedAt` (not displayed) |
+| Example | Current 2026, through Week 7 (107 games, 1,570 flags); previous 2025 (272 games). |
+| Conflicts | [C4](audits/metric-conflicts-2026-10-28.md#c4-partial-week-games-in-the-current-season-not-in-the-comparison) |
+
+### M98. Live flags (gameday feed)
+
+| Field | Value |
+|---|---|
+| Label on site | `/gameday/`: "Flags as they happen", "Every penalty in every game, ranked live."; league tiles "Games live" ("<n> final · <n> to come"), "Flags" ("<n> per game"), "Penalty yards" ("<n> per game"), "Most flagged" ("<team> <n>", "team, this week's games"); game cards ranked by flags, each with score, status, team flags and yards, "Projected 14.7 · on pace for 18"; "Flags by team"; "Flag log" (team, player, type, yards, "accepted" / "declined or offsetting", clock); "Latest flags" ticker; note "Accepted penalties; declined and offsetting flags are listed but not counted. Totals come from the live box score. Play-by-play via ESPN, updated about every 20 seconds; official numbers on the rest of the site come from nflverse after each game." Live strip: "LIVE" / "GAMEDAY" / "FINAL", "Week 8", "<n> flags", a tile per game (status, network, each team's flags and score, "Proj 14.7 flags · <crew chief's last name>"), "Most flags" marker. |
+| Kind | Raw counts (observed, live) and a pace (derived) |
+| Numerator | Each team's accepted penalties in the live box score (if missing: accepted flags parsed from the play text) |
+| Denominator | Games played (per game); elapsed share of 60 minutes (pace) |
+| Population | This week's games on ESPN's scoreboard |
+| Time window | Live, refreshed about every 15–20 seconds |
+| Inclusion rules | **ESPN's box score counts penalties, not plays:** two accepted flags on one play count twice (the rest of the site counts plays, C5). Declined and offsetting flags are listed, not counted. |
+| Benchmark | The preview's projection (M71) |
+| Calculation | `parse.js` `compactGame()`, `boxPenalties()`, `parsePlayPenalties()`; `gameday.js` `pace()` = flags ÷ elapsed share, from 15% of the game; red / green when pace is 10% above / below the projection |
+| Rounding | Whole numbers; per game 1 decimal; projection 1 decimal |
+| Provenance | ESPN's undocumented scoreboard and summary feeds; `previews/latest.json` (first week file only) |
+| Limitations | Live counts can differ from nflverse's final counts for the same game (penalties vs plays, and ESPN's own corrections); the note says the official numbers come later. Between game weeks the live strip shows last week's finals from `history/` instead (nflverse counts) and puts the crew chief's last name where the network goes. The feed's `preview.low` and `preview.high` are always empty: the worker reads `projection.low` / `.high`, which don't exist (the range is `projection.range`); nothing shows them. |
+| Where it appears | `gameday feed` → `week`, `season`, `live`, `updatedAt`, `games[].id`, `games[].name`, `games[].start`, `games[].state`, `games[].detail`, `games[].period`, `games[].clock`, `games[].network`, `games[].{home,away}.abbr`, `games[].{home,away}.score`, `games[].{home,away}.flags`, `games[].{home,away}.yards`, `games[].flags`, `games[].yards`, `games[].log[].team`, `games[].log[].player`, `games[].log[].type`, `games[].log[].yards`, `games[].log[].status`, `games[].log[].noPlay`, `games[].log[].qtr`, `games[].log[].clock`, `games[].log[].wall`, `games[].log[].id`, `games[].preview.projected`, `games[].preview.crew`, `games[].preview.crewSlug`, `error`; not displayed: `games[].{home,away}.source`, `games[].log[].seq`, `games[].preview.low`, `games[].preview.high`, `wpModel`, `source`. `history/<week>` and `flag_impact.json` (between weeks, M87, M96). |
+| Example | Not run at `64e6587`: no Week 8 game had finished (see the session notes). |
+| Conflicts | [C5](audits/metric-conflicts-2026-10-28.md#c5-penalties-counts-plays-with-an-accepted-penalty), [C26](audits/metric-conflicts-2026-10-28.md#c26-live-counts-and-win-chances-come-from-espn-final-ones-from-nflverse) |
+
+### M99. Costliest flag so far (live win chance)
+
+| Field | Value |
+|---|---|
+| Label on site | `/gameday/`: "Costliest flag so far", "win chances lost · live estimate", "−<n>% win chance", team, type, game, quarter (and "TD erased"), the next two below it; per game "Costliest: …"; hover "Live estimate of the win chances this flag cost …". Live strip tile "Costliest flag", "win chance", "−<n>%", "<team> <type>", "<game> · <quarter>". Note: '"Costliest flag" is a live estimate of the win chances a flag cost the penalized team, using ESPN's live win probability and our own tables (the same method as What Flags Cost)…'. |
+| Kind | **Model estimate** (ESPN's live win probability plus `wp_tables.json`) |
+| Numerator | Per flag: as M91, with ESPN's win probability in place of nflverse's |
+| Denominator | One flag |
+| Population | Accepted flags in this week's games |
+| Time window | Live |
+| Inclusion rules | Accepted flags only |
+| Benchmark | None |
+| Calculation | `parse.js` `addWinChanceCost()`: play value (no play), touchdown value (kickoff table), else leverage × yards × 0.0615; the feed's top 3 by `wpCost` |
+| Rounding | Whole percent |
+| Provenance | ESPN; `wp_tables.json` |
+| Limitations | Called a "live estimate" on `/gameday/` ("win chances lost · live estimate"), not on the live strip. Shown with a minus sign here and without one on What Flags Cost (M91). ESPN's model, not nflverse's: the same flag can carry a different cost on What Flags Cost after the game ([C26](audits/metric-conflicts-2026-10-28.md#c26-live-counts-and-win-chances-come-from-espn-final-ones-from-nflverse)). The "flag on top of a play" case values only the yards (the season pages value expected points the same way). |
+| Where it appears | `gameday feed` → `costliest[].wpCost`, `costliest[].team`, `costliest[].type`, `costliest[].game`, `costliest[].gameId`, `costliest[].qtr`, `costliest[].clock`, `costliest[].tdErased`, `games[].costliest.wpCost`, `games[].costliest.team`, `games[].costliest.type`, `games[].costliest.qtr`, `games[].costliest.clock`, `games[].costliest.tdErased`, `games[].log[].wpCost`, `games[].log[].tdErased`, `costliest[].player`, `costliest[].yards`, `costliest[].noPlay`, `costliest[].id` (highlights a new flag); not displayed: `games[].log[].wpMethod`, `costliest[].wpMethod`, `games[].costliest.wpMethod`, `costliest[].{seq,status,wall}`, `games[].costliest.{id,noPlay,player,seq,status,wall,yards}` |
+| Example | Not run at `64e6587` (see M98). |
+| Conflicts | [C25](audits/metric-conflicts-2026-10-28.md#c25-what-flags-cost-model-estimates-precision-and-erased), [C26](audits/metric-conflicts-2026-10-28.md#c26-live-counts-and-win-chances-come-from-espn-final-ones-from-nflverse) |
 
 ---
 
@@ -2161,10 +2438,10 @@ and `backtest` (rebuilt afterward from earlier games only).
 | Team pop-up | Tiles "Most-penalized rank", "Offense / Defense", "Home / Away", "Flag margin" | `rank.current`, `rank.lastSeason`, `rank.of`; `current.offensePerGame`, `.defensePerGame`, `.homePerGame`, `.awayPerGame`, `.netPerGame` | M54, M51, M52, M50 |
 | Team pop-up | "Penalties per game by season (regular season)" chart and tooltip | `history[]`; `baselines.<key>.perGame` | M63, M54 |
 | Team pop-up | "What they get flagged for", "Which calls are rising", "What they draw from opponents", "⏱️ When they get flagged" | `committedTypes[]`, `typeTrends[]`, `drawnTypes[]`, `quarters[]`; `baselines.<key>.types`, `.drawnTypes`, `.quarters` | M55, M58, M56, M57 |
-| Team pop-up | "What flags cost <team>" | `flag_impact.json` | What Flags Cost (session 8) |
+| Team pop-up | "What flags cost <team>" | `flag_impact.json` | M90, M92–M96 |
 | Team pop-up | "Flags on <team> by crew chief", "Watchlist", "By opponent", "<season> game log" | `crews[]`, `players[]`, `opponents[]`, `games[]`; `priorSeasons[]` | M60, M59, M61, M62 |
-| Static `/team/` | Summary (most, least, league average), table ("Rank", "Team", "Games", "<season> flags / game", "<season − 1> flags / game", "Points given away / game"), note | `teams/index.json` → `divisions[].teams[]` (`rank`, `games`, `perGame`, `lastSeasonPerGame`), `leaguePerGame`; `flag_impact.json` | M54, M46, M47; points: session 8 |
-| Static `/team/<ABBR>/` | Summary; tiles "Flags / game", "Opponent flags / game", "Penalty yards / game", "Points given away / game"; "Most common penalties"; "Game log"; "By crew chief (since 2015)"; FAQ | `teams/<ABBR>.json` → `current`, `lastSeason`, `rank.current`, `committedTypes[]`, `games[]`, `crews[]`; `teams/index.json` → `leaguePerGame`; `flag_impact.json` | M46, M47, M49, M53, M54, M55, M62, M60; points: session 8 |
+| Static `/team/` | Summary (most, least, league average), table ("Rank", "Team", "Games", "<season> flags / game", "<season − 1> flags / game", "Points given away / game"), note | `teams/index.json` → `divisions[].teams[]` (`rank`, `games`, `perGame`, `lastSeasonPerGame`), `leaguePerGame`; `flag_impact.json` | M54, M46, M47; points: M90 |
+| Static `/team/<ABBR>/` | Summary; tiles "Flags / game", "Opponent flags / game", "Penalty yards / game", "Points given away / game"; "Most common penalties"; "Game log"; "By crew chief (since 2015)"; FAQ | `teams/<ABBR>.json` → `current`, `lastSeason`, `rank.current`, `committedTypes[]`, `games[]`, `crews[]`; `teams/index.json` → `leaguePerGame`; `flag_impact.json` | M46, M47, M49, M53, M54, M55, M62, M60; points: M90 |
 | Static `/guide/` | "Which NFL team commits the most penalties in <season>?" | `teams/index.json` → `divisions[].teams[].perGame` | M46 |
 | Home (search-engine page source) | Pre-filled division lists ("<team> <rate> flags/game") | `build_static.py` `home_prefill()` → `DIVISIONS` (`teams/index.json`) | M46 |
 | `/data/exports/teams_<season>.csv` | `team`, `games`, `flags_per_game`, `last_season_flags_per_game`, `rank` | `teams/index.json` → `divisions[].teams[]` (`abbr`, `games`, `perGame`, `lastSeasonPerGame`, `rank`) | M46, M54 |
@@ -2177,7 +2454,7 @@ and `backtest` (rebuilt afterward from earlier games only).
 | Home, The Big Picture | `?` explainers: season-trend, quarter-penalties, week-of-season, penalty-types | `app.js` `EXPLAINERS` (fixed text) | M64, M67, M65, M68; C19 |
 | Static `/trends/` | Summary (this season vs all of last season, plays with a flag, biggest increases, fade) | `scoreboard.json` → `frames[season]`, `frames[lastSeason]` (`perGame`, `pctPlays`, `flagEveryPlays`); `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M12, M69, M66; C7 |
 | Static `/trends/` | "Penalties per game by season" table and note; "Which penalties are increasing?"; "When are penalties called?" | `type_trends.json` → `seasonCompare[]`, `types[]`, `comparisons[]`, `quarters.all.total` | M64, M69, M67 |
-| Static `/trends/` | "Home vs road"; "What penalties cost" | `scoreboard.json` → `frames[season].homeShare`; `crew_styles.json` → `league.homeShare`; `flag_impact.json` | M15, M40; C12; points: session 8 |
+| Static `/trends/` | "Home vs road"; "What penalties cost" | `scoreboard.json` → `frames[season].homeShare`; `crew_styles.json` → `league.homeShare`; `flag_impact.json` | M15, M40; C12; points: M90 |
 | Static `/guide/` | "Are NFL penalties up in <season>?", "Do refs call more penalties early in the season?", methodology "Comparisons" | `scoreboard.json` → `frames[season]`, `frames[lastSeason]`; `type_trends.json` → `types[]`, `weekly.priorAverage[]` | M1, M69, M66; C7, C19 |
 | `/data/exports/flags_by_season.csv` | `season`, `games`, `flags_per_game_full_season`, `flags_per_game_same_early_weeks` | `type_trends.json` → `seasonCompare[]` | M64 |
 | `/data/exports/flags_by_week.csv` | `season`, `week`, `games`, `flags_per_game` | `type_trends.json` → `weekly.seasons[].weeks[]` | M65 |
@@ -2201,3 +2478,11 @@ and `backtest` (rebuilt afterward from earlier games only).
 | Track Record pop-up | "Every published projection"; "<season> by week (backtest)"; "How it's graded" | `scorecard/public.json` → `live.games[]`, `backtest.currentSeason.byWeek[]`, `definitions` | M86, M82, M83, M81 |
 | Static `/guide/` | "How accurate are the penalty projections?" | `scorecard/public.json` → `live.summary` (`avgMiss`, `hitRate`, `games`, `baselineAvgMiss`) | M82, M83, M85; C21, C23 |
 | (not displayed) | — | `scorecard/public.json` → `live.byWeek[]`, `backtest.lastSeason.byWeek[]`, `live.games[]` home/away and baseline fields, `generatedAt`; `history/<week>` → most of `prediction`, `outcome`, `grade`, `corrections`, `recordedAt`; `scorecard/live/`, `scorecard/backtest/`, `history/snapshots/` (P5–P7) | M81–M88 notes |
+| Home, The Big Picture | "What Flags Cost": subtitle, season buttons, table ("#", "Team", "Points given away / game", "Season total", "Flags", "Key 1st downs given", "Drives stalled", "Big plays erased", "TDs erased", "≈ Wins given away", "Own turnovers erased"), footnote | `flag_impact.json` → `season`, `throughWeek`, `scopes.<scope>` (`season`, `teams[]`) | M97, M90, M92, M93, M94, M91, M95, M89 |
+| Home, The Big Picture | "Costliest flags of Week N / <season>", "By points" / "By win chances", footnote | `flag_impact.json` → `week.costliest[]`, `week.costliestWinProb[]`, `scopes.<scope>.costliest[]`, `.costliestWinProb[]` | M96, M89, M91 |
+| Team pop-up | "What flags cost <team>": tiles ("Points given away / game", "Key 1st downs given", "Drives stalled / big plays erased", "≈ Wins given away", "Touchdowns erased", "Own turnovers erased"), "Costliest <team> flags this season" | `flag_impact.json` → `scopes.current.teams[]`, `scopes.current.league.pointsCostPerTeamGame`, `teamCostliest.<team>[]` | M90–M96 |
+| Static `/team/`, `/team/<ABBR>/`, `/trends/`, `/guide/` | "Points given away / game", "#<n> most costly", "Their flags have cost …", "What penalties cost", "How much does a penalty cost a team?", "How a penalty's cost is measured" | `flag_impact.json` → `scopes.current.teams[]` (`pointsCostPerGame`, `rank`), `scopes.current.league.pointsCostPerTeamGame` | M90, M89; C19, D12 |
+| `/gameday/` | Title, subtitle, status ("Connecting…", "updated …"), league tiles, "Costliest flag so far", "Latest flags", game cards (score, flags, yards, projection and pace, "Flags by team", "Flag log"), note | `gameday feed` → `updatedAt`, `week`, `season`, `live`, `games[]`, `costliest[]` | M98, M99, M71 |
+| Home, live strip | Tag ("LIVE", "GAMEDAY", "FINAL"), "Week N", "<n> flags", game tiles, "Costliest flag" tile, "Most flags" marker, "Full scoreboard →"; between game weeks: last week's finals | `gameday feed` → `games[]`, `costliest[]`; `history/index.json`, `history/<week>`; `flag_impact.json` → `week.costliestWinProb[]` | M98, M99, M87, M96 |
+| Home, update notice and "How is this data collected?" | "New results are in · updated <time>"; "Data is updated weekly …" | `stats.json` → `lastUpdated`; `app.js` `EXPLAINERS['data-methodology']` | M24; D11 |
+| (not displayed) | — | `flag_impact.json` → `definitions.*`, `notes`, `generatedAt`, `scopes.<scope>.games`, `.flags`, `.league.*` (except `pointsCostPerTeamGame`), `teams[].firstDownsGiven`, rows' `gameId`, `side`, `yards`, `twoPoint`, `method`, `winProbMethod`, `gainErased`; `wp_tables.json` (worker only); `run_status.json`, `source_stamp.json` (P8, P9); `gameday feed` → `games[].{home,away}.source`, `log[].seq`, `log[].wpMethod`, `preview.low`, `preview.high`, `wpModel`, `source` | M89–M99 notes |

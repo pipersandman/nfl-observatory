@@ -8,9 +8,10 @@ in V2.0a step 1 (#104).
 code to match (#76 keeps the Referee Variance card fix). This file only
 records the conflicts and the decisions; it changes nothing on the site.
 
-**Status:** session 7 of 9 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history).
+**Status:** session 8 of 10 (home page, crew chiefs, crew styles, teams, trends, previews, scorecard and history, What Flags Cost and gameday).
 Fields published but not displayed are listed after the conflicts. Data
-errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
+errors are listed at the end; D1–D7, D9 and D10 are fixed, D8 is #112
+(open), D11 and D12 are on #112 too (text-only fixes; later text-only errors go there).
 
 ## Summary
 
@@ -40,6 +41,8 @@ errors are listed at the end; D1–D7 are fixed, D8 is #112 (open).
 | C22 | Model estimates in previews: labels and attribution | Session 6 | A: label each as a model estimate | |
 | C23 | "In the likely range": target ≈ 80% vs the range's design | Session 7 | A: state the model's expected share | |
 | C24 | Live and backtest projections mixed in one week summary | Session 7 | A: split mixed weeks | |
+| C25 | What Flags Cost: model estimates, precision and "erased" | Session 8 | A: label every modeled number; 1 decimal | |
+| C26 | Live counts and win chances come from ESPN, final ones from nflverse | Session 8 | A: say so on the live strip too | |
 
 **Data errors (own issues):** wrong numbers on the live site, not definition
 choices. Each gets its own issue; the dictionary entries note them.
@@ -53,7 +56,11 @@ choices. Each gets its own issue; the dictionary entries note them.
 | D5 | Crew chief Home Bias explained as "how much more" | `app.js` `EXPLAINERS['home-bias']`, table legend | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D6 | Crew chief table labels don't match what it shows | `app.js` `EXPLAINERS['games']`, `index.html` | #110: **fixed** (PR #111, merged 2026-10-29) |
 | D7 | Fixed league-average text out of date | `app.js` `EXPLAINERS['avg-per-game']`, `build_static.py` `/crew/` note | #110: **fixed** (PR #111, merged 2026-10-29) |
-| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | #112 (open; batch with other text-only fixes) |
+| D8 | Style Map explainer: "about 95 games each" | `app.js` `EXPLAINERS['crew-style-map']` | #112 (open; text-only fixes) |
+| D9 | Touchdowns lost to offsetting penalties counted twice | `app.js` `renderFlagCost()`, `teamFlagCostHtml()` | #114: **fixed** (PR #115, merged 2026-10-29) |
+| D10 | What Flags Cost: "≈ Wins given away" and "Own turnovers erased" columns swapped | `app.js` `renderFlagCost()` | #114: **fixed** (PR #115, merged 2026-10-29) |
+| D11 | "How is this data collected?" says "updated weekly … on Tuesdays" | `app.js` `EXPLAINERS['data-methodology']` | #112 (open; text-only fixes, comment) |
+| D12 | Cost method text leaves out "touchdown value" | `app.js` `renderFlagCost()`, `build_static.py` `guide_page()`, `flag_impact.py` `definitions` | #112 (open; text-only fixes, comment) |
 
 ## How to read a conflict
 
@@ -176,7 +183,7 @@ season), while the site's wording elsewhere refers to accepted penalties.
   count built from `penalty == 1`). The effect is at most 6 plays in a season
   of about 3,400.
 - Separate from this: `update_data.py` keeps touchdowns wiped out by
-  offsetting penalties as `offsetting_tds` (for What Flags Cost, session 8).
+  offsetting penalties as `offsetting_tds` (What Flags Cost, M94).
 
 **Options:**
 - **A. Accepted penalties only.** Offsetting plays are never counted as
@@ -321,6 +328,11 @@ accepted penalty. Two accepted penalties on one play count once.
   to 14.72. On the site's 1-decimal display that's 14.7 either way. Reading
   penalties from the description is approximate: the count of plays is exact,
   but the number of accepted penalties per play depends on the text.
+
+- **Gameday and the live strip (session 8):** live counts come from ESPN's
+  box score, which counts **penalties**: two accepted flags on one play count
+  twice (`worker/gameday/parse.js` `boxPenalties()`, M98). The same game is
+  counted as plays on every other page once nflverse has it (C26).
 
 **Options:**
 - **A. Rename what's shown** to match what's counted: "penalized plays",
@@ -911,6 +923,15 @@ from the data, or give a cause the data doesn't test (section 17: rule 5 and
   seasons" (`index.html`), while the week explainer says "The data can't
   separate player discipline from officiating or game context."
 
+- **What Flags Cost (session 8):** the guide's "The most costly flags are
+  pass interference and personal fouls that hand the offense a first down on
+  third down" (`guide_page()`, fixed text) fits the **average** flag (2026:
+  defensive pass interference 1.64 points per flag, roughing the passer 1.09,
+  third- or fourth-down first downs 1.62, all flags 0.89), but not the
+  costliest single flags the page lists: 9 of 2026's 10 are offensive flags
+  that erased a touchdown (4.16 points on average). Same issue: a fixed
+  sentence about the data, not checked against it.
+
 **Options:**
 - **A. Answers from the data; causes as possibilities:** the guide's first
   word is computed ("Up" / "Down" / "About the same", with both rates and the
@@ -1105,11 +1126,81 @@ aren't what visitors saw).
 
 ---
 
+## C25. What Flags Cost: model estimates, precision and "erased"
+
+**What differs:** points and win chances are model estimates (nflverse's
+expected-points and win-probability models), and the block's notes say so
+(`flag_impact.json` → `notes`: "Points and win chances are estimates"), but
+the page shows them like observed counts, to two decimals, beside counts of
+plays.
+
+**Evidence (`frontend/js/app.js` `renderFlagCost()`, `teamFlagCostHtml()`,
+`scripts/build_static.py`, data at `64e6587`):**
+- **No "estimate" label** on "Points given away / game", "Season total",
+  "≈ Wins given away" ("≈" only), the costliest flags' "pts" and "% win
+  chance", the static `/team/` column and tiles, the `/trends/` and guide
+  sentences. The `notes` sentence isn't displayed anywhere.
+- **Two decimals** for a summed estimate with no interval ("9.53", "league
+  6.51"), against section 6's rule (model estimates to the precision their
+  interval supports).
+- **Ranked "most costly first"** with no note that the rank reflects play
+  volume and game situations as well as discipline (M90).
+- **Wording:** "Points given away", "Drives stalled" (the footnote: "not
+  proof the flag caused it"), field name `drivesKilled`; the costliest flag
+  in the live strip: "−28%" with no "estimate".
+- Same type of issue as C15 (crew styles) and C22 (previews).
+
+**Options:**
+- **A. Label every modeled number** ("Model estimate: expected points given
+  away"), round per-game points to 1 decimal, show the `notes` sentence under
+  the table, and keep "≈". Effect: no numbers change; labels and rounding
+  change.
+- **B. Move the modeled columns into their own block** ("Estimated cost"),
+  separate from the counts (key first downs, touchdowns and turnovers
+  erased). Effect: the table splits in two.
+
+**Recommendation:** A, with C15 and C22 (section 17, rule 3).
+
+**Ty's decision:**
+
+---
+
+## C26. Live counts and win chances come from ESPN, final ones from nflverse
+
+**What differs:** during games, `/gameday/` and the live strip count flags
+and value them with ESPN's data; after each game, every other page uses
+nflverse's. The same game can show two flag counts and two costs.
+
+**Evidence (`worker/gameday/`, `frontend/js/gameday.js`, `livestrip.js`):**
+- **Counts:** ESPN's box score counts penalties (two flags on one play count
+  twice); nflverse-based pages count plays (C5). Between game weeks the live
+  strip switches to the history ledger's nflverse counts (M87, M98).
+- **Win chances:** ESPN's live win probability vs nflverse's model on What
+  Flags Cost (M91, M99); the gameday note says "final expected-points and
+  win-chance numbers appear on the site after each game".
+- **Said on `/gameday/`** (its note), **not on the live strip**.
+- **Not measured at `64e6587`:** no Week 8 game had finished, so the worker's
+  counts weren't compared with nflverse's for a game.
+
+**Options:**
+- **A. Say so on the live strip too, and mark live numbers as live**
+  ("live, ESPN · final numbers after the game"). Effect: labels only.
+- **B. Count live flags as plays** (one per play with an accepted flag), to
+  match the rest of the site. Effect: live counts change; the box score is
+  used only as a check.
+
+**Recommendation:** A now; B with C5's decision (if C5 keeps "plays", live
+counts should follow).
+
+**Ty's decision:**
+
+---
+
 ## Published but not displayed
 
 Fields written to `frontend/data/` that no page, chart or static page reads.
 They are deployed on every run. **Candidates to remove** (a decision for
-session 9); the dictionary entries mark them "not displayed".
+session 10); the dictionary entries mark them "not displayed".
 
 | ID | Field | Who uses it | Removing it would |
 |---|---|---|---|
@@ -1120,11 +1211,18 @@ session 9); the dictionary entries mark them "not displayed".
 | P5 | `scorecard/live/` (frozen projections, one file per week) | `scorecard.py` (grading) and `history.py` (the ledger's predictions); no page | Remove the record the scorecard is graded from. **Keep:** once a game kicks off its live record can't be made again. Only the deploy is optional (it could stay in the repository and not be uploaded). |
 | P6 | `scorecard/backtest/` (rebuilt projections) | `scorecard.py`, `history.py` (earlier weeks); no page | They can be rebuilt (76 of 76 reproduced), so not deploying them loses nothing; keep them in the repository as the cache. |
 | P7 | `history/snapshots/` (the league after each week) | Nothing reads them yet | Lose a record that can't be rebuilt later ("as it stood that week"). **Keep**; the deploy is optional. |
+| P8 | `run_status.json` (each run's modules, warnings and raw capture) | The data workflow's "Fail if any module failed" step; no page | Lose the workflow's check. **Keep**; only deploying is optional. |
+| P9 | `source_stamp.json` (play-by-play version and check time) | The pipeline (deciding whether nflverse changed); no page | Lose the change check. **Keep**; only deploying is optional. |
 
-Other "not displayed" fields from sessions 1–7 (samples such as
+Not in `frontend/data`, but also published and never shown: the gameday
+feed's `games[].preview.low` and `.high` are always empty (the worker reads
+`projection.low` / `.high`, which don't exist; the range is
+`projection.range`; M98).
+
+Other "not displayed" fields from sessions 1–8 (samples such as
 `comparisons[].games`, timestamps, team yards and opponent counts) are listed
 in the dictionary. Most are samples the site should start showing (section
-7), not removal candidates; session 8's cross-page pass adds any that are
+7), not removal candidates; session 9's cross-page pass adds any that are
 neither.
 
 ---
@@ -1275,3 +1373,55 @@ active crew chiefs have **128** career games on average (median 125, range
 - Same rule as D7: the fix shouldn't hard-code a new number. Either take it
   from `crew_styles.json`, which the page already loads, or say it without a
   number.
+
+## D9. Touchdowns lost to offsetting penalties counted twice
+
+**What's wrong:** `flag_impact.json` → `tdsErased` already includes
+touchdowns lost to offsetting penalties (`tdsLostOffsetting` = "Of those"),
+but the What Flags Cost table and the team pop-up added `tdsLostOffsetting`
+again, and the tile's "<n> by own flags" showed `tdsErased`. JAX 2026 showed
+**6** ("5 by own flags, 1 by offsetting"); actual **5** (4 + 1, recomputed
+from play-by-play). GB 2026 3 (actual 2), NE 2025 4 (actual 3). Since
+`502c440` (2026-10-20). Entry M94.
+
+**Fixed:** #114, PR #115 (merged 2026-10-29), page only. Live after the
+merge: JAX 5 (1 off.).
+
+## D10. What Flags Cost: "≈ Wins given away" and "Own turnovers erased" columns swapped
+
+**What's wrong:** the league table's row wrote `turnoversErased` under "≈
+Wins given away" and `winsGivenAway` under "Own turnovers erased". GB 2026
+showed "≈ Wins given away" **3** (its turnovers erased; actual 1.45), NYJ 3
+(1.64), JAX 1 (1.78). Since `555c178` (2026-10-20). The team pop-up's tiles
+were right. Entries M91, M95.
+
+**Fixed:** #114, PR #115 (merged 2026-10-29), page only. Live after the
+merge: GB 1.5.
+
+## D11. "How is this data collected?" says "updated weekly … on Tuesdays"
+
+**What's wrong:** the explainer (`frontend/js/app.js`
+`EXPLAINERS['data-methodology']`) says "Data is updated weekly during the NFL
+season, typically on Tuesdays after Monday Night Football". The data
+workflow (`.github/workflows/update-data.yml`) runs about hourly through
+Thursday night, Sunday and Monday night games, on Tuesday (06:00 and 19:00
+UTC) and Wednesday (15:00 UTC), and on every push to `main`: 44 runs from
+2026-10-22 to 2026-10-29 (10 scheduled, 30 on pushes, 4 started by hand). Entry M24. Text only: no number changes. Fix without a
+fixed schedule ("updated during and after every game day"), or from
+`stats.json` → `lastUpdated`, which the page already shows.
+
+**Issue:** #112 (text-only fixes; comment added 2026-10-29).
+
+## D12. Cost method text leaves out "touchdown value"
+
+**What's wrong:** three descriptions of how a flag's cost is valued list
+play value, penalty yards and two-point tries, but not **touchdown value**
+(7 − expected points before the play − what the play kept), added in
+`502c440`: the What Flags Cost footnote ("How it's valued: …",
+`renderFlagCost()`), the guide's "How a penalty's cost is measured"
+(`build_static.py` `guide_page()`), and `flag_impact.json` →
+`definitions.method` (`flag_impact.py`). That method values 27 of 2026's
+1,570 flags, and 9 of the 10 costliest the page lists. Entries M89, M96.
+Text only: no number changes.
+
+**Issue:** #112 (text-only fixes; comment added 2026-10-29).

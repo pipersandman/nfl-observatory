@@ -640,12 +640,12 @@ function generateInsightsFromTrends() {
     
     // Home bias
     const homeAway = trends.homeVsAway || {};
-    if (homeAway.bias_pct !== undefined) {
+    if (homeAway.awayMorePct !== undefined && homeAway.awayMorePct !== null) {
         insights.push({
             icon: '',
             title: 'Home Field Bias',
-            value: `${homeAway.bias_pct > 0 ? '+' : ''}${homeAway.bias_pct}%`,
-            description: `Away teams are penalized ${Math.abs(homeAway.bias_pct)}% more than home teams`,
+            value: `${homeAway.awayMorePct > 0 ? '+' : ''}${homeAway.awayMorePct}%`,
+            description: `Away teams are penalized ${Math.abs(homeAway.awayMorePct)}% more than home teams`,
             explanation: 'Positive means away teams get more flags. This reflects crowd influence on officials, not intentional bias.',
             isPositive: Math.abs(homeAway.bias_pct) < 3
         });
@@ -668,12 +668,14 @@ function generateInsightsFromTrends() {
     
     // Top penalty
     const types = trends.byType || [];
-    if (types.length) {
+    // All penalties: home + away counts every penalty, not just the top 10 types
+    const allPenalties = (homeAway.home || 0) + (homeAway.away || 0);
+    if (types.length && allPenalties) {
         insights.push({
             icon: '',
             title: 'Most Common Call',
             value: types[0].type.replace('Offensive ', '').replace('Defensive ', ''),
-            description: `${types[0].count.toLocaleString()} total calls (${(types[0].count / types.reduce((a, t) => a + t.count, 0) * 100).toFixed(0)}% of all penalties)`,
+            description: `${types[0].count.toLocaleString()} total calls (${(types[0].count / allPenalties * 100).toFixed(0)}% of all penalties)`,
             explanation: 'Understanding which penalties dominate helps identify where teams lose yards and drives.',
             isPositive: null
         });
@@ -1409,7 +1411,7 @@ function renderScoreboard(animate = false) {
             <div class="sb-cell"><div class="sb-label">Cleanest team</div><div class="sb-lead">${f.cleanestTeam?.team ?? '—'}</div>
                 <div class="sb-sub"><strong>${fmtNum(f.cleanestTeam?.perGame, 1)}</strong> flags per game</div></div>
             <div class="sb-cell"><div class="sb-label">Flag-heaviest crew</div><div class="sb-lead">${f.topCrew?.name ?? '—'}</div>
-                <div class="sb-sub"><strong>${fmtNum(f.topCrew?.perGame, 1)}</strong> flags per game</div></div>
+                <div class="sb-sub"><strong>${fmtNum(f.topCrew?.perGame, 1)}</strong> flags per game${f.topCrew?.games ? ` · ${f.topCrew.games} game${f.topCrew.games === 1 ? '' : 's'}` : ''}</div></div>
         </div>
 
         ${log ? `<div class="sb-log">

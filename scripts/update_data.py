@@ -32,6 +32,7 @@ except ImportError:
 
 import raw_capture  # noqa: E402  (raw pulls to R2; never stops the update)
 from jsonsafe import atomic_write, forced_failure  # noqa: E402  (atomic writes; NFLOBS_FAIL test hook)
+from teams import normalize_teams  # noqa: E402  (schedule teams -> today's abbreviations, #105)
 
 # =============================================================================
 # CONFIGURATION
@@ -99,7 +100,6 @@ NFL_TEAMS = {
     'NO': {'name': 'New Orleans Saints', 'abbr': 'NO', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png'},
     'NYG': {'name': 'New York Giants', 'abbr': 'NYG', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png'},
     'NYJ': {'name': 'New York Jets', 'abbr': 'NYJ', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png'},
-    'OAK': {'name': 'Las Vegas Raiders', 'abbr': 'LV', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png'},
     'PHI': {'name': 'Philadelphia Eagles', 'abbr': 'PHI', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png'},
     'PIT': {'name': 'Pittsburgh Steelers', 'abbr': 'PIT', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png'},
     'SEA': {'name': 'Seattle Seahawks', 'abbr': 'SEA', 'logo': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png'},
@@ -159,7 +159,9 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
         forced_failure('load_schedules')
         sched_pl = nfl.load_schedules(schedule_seasons)
         raw_capture.get().capture_frame('nflverse-schedules', f'games_{min(schedule_seasons)}-{max(schedule_seasons)}', sched_pl)
-        schedules = sched_pl.to_pandas()
+        # Raw capture keeps the schedule as received; from here on its teams use today's
+        # abbreviations, like play-by-play (STL/SD/OAK -> LA/LAC/LV, #105)
+        schedules = normalize_teams(sched_pl.to_pandas())
     except Exception as e:
         raise DataLoadError(f"schedules: {short_error(e)}") from e
     # nflreadpy returns no rows (no error) for a season it hasn't published
@@ -472,7 +474,10 @@ def calculate_league_trends(data: dict) -> dict:
     trends['homeVsAway'] = {
         'home': home_count,
         'away': away_count,
-        'bias_pct': round((away_count - home_count) / len(penalties) * 100, 1)
+        # Road teams' share minus home teams' share, in percentage points
+        'bias_pct': round((away_count - home_count) / len(penalties) * 100, 1),
+        # How many more penalties road teams get than home teams, in percent
+        'awayMorePct': round((away_count / home_count - 1) * 100, 1) if home_count else None,
     }
     
     print("   ✓ Generated trend data")
@@ -522,12 +527,13 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     # 2. Home field bias
     home_away = trends.get('homeVsAway', {})
     bias = home_away.get('bias_pct', 0)
+    away_more = home_away.get('awayMorePct') or 0
     insights.append({
         'id': 'home_bias',
         'icon': '',
         'title': 'Home Field Bias',
-        'value': f"{'+' if bias > 0 else ''}{bias}%",
-        'description': f"Away teams are penalized {abs(bias):.1f}% more than home teams",
+        'value': f"{'+' if away_more > 0 else ''}{away_more}%",
+        'description': f"Away teams are penalized {abs(away_more):.1f}% more than home teams",
         'explanation': "Home Field Bias measures how much more (or less) the away team gets penalized compared to the home team. Positive = away team penalized more. This likely reflects crowd influence on officials, not intentional favoritism.",
         'isPositive': abs(bias) < 3
     })
@@ -570,7 +576,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     types = trends.get('byType', [])
     if types:
         top = types[0]
-        total_penalties = sum(t['count'] for t in types)
+        total_penalties = len(data['penalties'])  # all penalties, not just the top 10 types
         insights.append({
             'id': 'top_penalty',
             'icon': '',

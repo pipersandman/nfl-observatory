@@ -17,6 +17,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from teams import normalize_teams  # schedule teams -> today's abbreviations (#105)
+
 ROOT = Path(__file__).parent.parent
 SC = ROOT / 'frontend' / 'data' / 'scorecard'
 NAME_FIXES = {'Ronald Torbert': 'Ron Torbert', 'Adrian Hall': 'Adrian Hill'}
@@ -41,7 +43,7 @@ def actuals(seasons):
     pbp = pbp[(pbp['season_type'] == 'REG')]
     games = set(pbp['game_id'])
     pen = pbp[(pbp['penalty'] == 1) & pbp['penalty_team'].notna()]
-    sched = nfl.load_schedules(seasons).to_pandas().set_index('game_id')
+    sched = normalize_teams(nfl.load_schedules(seasons).to_pandas()).set_index('game_id')
     out = {}
     for gid in games:
         d = pen[pen['game_id'] == gid]

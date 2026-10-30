@@ -374,25 +374,42 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
             schedules[available_cols], on='game_id', how='left'
         )
     
-    # Calculate career stats per referee
-    ref_stats = ref_games.groupby('referee').agg({
+    # Career (#117; C1, C11): regular-season games in the seasons before the current one.
+    # Seasons worked (first_season, last_season) count every game, the current season and
+    # playoffs included; playoff games are counted separately, not in any rate.
+    current = int(ref_games['season'].max())
+    if 'game_type' in ref_games.columns:
+        reg = weeks.regular_season(ref_games, 'game_type')
+        playoffs = ref_games[ref_games['game_type'] != 'REG'].groupby('referee').size()
+    else:
+        reg, playoffs = ref_games, pd.Series(dtype=int)
+    career_games = reg[reg['season'].isin(weeks.prior_seasons(ref_games['season'].unique(), current))]
+
+    worked = ref_games.groupby('referee')['season'].agg(['min', 'max'])
+    worked.columns = ['first_season', 'last_season']
+    ref_stats = career_games.groupby('referee').agg({
         'game_id': 'count',
         'total_penalties': ['sum', 'mean', 'min', 'max', 'std'],
         'home_penalties': 'sum',
         'away_penalties': 'sum',
         'season': ['min', 'max']
-    }).reset_index()
-    
+    })
     ref_stats.columns = [
-        'name', 'games', 'total_penalties', 'avg_per_game',
+        'games', 'total_penalties', 'avg_per_game',
         'min_penalties', 'max_penalties', 'std_dev',
-        'home_penalties', 'away_penalties', 'first_season', 'last_season'
+        'home_penalties', 'away_penalties', 'career_first_season', 'career_last_season'
     ]
-    
+    # Every crew chief who worked a game keeps a row; one with no career games yet (a
+    # first-year crew chief) has games 0 and no career rates
+    ref_stats = worked.join(ref_stats, how='left').rename_axis('name').reset_index()
+    ref_stats['games'] = ref_stats['games'].fillna(0).astype(int)
+    ref_stats['total_penalties'] = ref_stats['total_penalties'].fillna(0)
+    ref_stats['playoff_games'] = ref_stats['name'].map(playoffs).fillna(0).astype(int)
+
     # Calculate derived stats
     ref_stats['home_bias_pct'] = (
         (ref_stats['away_penalties'] - ref_stats['home_penalties']) /
-        ref_stats['total_penalties'] * 100
+        ref_stats['total_penalties'].where(ref_stats['total_penalties'] > 0) * 100
     ).round(1)
     
     ref_stats['slug'] = ref_stats['name'].apply(slugify)
@@ -407,17 +424,19 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
         else:
             return 'Highly Variable'
     
-    ref_stats['consistency'] = ref_stats['std_dev'].apply(get_consistency)
-    
-    # Round numeric columns
+    ref_stats['consistency'] = [get_consistency(s) if g else None
+                                for s, g in zip(ref_stats['std_dev'], ref_stats['games'])]
+
+    # Round numeric columns; whole numbers stay ints (None when there are no career games)
     ref_stats['avg_per_game'] = ref_stats['avg_per_game'].round(1)
     ref_stats['std_dev'] = ref_stats['std_dev'].round(2)
     ref_stats['total_penalties'] = ref_stats['total_penalties'].astype(int)
-    ref_stats['min_penalties'] = ref_stats['min_penalties'].astype(int)
-    ref_stats['max_penalties'] = ref_stats['max_penalties'].astype(int)
+    for col in ('min_penalties', 'max_penalties', 'career_first_season', 'career_last_season'):
+        ref_stats[col] = pd.Series([int(v) if pd.notna(v) else None for v in ref_stats[col]],
+                                   index=ref_stats.index, dtype=object)
     
-    # Sort by games
-    ref_stats = ref_stats.sort_values('games', ascending=False)
+    # Sort by career games (ties by name, so the order is the same every run)
+    ref_stats = ref_stats.sort_values(['games', 'name'], ascending=[False, True])
     
     print(f"   ✓ Calculated stats for {len(ref_stats)} crew chiefs")
     
@@ -425,12 +444,14 @@ def calculate_referee_stats(data: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 def calculate_league_trends(data: dict) -> dict:
-    """Calculate league-wide trends for charts."""
+    """League-wide trends, regular season only (#117, C1). trends.json holds bySeason,
+    byType and homeVsAway; byQuarter is kept in memory for the "Let Them Play" card only."""
     print("\n📈 Calculating league trends...")
     
     penalties = data['penalties']
     if penalties.empty:
         return {}
+    penalties = weeks.regular_season(penalties)
     
     trends = {}
     
@@ -443,7 +464,7 @@ def calculate_league_trends(data: dict) -> dict:
     by_season['avg_per_game'] = (by_season['penalties'] / by_season['games']).round(1)
     trends['bySeason'] = by_season.to_dict('records')
     
-    # By quarter
+    # By quarter (in memory only: written to the file it was unused, P2)
     by_qtr = penalties[penalties['qtr'].between(1, 4)].groupby('qtr').size().reset_index()
     by_qtr.columns = ['quarter', 'count']
     trends['byQuarter'] = by_qtr.to_dict('records')
@@ -454,23 +475,8 @@ def calculate_league_trends(data: dict) -> dict:
     by_type = by_type.sort_values('count', ascending=False).head(10)
     trends['byType'] = by_type.to_dict('records')
     
-    # Penalty types BY quarter (for the enhanced chart)
-    penalty_qtr = penalties[penalties['qtr'].between(1, 4)].copy()
-    top_types = penalty_qtr['penalty_type'].value_counts().head(6).index.tolist()
-    penalty_qtr_filtered = penalty_qtr[penalty_qtr['penalty_type'].isin(top_types)]
-    
-    qtr_type_pivot = penalty_qtr_filtered.groupby(['qtr', 'penalty_type']).size().unstack(fill_value=0)
-    qtr_type_pct = qtr_type_pivot.div(qtr_type_pivot.sum(axis=1), axis=0) * 100
-    
-    trends['byQuarterAndType'] = {
-        'quarters': [1, 2, 3, 4],
-        'types': top_types,
-        'data': {col: qtr_type_pct[col].round(1).tolist() for col in qtr_type_pct.columns}
-    }
-    
     # Home vs away
-    penalties['is_home_penalty'] = penalties['penalty_team'] == penalties['home_team']
-    home_count = int(penalties['is_home_penalty'].sum())
+    home_count = int((penalties['penalty_team'] == penalties['home_team']).sum())
     away_count = int(len(penalties) - home_count)
     trends['homeVsAway'] = {
         'home': home_count,
@@ -579,7 +585,7 @@ def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list
     types = trends.get('byType', [])
     if types:
         top = types[0]
-        total_penalties = len(data['penalties'])  # all penalties, not just the top 10 types
+        total_penalties = len(weeks.regular_season(data['penalties']))  # all regular-season penalties, not just the top 10 types
         insights.append({
             'id': 'top_penalty',
             'icon': '',
@@ -772,8 +778,15 @@ def save_json(data, filename: str, quiet: bool = False):
 
 
 def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame, 
-                               penalties_df: pd.DataFrame, officials_df: pd.DataFrame):
-    """Generate individual JSON files for each referee with penalty type breakdowns."""
+                               penalties_df: pd.DataFrame, officials_df: pd.DataFrame,
+                               league_career_rate: float | None = None):
+    """Generate individual JSON files for each referee with penalty type breakdowns.
+
+    Regular season only (#117, C1). Career figures (stats, penaltyTypes,
+    quarterDistribution, tendencies) use the seasons before the current one; seasonStats
+    and recentGames include the current season; playoff games are counted, not used.
+    league_career_rate: the league's own regular-season rate over the career window
+    (season_comparison.json baselines.all), the benchmark for tendencies (C10)."""
     print("\n📝 Generating referee profiles...")
     
     referee_dir = DATA_DIR / 'referee'
@@ -791,13 +804,17 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
     reg_games_all = ref_games[ref_games['game_type'] == 'REG'] if 'game_type' in ref_games.columns else ref_games
     reg_pen_all = (penalties_with_ref[penalties_with_ref['season_type'] == 'REG']
                    if 'season_type' in penalties_with_ref.columns else penalties_with_ref)
+    career_window = weeks.prior_seasons(ref_games['season'].unique(), current_season)
+    career_games_all = reg_games_all[reg_games_all['season'].isin(career_window)]
+    if league_career_rate is None and len(career_games_all):
+        league_career_rate = career_games_all['total_penalties'].sum() / len(career_games_all)
     
     for _, ref in ref_stats.iterrows():
         name = ref['name']
         slug = ref['slug']
         
-        # Get this referee's games
-        games = ref_games[ref_games['referee'] == name].copy()
+        # Get this referee's regular-season games (playoff games: counted in playoffGames only)
+        games = reg_games_all[reg_games_all['referee'] == name].copy()
         
         # Sort by date (most recent first)
         if 'gameday' in games.columns:
@@ -818,8 +835,8 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
                                      season_stats['penalties'] * 100).round(1)
         season_stats = season_stats.sort_values('season', ascending=True)
         
-        # === PENALTY TYPE BREAKDOWN ===
-        ref_penalties = penalties_with_ref[penalties_with_ref['referee'] == name]
+        # === PENALTY TYPE BREAKDOWN (career window) ===
+        ref_penalties = reg_pen_all[(reg_pen_all['referee'] == name) & reg_pen_all['season'].isin(career_window)]
         
         penalty_types = []
         if not ref_penalties.empty and 'penalty_type' in ref_penalties.columns:
@@ -925,13 +942,17 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             }
             recent_games.append(game)
         
-        # Calculate tendencies
-        league_avg = ref_stats['avg_per_game'].mean()
+        # Tendencies: the crew's career rate vs the league's own rate over the same
+        # window (C10), not the mean of crew chiefs' averages
+        league_avg = league_career_rate
         ref_avg = ref['avg_per_game']
-        diff = ref_avg - league_avg
-        diff_pct = (diff / league_avg * 100)
+        has_career = bool(ref['games']) and league_avg and pd.notna(ref_avg)
+        diff = ref_avg - league_avg if has_career else None
+        diff_pct = (diff / league_avg * 100) if has_career else None
         
-        if diff_pct > 10:
+        if not has_career:
+            tendency_desc = "No regular-season games before this season yet."
+        elif diff_pct > 10:
             tendency_desc = f"Flag-heavy crew — expect more penalties than average. {name}'s games average {diff:.1f} more penalties per game than league average."
         elif diff_pct > 5:
             tendency_desc = "Above-average penalty rate. Slightly more flags than typical."
@@ -949,14 +970,18 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             'firstSeason': int(ref['first_season']),
             'lastSeason': int(ref['last_season']),
             'experience': f"{int(ref['last_season'] - ref['first_season'] + 1)} seasons",
+            # Career window for the rates below (#117): regular season, seasons before this one
+            'careerSeasons': ([ref['career_first_season'], ref['career_last_season']]
+                              if ref['career_first_season'] is not None else None),
+            'playoffGames': int(ref['playoff_games']),   # worked, not in any rate (C1)
             'stats': {
                 'games': int(ref['games']),
                 'totalPenalties': int(ref['total_penalties']),
-                'avgPerGame': float(ref['avg_per_game']),
-                'minGame': int(ref['min_penalties']),
-                'maxGame': int(ref['max_penalties']),
+                'avgPerGame': float(ref['avg_per_game']) if pd.notna(ref['avg_per_game']) else None,
+                'minGame': ref['min_penalties'],
+                'maxGame': ref['max_penalties'],
                 'stdDev': float(ref['std_dev']) if pd.notna(ref['std_dev']) else 0,
-                'homeBiasPct': float(ref['home_bias_pct']),
+                'homeBiasPct': float(ref['home_bias_pct']) if pd.notna(ref['home_bias_pct']) else None,
                 'consistency': ref['consistency']
             },
             'seasonStats': season_stats[['season', 'games', 'penalties', 'avg', 'homeBias']].to_dict('records'),
@@ -970,12 +995,12 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
             'penaltyTypeComparison': type_comparison,
             'quarterComparison': quarter_comparison,
             'tendencies': {
-                'avgVsLeague': round(diff, 1),
-                'avgVsLeaguePct': round(diff_pct, 1),
+                'avgVsLeague': round(diff, 1) if has_career else None,
+                'avgVsLeaguePct': round(diff_pct, 1) if has_career else None,
                 'description': tendency_desc
             },
             'explanations': {
-                'avgPerGame': 'Average number of accepted penalties per game this referee has worked.',
+                'avgPerGame': 'Average number of accepted penalties per game in the regular-season games this referee worked before this season.',
                 'homeBiasPct': "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
                 'consistency': 'Based on standard deviation of penalties per game. Lower variance = more predictable.',
                 'penaltyTypes': 'Breakdown of the most common penalty types called in games this referee works.',
@@ -1125,7 +1150,7 @@ def main():
     # Save JSON files
     print("\n💾 Saving JSON files...")
     save_json(hero_stats, 'stats.json')
-    save_json(trends, 'trends.json')
+    save_json({k: v for k, v in trends.items() if k != 'byQuarter'}, 'trends.json')   # byQuarter: in memory only (P2)
     save_json(insights, 'insights.json')
     if season_comparison:
         save_json(season_comparison, 'season_comparison.json')
@@ -1134,12 +1159,15 @@ def main():
     ref_summary = ref_stats[[
         'name', 'slug', 'games', 'total_penalties', 'avg_per_game',
         'min_penalties', 'max_penalties', 'std_dev', 'home_bias_pct',
-        'consistency', 'first_season', 'last_season'
+        'consistency', 'first_season', 'last_season',
+        'career_first_season', 'career_last_season', 'playoff_games'
     ]].to_dict('records')
     save_json(ref_summary, 'referees.json')
     
     # Individual profiles (with penalty type breakdown)
-    generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'])
+    career_rate = (((season_comparison or {}).get('league') or {}).get('baselines') or {}).get('all', {}) or {}
+    generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'],
+                              career_rate.get('perGame'))
 
     # Modules: each one runs even if an earlier one failed; failures are recorded,
     # not hidden. Order and arguments are unchanged.

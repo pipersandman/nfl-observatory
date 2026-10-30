@@ -23,6 +23,7 @@ import csv
 import html
 import json
 import os
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -329,8 +330,9 @@ def crew_pages():
         {f'<ul class="st-list">{traits}</ul>' if traits else '<p>Close to the league average on every measure we track.</p>'}
         {f'<p>Calls most like: {sims}.</p>' if sims else ''}
         {f'<h2>Penalty types vs the league ({CAREER}, season-adjusted, per game)</h2>' + table(['Penalty', 'Per game', 'vs league rate'], type_rows) if type_rows else ''}
-        {'<h2>Season by season</h2>' + table(['Season', 'Games', 'Flags / game'], season_rows) if season_rows else ''}
-        {'<h2>Recent games</h2>' + table(['Date', 'Game', 'Score', 'Flags', 'By team'], rec_rows) if rec_rows else ''}
+        {'<h2>Season by season (regular season)</h2>' + table(['Season', 'Games', 'Flags / game'], season_rows) if season_rows else ''}
+        {'<h2>Recent games (regular season)</h2>' + table(['Date', 'Game', 'Score', 'Flags', 'By team'], rec_rows) if rec_rows else ''}
+        {f'<p class="st-note">Playoff games worked: {prof["playoffGames"]} (mixed crews; not included in rates).</p>' if prof.get('playoffGames') is not None else ''}
         <h2>Questions</h2>
         {faq_html}
         <p class="st-note">Statistics reflect the crew chief's assignment; crews change around the chief each year. Patterns, not motives.</p>
@@ -677,8 +679,12 @@ def home_prefill():
     refs = load('referees.json') or []
     put('DATA_TABLE', ''.join(
         f"<tr><td>{crew_link(r['name'])}</td><td>{r.get('games')}</td><td>{f1(r.get('avg_per_game'))}</td>"
-        f"<td>{r.get('min_penalties')}–{r.get('max_penalties')}</td><td>{f1(r.get('home_bias_pct'))} pts</td><td>{e(r.get('consistency', ''))}</td></tr>"
+        f"<td>{'—' if r.get('min_penalties') is None else str(r['min_penalties']) + '–' + str(r['max_penalties'])}</td>"
+        f"<td>{'—' if r.get('home_bias_pct') is None else f1(r['home_bias_pct']) + ' pts'}</td><td>{e(r.get('consistency') or '—')}</td></tr>"
         for r in refs))
+    # Window labels the app fills on load (#116, #117): written into the page source too
+    s = re.sub(r'(<span data-window="career">)[^<]*(</span>)', lambda m: m.group(1) + e(CAREER) + m.group(2), s)
+    s = re.sub(r'(<span data-window="dataStart">)[^<]*(</span>)', lambda m: m.group(1) + f'since {START}' + m.group(2), s)
     idx.write_text(s, encoding='utf-8')
 
 

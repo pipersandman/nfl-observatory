@@ -4,6 +4,7 @@ Per-game rate of each penalty type, by regular season, plus this season vs
 three comparisons (last season through the same week, all of last season,
 all prior seasons). Writes frontend/data/type_trends.json via update_data.py.
 """
+import math
 from datetime import datetime, timezone
 
 import pandas as pd
@@ -15,6 +16,17 @@ TOP_N = 18
 
 def _r(x, d=2):
     return None if x is None or pd.isna(x) else round(float(x), d)
+
+
+def _whole_pct(x):
+    """A percentage rounded half away from zero, stored once so every page shows the same number."""
+    return int(math.copysign(math.floor(abs(x) + 0.5), x))
+
+
+def _rate(frame):
+    """Games-weighted flags per game for a set of games: {'perGame', 'games'}."""
+    n = int(len(frame))
+    return {'perGame': _r(frame['flags'].sum() / n) if n else None, 'games': n}
 
 
 def build_type_trends(data: dict) -> dict:
@@ -33,6 +45,8 @@ def build_type_trends(data: dict) -> dict:
     pen = pen.merge(games.rename(columns={'season': 's', 'week': 'w'}), on='game_id')
 
     through, _ = weeks.completed_week(sched, gp, season)
+    # Same-weeks comparison: through the partial week while one is in progress (#118)
+    same_week = weeks.compare_week(through, games.loc[games['season'] == season, 'week'])
     seasons = sorted(int(x) for x in games['season'].unique())
     prior = weeks.prior_seasons(seasons, season)
     n_games = games.groupby('season').size()
@@ -46,9 +60,9 @@ def build_type_trends(data: dict) -> dict:
     cur_rates, cur_n = rate(games['season'] == season, pen['s'] == season)
     comps = {}
     if (season - 1) in prior:
-        comps['sameWeeks'] = (weeks.through_label(season - 1, through), weeks.short_through(season - 1, through),
-                              *rate((games['season'] == season - 1) & (games['week'] <= through),
-                                    (pen['s'] == season - 1) & (pen['w'] <= through)))
+        comps['sameWeeks'] = (weeks.through_label(season - 1, same_week), weeks.short_through(season - 1, same_week),
+                              *rate((games['season'] == season - 1) & (games['week'] <= same_week),
+                                    (pen['s'] == season - 1) & (pen['w'] <= same_week)))
         comps['lastSeason'] = (f"All of {season - 1}", f"{season - 1}",
                                *rate(games['season'] == season - 1, pen['s'] == season - 1))
     if prior:
@@ -91,6 +105,28 @@ def build_type_trends(data: dict) -> dict:
         'priorAverage': [{'week': int(w), 'perGame': _r(r['mean'], 2), 'games': int(r['size'])} for w, r in pw.iterrows()],
         'priorLabel': f"{weeks.span_label(prior)} avg" if prior else None,
     }
+    # This season vs the usual for the same (completed) weeks, games-weighted on both sides (#118, C20)
+    if through and prior:
+        g_prior = gw[gw['season'].isin(prior)]
+        cur_u = _rate(gw[(gw['season'] == season) & (gw['week'] <= through)])
+        prior_u = _rate(g_prior[g_prior['week'] <= through])
+        if cur_u['games'] and prior_u['games']:
+            cur_x = gw[(gw['season'] == season) & (gw['week'] <= through)]['flags'].mean()
+            prior_x = g_prior[g_prior['week'] <= through]['flags'].mean()
+            weekly['usual'] = {'through': int(through), 'label': weeks.weeks_label(through),
+                               'seasons': weeks.span_label(prior), 'current': cur_u, 'prior': prior_u,
+                               'diff': _r(cur_x - prior_x), 'pct': _whole_pct((cur_x / prior_x - 1) * 100)}
+    # The fade: late-season weeks vs the first weeks, every prior season, games-weighted (#118, C20)
+    fade = weeks.fade_windows(int(pw.index.max())) if len(pw) else None
+    if fade:
+        g_prior = gw[gw['season'].isin(prior)]
+        sides = {k: g_prior[g_prior['week'].between(fade[k]['from'], fade[k]['to'])] for k in ('early', 'late')}
+        for k, f in sides.items():
+            fade[k].update(_rate(f))
+        e_x, l_x = sides['early']['flags'].mean(), sides['late']['flags'].mean()
+        fade['seasons'] = weeks.span_label(prior)
+        fade['fewer'] = _r(e_x - l_x)
+        fade['pctFewer'] = _whole_pct((1 - l_x / e_x) * 100)
     # ---- Charts for League Trends (regular season only) ----
     # Full season vs the same early weeks for every season (fair comparison for a
     # season in progress)
@@ -133,12 +169,12 @@ def build_type_trends(data: dict) -> dict:
     return {
         'season': season, 'throughWeek': through, 'currentGames': cur_n,
         'comparisons': [{'key': k, 'label': v[0], 'short': v[1], 'games': v[3],
-                         'button': weeks.button_through(season - 1, through) if k == 'sameWeeks' else v[0]}
+                         'button': weeks.button_through(season - 1, same_week) if k == 'sameWeeks' else v[0]}
                         for k, v in comps.items()],
         'defaultComparison': 'sameWeeks' if 'sameWeeks' in comps else next(iter(comps), None),
         'types': types,
         'weekly': weekly,
-        'fadeWindows': weeks.fade_windows(int(pw.index.max())) if len(pw) else None,
+        'fadeWindows': fade,
         'seasonCompare': season_compare,
         'quarters': quarters,
         'typeShare': shares,

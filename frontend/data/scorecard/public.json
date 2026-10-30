@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-10-30T00:40:24+00:00",
+  "generatedAt": "2026-10-30T05:02:02+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 44,
-      "avgMiss": 3.48,
-      "hitRate": 88.6,
-      "within3": 47.7,
+      "games": 45,
+      "avgMiss": 3.52,
+      "hitRate": 88.9,
+      "within3": 46.7,
       "baselineAvgMiss": 3.6,
-      "skillPct": 3.3
+      "skillPct": 2.2
     },
     "byWeek": [
       {
@@ -57,9 +57,39 @@
         "within3": 42.9,
         "baselineAvgMiss": 3.29,
         "skillPct": -5.6
+      },
+      {
+        "season": 2026,
+        "week": 8,
+        "games": 1,
+        "avgMiss": 5.1,
+        "hitRate": 100.0,
+        "within3": 0.0,
+        "baselineAvgMiss": 3.3,
+        "skillPct": -54.5
       }
     ],
     "games": [
+      {
+        "gameId": "2026_08_CAR_GB",
+        "season": 2026,
+        "week": 8,
+        "away": "CAR",
+        "home": "GB",
+        "crew": "Scott Novak",
+        "source": "live",
+        "projected": 16.1,
+        "low": 10,
+        "high": 23,
+        "actual": 11,
+        "miss": -5.1,
+        "inRange": true,
+        "baselineMiss": 3.3,
+        "homeProjected": 8.8,
+        "awayProjected": 7.3,
+        "homeActual": 6,
+        "awayActual": 5
+      },
       {
         "gameId": "2026_07_TB_CAR",
         "season": 2026,

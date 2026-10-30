@@ -1,7 +1,10 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 8,
+    "games": 1
+  },
   "defaultFrame": "season",
   "frames": [
     {
@@ -46,16 +49,16 @@
       "key": "season",
       "label": "2026 season",
       "description": "2026 regular season so far",
-      "games": 107,
-      "plays": 17372,
-      "penalties": 1570,
-      "yards": 12754,
+      "games": 108,
+      "plays": 17544,
+      "penalties": 1581,
+      "yards": 12840,
       "pctPlays": 9.0,
       "flagEveryPlays": 11.1,
-      "perGame": 14.7,
-      "yardsPerGame": 119.2,
+      "perGame": 14.6,
+      "yardsPerGame": 118.9,
       "yardsPerPenalty": 8.1,
-      "firstDowns": 432,
+      "firstDowns": 434,
       "firstDownsPerGame": 4.0,
       "offenseShare": 59.0,
       "preSnapShare": 38.0,
@@ -63,12 +66,12 @@
       "minutesPerFlag": 4.1,
       "mostCommon": {
         "type": "Offensive Holding",
-        "count": 348,
+        "count": 350,
         "pct": 22.0
       },
       "mostFlaggedTeam": {
-        "team": "GB",
-        "perGame": 9.3
+        "team": "CLE",
+        "perGame": 9.0
       },
       "cleanestTeam": {
         "team": "IND",
@@ -76,8 +79,8 @@
       },
       "topCrew": {
         "name": "Scott Novak",
-        "perGame": 20.1,
-        "games": 7
+        "perGame": 19.0,
+        "games": 8
       }
     },
     {
@@ -160,16 +163,16 @@
       "key": "all",
       "label": "Since 2015",
       "description": "Every regular-season game since 2015",
-      "games": 3002,
-      "plays": 489700,
-      "penalties": 38028,
-      "yards": 319815,
+      "games": 3003,
+      "plays": 489872,
+      "penalties": 38039,
+      "yards": 319901,
       "pctPlays": 7.8,
       "flagEveryPlays": 12.9,
       "perGame": 12.7,
       "yardsPerGame": 106.5,
       "yardsPerPenalty": 8.4,
-      "firstDowns": 11178,
+      "firstDowns": 11180,
       "firstDownsPerGame": 3.7,
       "offenseShare": 55.0,
       "preSnapShare": 35.0,
@@ -177,7 +180,7 @@
       "minutesPerFlag": 4.7,
       "mostCommon": {
         "type": "Offensive Holding",
-        "count": 7481,
+        "count": 7483,
         "pct": 20.0
       },
       "mostFlaggedTeam": {
@@ -286,6 +289,19 @@
       "perGame": 12.6,
       "yardsPerGame": 101.6,
       "firstDowns": 58
+    },
+    {
+      "week": 8,
+      "complete": false,
+      "scheduled": 14,
+      "games": 1,
+      "plays": 172,
+      "penalties": 11,
+      "yards": 86,
+      "pctPlays": 6.4,
+      "perGame": 11.0,
+      "yardsPerGame": 86.0,
+      "firstDowns": 2
     }
   ],
   "weekFrames": [
@@ -575,9 +591,50 @@
         "perGame": 20.0,
         "games": 1
       }
+    },
+    {
+      "key": "week-8",
+      "week": 8,
+      "complete": false,
+      "scheduled": 14,
+      "label": "Week 8",
+      "description": "2026 Week 8 (in progress: 1 of 14 games)",
+      "games": 1,
+      "plays": 172,
+      "penalties": 11,
+      "yards": 86,
+      "pctPlays": 6.4,
+      "flagEveryPlays": 15.6,
+      "perGame": 11.0,
+      "yardsPerGame": 86.0,
+      "yardsPerPenalty": 7.8,
+      "firstDowns": 2,
+      "firstDownsPerGame": 2.0,
+      "offenseShare": 73.0,
+      "preSnapShare": 45.0,
+      "homeShare": 55.0,
+      "minutesPerFlag": 5.5,
+      "mostCommon": {
+        "type": "False Start",
+        "count": 4,
+        "pct": 36.0
+      },
+      "mostFlaggedTeam": {
+        "team": "GB",
+        "perGame": 6.0
+      },
+      "cleanestTeam": {
+        "team": "CAR",
+        "perGame": 5.0
+      },
+      "topCrew": {
+        "name": "Scott Novak",
+        "perGame": 11.0,
+        "games": 1
+      }
     }
   ],
   "defaultWeek": 7,
   "notes": "Regular season. Accepted penalties. Plays = snaps plus pre-snap penalty plays.",
-  "generatedAt": "2026-10-30T00:40:08+00:00"
+  "generatedAt": "2026-10-30T05:01:55+00:00"
 }

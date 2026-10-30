@@ -4,14 +4,19 @@
   "firstSeason": 2018,
   "lastSeason": 2026,
   "experience": "9 seasons",
+  "careerSeasons": [
+    2018,
+    2025
+  ],
+  "playoffGames": 6,
   "stats": {
-    "games": 137,
-    "totalPenalties": 1631,
-    "avgPerGame": 11.9,
+    "games": 124,
+    "totalPenalties": 1487,
+    "avgPerGame": 12.0,
     "minGame": 3,
     "maxGame": 22,
-    "stdDev": 3.88,
-    "homeBiasPct": 1.8,
+    "stdDev": 3.98,
+    "homeBiasPct": 2.1,
     "consistency": "Variable"
   },
   "seasonStats": [
@@ -31,45 +36,45 @@
     },
     {
       "season": 2020,
-      "games": 14,
-      "penalties": 156,
-      "avg": 11.1,
-      "homeBias": 7.7
+      "games": 13,
+      "penalties": 146,
+      "avg": 11.2,
+      "homeBias": 11.0
     },
     {
       "season": 2021,
-      "games": 18,
-      "penalties": 204,
-      "avg": 11.3,
-      "homeBias": -2.0
+      "games": 17,
+      "penalties": 191,
+      "avg": 11.2,
+      "homeBias": -2.6
     },
     {
       "season": 2022,
-      "games": 17,
-      "penalties": 198,
-      "avg": 11.6,
-      "homeBias": 18.2
+      "games": 16,
+      "penalties": 187,
+      "avg": 11.7,
+      "homeBias": 20.9
     },
     {
       "season": 2023,
-      "games": 17,
-      "penalties": 183,
-      "avg": 10.8,
-      "homeBias": -12.6
+      "games": 16,
+      "penalties": 176,
+      "avg": 11.0,
+      "homeBias": -13.6
     },
     {
       "season": 2024,
-      "games": 17,
-      "penalties": 215,
-      "avg": 12.6,
-      "homeBias": 10.7
+      "games": 16,
+      "penalties": 203,
+      "avg": 12.7,
+      "homeBias": 9.4
     },
     {
       "season": 2025,
-      "games": 17,
-      "penalties": 205,
-      "avg": 12.1,
-      "homeBias": 2.4
+      "games": 16,
+      "penalties": 195,
+      "avg": 12.2,
+      "homeBias": 3.6
     },
     {
       "season": 2026,
@@ -82,75 +87,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 358,
-      "pct": 21.9
+      "count": 319,
+      "pct": 21.5
     },
     {
       "type": "False Start",
-      "count": 301,
-      "pct": 18.5
+      "count": 273,
+      "pct": 18.4
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 125,
-      "pct": 7.7
+      "count": 118,
+      "pct": 7.9
     },
     {
       "type": "Defensive Holding",
-      "count": 95,
-      "pct": 5.8
+      "count": 89,
+      "pct": 6.0
     },
     {
       "type": "Defensive Offside",
-      "count": 70,
-      "pct": 4.3
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 65,
-      "pct": 4.0
+      "count": 63,
+      "pct": 4.2
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 62,
+      "count": 58,
+      "pct": 3.9
+    },
+    {
+      "type": "Unnecessary Roughness",
+      "count": 57,
       "pct": 3.8
     },
     {
       "type": "Delay of Game",
-      "count": 59,
-      "pct": 3.6
+      "count": 52,
+      "pct": 3.5
     },
     {
       "type": "Illegal Use of Hands",
-      "count": 55,
+      "count": 50,
       "pct": 3.4
     },
     {
       "type": "Illegal Formation",
-      "count": 53,
+      "count": 48,
       "pct": 3.2
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 342,
-      "pct": 21.1
+      "count": 318,
+      "pct": 21.5
     },
     {
       "quarter": 2,
-      "count": 486,
-      "pct": 30.0
+      "count": 453,
+      "pct": 30.6
     },
     {
       "quarter": 3,
-      "count": 380,
-      "pct": 23.4
+      "count": 337,
+      "pct": 22.8
     },
     {
       "quarter": 4,
-      "count": 414,
-      "pct": 25.5
+      "count": 370,
+      "pct": 25.0
     }
   ],
   "recentGames": [
@@ -335,32 +340,6 @@
       "stadium": "GEHA Field at Arrowhead Stadium",
       "weather": null,
       "temp": 91
-    },
-    {
-      "gameId": "2025_21_LA_SEA",
-      "season": 2025,
-      "week": 21,
-      "date": "2026-01-25",
-      "homeTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "awayTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "homeScore": 31,
-      "awayScore": 27,
-      "penalties": 10,
-      "yards": 80,
-      "gameType": "CON",
-      "homePenalties": 6,
-      "awayPenalties": 4,
-      "stadium": "Lumen Field",
-      "weather": null,
-      "temp": 41
     },
     {
       "gameId": "2025_18_MIA_NE",
@@ -673,6 +652,32 @@
       "stadium": "Bank of America Stadium",
       "weather": null,
       "temp": 77
+    },
+    {
+      "gameId": "2025_04_BAL_KC",
+      "season": 2025,
+      "week": 4,
+      "date": "2025-09-28",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "homeScore": 37,
+      "awayScore": 20,
+      "penalties": 11,
+      "yards": 96,
+      "gameType": "REG",
+      "homePenalties": 5,
+      "awayPenalties": 6,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "weather": null,
+      "temp": 89
     }
   ],
   "currentSeason": 2026,
@@ -847,16 +852,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.9,
-    "avgVsLeaguePct": -7.0,
-    "description": "Below-average penalty rate. Tends to let minor infractions go."
+    "avgVsLeague": -0.6,
+    "avgVsLeaguePct": -4.7,
+    "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.016765Z"
+  "generatedAt": "2026-10-30T00:40:07.433003Z"
 }

@@ -4,14 +4,19 @@
   "firstSeason": 2015,
   "lastSeason": 2026,
   "experience": "12 seasons",
+  "careerSeasons": [
+    2015,
+    2025
+  ],
+  "playoffGames": 12,
   "stats": {
-    "games": 189,
-    "totalPenalties": 2484,
-    "avgPerGame": 13.1,
+    "games": 170,
+    "totalPenalties": 2268,
+    "avgPerGame": 13.3,
     "minGame": 2,
     "maxGame": 25,
-    "stdDev": 4.24,
-    "homeBiasPct": 2.5,
+    "stdDev": 4.27,
+    "homeBiasPct": 2.4,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -24,10 +29,10 @@
     },
     {
       "season": 2016,
-      "games": 17,
-      "penalties": 216,
-      "avg": 12.7,
-      "homeBias": 7.4
+      "games": 15,
+      "penalties": 193,
+      "avg": 12.9,
+      "homeBias": 11.9
     },
     {
       "season": 2017,
@@ -38,59 +43,59 @@
     },
     {
       "season": 2018,
-      "games": 16,
-      "penalties": 230,
-      "avg": 14.4,
-      "homeBias": -9.6
+      "games": 15,
+      "penalties": 215,
+      "avg": 14.3,
+      "homeBias": -7.0
     },
     {
       "season": 2019,
-      "games": 16,
-      "penalties": 213,
-      "avg": 13.3,
-      "homeBias": -8.0
+      "games": 15,
+      "penalties": 203,
+      "avg": 13.5,
+      "homeBias": -7.4
     },
     {
       "season": 2020,
-      "games": 17,
-      "penalties": 208,
+      "games": 15,
+      "penalties": 183,
       "avg": 12.2,
-      "homeBias": 15.4
+      "homeBias": 10.4
     },
     {
       "season": 2021,
-      "games": 17,
-      "penalties": 237,
-      "avg": 13.9,
-      "homeBias": -3.0
+      "games": 16,
+      "penalties": 229,
+      "avg": 14.3,
+      "homeBias": -4.8
     },
     {
       "season": 2022,
-      "games": 18,
-      "penalties": 223,
-      "avg": 12.4,
-      "homeBias": 7.6
+      "games": 16,
+      "penalties": 204,
+      "avg": 12.8,
+      "homeBias": 12.7
     },
     {
       "season": 2023,
-      "games": 17,
-      "penalties": 171,
-      "avg": 10.1,
-      "homeBias": 0.6
+      "games": 16,
+      "penalties": 163,
+      "avg": 10.2,
+      "homeBias": -1.8
     },
     {
       "season": 2024,
-      "games": 17,
-      "penalties": 185,
-      "avg": 10.9,
-      "homeBias": 12.4
+      "games": 16,
+      "penalties": 179,
+      "avg": 11.2,
+      "homeBias": 10.6
     },
     {
       "season": 2025,
-      "games": 17,
-      "penalties": 242,
-      "avg": 14.2,
-      "homeBias": 9.1
+      "games": 16,
+      "penalties": 234,
+      "avg": 14.6,
+      "homeBias": 8.5
     },
     {
       "season": 2026,
@@ -103,74 +108,74 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 515,
-      "pct": 20.7
+      "count": 484,
+      "pct": 21.3
     },
     {
       "type": "False Start",
-      "count": 423,
-      "pct": 17.0
+      "count": 387,
+      "pct": 17.1
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 200,
-      "pct": 8.1
+      "count": 177,
+      "pct": 7.8
     },
     {
       "type": "Defensive Holding",
-      "count": 147,
+      "count": 133,
       "pct": 5.9
     },
     {
       "type": "Defensive Offside",
-      "count": 127,
-      "pct": 5.1
+      "count": 114,
+      "pct": 5.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 119,
-      "pct": 4.8
-    },
-    {
-      "type": "Delay of Game",
-      "count": 116,
+      "count": 107,
       "pct": 4.7
     },
     {
-      "type": "Roughing the Passer",
-      "count": 86,
-      "pct": 3.5
+      "type": "Delay of Game",
+      "count": 94,
+      "pct": 4.1
     },
     {
       "type": "Illegal Block Above the Waist",
-      "count": 85,
+      "count": 80,
+      "pct": 3.5
+    },
+    {
+      "type": "Roughing the Passer",
+      "count": 78,
       "pct": 3.4
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 79,
-      "pct": 3.2
+      "count": 71,
+      "pct": 3.1
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 505,
-      "pct": 20.6
+      "count": 460,
+      "pct": 20.5
     },
     {
       "quarter": 2,
-      "count": 707,
+      "count": 645,
       "pct": 28.8
     },
     {
       "quarter": 3,
-      "count": 586,
-      "pct": 23.9
+      "count": 537,
+      "pct": 24.0
     },
     {
       "quarter": 4,
-      "count": 655,
+      "count": 599,
       "pct": 26.7
     }
   ],
@@ -356,32 +361,6 @@
       "stadium": "MetLife Stadium",
       "weather": null,
       "temp": 80
-    },
-    {
-      "gameId": "2025_20_BUF_DEN",
-      "season": 2025,
-      "week": 20,
-      "date": "2026-01-17",
-      "homeTeam": {
-        "abbr": "DEN",
-        "name": "Denver Broncos",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png"
-      },
-      "awayTeam": {
-        "abbr": "BUF",
-        "name": "Buffalo Bills",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
-      },
-      "homeScore": 33,
-      "awayScore": 30,
-      "penalties": 8,
-      "yards": 88,
-      "gameType": "DIV",
-      "homePenalties": 3,
-      "awayPenalties": 5,
-      "stadium": "Empower Field at Mile High",
-      "weather": null,
-      "temp": 36
     },
     {
       "gameId": "2025_18_ARI_LA",
@@ -694,6 +673,32 @@
       "stadium": "Allegiant Stadium",
       "weather": null,
       "temp": null
+    },
+    {
+      "gameId": "2025_05_DET_CIN",
+      "season": 2025,
+      "week": 5,
+      "date": "2025-10-05",
+      "homeTeam": {
+        "abbr": "CIN",
+        "name": "Cincinnati Bengals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
+      },
+      "awayTeam": {
+        "abbr": "DET",
+        "name": "Detroit Lions",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
+      },
+      "homeScore": 24,
+      "awayScore": 37,
+      "penalties": 14,
+      "yards": 86,
+      "gameType": "REG",
+      "homePenalties": 6,
+      "awayPenalties": 8,
+      "stadium": "Paycor Stadium",
+      "weather": null,
+      "temp": 84
     }
   ],
   "currentSeason": 2026,
@@ -885,16 +890,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.3,
-    "avgVsLeaguePct": 2.3,
-    "description": "League-average officiating style. Penalty rates are typical."
+    "avgVsLeague": 0.7,
+    "avgVsLeaguePct": 5.6,
+    "description": "Above-average penalty rate. Slightly more flags than typical."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:50.831068Z"
+  "generatedAt": "2026-10-30T00:40:07.302476Z"
 }

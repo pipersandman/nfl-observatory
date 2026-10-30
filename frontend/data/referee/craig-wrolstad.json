@@ -4,30 +4,35 @@
   "firstSeason": 2015,
   "lastSeason": 2026,
   "experience": "12 seasons",
+  "careerSeasons": [
+    2015,
+    2025
+  ],
+  "playoffGames": 7,
   "stats": {
-    "games": 185,
-    "totalPenalties": 2292,
-    "avgPerGame": 12.4,
+    "games": 172,
+    "totalPenalties": 2119,
+    "avgPerGame": 12.3,
     "minGame": 4,
     "maxGame": 26,
-    "stdDev": 4.18,
-    "homeBiasPct": 3.7,
+    "stdDev": 4.09,
+    "homeBiasPct": 4.0,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
     {
       "season": 2015,
-      "games": 16,
-      "penalties": 230,
-      "avg": 14.4,
-      "homeBias": 0.9
+      "games": 15,
+      "penalties": 219,
+      "avg": 14.6,
+      "homeBias": 1.4
     },
     {
       "season": 2016,
-      "games": 16,
-      "penalties": 184,
+      "games": 15,
+      "penalties": 173,
       "avg": 11.5,
-      "homeBias": -6.5
+      "homeBias": -7.5
     },
     {
       "season": 2017,
@@ -59,38 +64,38 @@
     },
     {
       "season": 2021,
-      "games": 17,
-      "penalties": 192,
-      "avg": 11.3,
-      "homeBias": 3.1
+      "games": 16,
+      "penalties": 184,
+      "avg": 11.5,
+      "homeBias": 3.3
     },
     {
       "season": 2022,
-      "games": 17,
-      "penalties": 159,
-      "avg": 9.4,
-      "homeBias": 4.4
+      "games": 16,
+      "penalties": 154,
+      "avg": 9.6,
+      "homeBias": 5.2
     },
     {
       "season": 2023,
-      "games": 17,
-      "penalties": 168,
+      "games": 16,
+      "penalties": 159,
       "avg": 9.9,
-      "homeBias": -7.1
+      "homeBias": -6.9
     },
     {
       "season": 2024,
-      "games": 17,
-      "penalties": 252,
-      "avg": 14.8,
-      "homeBias": 4.8
+      "games": 16,
+      "penalties": 240,
+      "avg": 15.0,
+      "homeBias": 5.8
     },
     {
       "season": 2025,
-      "games": 18,
-      "penalties": 208,
-      "avg": 11.6,
-      "homeBias": 10.6
+      "games": 17,
+      "penalties": 199,
+      "avg": 11.7,
+      "homeBias": 9.5
     },
     {
       "season": 2026,
@@ -103,75 +108,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 479,
-      "pct": 20.9
+      "count": 444,
+      "pct": 21.0
     },
     {
       "type": "False Start",
-      "count": 407,
-      "pct": 17.8
+      "count": 385,
+      "pct": 18.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 205,
-      "pct": 8.9
+      "count": 183,
+      "pct": 8.6
     },
     {
       "type": "Defensive Holding",
-      "count": 134,
-      "pct": 5.8
+      "count": 127,
+      "pct": 6.0
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 117,
-      "pct": 5.1
+      "count": 110,
+      "pct": 5.2
     },
     {
       "type": "Defensive Offside",
-      "count": 105,
-      "pct": 4.6
+      "count": 100,
+      "pct": 4.7
     },
     {
       "type": "Delay of Game",
-      "count": 103,
-      "pct": 4.5
+      "count": 91,
+      "pct": 4.3
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 95,
-      "pct": 4.1
+      "count": 85,
+      "pct": 4.0
     },
     {
       "type": "Roughing the Passer",
-      "count": 75,
-      "pct": 3.3
+      "count": 65,
+      "pct": 3.1
     },
     {
       "type": "Face Mask",
-      "count": 62,
+      "count": 57,
       "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 472,
-      "pct": 20.7
+      "count": 428,
+      "pct": 20.3
     },
     {
       "quarter": 2,
-      "count": 666,
-      "pct": 29.2
+      "count": 611,
+      "pct": 29.0
     },
     {
       "quarter": 3,
-      "count": 513,
-      "pct": 22.5
+      "count": 471,
+      "pct": 22.3
     },
     {
       "quarter": 4,
-      "count": 629,
-      "pct": 27.6
+      "count": 599,
+      "pct": 28.4
     }
   ],
   "recentGames": [
@@ -330,32 +335,6 @@
       "stadium": "EverBank Stadium",
       "weather": null,
       "temp": 89
-    },
-    {
-      "gameId": "2025_19_HOU_PIT",
-      "season": 2025,
-      "week": 19,
-      "date": "2026-01-12",
-      "homeTeam": {
-        "abbr": "PIT",
-        "name": "Pittsburgh Steelers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
-      },
-      "awayTeam": {
-        "abbr": "HOU",
-        "name": "Houston Texans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png"
-      },
-      "homeScore": 6,
-      "awayScore": 30,
-      "penalties": 9,
-      "yards": 68,
-      "gameType": "WC",
-      "homePenalties": 3,
-      "awayPenalties": 6,
-      "stadium": "Acrisure Stadium",
-      "weather": null,
-      "temp": 32
     },
     {
       "gameId": "2025_18_KC_LV",
@@ -694,6 +673,32 @@
       "stadium": "Lumen Field",
       "weather": null,
       "temp": 61
+    },
+    {
+      "gameId": "2025_04_NYJ_MIA",
+      "season": 2025,
+      "week": 4,
+      "date": "2025-09-29",
+      "homeTeam": {
+        "abbr": "MIA",
+        "name": "Miami Dolphins",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
+      },
+      "awayTeam": {
+        "abbr": "NYJ",
+        "name": "New York Jets",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
+      },
+      "homeScore": 27,
+      "awayScore": 21,
+      "penalties": 19,
+      "yards": 141,
+      "gameType": "REG",
+      "homePenalties": 6,
+      "awayPenalties": 13,
+      "stadium": "Hard Rock Stadium",
+      "weather": null,
+      "temp": 88
     }
   ],
   "currentSeason": 2026,
@@ -892,16 +897,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.4,
-    "avgVsLeaguePct": -3.1,
+    "avgVsLeague": -0.3,
+    "avgVsLeaguePct": -2.3,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:50.925842Z"
+  "generatedAt": "2026-10-30T00:40:07.195996Z"
 }

@@ -4,23 +4,28 @@
   "firstSeason": 2015,
   "lastSeason": 2018,
   "experience": "4 seasons",
+  "careerSeasons": [
+    2015,
+    2018
+  ],
+  "playoffGames": 3,
   "stats": {
-    "games": 63,
-    "totalPenalties": 821,
-    "avgPerGame": 13.0,
+    "games": 60,
+    "totalPenalties": 784,
+    "avgPerGame": 13.1,
     "minGame": 5,
     "maxGame": 22,
-    "stdDev": 4.48,
-    "homeBiasPct": 5.0,
+    "stdDev": 4.51,
+    "homeBiasPct": 5.6,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
     {
       "season": 2015,
-      "games": 16,
-      "penalties": 192,
-      "avg": 12.0,
-      "homeBias": 1.0
+      "games": 15,
+      "penalties": 175,
+      "avg": 11.7,
+      "homeBias": -0.6
     },
     {
       "season": 2016,
@@ -38,139 +43,87 @@
     },
     {
       "season": 2018,
-      "games": 17,
-      "penalties": 216,
-      "avg": 12.7,
-      "homeBias": -0.9
+      "games": 15,
+      "penalties": 196,
+      "avg": 13.1,
+      "homeBias": 2.0
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 184,
-      "pct": 22.4
+      "count": 178,
+      "pct": 22.7
     },
     {
       "type": "False Start",
-      "count": 97,
-      "pct": 11.8
+      "count": 93,
+      "pct": 11.9
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 59,
-      "pct": 7.2
+      "count": 57,
+      "pct": 7.3
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 57,
-      "pct": 6.9
-    },
-    {
-      "type": "Defensive Holding",
-      "count": 54,
+      "count": 52,
       "pct": 6.6
     },
     {
-      "type": "Defensive Offside",
-      "count": 47,
-      "pct": 5.7
+      "type": "Defensive Holding",
+      "count": 51,
+      "pct": 6.5
     },
     {
-      "type": "Delay of Game",
-      "count": 39,
-      "pct": 4.8
+      "type": "Defensive Offside",
+      "count": 46,
+      "pct": 5.9
     },
     {
       "type": "Illegal Block Above the Waist",
       "count": 39,
-      "pct": 4.8
+      "pct": 5.0
+    },
+    {
+      "type": "Delay of Game",
+      "count": 37,
+      "pct": 4.7
     },
     {
       "type": "Offensive Pass Interference",
       "count": 26,
-      "pct": 3.2
+      "pct": 3.3
     },
     {
-      "type": "Neutral Zone Infraction",
+      "type": "Roughing the Passer",
       "count": 22,
-      "pct": 2.7
+      "pct": 2.8
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 171,
-      "pct": 20.9
+      "count": 161,
+      "pct": 20.6
     },
     {
       "quarter": 2,
-      "count": 244,
-      "pct": 29.8
+      "count": 234,
+      "pct": 29.9
     },
     {
       "quarter": 3,
-      "count": 193,
-      "pct": 23.6
+      "count": 184,
+      "pct": 23.5
     },
     {
       "quarter": 4,
-      "count": 211,
-      "pct": 25.8
+      "count": 203,
+      "pct": 26.0
     }
   ],
   "recentGames": [
-    {
-      "gameId": "2018_21_NE_LA",
-      "season": 2018,
-      "week": 21,
-      "date": "2019-02-03",
-      "homeTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "awayTeam": {
-        "abbr": "NE",
-        "name": "New England Patriots",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
-      },
-      "homeScore": 3,
-      "awayScore": 13,
-      "penalties": 12,
-      "yards": 85,
-      "gameType": "SB",
-      "homePenalties": 9,
-      "awayPenalties": 3,
-      "stadium": "Mercedes-Benz Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
-      "gameId": "2018_19_DAL_LA",
-      "season": 2018,
-      "week": 19,
-      "date": "2019-01-12",
-      "homeTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "awayTeam": {
-        "abbr": "DAL",
-        "name": "Dallas Cowboys",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
-      },
-      "homeScore": 30,
-      "awayScore": 22,
-      "penalties": 8,
-      "yards": 67,
-      "gameType": "DIV",
-      "homePenalties": 4,
-      "awayPenalties": 4,
-      "stadium": "Los Angeles Memorial Coliseum",
-      "weather": null,
-      "temp": 57
-    },
     {
       "gameId": "2018_17_LAC_DEN",
       "season": 2018,
@@ -638,6 +591,58 @@
       "stadium": "Levi's Stadium",
       "weather": null,
       "temp": 65
+    },
+    {
+      "gameId": "2017_14_CHI_CIN",
+      "season": 2017,
+      "week": 14,
+      "date": "2017-12-10",
+      "homeTeam": {
+        "abbr": "CIN",
+        "name": "Cincinnati Bengals",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png"
+      },
+      "awayTeam": {
+        "abbr": "CHI",
+        "name": "Chicago Bears",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
+      },
+      "homeScore": 7,
+      "awayScore": 33,
+      "penalties": 17,
+      "yards": 130,
+      "gameType": "REG",
+      "homePenalties": 7,
+      "awayPenalties": 10,
+      "stadium": "Paul Brown Stadium",
+      "weather": null,
+      "temp": 31
+    },
+    {
+      "gameId": "2017_13_KC_NYJ",
+      "season": 2017,
+      "week": 13,
+      "date": "2017-12-03",
+      "homeTeam": {
+        "abbr": "NYJ",
+        "name": "New York Jets",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png"
+      },
+      "awayTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "homeScore": 38,
+      "awayScore": 31,
+      "penalties": 12,
+      "yards": 69,
+      "gameType": "REG",
+      "homePenalties": 5,
+      "awayPenalties": 7,
+      "stadium": "MetLife Stadium",
+      "weather": null,
+      "temp": 48
     }
   ],
   "currentSeason": 2026,
@@ -744,16 +749,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.2,
-    "avgVsLeaguePct": 1.6,
+    "avgVsLeague": 0.5,
+    "avgVsLeaguePct": 4.1,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.206545Z"
+  "generatedAt": "2026-10-30T00:40:07.669007Z"
 }

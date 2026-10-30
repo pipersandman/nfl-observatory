@@ -4,23 +4,28 @@
   "firstSeason": 2015,
   "lastSeason": 2018,
   "experience": "4 seasons",
+  "careerSeasons": [
+    2015,
+    2018
+  ],
+  "playoffGames": 1,
   "stats": {
-    "games": 63,
-    "totalPenalties": 813,
-    "avgPerGame": 12.9,
+    "games": 62,
+    "totalPenalties": 805,
+    "avgPerGame": 13.0,
     "minGame": 5,
     "maxGame": 23,
-    "stdDev": 4.18,
-    "homeBiasPct": 2.1,
+    "stdDev": 4.17,
+    "homeBiasPct": 1.6,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
     {
       "season": 2015,
-      "games": 17,
-      "penalties": 223,
-      "avg": 13.1,
-      "homeBias": -7.6
+      "games": 16,
+      "penalties": 215,
+      "avg": 13.4,
+      "homeBias": -9.8
     },
     {
       "season": 2016,
@@ -48,17 +53,17 @@
     {
       "type": "Offensive Holding",
       "count": 145,
-      "pct": 17.8
+      "pct": 18.0
     },
     {
       "type": "False Start",
       "count": 140,
-      "pct": 17.2
+      "pct": 17.4
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 58,
-      "pct": 7.1
+      "count": 55,
+      "pct": 6.8
     },
     {
       "type": "Unnecessary Roughness",
@@ -68,12 +73,12 @@
     {
       "type": "Defensive Holding",
       "count": 53,
-      "pct": 6.5
+      "pct": 6.6
     },
     {
       "type": "Delay of Game",
-      "count": 38,
-      "pct": 4.7
+      "count": 37,
+      "pct": 4.6
     },
     {
       "type": "Illegal Block Above the Waist",
@@ -83,38 +88,38 @@
     {
       "type": "Illegal Use of Hands",
       "count": 32,
-      "pct": 3.9
+      "pct": 4.0
     },
     {
       "type": "Defensive Offside",
-      "count": 31,
-      "pct": 3.8
+      "count": 30,
+      "pct": 3.7
     },
     {
       "type": "Neutral Zone Infraction",
       "count": 28,
-      "pct": 3.4
+      "pct": 3.5
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 159,
-      "pct": 19.7
+      "count": 158,
+      "pct": 19.8
     },
     {
       "quarter": 2,
-      "count": 223,
-      "pct": 27.6
+      "count": 221,
+      "pct": 27.7
     },
     {
       "quarter": 3,
-      "count": 215,
-      "pct": 26.6
+      "count": 212,
+      "pct": 26.5
     },
     {
       "quarter": 4,
-      "count": 210,
+      "count": 208,
       "pct": 26.0
     }
   ],
@@ -744,16 +749,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.1,
-    "avgVsLeaguePct": 0.8,
+    "avgVsLeague": 0.4,
+    "avgVsLeaguePct": 3.3,
     "description": "League-average officiating style. Penalty rates are typical."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.225829Z"
+  "generatedAt": "2026-10-30T00:40:07.646508Z"
 }

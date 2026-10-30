@@ -4,30 +4,35 @@
   "firstSeason": 2015,
   "lastSeason": 2017,
   "experience": "3 seasons",
+  "careerSeasons": [
+    2015,
+    2017
+  ],
+  "playoffGames": 2,
   "stats": {
-    "games": 45,
-    "totalPenalties": 640,
-    "avgPerGame": 14.2,
-    "minGame": 5,
+    "games": 43,
+    "totalPenalties": 626,
+    "avgPerGame": 14.6,
+    "minGame": 7,
     "maxGame": 29,
-    "stdDev": 4.32,
-    "homeBiasPct": 2.5,
+    "stdDev": 4.09,
+    "homeBiasPct": 2.2,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
     {
       "season": 2015,
-      "games": 16,
-      "penalties": 237,
-      "avg": 14.8,
-      "homeBias": 3.0
+      "games": 15,
+      "penalties": 228,
+      "avg": 15.2,
+      "homeBias": 2.6
     },
     {
       "season": 2016,
-      "games": 14,
-      "penalties": 200,
-      "avg": 14.3,
-      "homeBias": 8.0
+      "games": 13,
+      "penalties": 195,
+      "avg": 15.0,
+      "homeBias": 7.7
     },
     {
       "season": 2017,
@@ -40,75 +45,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 152,
-      "pct": 23.8
+      "count": 151,
+      "pct": 24.1
     },
     {
       "type": "False Start",
-      "count": 91,
+      "count": 89,
       "pct": 14.2
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 40,
-      "pct": 6.2
+      "count": 37,
+      "pct": 5.9
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 38,
+      "count": 37,
       "pct": 5.9
     },
     {
       "type": "Defensive Holding",
-      "count": 37,
+      "count": 36,
       "pct": 5.8
-    },
-    {
-      "type": "Neutral Zone Infraction",
-      "count": 32,
-      "pct": 5.0
     },
     {
       "type": "Illegal Block Above the Waist",
       "count": 31,
-      "pct": 4.8
+      "pct": 5.0
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 31,
+      "pct": 5.0
     },
     {
       "type": "Offensive Pass Interference",
       "count": 23,
-      "pct": 3.6
+      "pct": 3.7
     },
     {
-      "type": "Defensive Offside",
-      "count": 22,
+      "type": "Roughing the Passer",
+      "count": 21,
       "pct": 3.4
     },
     {
-      "type": "Delay of Game",
+      "type": "Defensive Offside",
       "count": 21,
-      "pct": 3.3
+      "pct": 3.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 140,
-      "pct": 22.2
+      "count": 139,
+      "pct": 22.5
     },
     {
       "quarter": 2,
       "count": 170,
-      "pct": 26.9
+      "pct": 27.5
     },
     {
       "quarter": 3,
-      "count": 144,
-      "pct": 22.8
+      "count": 139,
+      "pct": 22.5
     },
     {
       "quarter": 4,
-      "count": 178,
-      "pct": 28.2
+      "count": 170,
+      "pct": 27.5
     }
   ],
   "recentGames": [
@@ -503,32 +508,6 @@
       "temp": 73
     },
     {
-      "gameId": "2016_20_PIT_NE",
-      "season": 2016,
-      "week": 20,
-      "date": "2017-01-22",
-      "homeTeam": {
-        "abbr": "NE",
-        "name": "New England Patriots",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
-      },
-      "awayTeam": {
-        "abbr": "PIT",
-        "name": "Pittsburgh Steelers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
-      },
-      "homeScore": 36,
-      "awayScore": 17,
-      "penalties": 5,
-      "yards": 29,
-      "gameType": "CON",
-      "homePenalties": 2,
-      "awayPenalties": 3,
-      "stadium": "Gillette Stadium",
-      "weather": null,
-      "temp": 41
-    },
-    {
       "gameId": "2016_17_CHI_MIN",
       "season": 2016,
       "week": 17,
@@ -631,6 +610,32 @@
       "stadium": "Heinz Field",
       "weather": null,
       "temp": 43
+    },
+    {
+      "gameId": "2016_12_GB_PHI",
+      "season": 2016,
+      "week": 12,
+      "date": "2016-11-28",
+      "homeTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "awayTeam": {
+        "abbr": "GB",
+        "name": "Green Bay Packers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
+      },
+      "homeScore": 13,
+      "awayScore": 27,
+      "penalties": 14,
+      "yards": 93,
+      "gameType": "REG",
+      "homePenalties": 7,
+      "awayPenalties": 7,
+      "stadium": "Lincoln Financial Field",
+      "weather": null,
+      "temp": 47
     }
   ],
   "currentSeason": 2026,
@@ -729,16 +734,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 1.4,
-    "avgVsLeaguePct": 10.9,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Terry McAulay's games average 1.4 more penalties per game than league average."
+    "avgVsLeague": 2.0,
+    "avgVsLeaguePct": 16.0,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Terry McAulay's games average 2.0 more penalties per game than league average."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.356411Z"
+  "generatedAt": "2026-10-30T00:40:07.816257Z"
 }

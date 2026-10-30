@@ -4,14 +4,19 @@
   "firstSeason": 2015,
   "lastSeason": 2019,
   "experience": "5 seasons",
+  "careerSeasons": [
+    2015,
+    2019
+  ],
+  "playoffGames": 2,
   "stats": {
-    "games": 78,
-    "totalPenalties": 1154,
-    "avgPerGame": 14.8,
+    "games": 76,
+    "totalPenalties": 1137,
+    "avgPerGame": 15.0,
     "minGame": 3,
     "maxGame": 24,
-    "stdDev": 4.21,
-    "homeBiasPct": 1.7,
+    "stdDev": 4.12,
+    "homeBiasPct": 2.2,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -38,54 +43,49 @@
     },
     {
       "season": 2018,
-      "games": 16,
-      "penalties": 238,
-      "avg": 14.9,
-      "homeBias": 1.7
+      "games": 15,
+      "penalties": 227,
+      "avg": 15.1,
+      "homeBias": 2.2
     },
     {
       "season": 2019,
-      "games": 17,
-      "penalties": 260,
-      "avg": 15.3,
-      "homeBias": 0.8
+      "games": 16,
+      "penalties": 254,
+      "avg": 15.9,
+      "homeBias": 2.4
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 216,
+      "count": 213,
       "pct": 18.7
     },
     {
       "type": "False Start",
-      "count": 175,
-      "pct": 15.2
+      "count": 171,
+      "pct": 15.0
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 102,
-      "pct": 8.8
+      "count": 99,
+      "pct": 8.7
     },
     {
       "type": "Defensive Holding",
       "count": 83,
-      "pct": 7.2
+      "pct": 7.3
     },
     {
       "type": "Defensive Offside",
       "count": 59,
-      "pct": 5.1
-    },
-    {
-      "type": "Unnecessary Roughness",
-      "count": 50,
-      "pct": 4.3
+      "pct": 5.2
     },
     {
       "type": "Neutral Zone Infraction",
       "count": 50,
-      "pct": 4.3
+      "pct": 4.4
     },
     {
       "type": "Roughing the Passer",
@@ -93,65 +93,44 @@
       "pct": 4.2
     },
     {
+      "type": "Unnecessary Roughness",
+      "count": 47,
+      "pct": 4.1
+    },
+    {
       "type": "Illegal Block Above the Waist",
       "count": 43,
-      "pct": 3.7
+      "pct": 3.8
     },
     {
       "type": "Delay of Game",
-      "count": 40,
-      "pct": 3.5
+      "count": 39,
+      "pct": 3.4
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 261,
+      "count": 257,
       "pct": 22.6
     },
     {
       "quarter": 2,
-      "count": 332,
-      "pct": 28.8
+      "count": 329,
+      "pct": 29.0
     },
     {
       "quarter": 3,
-      "count": 275,
+      "count": 272,
       "pct": 23.9
     },
     {
       "quarter": 4,
-      "count": 285,
-      "pct": 24.7
+      "count": 278,
+      "pct": 24.5
     }
   ],
   "recentGames": [
-    {
-      "gameId": "2019_19_MIN_SF",
-      "season": 2019,
-      "week": 19,
-      "date": "2020-01-11",
-      "homeTeam": {
-        "abbr": "SF",
-        "name": "San Francisco 49ers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png"
-      },
-      "awayTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "homeScore": 27,
-      "awayScore": 10,
-      "penalties": 6,
-      "yards": 53,
-      "gameType": "DIV",
-      "homePenalties": 5,
-      "awayPenalties": 1,
-      "stadium": "Levi's Stadium",
-      "weather": null,
-      "temp": 56
-    },
     {
       "gameId": "2019_17_LAC_KC",
       "season": 2019,
@@ -569,32 +548,6 @@
       "temp": null
     },
     {
-      "gameId": "2018_18_SEA_DAL",
-      "season": 2018,
-      "week": 18,
-      "date": "2019-01-05",
-      "homeTeam": {
-        "abbr": "DAL",
-        "name": "Dallas Cowboys",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
-      },
-      "awayTeam": {
-        "abbr": "SEA",
-        "name": "Seattle Seahawks",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png"
-      },
-      "homeScore": 24,
-      "awayScore": 22,
-      "penalties": 11,
-      "yards": 72,
-      "gameType": "WC",
-      "homePenalties": 6,
-      "awayPenalties": 5,
-      "stadium": "AT&T Stadium",
-      "weather": null,
-      "temp": null
-    },
-    {
       "gameId": "2018_17_IND_TEN",
       "season": 2018,
       "week": 17,
@@ -645,6 +598,58 @@
       "stadium": "Ford Field",
       "weather": null,
       "temp": null
+    },
+    {
+      "gameId": "2018_15_LAC_KC",
+      "season": 2018,
+      "week": 15,
+      "date": "2018-12-13",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "LAC",
+        "name": "Los Angeles Chargers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png"
+      },
+      "homeScore": 28,
+      "awayScore": 29,
+      "penalties": 17,
+      "yards": 116,
+      "gameType": "REG",
+      "homePenalties": 10,
+      "awayPenalties": 7,
+      "stadium": "Arrowhead Stadium",
+      "weather": null,
+      "temp": 39
+    },
+    {
+      "gameId": "2018_14_CAR_CLE",
+      "season": 2018,
+      "week": 14,
+      "date": "2018-12-09",
+      "homeTeam": {
+        "abbr": "CLE",
+        "name": "Cleveland Browns",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png"
+      },
+      "awayTeam": {
+        "abbr": "CAR",
+        "name": "Carolina Panthers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
+      },
+      "homeScore": 26,
+      "awayScore": 20,
+      "penalties": 17,
+      "yards": 120,
+      "gameType": "REG",
+      "homePenalties": 7,
+      "awayPenalties": 10,
+      "stadium": "FirstEnergy Stadium",
+      "weather": null,
+      "temp": 28
     }
   ],
   "currentSeason": 2026,
@@ -759,16 +764,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 2.0,
-    "avgVsLeaguePct": 15.6,
-    "description": "Flag-heavy crew \u2014 expect more penalties than average. Walt Anderson's games average 2.0 more penalties per game than league average."
+    "avgVsLeague": 2.4,
+    "avgVsLeaguePct": 19.1,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Walt Anderson's games average 2.4 more penalties per game than league average."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.187506Z"
+  "generatedAt": "2026-10-30T00:40:07.623870Z"
 }

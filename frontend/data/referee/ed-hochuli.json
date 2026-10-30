@@ -4,166 +4,119 @@
   "firstSeason": 2015,
   "lastSeason": 2017,
   "experience": "3 seasons",
+  "careerSeasons": [
+    2015,
+    2017
+  ],
+  "playoffGames": 4,
   "stats": {
-    "games": 50,
-    "totalPenalties": 684,
-    "avgPerGame": 13.7,
-    "minGame": 5,
+    "games": 46,
+    "totalPenalties": 650,
+    "avgPerGame": 14.1,
+    "minGame": 8,
     "maxGame": 22,
-    "stdDev": 3.66,
-    "homeBiasPct": 2.3,
+    "stdDev": 3.3,
+    "homeBiasPct": 2.8,
     "consistency": "Variable"
   },
   "seasonStats": [
     {
       "season": 2015,
-      "games": 17,
-      "penalties": 251,
+      "games": 16,
+      "penalties": 237,
       "avg": 14.8,
-      "homeBias": 7.6
+      "homeBias": 8.0
     },
     {
       "season": 2016,
-      "games": 16,
-      "penalties": 212,
-      "avg": 13.2,
-      "homeBias": 9.4
+      "games": 15,
+      "penalties": 207,
+      "avg": 13.8,
+      "homeBias": 9.2
     },
     {
       "season": 2017,
-      "games": 17,
-      "penalties": 221,
-      "avg": 13.0,
-      "homeBias": -10.4
+      "games": 15,
+      "penalties": 206,
+      "avg": 13.7,
+      "homeBias": -9.7
     }
   ],
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 138,
-      "pct": 20.2
+      "count": 135,
+      "pct": 20.8
     },
     {
       "type": "False Start",
-      "count": 107,
-      "pct": 15.6
+      "count": 98,
+      "pct": 15.1
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 51,
-      "pct": 7.5
+      "count": 48,
+      "pct": 7.4
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 45,
-      "pct": 6.6
+      "count": 38,
+      "pct": 5.8
     },
     {
       "type": "Defensive Holding",
-      "count": 38,
-      "pct": 5.6
+      "count": 37,
+      "pct": 5.7
     },
     {
       "type": "Illegal Block Above the Waist",
-      "count": 31,
-      "pct": 4.5
+      "count": 30,
+      "pct": 4.6
     },
     {
       "type": "Offensive Pass Interference",
       "count": 30,
-      "pct": 4.4
+      "pct": 4.6
     },
     {
       "type": "Illegal Use of Hands",
-      "count": 28,
-      "pct": 4.1
+      "count": 27,
+      "pct": 4.2
     },
     {
       "type": "Neutral Zone Infraction",
-      "count": 26,
+      "count": 25,
       "pct": 3.8
     },
     {
       "type": "Face Mask",
-      "count": 22,
+      "count": 21,
       "pct": 3.2
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 140,
-      "pct": 20.6
+      "count": 131,
+      "pct": 20.3
     },
     {
       "quarter": 2,
-      "count": 209,
-      "pct": 30.8
+      "count": 199,
+      "pct": 30.9
     },
     {
       "quarter": 3,
-      "count": 161,
-      "pct": 23.7
+      "count": 157,
+      "pct": 24.3
     },
     {
       "quarter": 4,
-      "count": 169,
-      "pct": 24.9
+      "count": 158,
+      "pct": 24.5
     }
   ],
   "recentGames": [
-    {
-      "gameId": "2017_20_MIN_PHI",
-      "season": 2017,
-      "week": 20,
-      "date": "2018-01-21",
-      "homeTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "awayTeam": {
-        "abbr": "MIN",
-        "name": "Minnesota Vikings",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png"
-      },
-      "homeScore": 38,
-      "awayScore": 7,
-      "penalties": 6,
-      "yards": 74,
-      "gameType": "CON",
-      "homePenalties": 4,
-      "awayPenalties": 2,
-      "stadium": "Lincoln Financial Field",
-      "weather": null,
-      "temp": 47
-    },
-    {
-      "gameId": "2017_18_ATL_LA",
-      "season": 2017,
-      "week": 18,
-      "date": "2018-01-06",
-      "homeTeam": {
-        "abbr": "LA",
-        "name": "Los Angeles Rams",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png"
-      },
-      "awayTeam": {
-        "abbr": "ATL",
-        "name": "Atlanta Falcons",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png"
-      },
-      "homeScore": 13,
-      "awayScore": 26,
-      "penalties": 9,
-      "yards": 96,
-      "gameType": "WC",
-      "homePenalties": 5,
-      "awayPenalties": 4,
-      "stadium": "Los Angeles Memorial Coliseum",
-      "weather": null,
-      "temp": 62
-    },
     {
       "gameId": "2017_17_OAK_LAC",
       "season": 2017,
@@ -555,32 +508,6 @@
       "temp": 84
     },
     {
-      "gameId": "2016_18_NYG_GB",
-      "season": 2016,
-      "week": 18,
-      "date": "2017-01-08",
-      "homeTeam": {
-        "abbr": "GB",
-        "name": "Green Bay Packers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png"
-      },
-      "awayTeam": {
-        "abbr": "NYG",
-        "name": "New York Giants",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
-      },
-      "homeScore": 38,
-      "awayScore": 13,
-      "penalties": 5,
-      "yards": 63,
-      "gameType": "WC",
-      "homePenalties": 2,
-      "awayPenalties": 3,
-      "stadium": "Lambeau Field",
-      "weather": null,
-      "temp": 14
-    },
-    {
       "gameId": "2016_16_IND_OAK",
       "season": 2016,
       "week": 16,
@@ -631,6 +558,84 @@
       "stadium": "NRG Stadium",
       "weather": null,
       "temp": null
+    },
+    {
+      "gameId": "2016_14_BAL_NE",
+      "season": 2016,
+      "week": 14,
+      "date": "2016-12-12",
+      "homeTeam": {
+        "abbr": "NE",
+        "name": "New England Patriots",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
+      },
+      "awayTeam": {
+        "abbr": "BAL",
+        "name": "Baltimore Ravens",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
+      },
+      "homeScore": 30,
+      "awayScore": 23,
+      "penalties": 13,
+      "yards": 95,
+      "gameType": "REG",
+      "homePenalties": 5,
+      "awayPenalties": 8,
+      "stadium": "Gillette Stadium",
+      "weather": null,
+      "temp": 31
+    },
+    {
+      "gameId": "2016_12_TEN_CHI",
+      "season": 2016,
+      "week": 12,
+      "date": "2016-11-27",
+      "homeTeam": {
+        "abbr": "CHI",
+        "name": "Chicago Bears",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
+      },
+      "awayTeam": {
+        "abbr": "TEN",
+        "name": "Tennessee Titans",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
+      },
+      "homeScore": 21,
+      "awayScore": 27,
+      "penalties": 13,
+      "yards": 166,
+      "gameType": "REG",
+      "homePenalties": 7,
+      "awayPenalties": 6,
+      "stadium": "Soldier Field",
+      "weather": null,
+      "temp": 40
+    },
+    {
+      "gameId": "2016_11_TB_KC",
+      "season": 2016,
+      "week": 11,
+      "date": "2016-11-20",
+      "homeTeam": {
+        "abbr": "KC",
+        "name": "Kansas City Chiefs",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
+      },
+      "awayTeam": {
+        "abbr": "TB",
+        "name": "Tampa Bay Buccaneers",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png"
+      },
+      "homeScore": 17,
+      "awayScore": 19,
+      "penalties": 12,
+      "yards": 72,
+      "gameType": "REG",
+      "homePenalties": 5,
+      "awayPenalties": 7,
+      "stadium": "Arrowhead Stadium",
+      "weather": null,
+      "temp": 46
     }
   ],
   "currentSeason": 2026,
@@ -729,16 +734,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": 0.9,
-    "avgVsLeaguePct": 7.0,
-    "description": "Above-average penalty rate. Slightly more flags than typical."
+    "avgVsLeague": 1.5,
+    "avgVsLeaguePct": 12.0,
+    "description": "Flag-heavy crew \u2014 expect more penalties than average. Ed Hochuli's games average 1.5 more penalties per game than league average."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.282190Z"
+  "generatedAt": "2026-10-30T00:40:07.755679Z"
 }

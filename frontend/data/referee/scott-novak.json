@@ -4,14 +4,19 @@
   "firstSeason": 2019,
   "lastSeason": 2026,
   "experience": "8 seasons",
+  "careerSeasons": [
+    2019,
+    2025
+  ],
+  "playoffGames": 1,
   "stats": {
-    "games": 120,
-    "totalPenalties": 1455,
-    "avgPerGame": 12.1,
+    "games": 112,
+    "totalPenalties": 1309,
+    "avgPerGame": 11.7,
     "minGame": 2,
-    "maxGame": 30,
-    "stdDev": 5.03,
-    "homeBiasPct": 2.7,
+    "maxGame": 26,
+    "stdDev": 4.46,
+    "homeBiasPct": 1.1,
     "consistency": "Highly Variable"
   },
   "seasonStats": [
@@ -24,10 +29,10 @@
     },
     {
       "season": 2020,
-      "games": 16,
-      "penalties": 164,
-      "avg": 10.2,
-      "homeBias": 8.5
+      "games": 15,
+      "penalties": 159,
+      "avg": 10.6,
+      "homeBias": 8.2
     },
     {
       "season": 2021,
@@ -75,75 +80,75 @@
   "penaltyTypes": [
     {
       "type": "Offensive Holding",
-      "count": 294,
-      "pct": 20.2
+      "count": 252,
+      "pct": 19.3
     },
     {
       "type": "False Start",
-      "count": 261,
-      "pct": 17.9
+      "count": 240,
+      "pct": 18.3
     },
     {
       "type": "Defensive Pass Interference",
-      "count": 113,
-      "pct": 7.8
+      "count": 105,
+      "pct": 8.0
     },
     {
       "type": "Delay of Game",
-      "count": 90,
+      "count": 81,
       "pct": 6.2
     },
     {
       "type": "Defensive Holding",
-      "count": 83,
-      "pct": 5.7
+      "count": 79,
+      "pct": 6.0
     },
     {
       "type": "Defensive Offside",
-      "count": 79,
+      "count": 71,
       "pct": 5.4
     },
     {
       "type": "Unnecessary Roughness",
-      "count": 59,
-      "pct": 4.1
+      "count": 48,
+      "pct": 3.7
     },
     {
       "type": "Illegal Block Above the Waist",
-      "count": 42,
-      "pct": 2.9
-    },
-    {
-      "type": "Neutral Zone Infraction",
       "count": 39,
-      "pct": 2.7
+      "pct": 3.0
     },
     {
       "type": "Illegal Contact",
-      "count": 38,
-      "pct": 2.6
+      "count": 37,
+      "pct": 2.8
+    },
+    {
+      "type": "Neutral Zone Infraction",
+      "count": 35,
+      "pct": 2.7
     }
   ],
   "quarterDistribution": [
     {
       "quarter": 1,
-      "count": 297,
-      "pct": 20.5
+      "count": 262,
+      "pct": 20.1
     },
     {
       "quarter": 2,
-      "count": 419,
-      "pct": 29.0
+      "count": 389,
+      "pct": 29.9
     },
     {
       "quarter": 3,
-      "count": 354,
-      "pct": 24.5
+      "count": 307,
+      "pct": 23.6
     },
     {
       "quarter": 4,
-      "count": 376,
-      "pct": 26.0
+      "count": 345,
+      "pct": 26.5
     }
   ],
   "recentGames": [
@@ -825,16 +830,16 @@
     }
   ],
   "tendencies": {
-    "avgVsLeague": -0.7,
-    "avgVsLeaguePct": -5.5,
+    "avgVsLeague": -0.9,
+    "avgVsLeaguePct": -7.1,
     "description": "Below-average penalty rate. Tends to let minor infractions go."
   },
   "explanations": {
-    "avgPerGame": "Average number of accepted penalties per game this referee has worked.",
+    "avgPerGame": "Average number of accepted penalties per game in the regular-season games this referee worked before this season.",
     "homeBiasPct": "Road teams' share of this crew's penalties minus home teams' share, in percentage points. Positive = road teams penalized more.",
     "consistency": "Based on standard deviation of penalties per game. Lower variance = more predictable.",
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-10-29T23:33:51.082114Z"
+  "generatedAt": "2026-10-30T00:40:07.504273Z"
 }

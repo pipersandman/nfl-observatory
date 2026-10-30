@@ -48,12 +48,13 @@ def compare_week(through_week, played_weeks):
 
 
 def through_text(through_week, partial):
-    """'through Week 7', or 'through Week 7 plus 1 game from Week 8' while a week is in progress."""
-    base = f"through Week {through_week}" if through_week else "so far"
-    if not partial:
-        return base
-    n = partial['games']
-    return f"{base} plus {n} game{'' if n == 1 else 's'} from Week {partial['week']}"
+    """'through Week 7', or 'through Week 7 plus 1 game from Week 8' while a week is in progress
+    ('after 1 game of Week 1' before any week is complete)."""
+    games = f"{partial['games']} game{'' if partial['games'] == 1 else 's'}" if partial else ''
+    if not through_week:
+        return f"after {games} of Week {partial['week']}" if partial else "so far"
+    base = f"through Week {through_week}"
+    return f"{base} plus {games} from Week {partial['week']}" if partial else base
 
 
 # ---- windows ---------------------------------------------------------------------

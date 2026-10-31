@@ -221,6 +221,16 @@ default. `frontend/.htaccess` adds JSON, SVG, the web manifest (also given its
 `application/manifest+json` type), CSV and plain text. `.htaccess` changes reach
 the server only through the deploy; the local server ignores them.
 
+**Caching (#147):** pages and the web manifest are `no-cache` (always checked).
+CSS and JS requested with the deploy stamp (`?v=<commit>`, added by the
+cache-bust step and `build_static.py`) are cached for a year (`immutable`);
+without the stamp they're `no-cache`. Data JSON and CSV exports are reused for
+up to 5 minutes (`max-age=300`), then checked (304 when unchanged). `app.js`
+uses the browser cache for data on a normal visit and checks the server on a
+reload, so the "New results are in" banner's Refresh shows the latest data.
+The gameday worker (live strip, `/gameday/`) is another site and isn't affected.
+Icons and fonts: 7 days.
+
 ## Definitions worth knowing (checked in W1)
 
 - **Flag** = a play nflverse marks `penalty == 1`, counted once per play. In

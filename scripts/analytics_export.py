@@ -88,8 +88,19 @@ class ExportError(RuntimeError):
 # ---- secrets never printed ------------------------------------------------------
 
 def _secrets() -> list[str]:
-    return [v for v in (os.environ.get('CF_ANALYTICS_TOKEN'), os.environ.get('CF_ACCOUNT_ID'),
-                        os.environ.get('R2_ENDPOINT')) if v]
+    values = [os.environ.get(n) for n in ('CF_ANALYTICS_TOKEN', 'CF_ACCOUNT_ID', 'R2_ENDPOINT')]
+    values += [v.strip() for v in values if v]
+    return sorted({v for v in values if v}, key=len, reverse=True)
+
+
+def setting(name: str) -> str:
+    """An environment value with spaces and line breaks around it removed (a pasted
+    secret often ends with a newline). Says so when it removed any, never the value."""
+    raw = os.environ.get(name) or ''
+    value = raw.strip()
+    if value != raw:
+        say(f'Note: {name} had spaces or line breaks around it; removed.')
+    return value
 
 
 def scrub(text: str) -> str:
@@ -312,8 +323,8 @@ def main(argv=None, post=http_post) -> int:
     args = p.parse_args(argv)
 
     try:
-        token, account = os.environ.get('CF_ANALYTICS_TOKEN'), os.environ.get('CF_ACCOUNT_ID')
-        site_tag = os.environ.get('CF_WEB_ANALYTICS_SITE_TAG')
+        token, account = setting('CF_ANALYTICS_TOKEN'), setting('CF_ACCOUNT_ID')
+        site_tag = setting('CF_WEB_ANALYTICS_SITE_TAG')
         missing = [n for n, v in (('CF_ANALYTICS_TOKEN', token), ('CF_ACCOUNT_ID', account),
                                   ('CF_WEB_ANALYTICS_SITE_TAG', site_tag)) if not v]
         if missing:

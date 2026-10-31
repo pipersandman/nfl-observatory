@@ -189,3 +189,19 @@ def test_missing_r2_settings_fail_unless_probe(monkeypatch, capsys):
     assert ae.main([], post=FakeAPI()) == 1
     assert 'missing R2 settings' in capsys.readouterr().out
     assert ae.main(['--probe'], post=FakeAPI()) == 0
+
+
+def test_settings_are_stripped_before_use(tmp_path, monkeypatch, capsys):
+    """A pasted secret with a newline or spaces around it still sends exactly
+    'Authorization: Bearer <token>' and the bare account ID as accountTag."""
+    monkeypatch.setenv('CF_ANALYTICS_TOKEN', f'  {TOKEN}\n')
+    monkeypatch.setenv('CF_ACCOUNT_ID', f'{ACCOUNT}\r\n')
+    monkeypatch.setenv('CF_WEB_ANALYTICS_SITE_TAG', f' {SITE} ')
+    monkeypatch.setenv('NFLOBS_RAW_STORE_DIR', str(tmp_path))
+    fake = FakeAPI()     # asserts the exact header, account and site tag on every call
+    assert ae.main(['--probe'], post=fake) == 0
+    assert fake.calls and all(c['variables']['account'] == ACCOUNT for c in fake.calls)
+    out = capsys.readouterr().out
+    for name in ('CF_ANALYTICS_TOKEN', 'CF_ACCOUNT_ID', 'CF_WEB_ANALYTICS_SITE_TAG'):
+        assert f'Note: {name} had spaces or line breaks around it; removed.' in out
+    assert TOKEN not in out and ACCOUNT not in out

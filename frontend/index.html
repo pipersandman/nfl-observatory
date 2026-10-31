@@ -67,6 +67,10 @@
     <!-- This week in NFL officiating: plain text in the page source so search engines and AI
          assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
     <div class="container tldr-strip">
+        <!-- Section tiles (#153): jump to a section on this page. The site menu above goes to full pages. -->
+        <div class="section-tiles" role="navigation" aria-label="Sections on this page">
+            <a href="#season">This Season</a><a href="#insights">Findings</a><a href="#teams">Teams</a><a href="#previews">Upcoming Games</a><a href="#trends">Trends</a><a href="#referees">Crew Chiefs</a><a href="#data">Data</a>
+        </div>
         <!-- Live flags strip: appears on game days, links to /gameday/ (js/livestrip.js) -->
         <a class="live-strip" id="liveStrip" href="/gameday/" hidden aria-label="Live flags: open the Gameday scoreboard"></a>
         <!-- SEO:SUMMARY -->
@@ -331,7 +335,7 @@
                     </table>
                 </div>
             </div>
-            <p class="see-all"><a href="/dataset/" aria-label="See all data">See all →</a></p>
+            <p class="see-all"><a href="/crew/" aria-label="See all crew chief stats">See all →</a></p>
         </div>
     </section>
 

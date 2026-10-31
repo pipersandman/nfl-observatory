@@ -84,5 +84,16 @@ def test_home_sections_keep_their_ids_and_see_all_links():
     for sid in ('season', 'teams', 'previews', 'trends', 'referees', 'data', 'insights'):
         assert f'id="{sid}"' in home                          # old /#section links still land
     see_all = re.findall(r'<p class="see-all"><a href="([^"]+)"', home)
-    assert see_all == ['/team/', '/assignments/', '/trends/', '/crew/', '/dataset/']
+    # Data's table is "Complete Crew Chief Stats", so its full page is /crew/ (Ty, 2026-10-31)
+    assert see_all == ['/team/', '/assignments/', '/trends/', '/crew/', '/crew/']
     assert 'href="#' not in site_nav.menu_block(home)
+
+
+def test_section_tiles_jump_to_every_home_section():
+    home = (ROOT / 'frontend' / 'index.html').read_text(encoding='utf-8')
+    block = home.split('class="section-tiles"')[1].split('</div>')[0]
+    tiles = re.findall(r'<a href="#([a-z]+)">([^<]+)</a>', block)
+    assert tiles == [('season', 'This Season'), ('insights', 'Findings'), ('teams', 'Teams'), ('previews', 'Upcoming Games'),
+                     ('trends', 'Trends'), ('referees', 'Crew Chiefs'), ('data', 'Data')]
+    assert all(f'id="{sid}"' in home for sid, _ in tiles)
+    assert home.index('class="section-tiles"') < home.index('id="season"')     # at the top, before the first section

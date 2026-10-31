@@ -49,6 +49,7 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       - name: Export Web Analytics days
+        id: export
         env:
           CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
@@ -64,4 +65,5 @@ jobs:
           if [ -n "$FROM" ]; then args+=(--from "$FROM"); fi
           if [ -n "$TO" ]; then args+=(--to "$TO"); fi
           if [ "$PROBE" = "true" ]; then args+=(--probe); fi
+          echo "Arguments: ${args[*]:-(none)}"
           python scripts/analytics_export.py "${args[@]}"

@@ -4,9 +4,9 @@
   `import raw_capture` and the helper in tests/workflow_scripts.py.
 - No network: any connection or name lookup for a host other than this machine
   fails with NetworkBlocked. Tests that need a server use 127.0.0.1.
-- A clean environment for each test: GitHub Actions, R2 and NFLOBS_* variables
-  are removed (CI sets GITHUB_ACTIONS itself), so each test sets only what it
-  needs.
+- A clean environment for each test: GitHub Actions, R2, CF_* (Cloudflare
+  analytics) and NFLOBS_* variables are removed (CI sets GITHUB_ACTIONS
+  itself), so each test sets only what it needs.
 """
 
 import os
@@ -74,7 +74,7 @@ socket.getaddrinfo = _guarded_getaddrinfo
 
 # ---- clean environment -------------------------------------------------------
 
-CLEARED_PREFIXES = ('GITHUB_', 'RUNNER_', 'R2_', 'NFLOBS_')
+CLEARED_PREFIXES = ('GITHUB_', 'RUNNER_', 'R2_', 'CF_', 'NFLOBS_')
 
 
 @pytest.fixture(autouse=True)

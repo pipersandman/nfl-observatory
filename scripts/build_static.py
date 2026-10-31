@@ -28,6 +28,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import weeks
+from site_nav import nav_html   # the one site menu (#153)
 from weeks import HISTORICAL_START
 
 ROOT = Path(__file__).resolve().parent.parent / 'frontend'
@@ -74,8 +75,8 @@ def team_name(a):
 
 # --------------------------------------------------------------------------- layout
 
-NAV = [('/', 'Home'), ('/gameday/', 'Gameday'), ('/assignments/', 'This week'), ('/crew/', 'Crew chiefs'), ('/team/', 'Teams'),
-       ('/trends/', 'Trends'), ('/guide/', 'Guide'), ('/dataset/', 'Data')]
+# The site menu (NAV) lives in scripts/site_nav.py, shared with the home page and
+# /gameday/ (#153).
 
 
 def page(path, title, description, body, schema=None, crumbs=None):
@@ -85,7 +86,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
         blocks.append({'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': SITE + u} for i, (u, n) in enumerate(crumbs)]})
     ld = ''.join(f'\n    <script type="application/ld+json">{json.dumps(b, ensure_ascii=False)}</script>' for b in blocks)
-    nav = ''.join(f'<a href="{u}"{" aria-current=page" if u == path else ""}>{n}</a>' for u, n in NAV)
+    nav = nav_html(path)
     crumb_html = '' if not crumbs else '<div class="st-crumbs" role="navigation" aria-label="Breadcrumb">' + ' / '.join(
         f'<a href="{u}">{e(n)}</a>' if i < len(crumbs) - 1 else f'<span>{e(n)}</span>' for i, (u, n) in enumerate(crumbs)) + '</div>'
     out = f"""<!DOCTYPE html>
@@ -115,10 +116,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
     <link rel="stylesheet" href="/css/static.css?v={V}">{ld}
 </head>
 <body class="static-page">
-    <header class="st-header">
-        <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
-        <div class="st-nav" role="navigation" aria-label="Site">{nav}</div>
-    </header>
+{nav}
     <main class="container st-main">
         {crumb_html}
         {body}

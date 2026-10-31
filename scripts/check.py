@@ -103,6 +103,24 @@ def check_literals():
     return not found, f'{n} files' + (f', {len(found)} literal(s)' if found else '')
 
 
+def check_menus():
+    """The home page and /gameday/ carry the shared site menu (#153): run
+    scripts/sync_nav.py after changing NAV in scripts/site_nav.py."""
+    sys.path.insert(0, str(ROOT / 'scripts'))
+    from sync_nav import PAGES, expected
+    bad = []
+    for path, f in PAGES.items():
+        text = f.read_text(encoding='utf-8')
+        try:
+            if expected(path, text) != text:
+                bad.append(f'{f.relative_to(ROOT).as_posix()}: menu differs from scripts/site_nav.py (run scripts/sync_nav.py)')
+        except ValueError as ex:
+            bad.append(str(ex))
+    for b in bad:
+        print('   ', b)
+    return not bad, f'{len(PAGES)} pages'
+
+
 def check_pytest():
     """Tests in tests/ (#89). No network: tests/conftest.py blocks it."""
     # -q comes from pyproject.toml; passing it again would hide the summary line
@@ -120,6 +138,7 @@ CHECKS = [
     ('Data JSON parses', check_json),
     ('Worker JS syntax', check_node),
     ('No hard-coded years or windows', check_literals),
+    ('Menus match', check_menus),
     ('pytest', check_pytest),
 ]
 

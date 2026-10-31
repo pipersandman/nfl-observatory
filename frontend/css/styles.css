@@ -1842,8 +1842,14 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
    Nav: current-section highlight + hamburger menu on phones/tablets
    ----------------------------------------------------------------------------- */
 section[id] { scroll-margin-top: 72px; }               /* headings land below the fixed bar */
-.nav-links a.active { color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent); }
+.nav-links a[aria-current] { color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent); }   /* the page you're on (#153) */
 .nav-toggle { display: none; }
+nav.site-nav .logo { color: var(--text-primary); text-decoration: none; }
+
+/* "See all →" at the end of a home section: its full page (#153) */
+.see-all { margin-top: var(--gap-md, 1.5rem); text-align: right; }
+.see-all a { color: var(--accent); font-weight: 600; font-size: 0.95rem; text-decoration: none; }
+.see-all a:hover { text-decoration: underline; }
 
 @media (max-width: 768px) {
     nav { padding: 0.75rem 1rem; padding-top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
@@ -1867,7 +1873,7 @@ section[id] { scroll-margin-top: 72px; }               /* headings land below th
     }
     nav.nav-open .nav-links { display: flex; }
     .nav-links a { padding: 0.9rem 1.25rem; font-size: 0.95rem; border-left: 3px solid transparent; }
-    .nav-links a.active { box-shadow: none; border-left-color: var(--accent); background: rgba(255, 255, 255, 0.03); }
+    .nav-links a[aria-current] { box-shadow: none; border-left-color: var(--accent); background: rgba(255, 255, 255, 0.03); }
 }
 
 /* Team comparison toggle (team cards + team pop-up) */

@@ -40,26 +40,29 @@
     <link rel="stylesheet" href="css/static.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo"><img src="favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</div>
-        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
-            <span></span><span></span><span></span>
-        </button>
-        <div class="nav-links" id="navLinks">
-            <a href="/gameday/" class="nav-gameday">Gameday</a>
-            <a href="#season">This Season</a>
-            <a href="#teams">Teams</a>
-            <a href="#previews">Upcoming Games</a>
-            <a href="#trends">Trends</a>
-            <a href="#referees">Crew Chiefs</a>
-            <a href="#data">Data</a>
-            <a href="#insights">Findings</a>
-        </div>
-        <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X">
-            <svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span>
-        </a>
+    <!-- Site menu: written by scripts/sync_nav.py from scripts/site_nav.py (#153); don't edit by hand -->
+    <!-- nav:start -->
+    <nav class="site-nav" id="siteNav" aria-label="Site">
+        <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+        <div class="nav-links" id="navLinks"><a href="/" aria-current="page">Home</a><a href="/gameday/">Gameday</a><a href="/assignments/">This week</a><a href="/crew/">Crew chiefs</a><a href="/team/">Teams</a><a href="/trends/">Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
+        <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X"><svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span></a>
     </nav>
+    <script>(() => {
+        const nav = document.getElementById('siteNav'), toggle = document.getElementById('navToggle');
+        if (!nav || !toggle) return;
+        const setOpen = (open) => {
+            nav.classList.toggle('nav-open', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        };
+        toggle.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('nav-open')); });
+        nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        document.addEventListener('click', (e) => { if (!nav.contains(e.target)) setOpen(false); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+        window.addEventListener('resize', () => { if (window.innerWidth > 768) setOpen(false); });
+    })();</script>
+    <!-- nav:end -->
 
     <!-- This week in NFL officiating: plain text in the page source so search engines and AI
          assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
@@ -153,6 +156,7 @@
                 <!-- SEO:DIVISIONS --><div class="loading"><div class="spinner"></div></div><!-- /SEO:DIVISIONS -->
             </div>
             <div class="division-teams" id="divisionTeams"></div>
+            <p class="see-all"><a href="/team/" aria-label="See all teams">See all →</a></p>
         </div>
     </section>
 
@@ -172,6 +176,7 @@
                 <!-- SEO:PREVIEWS --><div class="loading"><div class="spinner"></div></div><!-- /SEO:PREVIEWS -->
             </div>
             <p class="preview-credit" id="previewCredit"></p>
+            <p class="see-all"><a href="/assignments/" aria-label="See all of this week's games">See all →</a></p>
         </div>
     </section>
 
@@ -269,6 +274,7 @@
             <div class="table-container flag-cost" id="flagCost">
                 <div class="loading"><div class="spinner"></div></div>
             </div>
+            <p class="see-all"><a href="/trends/" aria-label="See all trends">See all →</a></p>
         </div>
     </section>
 
@@ -287,6 +293,7 @@
             <div class="referee-grid fade-in" id="refereeGrid">
                 <!-- SEO:REFEREES --><div class="loading"><div class="spinner"></div></div><!-- /SEO:REFEREES -->
             </div>
+            <p class="see-all"><a href="/crew/" aria-label="See all crew chiefs">See all →</a></p>
         </div>
     </section>
 
@@ -324,6 +331,7 @@
                     </table>
                 </div>
             </div>
+            <p class="see-all"><a href="/dataset/" aria-label="See all data">See all →</a></p>
         </div>
     </section>
 

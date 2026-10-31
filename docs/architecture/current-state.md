@@ -141,6 +141,7 @@ plus the calendar year when later. Users:
 | `frontend/js/livestrip.js` | Live strip on the home page |
 | `frontend/gameday/index.html`, `js/gameday.js`, `css/gameday.css` | Live Gameday page; reads the Worker |
 | `frontend/css/static.css` | Styles for the pre-rendered static pages |
+| `scripts/site_nav.py`, `scripts/sync_nav.py` | **One site menu (#153):** `NAV` (Home, Gameday, This week, Crew chiefs, Teams, Trends, Guide, Data), every item a real page. `build_static.py` puts it on every pre-rendered page; `sync_nav.py` writes it into `index.html` and `gameday/index.html` between `<!-- nav:start -->` and `<!-- nav:end -->`; `check.py` "Menus match" fails if they drift. The phone menu's open/close is an inline script in the same markup. Home sections keep their `#ids` (old `/#trends` links still work) and end with "See all →" to their page; This Season and Findings stay on Home only |
 | `frontend/.htaccess` | HostGator (Apache): HTTPS, one canonical address, security headers, caching |
 | `frontend/robots.txt`, `site.webmanifest`, icons, `og-image.png` | Site metadata |
 

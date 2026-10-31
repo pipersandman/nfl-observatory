@@ -1508,21 +1508,16 @@ function renderWeekChart() {
 
     // Plain-English takeaway: this season vs the usual for the same weeks
     const take = document.getElementById('weekTakeaway');
-    if (take && doneWeeks.length) {
-        const n = doneWeeks.length;
-        const curAvg = doneWeeks.reduce((a, w) => a + w.perGame * w.games, 0) / doneWeeks.reduce((a, w) => a + w.games, 0);
-        const usual = doneWeeks.map(w => wk.priorAverage.find(p => p.week === w.week)?.perGame).filter(v => v != null);
-        const usualAvg = usual.reduce((a, v) => a + v, 0) / usual.length;
-        const pct = (curAvg / usualAvg - 1) * 100;
-        const fw = state.typeTrends?.fadeWindows;
-        const late = fw ? wk.priorAverage.filter(p => p.week >= fw.late.from && p.week <= fw.late.to) : [];
-        const early = fw ? wk.priorAverage.filter(p => p.week >= fw.early.from && p.week <= fw.early.to) : [];
-        const fade = early.length && late.length
-            ? (1 - (late.reduce((a, p) => a + p.perGame, 0) / late.length) / (early.reduce((a, p) => a + p.perGame, 0) / early.length)) * 100 : null;
-        take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fade ? ` (${fw.late.label} average about ${fmtNum(fade, 0)}% fewer than ${fw.early.label})` : ''}. ` +
-            `Through Week ${doneWeeks.at(-1).week}, ${cur} is averaging <strong class="y">${fmtNum(curAvg, 1)}</strong> per game, ` +
-            `<strong>${fmtNum(Math.abs(pct), 0)}% ${pct >= 0 ? 'above' : 'below'}</strong> the usual ${fmtNum(usualAvg, 1)} for those weeks.` +
-'';
+    // Games-weighted on both sides; the rounded percentages are stored once in type_trends.json (#118)
+    const fw = state.typeTrends?.fadeWindows;
+    const u = wk.usual;
+    if (take && (fw?.pctFewer != null || u)) {
+        const fadeTxt = fw?.pctFewer != null
+            ? ` (${fw.late.label} average ${fmtNum(fw.late.perGame, 1)} per game, ${fmtNum(fw.fewer, 1)} fewer than ${fw.early.label} at ${fmtNum(fw.early.perGame, 1)}: ${fw.pctFewer}% fewer, ${fw.seasons})` : '';
+        const usualTxt = u
+            ? ` Through Week ${u.through}, ${cur} is averaging <strong class="y">${fmtNum(u.current.perGame, 1)}</strong> per game, ` +
+              `<strong>${fmtNum(Math.abs(u.diff), 1)} (${Math.abs(u.pct)}%) ${u.diff >= 0 ? 'above' : 'below'}</strong> the usual ${fmtNum(u.prior.perGame, 1)} for those weeks (${u.seasons}).` : '';
+        take.innerHTML = `Flags usually <strong>fade as the season goes on</strong>${fadeTxt}.` + usualTxt;
     }
     const note = document.getElementById('weekNote');
     if (note) note.textContent = inProgress

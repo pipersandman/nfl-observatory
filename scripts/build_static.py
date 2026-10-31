@@ -195,13 +195,31 @@ CAREER_US = CAREER.replace('–', '_')
 START = WIN.get('dataStart') or _cs[0]             # first season in the data
 
 
-def fade_lists():
-    """The fade comparison's windows (type_trends.json → fadeWindows) and the prior-season
-    average per game for each week in them."""
+def fade():
+    """The fade comparison (type_trends.json → fadeWindows): both windows' games-weighted
+    rates, the difference and the stored whole percentage (#118). {} when not available."""
     fw = tt.get('fadeWindows') or {}
-    wk = tt.get('weekly', {}).get('priorAverage', [])
-    pick = lambda k: [w['perGame'] for w in wk if fw and fw[k]['from'] <= w['week'] <= fw[k]['to']]  # noqa: E731
-    return fw, pick('early'), pick('late')
+    return fw if fw.get('pctFewer') is not None else {}
+
+
+def fade_sentence(fw):
+    """'<late weeks> average <rate> flags per game, <difference> fewer than <early weeks> (<rate>),
+    <pct>% fewer (<prior seasons>).'"""
+    return (f"{fw['late']['label']} average {f1(fw['late']['perGame'])} flags per game, {f1(fw['fewer'])} fewer than "
+            f"{fw['early']['label']} ({f1(fw['early']['perGame'])}), {fw['pctFewer']}% fewer ({fw['seasons']}).")
+
+
+def season_vs_same_weeks(bold=False):
+    """'<rate> accepted penalties through Week <N> (vs <rate> in <last season> through Week <N>)': this
+    season vs the same weeks of last season, from season_comparison.json (#118). While a week is in
+    progress both sides include it: 'through Week <N> plus <k> games from Week <N+1> (vs <rate> in
+    <last season> through Week <N+1>)'."""
+    league = sc.get('league') or {}
+    same = (league.get('baselines') or {}).get('sameWeeks') or {}
+    label = next((b['label'] for b in sc.get('baselines', []) if b['key'] == 'sameWeeks'), '')
+    rate = f"{f1((league.get('current') or {}).get('perGame'))} accepted penalties"
+    txt = (f"<strong>{rate}</strong>" if bold else rate) + f" {weeks.through_text(THRU, sc.get('partialWeek'))}"
+    return txt + (f" (vs {f1(same.get('perGame'))} in {label})" if same.get('perGame') is not None else '')
 
 
 crews_now = sorted([c for c in sc.get('crewChiefs', []) if c.get('current', {}).get('games')],
@@ -212,7 +230,6 @@ for d in teams_idx.get('divisions', []):
         teams.append({**t, 'division': d['name']})
 teams.sort(key=lambda t: -(t.get('perGame') or 0))
 season_frame = next((f for f in sb.get('frames', []) if f['key'] == 'season'), {})
-last_frame = next((f for f in sb.get('frames', []) if f['key'] == 'lastSeason'), {})
 thru_txt = f'through Week {THRU}' if THRU else 'so far'
 
 
@@ -433,16 +450,16 @@ def trends_page():
     rising = sorted(tt.get('types', []), key=lambda r: -((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)))
     rrows = [[e(r['type']), f2(r.get('current')), f2((r.get('compare') or {}).get(comp.get('key'))),
               f"{((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)):+.2f}"] for r in rising]
-    fw, early, late = fade_lists()
+    fw = fade()
     q = (tt.get('quarters') or {}).get('all') or {}
     cost = ((fi.get('scopes') or {}).get('current') or {})
-    sea, lastsea = season_frame, last_frame
+    sea = season_frame
     body = f"""<p class="section-number">LEAGUE TRENDS</p>
     <h1 class="section-title">NFL penalty trends {SEASON}: are penalties up?</h1>
-    {tldr(f"{SEASON} games average <strong>{f1(sea.get('perGame'))} accepted penalties</strong> {thru_txt}, vs {f1(lastsea.get('perGame'))} across all of {SEASON - 1}. "
+    {tldr(f"{SEASON} games average {season_vs_same_weeks(bold=True)}. "
           f"About {f1(sea.get('pctPlays'))}% of plays draw a flag (one every {f1(sea.get('flagEveryPlays'))} plays). "
           + (f"The biggest increases vs {e(comp.get('label', 'last season'))}: " + ', '.join(f"{e(r['type'].lower())}" for r in rising[:3]) + '. ' if rising else '')
-          + (f"Flags usually fade as the season goes on: {fw['late']['label']} average {abs(1 - (sum(late) / len(late)) / (sum(early) / len(early))) * 100:.0f}% fewer than {fw['early']['label']}." if early and late else ''))}
+          + (f"Flags usually fade as the season goes on: {fade_sentence(fw)}" if fw else ''))}
     <h2>Penalties per game by season</h2>
     {table(['Season', 'Games', 'Full season / game', f"{weeks.weeks_label(tt.get('throughWeek'))} / game"], rows)}
     <p class="st-note">Regular season. The early-weeks column compares every season over the same weeks as the current one, the fair comparison while a season is in progress.</p>
@@ -521,7 +538,7 @@ def guide_page():
     top_now = crews_now[:3]
     car = sorted(style_by_name.values(), key=lambda c: -c['perGame'])[:3]
     live = (card.get('live') or {}).get('summary') or {}
-    fw, early, late = fade_lists()
+    fw = fade()
     comp = next((c for c in tt.get('comparisons', []) if c['key'] == tt.get('defaultComparison')), {})
     rising = sorted(tt.get('types', []), key=lambda r: -((r.get('current') or 0) - ((r.get('compare') or {}).get(comp.get('key')) or 0)))[:3]
     cost = ((fi.get('scopes') or {}).get('current') or {})
@@ -547,11 +564,12 @@ def guide_page():
          '<p>' + ', '.join(f"<a href=\"/team/{t['abbr']}/\">{e(team_name(t['abbr']))}</a> ({f1(t['perGame'])} per game)" for t in teams[:3])
          + f" lead the league {thru_txt}. Fewest: " + ', '.join(f"<a href=\"/team/{t['abbr']}/\">{e(team_name(t['abbr']))}</a> ({f1(t['perGame'])})" for t in teams[-2:]) + '.</p>'),
         (f'Are NFL penalties up in {SEASON}?',
-         f"<p>Yes. {SEASON} games average {f1(season_frame.get('perGame'))} accepted penalties {thru_txt}, vs {f1(last_frame.get('perGame'))} in {SEASON - 1}. "
+         f"<p>Yes. {SEASON} games average {season_vs_same_weeks()}. "
          + ('The biggest increases are in ' + ', '.join(e(r['type'].lower()) for r in rising) + '. ' if rising else '') + '<a href="/trends/">League trends</a>.</p>'),
         ('Do refs call more penalties early in the season?',
-         (f"<p>Usually. Since {START}, {fw['early']['label']} average {f1(sum(early) / len(early))} flags per game and {fw['late']['label']} average {f1(sum(late) / len(late))}. "
-          "The last two weeks are lowest of all, partly because of resting starters and games with nothing at stake.</p>") if early and late else '<p>Data not available.</p>'),
+         (f"<p>Usually. In {fw['seasons']}, {fw['early']['label']} average {f1(fw['early']['perGame'])} flags per game and {fw['late']['label']} average "
+          f"{f1(fw['late']['perGame'])}: {f1(fw['fewer'])} fewer, {fw['pctFewer']}% fewer. "
+          "The last two weeks are lowest of all, partly because of resting starters and games with nothing at stake.</p>") if fw else '<p>Data not available.</p>'),
         ('How much does a penalty cost a team?',
          f"<p>About {f2((cost.get('league') or {}).get('pointsCostPerTeamGame'))} expected points per team per game in {SEASON}. The most costly flags are pass interference "
          "and personal fouls that hand the offense a first down on third down. <a href=\"#flag-cost\">How it's measured</a>.</p>"),
@@ -617,8 +635,7 @@ def home_summary():
         return
     top = crews_now[:1]
     most = teams[:1]
-    txt = (f"<strong>This week in NFL officiating:</strong> {SEASON} games average {f1(season_frame.get('perGame'))} accepted penalties {thru_txt} "
-           f"(vs {f1(last_frame.get('perGame'))} in {SEASON - 1})."
+    txt = (f"<strong>This week in NFL officiating:</strong> {SEASON} games average {season_vs_same_weeks()}."
            + (f" Most flags per game: {crew_link(top[0]['name'])}'s crew ({f1(top[0]['current']['perGame'])})." if top else '')
            + (f" Most penalized team: <a href=\"/team/{most[0]['abbr']}/\">{e(team_name(most[0]['abbr']))}</a> ({f1(most[0]['perGame'])} per game)." if most else '')
            + ' <a href="/assignments/">This week\'s referee assignments</a> · <a href="/guide/">FAQ</a>')
@@ -701,7 +718,7 @@ def sitemap_and_llms():
 
 > Independent, data-driven tracking of NFL penalties and officiating: accepted penalties in regular-season games since {START}, by crew chief (head referee), team, season, week and penalty type, with pre-game flag projections and a public track record. Updated automatically during and after every game day. Not affiliated with the NFL.
 
-Current numbers ({SEASON}, {thru_txt}): {f1(season_frame.get('perGame'))} accepted penalties per game (vs {f1(last_frame.get('perGame'))} in {SEASON - 1}). Most flags per game by crew chief: {top}.
+Current numbers: {SEASON} games average {season_vs_same_weeks()}. Most flags per game by crew chief: {top}.
 
 ## Key pages
 - [Referee (crew chief) stats]({SITE}/crew/): every active crew chief, penalties per game, career and style

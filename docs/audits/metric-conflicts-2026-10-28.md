@@ -297,6 +297,8 @@ comparison cover the same weeks (section 9).
 
 **Ty's decision (2026-10-29):** A. Compare through the same last week. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
 
+**Fixed:** #118: while a week is in progress, the league's same-weeks comparison (tiles, "Which calls are rising?") runs through the partial week, like each crew chief's and team's: the previous season's games up to that week against every game played this season (`scripts/weeks.py` `compare_week()`). Its label and button name that week ("2025 through Week 8"). The season chart's Weeks 1–N bars leave the partial week out on both sides, as before. Follow-ups: the crew chief table's column header (#137) and the team index button (#138).
+
 ---
 
 ## C5. "Penalties" counts plays with an accepted penalty
@@ -427,6 +429,8 @@ season as a whole (12.72), so the summary makes the rise look larger.
 **Recommendation:** A (section 9: same weeks by default).
 
 **Ty's decision (2026-10-29):** A. Same weeks, as the section below. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
+
+**Fixed:** #118: the home summary line, the static `/trends/` summary, the guide's "Are NFL penalties up?" and `llms.txt` compare with the same weeks of last season, both values from `season_comparison.json` (`build_static.py` `season_vs_same_weeks()`): "2026 games average 14.7 accepted penalties through Week 7 (vs 14.2 in 2025 through Week 7)"; while a week is in progress, "… through Week 7 plus 1 game from Week 8 (vs <rate> in 2025 through Week 8)". The preview badge (M77) is left for its own step. The guide answer's first word ("Yes.") is C19 (#128).
 
 ---
 
@@ -988,6 +992,8 @@ also shown as a percentage without its two rates.
 with its baseline and absolute change).
 
 **Ty's decision (2026-10-29):** A. Games-weighted, with both rates shown. Plus the rule for every decision: no hard-coded years, windows or values in labels or text (see the top of this file).
+
+**Fixed:** #118: the fade and "the usual" are games-weighted and computed once in `scripts/type_trends.py` (`type_trends.json` → `fadeWindows` and `weekly.usual`), with the whole percentage rounded once (half away from zero) so every page shows the same number. The week chart, `/trends/` and the guide show both rates, the difference and the percentage: Weeks 15–18 average 11.3, 2.2 fewer than Weeks 1–4 (13.6), 17% fewer (2015–25; exact 16.5%). The usual for Weeks 1–7 is 13.3 (13.28, 1,172 games); 2026 is 1.4 (10%) above.
 
 ---
 

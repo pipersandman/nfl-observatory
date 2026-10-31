@@ -662,6 +662,9 @@ def calculate_season_comparison(data: dict) -> dict:
     # "Through Week N" = the last week whose games have ALL been played. A Thursday game
     # alone doesn't make it "through Week 5"; those early games are counted as extras.
     through_week, partial = weeks.completed_week(data['schedules'], games, current)
+    # The league's same-weeks comparison runs through the partial week while one is in
+    # progress (#118), like each crew chief's: both sides then include that week.
+    same_week = weeks.compare_week(through_week, games.loc[games['season'] == current, 'week'])
 
     per_game = penalties.groupby('game_id').agg(
         penalties=('game_id', 'size'),
@@ -686,9 +689,9 @@ def calculate_season_comparison(data: dict) -> dict:
     if previous in prior_seasons:
         baselines.append({
             'key': 'sameWeeks', 'seasons': [previous],
-            'label': weeks.through_label(previous, through_week),
-            'short': weeks.short_through(previous, through_week),
-            'mask': lambda f: (f['season'] == previous) & (f['week'] <= through_week),
+            'label': weeks.through_label(previous, same_week),
+            'short': weeks.short_through(previous, same_week),
+            'mask': lambda f: (f['season'] == previous) & (f['week'] <= same_week),
         })
         baselines.append({
             'key': 'lastSeason', 'seasons': [previous],
@@ -728,7 +731,7 @@ def calculate_season_comparison(data: dict) -> dict:
             continue
         crew_week = max(through_week, int(s.loc[s['season'] == current, 'week'].max()))
         bl = {b['key']: summarize(s[b['mask'](s)]) for b in baselines}
-        if 'sameWeeks' in bl and crew_week != through_week:   # e.g. worked Thursday's Week 5 game
+        if 'sameWeeks' in bl and crew_week != same_week:   # own week differs from the league's (e.g. no game yet in a partial week)
             bl['sameWeeks'] = summarize(s[(s['season'] == previous) & (s['week'] <= crew_week)])
         crews.append({
             'name': name,
@@ -749,10 +752,10 @@ def calculate_season_comparison(data: dict) -> dict:
         'previousSeason': previous,
         'throughWeek': through_week,
         'partialWeek': partial,   # games already played in the next (unfinished) week
-        'windows': weeks.windows_block(games['season'].unique(), current, through_week, partial),
+        'windows': weeks.windows_block(games['season'].unique(), current, through_week, partial, same_week),
         'regularSeasonOnly': True,
         'baselines': [{**{k: b[k] for k in ('key', 'label', 'short', 'seasons')},
-                       'button': weeks.baseline_button(b['key'], b['seasons'], through_week)} for b in baselines],
+                       'button': weeks.baseline_button(b['key'], b['seasons'], same_week)} for b in baselines],
         'defaultBaseline': 'sameWeeks' if previous in prior_seasons else (baselines[0]['key'] if baselines else None),
         'league': league,
         'crewChiefs': crews,

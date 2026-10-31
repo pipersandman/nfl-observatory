@@ -5,6 +5,7 @@ data, so no script or page hard-codes a year, window or value:
 
 - regular season:        regular_season()
 - last completed week:   completed_week() (plus the partial week, if one is in progress)
+- same-weeks comparison: compare_week() (through the partial week when one is in progress, #118)
 - prior seasons:         prior_seasons() (every season in the data before the current one)
 - last N seasons:        last_n()
 - career:                career_window() (= the prior seasons; seasons before this one)
@@ -36,6 +37,24 @@ def completed_week(schedules, games_played, season):
     extra = sched[(sched['week'] > done) & sched['game_id'].isin(played)]
     partial = {'week': int(extra['week'].min()), 'games': int(len(extra))} if len(extra) else None
     return done, partial
+
+
+def compare_week(through_week, played_weeks):
+    """The last week a same-weeks comparison covers: the last completed week, or the
+    latest week with a game already played if a week is in progress (#118). The same
+    rule crew chiefs and teams use with their own games."""
+    latest = max((int(w) for w in played_weeks), default=0)
+    return max(int(through_week), latest)
+
+
+def through_text(through_week, partial):
+    """'through Week 7', or 'through Week 7 plus 1 game from Week 8' while a week is in progress
+    ('after 1 game of Week 1' before any week is complete)."""
+    games = f"{partial['games']} game{'' if partial['games'] == 1 else 's'}" if partial else ''
+    if not through_week:
+        return f"after {games} of Week {partial['week']}" if partial else "so far"
+    base = f"through Week {through_week}"
+    return f"{base} plus {games} from Week {partial['week']}" if partial else base
 
 
 # ---- windows ---------------------------------------------------------------------
@@ -116,13 +135,15 @@ def fade_windows(last_week):
             'late': {'from': late[0], 'to': late[1], 'label': weeks_label(late[1], late[0])}}
 
 
-def windows_block(seasons, season, through_week, partial):
+def windows_block(seasons, season, through_week, partial, same_week=None):
     """Every window the pages name, with its label. Written to
-    season_comparison.json → windows; app.js and build_static.py read it."""
+    season_comparison.json → windows; app.js and build_static.py read it.
+    same_week: the same-weeks comparison's last week (compare_week()); defaults to through_week."""
     prior = prior_seasons(seasons, season)
     previous = int(season) - 1
     car = career_window(seasons, season)
     l3 = last_n(prior)
+    sw = int(same_week) if same_week is not None else int(through_week)
     return {
         'season': int(season),
         'previous': previous,
@@ -130,8 +151,8 @@ def windows_block(seasons, season, through_week, partial):
         'throughWeek': int(through_week),
         'partialWeek': partial,
         'weeksLabel': weeks_label(through_week) if through_week else '',
-        'sameWeeks': {'label': through_label(previous, through_week), 'short': short_through(previous, through_week),
-                      'button': button_through(previous, through_week)} if through_week else None,
+        'sameWeeks': {'label': through_label(previous, sw), 'short': short_through(previous, sw),
+                      'button': button_through(previous, sw)} if sw else None,
         'prior': {'seasons': [prior[0], prior[-1]], 'label': span_label(prior)} if prior else None,
         'last3': {'seasons': [l3[0], l3[-1]], 'count': len(l3), 'label': span_label(l3)} if l3 else None,
         'career': {'seasons': list(car), 'label': span_label(car)} if car else None,

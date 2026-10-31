@@ -1,0 +1,67 @@
+name: Analytics export
+
+# Copies Cloudflare Web Analytics, one file per finished UTC day, to the private
+# R2 bucket nflobs-raw under internal/analytics/cloudflare-web/ (#164).
+# Weekly: the last 8 days (days already stored are skipped). Manual: a backfill
+# from a date, or a probe that reports what the API returns and writes nothing.
+# Never commits to the repository.
+on:
+  schedule:
+    - cron: '0 10 * * 1'   # Monday 10:00 UTC
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'Backfill from this day (YYYY-MM-DD). Empty = the last 8 days'
+        required: false
+        default: ''
+      to:
+        description: 'Last day (YYYY-MM-DD). Empty = yesterday (UTC)'
+        required: false
+        default: ''
+      probe:
+        description: 'Probe only: report what the API returns, write nothing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: analytics-export
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Export Web Analytics days
+        env:
+          CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_WEB_ANALYTICS_SITE_TAG: 8db64f3b97744e96bc6630d4dd4fbece   # not secret
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          PROBE: ${{ inputs.probe }}
+        run: |
+          args=()
+          if [ -n "$FROM" ]; then args+=(--from "$FROM"); fi
+          if [ -n "$TO" ]; then args+=(--to "$TO"); fi
+          if [ "$PROBE" = "true" ]; then args+=(--probe); fi
+          python scripts/analytics_export.py "${args[@]}"

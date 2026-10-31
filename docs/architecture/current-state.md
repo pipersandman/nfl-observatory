@@ -162,6 +162,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 | `checks.yml` (W1) | Every pull request; manual | Installs the check tools and the runtime lock file (the tests import the pipeline, #89), then `python scripts/check.py`: Ruff, compile, JSON, Worker JS, no hard-coded years, and pytest. Job name `checks` |
 | `r2-access-check.yml` (#88) | Manual only | Proves the R2 token can write `nflobs-raw`, can't overwrite an object, and can't list or write `drsplus-tiles`; always deletes its `_checks/` test object |
 | `r2-rebuild-check.yml` (#88) | Manual only (input: a run id) | Rebuilds that "Update NFL Data" run's data from its raw files alone and compares it with what the run committed |
+| `analytics-export.yml` (#164) | Monday 10:00 UTC weekly; manual (inputs: `from`, `to`, `probe`) | `scripts/analytics_export.py`: Cloudflare Web Analytics (GraphQL `rumPageloadEventsAdaptiveGroups`, the site tag, bots excluded with `bot = 0`) to private R2, one gzip JSON per finished UTC day in `nflobs-raw/internal/analytics/cloudflare-web/<YYYY-MM-DD>.json.gz`, grouped by page path, referrer host and country. Weekly = the last 8 days; already-stored days are skipped; writes are conditional (never overwritten); today and days with no data aren't stored; a day over the API's row limit isn't stored and turns the run red. `probe` writes nothing. `contents: read`, no commit |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
 
 Actions are pinned to commit SHAs. The data bot pushes directly to `main`
@@ -177,6 +178,7 @@ for the bot to push as; tracked in #78.
 | `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR` | GitHub Actions secrets | Deploy step |
 | `GITHUB_TOKEN` | Provided by Actions | nflverse release check, data commit |
 | `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT` | GitHub Actions secrets only (not in a local `.env`, so capture is off on the laptop). Token scoped to `nflobs-raw` | Raw capture (fetch and update steps), the two R2 check workflows (#88) |
+| `CF_ANALYTICS_TOKEN`, `CF_ACCOUNT_ID` | GitHub Actions secrets. Token: Account Analytics Read only | Analytics export (#164); it also uses the `R2_*` secrets. The site tag isn't secret and is set in the workflow |
 | `ODDS_API_KEY`, `SENTRY_DSN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY` | Not yet created | Later stages (see `.env.example`) |
 
 ## Dependencies
@@ -200,8 +202,9 @@ for the bot to push as; tracked in #78.
 - Tests (`tests/`, #89): the season rule, week selection, the workflow's
   game-day gate and final step (run from the text of `update-data.yml`), raw
   capture against a local folder standing in for R2, the 24-hour rule, and the
-  rebuild comparison. `tests/conftest.py` blocks every connection off the
-  machine and clears GitHub Actions, R2 and `NFLOBS_*` variables for each test.
+  rebuild comparison, and the analytics export (#164) against a stubbed API.
+  `tests/conftest.py` blocks every connection off the machine and clears
+  GitHub Actions, R2, `CF_*` and `NFLOBS_*` variables for each test.
   Not covered: the full-pipeline capture and rebuild runs from #88 (they
   download from nflverse and take minutes; run by hand).
 - Python 3.11 (laptop and Actions). Node LTS for the Worker scripts and checks.

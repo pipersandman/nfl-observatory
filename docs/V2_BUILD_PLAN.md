@@ -1001,7 +1001,7 @@ Record each decision here (and as an ADR in `docs/adr/` from W1).
 | D10 | No home-lab infrastructure for V2 for now; hosted services only | Decided | Oct 2026 |
 | D11 | AI agent delivery system (old V2.-1: parallel agents, Codex reviewer, Herdr, orchestrators) removed | Decided | Oct 2026 |
 | D12 | Trust fixes (V2.0a) ship on the current site before the redesign | Proposed | — |
-| D13 | Small-sample threshold for the label (games per crew-season, team weeks) | Open (V2.0a step 3) | — |
+| D13 | Small-sample threshold for the label (games per crew-season, team weeks) | Decided: 8 games (2026-10-29); #127 records it in docs/adr/0001-v2-decisions.md | Oct 2026 |
 | D14 | Public uncertainty display: interval level (90% vs 95%) and model source | Open (V2.1b) | — |
 | D15 | R2 raw capture starts right after W1, in parallel with V2.0a | Decided (#88) | Oct 2026 |
 | D16 | Visual design: keep the Penalty Flag theme; audit's palette and typography not adopted | Decided | Oct 2026 |
@@ -1009,6 +1009,13 @@ Record each decision here (and as an ADR in `docs/adr/` from W1).
 | D18 | Analytics: keep Cloudflare Web Analytics (Plausible optional later) | Proposed | — |
 | D19 | Where assignments and Gameday live in the six-section navigation | Open (V2.1) | — |
 | D20 | Raw capture design: boto3; tables as Parquet, pages as exact bytes; unchanged files not stored again, one manifest per run; conditional writes; failing over 24 hours turns the run red (ADR-0002) | Decided (#88) | Oct 2026 |
+| D21 | Analytics tool for events and campaigns: PostHog in cookieless mode recommended (would replace D18) (`docs/BUILD_PLAN_ADDENDUM.md`, Workstream 2) | Proposed | — |
+| D22 | Referee grade: penalty classes | Open | — |
+| D23 | Referee grade: name | Open | — |
+| D24 | Model fields in public files: Ty decides each field listed under Site perf 5 in `docs/BUILD_PLAN_ADDENDUM.md` (P5 to P7 evidence stays deployed) | Open | — |
+| D25 | Referee grade: which flags count | Open | — |
+| D26 | Referee grade: when to publish | Open | — |
+| D27 | Repository visibility: private before Site perf 5 and any grade code is pushed | Proposed | — |
 
 ## 34. Dependency map
 

@@ -5,3 +5,6 @@ ruff==0.17.3
 pre-commit==4.7.0
 # Generates the runtime lock file (scripts/requirements.txt) from requirements.in
 uv==0.13.6
+# Tests in tests/ (run by scripts/check.py). They also need the runtime packages
+# in requirements.txt, which CI installs alongside this file.
+pytest==9.1.1

@@ -158,7 +158,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 | Workflow | Runs | Does |
 |---|---|---|
 | `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
-| `checks.yml` (W1) | Every pull request; manual | `python scripts/check.py`. Job name `checks` |
+| `checks.yml` (W1) | Every pull request; manual | Installs the check tools and the runtime lock file (the tests import the pipeline, #89), then `python scripts/check.py`: Ruff, compile, JSON, Worker JS, no hard-coded years, and pytest. Job name `checks` |
 | `r2-access-check.yml` (#88) | Manual only | Proves the R2 token can write `nflobs-raw`, can't overwrite an object, and can't list or write `drsplus-tiles`; always deletes its `_checks/` test object |
 | `r2-rebuild-check.yml` (#88) | Manual only (input: a run id) | Rebuilds that "Update NFL Data" run's data from its raw files alone and compares it with what the run committed |
 | Dependabot | Weekly | Pip updates in `scripts/`, GitHub Actions updates |
@@ -195,7 +195,14 @@ for the bot to push as; tracked in #78.
     laptop's Python is ever upgraded, raise the floor to match in a separate
     step.
 - Checks (`scripts/requirements-dev.txt`, exact): `ruff`, `pre-commit`, `uv`
-  (generates the lock file).
+  (generates the lock file), `pytest` (#89).
+- Tests (`tests/`, #89): the season rule, week selection, the workflow's
+  game-day gate and final step (run from the text of `update-data.yml`), raw
+  capture against a local folder standing in for R2, the 24-hour rule, and the
+  rebuild comparison. `tests/conftest.py` blocks every connection off the
+  machine and clears GitHub Actions, R2 and `NFLOBS_*` variables for each test.
+  Not covered: the full-pipeline capture and rebuild runs from #88 (they
+  download from nflverse and take minutes; run by hand).
 - Python 3.11 (laptop and Actions). Node LTS for the Worker scripts and checks.
 - Social images need Playwright with Chromium, installed by hand (see
   `social/README.md`); not in either requirements file.

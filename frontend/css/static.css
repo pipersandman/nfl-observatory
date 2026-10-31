@@ -11,12 +11,13 @@
 .st-main h1.section-title { text-align: left; margin: 0.3rem 0 1rem; font-size: clamp(2rem, 4.2vw, 3.1rem); line-height: 1.05; }
 .st-main .section-number { text-align: left; }
 /* Full pages (#166): the home page's blocks inside .st-app keep their home-page styles,
-   so the page text rules below skip them */
-.st-main h2:not(.st-app *) { font: 700 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; color: var(--text-primary); margin: 2.2rem 0 0.8rem; }
-.st-main h3:not(.st-app *) { font: 600 1.05rem var(--font-body); color: var(--text-primary); margin: 1.4rem 0 0.4rem; }
-.st-main :is(p, li, dd):not(.st-app *) { color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem; }
-.st-main a:not(.st-app *) { color: var(--accent); }
-.st-main strong:not(.st-app *) { color: var(--text-primary); }
+   so the page text rules below skip them. :where() adds no specificity, so later rules
+   (.st-tldr p, .st-crumbs a, ...) still win as before (#168) */
+.st-main h2:where(:not(.st-app *)) { font: 700 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; color: var(--text-primary); margin: 2.2rem 0 0.8rem; }
+.st-main h3:where(:not(.st-app *)) { font: 600 1.05rem var(--font-body); color: var(--text-primary); margin: 1.4rem 0 0.4rem; }
+.st-main :is(p, li, dd):where(:not(.st-app *)) { color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem; }
+.st-main a:where(:not(.st-app *)) { color: var(--accent); }
+.st-main strong:where(:not(.st-app *)) { color: var(--text-primary); }
 .st-app { margin: 0 0 2rem; }
 .st-crumbs { font: 500 0.78rem var(--font-mono); color: var(--text-muted); margin-bottom: 1rem; }
 .st-crumbs a { color: var(--text-secondary); text-decoration: none; } .st-crumbs span { color: var(--text-muted); }

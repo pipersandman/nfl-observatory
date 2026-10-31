@@ -43,8 +43,8 @@ def test_home_blocks_are_the_template_not_the_summary_fill():
 def test_check_passes_and_lists_the_pending_pages(capsys):
     ok, note = check.check_full_pages()
     assert ok, capsys.readouterr().out
-    assert note.startswith('1 done (/crew/), 3 pending')
-    assert 'pending: /assignments/ (#167), /team/ (#168), /trends/ (#169)' in capsys.readouterr().out
+    assert note.startswith('2 done (/crew/, /team/), 2 pending')
+    assert 'pending: /assignments/ (#167), /trends/ (#169)' in capsys.readouterr().out
 
 
 def test_every_see_all_goes_to_a_full_page():
@@ -83,6 +83,7 @@ def built(tmp_path, monkeypatch):
     monkeypatch.setattr(bs, 'NOW', Now(2026, 11, 1, 12, tzinfo=timezone.utc))
     monkeypatch.setattr(bs, 'SITEMAP', [])
     bs.crew_pages()
+    bs.team_pages()
     return tmp_path
 
 
@@ -128,3 +129,41 @@ def test_blocks_need_a_place_in_the_body(tmp_path, monkeypatch):
 def test_app_reads_data_from_the_site_root():
     app = (ROOT / 'frontend' / 'js' / 'app.js').read_text(encoding='utf-8')
     assert "dataPath: '/data'" in app
+
+
+# ---- /team/ (#168) ------------------------------------------------------------------------
+
+def test_team_page_order_ranking_then_divisions_then_note(built):
+    text = (built / 'team' / 'index.html').read_text(encoding='utf-8')
+    for i in fp.FULL_PAGES['/team/']['blocks'] + fp.SHELLS:
+        assert text.count(f'id="{i}"') == 1, i
+    h1 = text.index('<h1')
+    tldr = text.index('st-tldr')
+    ranking = text.index('<table class="pv-table st-table')
+    heading = text.index(f'<h2>NFL Team Penalties by Division {bs.SEASON}</h2>')
+    picker = text.index('id="divisionGrid"')
+    cards = text.index('id="divisionTeams"')
+    note = text.index('Accepted penalties on each team')
+    assert h1 < tldr < ranking < heading < picker < cards < note
+
+
+def test_team_page_loads_the_home_code_and_has_no_home_page_button(built):
+    text = (built / 'team' / 'index.html').read_text(encoding='utf-8')
+    assert text.count(bs.CHART_TAG) == 1
+    assert text.count('<script src="/js/app.js?v=abc12345"></script>') == 1
+    assert 'livestrip.js' not in text
+    assert 'on the home page' not in text and 'href="/#teams"' not in text.split('</nav>')[1]
+
+
+def test_team_profile_pages_stay_static(built):
+    text = (built / 'team' / 'MIA' / 'index.html').read_text(encoding='utf-8')
+    assert 'app.js' not in text and 'class="st-app"' not in text
+
+
+def test_block_exclusions_add_no_specificity():
+    """The page text rules skip .st-app inside :where(), so they keep their old
+    specificity and later rules (.st-tldr p, .st-crumbs a) still win (#168)."""
+    css = (ROOT / 'frontend' / 'css' / 'static.css').read_text(encoding='utf-8')
+    uses = css.count(':not(.st-app *)')
+    assert uses == 5
+    assert css.count(':where(:not(.st-app *))') == uses

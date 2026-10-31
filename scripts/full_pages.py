@@ -19,7 +19,7 @@ from html.parser import HTMLParser
 FULL_PAGES = {
     '/crew/': {'section': 'referees', 'blocks': ['refereeGrid', 'data'], 'explainers': ['crew-chief']},
     '/assignments/': {'section': 'previews', 'pending': 167},
-    '/team/': {'section': 'teams', 'pending': 168},
+    '/team/': {'section': 'teams', 'blocks': ['divisionGrid', 'divisionTeams']},
     '/trends/': {'section': 'trends', 'pending': 169},
 }
 

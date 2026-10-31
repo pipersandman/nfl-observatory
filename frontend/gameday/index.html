@@ -26,17 +26,19 @@
     <!-- nav:start -->
     <nav class="site-nav" id="siteNav" aria-label="Site" data-kickoffs="">
         <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
-        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span><span class="toggle-dot" aria-hidden="true"></span></button>
         <div class="nav-links" id="navLinks"><a href="/">Home</a><a href="/gameday/" class="nav-live" aria-current="page"><span class="live-dot" aria-hidden="true"></span>Live Games<span class="sr-only live-sr" hidden>, games in progress</span></a><a href="/#previews">Assignments &amp; Projections</a><a href="/#referees">Crew chiefs</a><a href="/#teams">Team Stats</a><a href="/#trends">Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
         <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X"><svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span></a>
     </nav>
     <script>(() => {
         const nav = document.getElementById('siteNav'), toggle = document.getElementById('navToggle');
         if (!nav || !toggle) return;
+        const setLabel = () => toggle.setAttribute('aria-label',
+            navToggleLabel(nav.classList.contains('nav-open'), nav.classList.contains('is-live')));
         const setOpen = (open) => {
             nav.classList.toggle('nav-open', open);
             toggle.setAttribute('aria-expanded', String(open));
-            toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            setLabel();
         };
         toggle.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('nav-open')); });
         nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
@@ -48,13 +50,19 @@
         function navLiveNow(kickoffs, now) {
             return kickoffs.some(k => now >= k && now < k + 4 * 3600 * 1000);
         }
+        function navToggleLabel(open, live) {
+            return open ? 'Close menu' : (live ? 'Menu, games in progress' : 'Open menu');
+        }
         const live = nav.querySelector('.nav-live');
         const kickoffs = (nav.dataset.kickoffs || '').split(',').map(Date.parse).filter(Number.isFinite);
         const update = () => {
             const on = !!live && navLiveNow(kickoffs, Date.now());
-            if (!live) return;
-            live.classList.toggle('is-live', on);
-            live.querySelector('.live-sr').hidden = !on;
+            nav.classList.toggle('is-live', on);       // the dot on the ☰ button
+            if (live) {
+                live.classList.toggle('is-live', on);  // the dot on Live Games
+                live.querySelector('.live-sr').hidden = !on;
+            }
+            setLabel();
         };
         update();
         if (kickoffs.length) setInterval(update, 60 * 1000);

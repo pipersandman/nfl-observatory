@@ -1861,6 +1861,11 @@ nav.site-nav .logo, .nav-links a { white-space: nowrap; }
 .nav-live.is-live .live-dot { display: inline-block; animation: live-pulse 1.6s ease-in-out infinite; }
 @keyframes live-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-soft); } 50% { opacity: 0.55; box-shadow: 0 0 0 5px rgba(255, 196, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .nav-live.is-live .live-dot { animation: none; } }
+/* The same dot on the ☰ button (up to 1240px), so it shows with the menu closed */
+.nav-toggle { position: relative; }
+.nav-toggle .toggle-dot { display: none; position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+nav.is-live .nav-toggle .toggle-dot { display: block; animation: live-pulse 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { nav.is-live .nav-toggle .toggle-dot { animation: none; } }
 
 /* Screen-reader-only text */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

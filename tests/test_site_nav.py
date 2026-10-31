@@ -171,6 +171,36 @@ def test_live_dot_off_without_kickoffs():
 def test_dot_respects_reduced_motion():
     css = (ROOT / 'frontend' / 'css' / 'styles.css').read_text(encoding='utf-8')
     assert re.search(r'@media \(prefers-reduced-motion: reduce\) \{ \.nav-live\.is-live \.live-dot \{ animation: none; \} \}', css)
+    assert re.search(r'@media \(prefers-reduced-motion: reduce\) \{ nav\.is-live \.nav-toggle \.toggle-dot \{ animation: none; \} \}', css)
+
+
+def test_menu_button_has_the_dot():
+    button = site_nav.nav_html('/crew/').split('id="navToggle"')[1].split('</button>')[0]
+    assert '<span class="toggle-dot" aria-hidden="true"></span>' in button
+    assert button.count('<span></span>') == 3                             # the three bars are unchanged
+
+
+def toggle_label(is_open, live):
+    """Run the menu's own navToggleLabel() in Node."""
+    js = site_nav.LIVE_JS + f'\nprocess.stdout.write(navToggleLabel({json.dumps(is_open)}, {json.dumps(live)}));'
+    return subprocess.run([NODE, '-e', js], capture_output=True, text=True, check=True).stdout
+
+
+@pytest.mark.skipif(not NODE, reason='node not installed')
+@pytest.mark.parametrize('is_open, live, label', [
+    (False, True, 'Menu, games in progress'),
+    (False, False, 'Open menu'),
+    (True, True, 'Close menu'),
+    (True, False, 'Close menu'),
+])
+def test_menu_button_label(is_open, live, label):
+    assert toggle_label(is_open, live) == label
+
+
+def test_script_lights_both_dots_from_the_same_rule():
+    assert "nav.classList.toggle('is-live', on)" in site_nav.MENU_JS      # ☰ button dot
+    assert "live.classList.toggle('is-live', on)" in site_nav.MENU_JS     # Live Games dot
+    assert 'navLiveNow(kickoffs, Date.now())' in site_nav.MENU_JS
 
 
 # ---- home sections, See all, pop-ups ---------------------------------------------------

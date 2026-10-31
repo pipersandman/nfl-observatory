@@ -45,6 +45,9 @@ X_ICON = ('<svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill
 # epoch milliseconds. Pure, so tests run it in Node with fake times.
 LIVE_JS = f"""function navLiveNow(kickoffs, now) {{
         return kickoffs.some(k => now >= k && now < k + {LIVE_HOURS} * 3600 * 1000);
+    }}
+    function navToggleLabel(open, live) {{
+        return open ? 'Close menu' : (live ? 'Menu, games in progress' : 'Open menu');
     }}"""
 
 # ☰ menu (open/close up to 1240px wide, matching styles.css) and the live dot. Inline, so it works on pages
@@ -52,10 +55,12 @@ LIVE_JS = f"""function navLiveNow(kickoffs, now) {{
 MENU_JS = """<script>(() => {
     const nav = document.getElementById('siteNav'), toggle = document.getElementById('navToggle');
     if (!nav || !toggle) return;
+    const setLabel = () => toggle.setAttribute('aria-label',
+        navToggleLabel(nav.classList.contains('nav-open'), nav.classList.contains('is-live')));
     const setOpen = (open) => {
         nav.classList.toggle('nav-open', open);
         toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        setLabel();
     };
     toggle.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('nav-open')); });
     nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
@@ -69,9 +74,12 @@ MENU_JS = """<script>(() => {
     const kickoffs = (nav.dataset.kickoffs || '').split(',').map(Date.parse).filter(Number.isFinite);
     const update = () => {
         const on = !!live && navLiveNow(kickoffs, Date.now());
-        if (!live) return;
-        live.classList.toggle('is-live', on);
-        live.querySelector('.live-sr').hidden = !on;
+        nav.classList.toggle('is-live', on);       // the dot on the ☰ button
+        if (live) {
+            live.classList.toggle('is-live', on);  // the dot on Live Games
+            live.querySelector('.live-sr').hidden = !on;
+        }
+        setLabel();
     };
     update();
     if (kickoffs.length) setInterval(update, 60 * 1000);
@@ -101,7 +109,8 @@ def nav_html(current: str, indent: str = '    ', kickoffs: list[str] | None = No
         f'<nav class="site-nav" id="siteNav" aria-label="Site" data-kickoffs="{escape(",".join(kickoffs or []))}">',
         '    <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>',
         '    <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" '
-        'aria-controls="navLinks"><span></span><span></span><span></span></button>',
+        'aria-controls="navLinks"><span></span><span></span><span></span>'
+        '<span class="toggle-dot" aria-hidden="true"></span></button>',
         f'    <div class="nav-links" id="navLinks">{links}</div>',
         '    <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" '
         'aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X">' + X_ICON + '<span>Follow</span></a>',

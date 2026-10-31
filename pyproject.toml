@@ -2,10 +2,16 @@
 
 [tool.ruff]
 target-version = "py311"
-include = ["scripts/**/*.py"]
+include = ["scripts/**/*.py", "tests/**/*.py"]
 
 [tool.ruff.lint]
 # Basic checks only for now: pyflakes (unused imports and variables, undefined
 # names, empty f-strings) and syntax errors. Formatting and wider style rules
 # are deferred to their own issue (decided in #74).
 select = ["F", "E9"]
+
+[tool.pytest.ini_options]
+# Tests import the pipeline modules from scripts/ (tests/conftest.py adds it to
+# the path). No network: tests/conftest.py blocks connections off this machine.
+testpaths = ["tests"]
+addopts = "-q"

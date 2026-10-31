@@ -3,8 +3,9 @@
     venv/Scripts/python scripts/check.py     (laptop)
     python scripts/check.py                  (GitHub Actions)
 
-Needs only the tools in scripts/requirements-dev.txt and Node. No network, no
-secrets. Exit code 0 means every check passed.
+Needs the tools in scripts/requirements-dev.txt, the runtime packages in
+scripts/requirements.txt (the tests import the pipeline) and Node. No network,
+no secrets. Exit code 0 means every check passed.
 """
 
 import compileall
@@ -102,12 +103,24 @@ def check_literals():
     return not found, f'{n} files' + (f', {len(found)} literal(s)' if found else '')
 
 
+def check_pytest():
+    """Tests in tests/ (#89). No network: tests/conftest.py blocks it."""
+    # -q comes from pyproject.toml; passing it again would hide the summary line
+    r = subprocess.run([sys.executable, '-m', 'pytest', '-p', 'no:cacheprovider'],
+                       cwd=ROOT, capture_output=True, text=True)
+    print(r.stdout + r.stderr, end='')
+    summary = r.stdout.strip().splitlines()[-1] if r.stdout.strip() else ''
+    m = re.search(r'\d+ (passed|failed).*? in [\d.]+s', summary)
+    return r.returncode == 0, m.group(0) if m else summary
+
+
 CHECKS = [
     ('Ruff lint', check_ruff),
     ('Python compiles', check_compile),
     ('Data JSON parses', check_json),
     ('Worker JS syntax', check_node),
     ('No hard-coded years or windows', check_literals),
+    ('pytest', check_pytest),
 ]
 
 

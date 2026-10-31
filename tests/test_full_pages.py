@@ -43,8 +43,8 @@ def test_home_blocks_are_the_template_not_the_summary_fill():
 def test_check_passes_and_lists_the_pending_pages(capsys):
     ok, note = check.check_full_pages()
     assert ok, capsys.readouterr().out
-    assert note.startswith('2 done (/crew/, /team/), 2 pending')
-    assert 'pending: /assignments/ (#167), /trends/ (#169)' in capsys.readouterr().out
+    assert note.startswith('3 done (/crew/, /team/, /trends/), 1 pending')
+    assert 'pending: /assignments/ (#167)' in capsys.readouterr().out
 
 
 def test_every_see_all_goes_to_a_full_page():
@@ -84,6 +84,7 @@ def built(tmp_path, monkeypatch):
     monkeypatch.setattr(bs, 'SITEMAP', [])
     bs.crew_pages()
     bs.team_pages()
+    bs.trends_page()
     return tmp_path
 
 
@@ -167,3 +168,29 @@ def test_block_exclusions_add_no_specificity():
     uses = css.count(':not(.st-app *)')
     assert uses == 5
     assert css.count(':where(:not(.st-app *))') == uses
+
+
+# ---- /trends/ (#169) ----------------------------------------------------------------------
+
+def test_trends_page_has_all_8_blocks_in_order_before_the_text(built):
+    text = (built / 'trends' / 'index.html').read_text(encoding='utf-8')
+    blocks = fp.FULL_PAGES['/trends/']['blocks']
+    assert len(blocks) == 8
+    for i in blocks + fp.SHELLS:
+        assert text.count(f'id="{i}"') == 1, i
+    for c in ['seasonChart', 'weekChart', 'quarterChart', 'typeChart', 'biasChart', 'styleMap']:
+        assert text.count(f'<canvas id="{c}"') == 1, c
+    positions = [text.index(f'id="{i}"') for i in blocks]
+    assert positions == sorted(positions)
+    tldr = text.index('st-tldr')
+    table_h2 = text.index(f'<h2>NFL Penalties Per Game by Season, {bs.START}–{bs.SEASON}: Table</h2>')
+    assert tldr < positions[0] and positions[-1] < table_h2
+    assert '<h2>Penalties per game by season</h2>' not in text      # no longer repeats the chart title
+
+
+def test_trends_page_loads_the_home_code_and_has_no_home_page_button(built):
+    text = (built / 'trends' / 'index.html').read_text(encoding='utf-8')
+    assert text.count(bs.CHART_TAG) == 1
+    assert text.count('<script src="/js/app.js?v=abc12345"></script>') == 1
+    assert 'livestrip.js' not in text
+    assert 'on the home page' not in text and 'href="/#trends"' not in text.split('</nav>')[1]

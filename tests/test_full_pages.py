@@ -158,3 +158,12 @@ def test_team_page_loads_the_home_code_and_has_no_home_page_button(built):
 def test_team_profile_pages_stay_static(built):
     text = (built / 'team' / 'MIA' / 'index.html').read_text(encoding='utf-8')
     assert 'app.js' not in text and 'class="st-app"' not in text
+
+
+def test_block_exclusions_add_no_specificity():
+    """The page text rules skip .st-app inside :where(), so they keep their old
+    specificity and later rules (.st-tldr p, .st-crumbs a) still win (#168)."""
+    css = (ROOT / 'frontend' / 'css' / 'static.css').read_text(encoding='utf-8')
+    uses = css.count(':not(.st-app *)')
+    assert uses == 5
+    assert css.count(':where(:not(.st-app *))') == uses

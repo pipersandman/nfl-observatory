@@ -105,7 +105,7 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
     function render() {
         const d = state.data;
         if (!d) return;
-        $('gdWeek').textContent = d.week ? `WEEK ${d.week}${d.season ? ` · ${d.season}` : ''}` : 'LIVE';
+        $('gdWeek').textContent = d.week ? `Week ${d.week}${d.season ? `, ${d.season}` : ''}: ` : '';   // leads the subtitle (#158)
         leagueStrip(d);
         const board = $('gdBoard');
         // FLIP: remember positions, re-render, animate from old to new
@@ -277,6 +277,6 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
         } };
     })();
 
-    if (DEMO) $('gdSub').textContent = 'Demo mode: simulated games, so you can see how the board behaves. Live data appears once the feed is connected.';
+    if (DEMO) $('gdSub').lastChild.textContent = 'Demo mode: simulated games, so you can see how the board behaves. Live data appears once the feed is connected.';
     load();
 })();

@@ -24,9 +24,9 @@ NAV = [
     ('/', 'Home', None),
     ('/gameday/', 'Live Games', None),
     ('/#previews', 'Assignments & Projections', '/assignments/'),
-    ('/#referees', 'Crew chiefs', '/crew/'),
+    ('/#referees', 'Crew Chiefs', '/crew/'),
     ('/#teams', 'Team Stats', '/team/'),
-    ('/#trends', 'Trends', '/trends/'),
+    ('/#trends', 'League Trends', '/trends/'),
     ('/guide/', 'Guide', None),
     ('/dataset/', 'Data', None),
 ]

@@ -1,6 +1,6 @@
 /* =============================================================================
    NFL Officiating Observatory - Main Styles v2
-   With carousel, tooltips, and explainer modals
+   With tooltips and explainer modals
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
@@ -396,156 +396,6 @@ nav {
     color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
-}
-
-/* -----------------------------------------------------------------------------
-   Carousel
-   ----------------------------------------------------------------------------- */
-.carousel-container {
-    position: relative;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 3rem;
-}
-
-.carousel-track {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 1rem 0;
-}
-
-.carousel-track::-webkit-scrollbar {
-    display: none;
-}
-
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    z-index: 10;
-}
-
-.carousel-btn:hover {
-    background: var(--accent);
-    color: var(--bg-primary);
-    border-color: var(--accent);
-}
-
-.carousel-prev { left: 0; }
-.carousel-next { right: 0; }
-
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-}
-
-.carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border-subtle);
-    cursor: pointer;
-    transition: all var(--transition-base);
-}
-
-.carousel-dot.active {
-    background: var(--accent);
-    transform: scale(1.3);
-}
-
-/* Insight Cards (in carousel) */
-.insight-card {
-    flex: 0 0 350px;
-    scroll-snap-align: start;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 20px;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: all var(--transition-base);
-}
-
-.insight-card:hover {
-    border-color: var(--border-glow);
-    box-shadow: var(--shadow-glow);
-}
-
-.insight-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--accent);
-}
-
-.insight-card.positive::before {
-    background: var(--accent-green);
-}
-
-.insight-card.negative::before {
-    background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
-}
-
-.insight-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.insight-title {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-.insight-value {
-    font-family: var(--font-display);
-    font-size: 3rem;
-    font-weight: 700;
-    background: var(--data);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.5rem;
-    line-height: 1;
-}
-
-.insight-desc {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.insight-explainer {
-    background: var(--bg-glass);
-    border-radius: 12px;
-    padding: 1rem;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    border-left: 3px solid var(--accent);
-}
-
-.insight-explainer strong {
-    color: var(--text-secondary);
-    display: block;
-    margin-bottom: 0.25rem;
 }
 
 /* -----------------------------------------------------------------------------
@@ -1140,9 +990,6 @@ footer {
     
     .explainer-content { flex-direction: column; }
     
-    .carousel-container { padding: 0 1rem; }
-    .carousel-btn { display: none; }
-    .insight-card { flex: 0 0 85vw; }
     
     .charts-grid { grid-template-columns: 1fr; }
     .chart-wrapper { height: 220px; }
@@ -1684,7 +1531,7 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 .cc-last .cc-bar { background: var(--data-hist); }
 .cc-all .cc-bar { background: #33373d; }
 .pair-prior { background: var(--data-hist); }
-.preview-card:hover, .referee-card:hover, .insight-card:hover { transform: translateY(-2px); }
+.preview-card:hover, .referee-card:hover { transform: translateY(-2px); }
 .nav-links a:hover { color: var(--accent); }
 .logo { display: flex; align-items: center; gap: 0.6rem; }
 .logo-mark { width: 26px; height: 26px; border-radius: 6px; }
@@ -1839,7 +1686,10 @@ h1, h2, h3, .section-title, .pv-total, .season-stat-value, .cc-value, .referee-n
 /* -----------------------------------------------------------------------------
    Nav: current-section highlight + hamburger menu on phones/tablets
    ----------------------------------------------------------------------------- */
-section[id] { scroll-margin-top: 72px; }               /* headings land below the fixed bar */
+section[id] { scroll-margin-top: 72px; }
+#data { scroll-margin-top: 72px; }   /* the full crew chief table, inside Crew Chiefs (#158) */
+.crew-all { margin-top: var(--gap-lg); }
+.crew-all-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; margin-bottom: 0.25rem; }               /* headings land below the fixed bar */
 /* Menu highlight (#153): the page you're on (aria-current="page"), the topic of the page
    you're on (aria-current="true", e.g. Crew chiefs on /crew/), and on the home page the
    section you're scrolled to (.active), which takes over from Home */

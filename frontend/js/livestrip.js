@@ -47,7 +47,7 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
         || (a.state === 'post' ? new Date(b.start) - new Date(a.start) : new Date(a.start) - new Date(b.start)));
 
     const tagFor = (d, games, live) => live ? '<span class="lt-dot"></span>LIVE'
-        : (d.mode === 'final' || games.every(g => g.state === 'post')) ? 'FINAL' : 'GAMEDAY';
+        : (d.mode === 'final' || games.every(g => g.state === 'post')) ? 'FINAL' : 'LIVE GAMES';
 
     function build(d, games, cost, live) {
         const track = costHtml(cost) + games.map(tileHtml).join('');
@@ -55,7 +55,7 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
         strip.innerHTML = `<div class="lt-label${live ? ' is-live' : ''}"><span class="lt-tag">${tag}</span>
                 <span class="lt-week">Week ${esc(d.week ?? '')}</span><span class="lt-total"><b data-k="flags">0</b> flags</span></div>
             <div class="lt-viewport"><div class="lt-track${reduce ? ' still' : ''}">${track}${reduce ? '' : track}</div></div>
-            <span class="lt-cta">Full<br>scoreboard →</span>`;
+            <span class="lt-cta">Live<br>Games →</span>`;
         if (!reduce) requestAnimationFrame(() => {
             const t = strip.querySelector('.lt-track');
             t.style.animationDuration = `${Math.max(24, t.scrollWidth / 2 / 40)}s`;     // ~40 px a second

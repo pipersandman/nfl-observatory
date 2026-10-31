@@ -510,109 +510,6 @@ def generate_hero_stats(data: dict, ref_stats: pd.DataFrame) -> dict:
     return stats
 
 
-SURGE_BASELINE = 2022   # the "Penalty Surge" card's baseline season (#117 revisits this card)
-
-
-def generate_insights(data: dict, ref_stats: pd.DataFrame, trends: dict) -> list:
-    """Generate insight cards with explanations."""
-    insights = []
-    
-    # 1. Season trend (since SURGE_BASELINE; the labels name the season actually used)
-    seasons = trends.get('bySeason', [])
-    if len(seasons) >= 2:
-        latest = seasons[-1]
-        baseline = next((s for s in seasons if s['season'] == SURGE_BASELINE), seasons[0])
-        change = ((latest['avg_per_game'] - baseline['avg_per_game']) / baseline['avg_per_game'] * 100)
-        insights.append({
-            'id': 'season_trend',
-            'icon': '',
-            'title': f"Penalty Surge Since {baseline['season']}",
-            'value': f"{'+' if change > 0 else ''}{change:.0f}%",
-            'description': f"Penalties per game {'jumped' if change > 0 else 'dropped'} from {baseline['avg_per_game']} to {latest['avg_per_game']}",
-            'explanation': f"This compares the current season's penalty rate to {baseline['season']}, showing the multi-year trend in officiating. The NFL has seen a significant increase in accepted penalties over recent seasons.",
-            'isPositive': change < 0
-        })
-        
-    # 2. Home field bias
-    home_away = trends.get('homeVsAway', {})
-    bias = home_away.get('bias_pct', 0)
-    away_more = home_away.get('awayMorePct') or 0
-    insights.append({
-        'id': 'home_bias',
-        'icon': '',
-        'title': 'Home Field Bias',
-        'value': f"{'+' if away_more > 0 else ''}{away_more}%",
-        'description': f"Away teams are penalized {abs(away_more):.1f}% more than home teams",
-        'explanation': "Home Field Bias measures how much more (or less) the away team gets penalized compared to the home team. Positive = away team penalized more. This likely reflects crowd influence on officials, not intentional favoritism.",
-        'isPositive': abs(bias) < 3
-    })
-    
-    # 3. Referee variance
-    if not ref_stats.empty:
-        max_avg = ref_stats['avg_per_game'].max()
-        min_avg = ref_stats['avg_per_game'].min()
-        spread = max_avg - min_avg  # noqa: F841  (flagged in #74)
-        variance_pct = (ref_stats['avg_per_game'].std() / ref_stats['avg_per_game'].mean() * 100)
-        
-        insights.append({
-            'id': 'ref_variance',
-            'icon': '',
-            'title': 'Referee Variance',
-            'value': f"{variance_pct:.0f}%",
-            'description': f"Crew chiefs range from {min_avg:.1f} to {max_avg:.1f} penalties/game",
-            'explanation': "Referee Variance shows how much penalty rates differ between crews. Higher variance means the referee assignment significantly impacts expected penalty count. The spread tells you the difference between the most lenient and strictest crews.",
-            'isPositive': variance_pct < 15
-        })
-    
-    # 4. Let them play effect (Q4 reduction)
-    quarters = trends.get('byQuarter', [])
-    if len(quarters) >= 4:
-        q1_count = quarters[0]['count']
-        q4_count = quarters[3]['count']
-        q4_change = ((q4_count - q1_count) / q1_count * 100)
-        
-        insights.append({
-            'id': 'let_them_play',
-            'icon': '🏈',
-            'title': '"Let Them Play" Effect',
-            'value': f"{q4_change:+.0f}%",
-            'description': f"Q4 has {abs(q4_change):.0f}% {'more' if q4_change > 0 else 'fewer'} penalties than Q1",
-            'explanation': "The 'Let Them Play' effect measures whether refs call fewer penalties in crucial moments. A negative Q4 value suggests refs are reluctant to 'decide' games with late flags. Compare Q4 to Q1 to see if refs ease up as games progress.",
-            'isPositive': q4_change < 0
-        })
-    
-    # 5. Most common penalty
-    types = trends.get('byType', [])
-    if types:
-        top = types[0]
-        total_penalties = len(weeks.regular_season(data['penalties']))  # all regular-season penalties, not just the top 10 types
-        insights.append({
-            'id': 'top_penalty',
-            'icon': '',
-            'title': 'Most Common Call',
-            'value': top['type'].replace('Offensive ', '').replace('Defensive ', ''),
-            'description': f"{top['count']:,} total calls ({top['count'] / total_penalties * 100:.0f}% of all penalties)",
-            'explanation': f"{top['type']} is the most frequently called penalty. Understanding which penalties dominate helps identify where teams lose yards and drives.",
-            'isPositive': None
-        })
-    
-    # 6. Crew chief spread
-    if not ref_stats.empty:
-        most_flags = ref_stats.loc[ref_stats['avg_per_game'].idxmax()]
-        fewest_flags = ref_stats.loc[ref_stats['avg_per_game'].idxmin()]
-        insights.append({
-            'id': 'crew_spread',
-            'icon': '',
-            'title': 'Crew Chief Spread',
-            'value': f"{fewest_flags['avg_per_game']:.1f} - {most_flags['avg_per_game']:.1f}",
-            'description': f"{fewest_flags['name'].split()[-1]} ({fewest_flags['avg_per_game']:.1f}/g) vs {most_flags['name'].split()[-1]} ({most_flags['avg_per_game']:.1f}/g)",
-            'explanation': "This shows the range between the most lenient and strictest crews. When you see who's calling your game, check where they fall in this range.",
-            'isPositive': None
-        })
-    
-    return insights
-
-
 def _season_block(games: int, penalties: float, yards: float):
     """Summary numbers for one crew chief (or the league) in one season."""
     if games == 0:
@@ -1153,14 +1050,12 @@ def main():
     ref_stats, ref_games = calculate_referee_stats(data)
     trends = calculate_league_trends(data)
     hero_stats = generate_hero_stats(data, ref_stats)
-    insights = generate_insights(data, ref_stats, trends)
     season_comparison = calculate_season_comparison(data)
     
     # Save JSON files
     print("\n💾 Saving JSON files...")
     save_json(hero_stats, 'stats.json')
     save_json({k: v for k, v in trends.items() if k != 'byQuarter'}, 'trends.json')   # byQuarter: in memory only (P2)
-    save_json(insights, 'insights.json')
     if season_comparison:
         save_json(season_comparison, 'season_comparison.json')
     

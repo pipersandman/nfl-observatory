@@ -7,6 +7,7 @@
    the page flow instead of over the content */
 .static-page nav.site-nav { position: sticky; }
 .st-main { padding-top: var(--gap-lg, 2.5rem); padding-bottom: var(--gap-lg, 2.5rem); max-width: 1040px; }
+.st-main .section-subtitle { text-align: left; max-width: none; margin: -0.4rem 0 1rem; }   /* under the H1 (#158) */
 .st-main h1.section-title { text-align: left; margin: 0.3rem 0 1rem; font-size: clamp(2rem, 4.2vw, 3.1rem); line-height: 1.05; }
 .st-main .section-number { text-align: left; }
 .st-main h2 { font: 700 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; color: var(--text-primary); margin: 2.2rem 0 0.8rem; }

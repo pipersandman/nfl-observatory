@@ -15,6 +15,7 @@ This addendum adds five workstreams to the V2 build (`docs/V2_BUILD_PLAN.md`). I
 - Charts of penalties per game are always sorted most penalties first.
 - Red means more penalties and green means fewer. Nothing else on the site may reuse red or green for a different meaning.
 - Proprietary rule: methods, model parameters and backtest detail stay private. Only outputs and plain-language definitions are public.
+- While the repository is public, anything committed is public, including an `internal/` folder. Private files go to the R2 bucket `nflobs-raw` under `internal/`, never to a committed folder. An `internal/` folder in the repository is allowed only once the repository is private (D27).
 - New metrics get an entry in `docs/METRICS.md` before they ship. The entry format (plan section 6) gains two fields: **Version** (the metric's version, bumped on any change to its definition or calculation) and **Owner** (who answers for it). That change is its own issue.
 
 **The five workstreams**
@@ -37,13 +38,13 @@ Five issues are drafted as files (`1-compression.md` to `5-model-internals.md`, 
 | Site perf 2 | Cache rules: 1 year for versioned CSS/JS, 5 minutes for data, none for HTML; parallel startup fetches | Every file `no-cache`, about 45 revalidation round trips per visit | CSS/JS come from disk cache on repeat visits |
 | Site perf 3 | **Minimal now:** referee cards read from `referees.json` instead of preloading all 28 profiles. **Full version in V2.1:** load all data on demand (the Astro rebuild changes how pages load data) | 43 JSON files (1.74 MB) per load, all 28 referee profiles preloaded | Now: no `referee/<slug>.json` requests before a card is opened. V2.1: 10 or fewer JSON requests before scrolling |
 | Site perf 4 | Self-host team logos at 2x display size | 32 ESPN PNGs, about 1.7 MB, hotlinked | No requests to a.espncdn.com, logos under 200 KB |
-| Site perf 5 | Remove model internals from public JSON; keep full copies outside the deploy | Preview files publish season weights, dispersion and per-type factors; scorecard files publish the same factors | Every field Ty marks "remove" in the table below is absent from every public file |
+| Site perf 5 | Remove model internals from public JSON; keep full copies in private storage (R2 bucket `nflobs-raw`, under `internal/`), never in a committed folder | Preview files publish season weights, dispersion and per-type factors; scorecard files publish the same factors | Every field Ty marks "remove" in the table below is absent from every public file |
 
-**Order.** 1, then 2 (both edit `.htaccess`), then 3 (minimal). Issues 4 and 5 run any time; 5 waits for decision D27.
+**Order.** 1, then 2 (both edit `.htaccess`), then 3 (minimal). Issues 4 and 5 run any time (D24 decided which fields Issue 5 removes; Issue 5 writes its full copies to R2, not the repository).
 
-**Stop points built into the issues.** Issue 1 stops if security headers live in cPanel rather than the repo. Issue 2 stops if the `?v=` stamp is typed by hand. Issue 5 stops if the repo is still public, then waits for Ty to decide each field below.
+**Stop points built into the issues.** Issue 1 stops if security headers live in cPanel rather than the repo. Issue 2 stops if the `?v=` stamp is typed by hand. Issue 5 removes exactly the fields marked "Remove" below (D24). It may proceed while the repository is public only if the full copies go to private storage (R2 bucket `nflobs-raw`, under `internal/`); it stops if any step would write them to a committed folder, because a committed `internal/` folder is public until the repository goes private (D27).
 
-### Site perf 5: what it would remove (for Ty to decide, field by field)
+### Site perf 5: what it removes (decided field by field, D24)
 
 Ty's decision of 2026-10-29 on P5 to P7 (`docs/audits/metric-conflicts-2026-10-28.md`, "Published but not displayed") keeps `scorecard/live/`, `scorecard/backtest/` and `history/snapshots/` in the deploy as the evidence behind the scorecard. Site perf 5 as first written ("scorecard publishes backtests") would undo that, so each file and field is listed here.
 
@@ -51,48 +52,50 @@ Ty's decision of 2026-10-29 on P5 to P7 (`docs/audits/metric-conflicts-2026-10-2
 - **Published evidence:** a published projection or record that the scorecard is graded against, or that can't be made again later.
 - **Shown on the page:** read by `app.js` today; removing it changes the page.
 
+**Decision D24 (Ty, 2026-10-30):** remove every field marked "model internal"; keep everything marked "published evidence" (`scorecard/live/`, `scorecard/backtest/`, `history/snapshots/`, per the P5 to P7 decision) and everything "shown on the page". `wp_tables.json` stays until the gameday worker has another source for it.
+
 Checked on 30 Oct 2026 against `frontend/js/app.js`, `gameday.js`, `livestrip.js`, `scripts/build_static.py` and the gameday worker.
 
 **`previews/<season>-week-NN.json`** (the upcoming game previews; P4 kept the past weeks' files)
 
 | Field | Shown on the page? | Marked | Ty's decision |
 | --- | --- | --- | --- |
-| `model.seasonWeights` (weight per season, e.g. 1.0 / 0.6 / 0.3) | No (the footnote says only "weighted toward <season>") | Model internal | |
-| `model.dispersion` (negative binomial dispersion) | No | Model internal | |
-| `model.version` | No | Model internal | |
-| `model.regularSeasonOnly` | No | Model internal | |
-| `games[].byType[].factors` (`homeCommit`, `awayCommit`, `homeDraw`, `awayDraw`, `crew`) | No | Model internal | |
-| `games[].teams.home/away.gamesInModel` | No | Model internal | |
-| `model.seasons` | Yes (footnote) | Shown on the page | Keep |
-| `model.leagueAveragePerGame` | Yes; `scorecard.py` also reads it as a fallback (P4) | Shown on the page | Keep |
-| `contextReference` | Yes (game context) | Shown on the page | Keep |
-| `games[].projection.drivers` | Yes (drivers chart) | Shown on the page | Keep |
-| `games[].crew.gamesInModel` | Yes (tilts footnote) | Shown on the page | Keep |
-| `games[].projection.*` (total, ranges, yards, `probOver`, `overThreshold`, `byQuarter`, `vsLeaguePct`) and `byType[]` (`total`, `leagueTotal`, `yardsEach`) | Yes | Shown on the page | Keep |
+| `model.seasonWeights` (weight per season, e.g. 1.0 / 0.6 / 0.3) | No (the footnote says only "weighted toward <season>") | Model internal | Remove (D24) |
+| `model.dispersion` (negative binomial dispersion) | No | Model internal | Remove (D24) |
+| `model.version` | No | Model internal | Remove (D24) |
+| `model.regularSeasonOnly` | No | Model internal | Remove (D24) |
+| `games[].byType[].factors` (`homeCommit`, `awayCommit`, `homeDraw`, `awayDraw`, `crew`) | No | Model internal | Remove (D24) |
+| `games[].teams.home/away.gamesInModel` | No | Model internal | Remove (D24) |
+| `model.seasons` | Yes (footnote) | Shown on the page | Keep (D24) |
+| `model.leagueAveragePerGame` | Yes; `scorecard.py` also reads it as a fallback (P4) | Shown on the page | Keep (D24) |
+| `contextReference` | Yes (game context) | Shown on the page | Keep (D24) |
+| `games[].projection.drivers` | Yes (drivers chart) | Shown on the page | Keep (D24) |
+| `games[].crew.gamesInModel` | Yes (tilts footnote) | Shown on the page | Keep (D24) |
+| `games[].projection.*` (total, ranges, yards, `probOver`, `overThreshold`, `byQuarter`, `vsLeaguePct`) and `byType[]` (`total`, `leagueTotal`, `yardsEach`) | Yes | Shown on the page | Keep (D24) |
 
 **`scorecard/live/<season>-week-NN.json`** (projections frozen at kickoff; P5: keep and deploy)
 
 | Field | Shown on the page? | Marked | Ty's decision |
 | --- | --- | --- | --- |
-| `byTypeFactors` (the same five factors per type) | No | Model internal | |
-| `modelVersion`, `crewKnown`, `frozenAt`, `source` | No | Published evidence (what was projected, by which version, and when) | |
-| `total`, `home_proj`, `away_proj`, `range`, `homeRange`, `awayRange`, `yards`, `byType`, `byTypeTeams`, `byQuarter`, `probOver`, `overThreshold`, `leagueAverage`, `drivers`, `context`, `crew` | No page reads this file; the same values were shown in the preview before kickoff | Published evidence | |
+| `byTypeFactors` (the same five factors per type) | No | Model internal | Remove (D24) |
+| `modelVersion`, `crewKnown`, `frozenAt`, `source` | No | Published evidence (what was projected, by which version, and when) | Keep (D24) |
+| `total`, `home_proj`, `away_proj`, `range`, `homeRange`, `awayRange`, `yards`, `byType`, `byTypeTeams`, `byQuarter`, `probOver`, `overThreshold`, `leagueAverage`, `drivers`, `context`, `crew` | No page reads this file; the same values were shown in the preview before kickoff | Published evidence | Keep (D24) |
 
 **`scorecard/backtest/<season>-week-NN.json`** (projections rebuilt afterward; P6: keep and deploy)
 
 | Field | Shown on the page? | Marked | Ty's decision |
 | --- | --- | --- | --- |
-| `byTypeFactors` | No | Model internal | |
-| Every other field (same fields as `scorecard/live/`) | No page reads this file | Published evidence (rebuilt, labeled "backtest") | |
+| `byTypeFactors` | No | Model internal | Remove (D24) |
+| Every other field (same fields as `scorecard/live/`) | No page reads this file | Published evidence (rebuilt, labeled "backtest") | Keep (D24) |
 
 **Other files**
 
 | File or field | Shown on the page? | Marked | Ty's decision |
 | --- | --- | --- | --- |
-| `wp_tables.json` (win-probability lookup table) | No page; the gameday worker fetches it from the public URL | Model internal (removing it means the worker needs another source first) | |
-| `history/snapshots/` (the league after each week; P7) | No | Published evidence (can't be rebuilt "as it stood that week") | |
-| `history/games/` and `history/index.json` (the ledger: each game's prediction, outcome and grade) | Yes (ledger) | Shown on the page | Keep |
-| `scorecard/public.json` (scorecard summary) | Yes (scorecard) | Shown on the page | Keep |
+| `wp_tables.json` (win-probability lookup table) | No page; the gameday worker fetches it from the public URL | Model internal (removing it means the worker needs another source first) | Keep until the gameday worker has another source (D24) |
+| `history/snapshots/` (the league after each week; P7) | No | Published evidence (can't be rebuilt "as it stood that week") | Keep (D24) |
+| `history/games/` and `history/index.json` (the ledger: each game's prediction, outcome and grade) | Yes (ledger) | Shown on the page | Keep (D24) |
+| `scorecard/public.json` (scorecard summary) | Yes (scorecard) | Shown on the page | Keep (D24) |
 
 **Why it matters for the grade.** Workstream 5 will produce the most valuable numbers on the site. Issue 5 sets the rule that keeps model parameters private before the grade exists.
 
@@ -100,13 +103,11 @@ Checked on 30 Oct 2026 against `frontend/js/app.js`, `gameday.js`, `livestrip.js
 
 Today the site only knows page views (Cloudflare Web Analytics) and Google search clicks (Search Console). This workstream adds what visitors do on the page, where they came from, and a history of search data, without cookies or a consent banner.
 
-**Phase A: Choose the tool (decision D21)**
+**Phase A: The tool (decision D21, decided 2026-10-30)**
 
-1. Recommended: PostHog in cookieless mode (`persistence: 'memory'`). It covers events, funnels, paths, heatmaps and session replay now, and V2 product analytics later (searches run, visualizations saved, feature requests). Cost of cookieless: returning visitors are not recognized.
-2. Alternative: Umami (free if self-hosted) or Plausible (paid). Cleaner, events and campaigns only, no replay.
-3. Rejected: GA4. It needs cookies and a consent banner, which conflicts with the trust-first design.
+**PostHog, cookieless (`persistence: 'memory'`), events only, no session replay.** Session replay and heatmaps stay off. It covers events, funnels and paths now, and V2 product analytics later (searches run, visualizations saved, feature requests). Cost of cookieless: returning visitors are not recognized.
 
-Choosing PostHog would replace plan decision D18 (keep Cloudflare Web Analytics, Plausible optional later); Cloudflare Web Analytics can stay alongside it for page views.
+Considered and not chosen: Umami (free if self-hosted) or Plausible (paid), events and campaigns only; GA4, which needs cookies and a consent banner and conflicts with the trust-first design.
 
 **Phase B: Install and instrument**
 
@@ -179,7 +180,7 @@ Nearly every referee-stats site repackages the same few primary sources, so the 
 **Phase C: Weekly reconciliation job**
 
 1. After each week, compare per game: accepted, declined, offsetting, yards, per team. Sources: nflfastR (record) versus the ESPN capture from Workstream 4.
-2. Write differences to a private report in `internal/reconciliation/`. Any game off by more than one flag gets a line explaining why (late data correction, definition, parse miss).
+2. Write differences to a private report under `internal/reconciliation/` in the R2 bucket `nflobs-raw` (a folder in the repository only once it is private, D27). Any game off by more than one flag gets a line explaining why (late data correction, definition, parse miss).
 3. Monthly manual spot check of three crews against NFLPenalties and Pro Football Reference, logged in the same folder.
 
 **Phase D: Replicate betting trends from our own data**
@@ -258,17 +259,17 @@ Referee grade: a measured, validated grade of crew behavior. Its design is kept 
 
 ## Decisions and sequencing
 
-Seven decisions gate this work, numbered as plan decisions D21 to D27 (section 33 of the V2 plan). D21, D24 and D27 are needed in the next two weeks. Decisions about the referee grade are listed by title only; their options are in the private plan.
+Seven decisions gate this work, numbered as plan decisions D21 to D27 (section 33 of the V2 plan). D21, D24 and D27 were decided on 2026-10-30. Decisions about the referee grade are listed by title only; their options are in the private plan.
 
-| ID | Decision | Recommendation | Needed before |
+| ID | Decision | Decision or recommendation | Needed before |
 | --- | --- | --- | --- |
-| D21 | Analytics tool | PostHog in cookieless mode (would replace D18) | Workstream 2, Phase B |
+| D21 | Analytics tool | **Decided:** PostHog, cookieless, events only, no session replay | Workstream 2, Phase B |
 | D22 | Referee grade: penalty classes | In the private plan | Grade foundations |
 | D23 | Referee grade: name | In the private plan | Grade publishing |
-| D24 | Model fields in public files | Ty decides each field in the Site perf 5 table; P5 to P7 evidence stays deployed unless he decides otherwise | Site perf 5 |
+| D24 | Model fields in public files | **Decided:** remove every "model internal" field; keep "published evidence" (`scorecard/live/`, `scorecard/backtest/`, `history/snapshots/`) and "shown on the page"; `wp_tables.json` stays until the gameday worker has another source | Site perf 5 |
 | D25 | Referee grade: which flags count | In the private plan | Grade foundations |
 | D26 | Referee grade: when to publish | In the private plan | Grade publishing |
-| D27 | Repository visibility | Private before Site perf 5 and any grade code is pushed | Site perf 5, grade foundations |
+| D27 | Repository visibility | **Decided:** public for now; private before any grade code is pushed or the grade plan is committed | Grade foundations |
 
 ### Sequence
 
@@ -279,18 +280,18 @@ Read each lane top to bottom; the lanes run side by side.
 | Lane | Order |
 | --- | --- |
 | V2.0a queue | #119 to #126 (V2.0a step 2), #127 (small-sample threshold and label, D13), #128 and #129 (wording), #130 (What Flags Cost), #131 (methodology) |
-| Workstream 1 | Create the site-perf issues; Site perf 1, then 2, then 3 (minimal now, full version in V2.1); 4 any time; 5 after D24 and D27 |
-| Workstream 2 | D21, then Phases B to E |
+| Workstream 1 | Create the site-perf issues; Site perf 1, then 2, then 3 (minimal now, full version in V2.1); 4 any time; 5 any time (D24 decided; full copies to R2 only) |
+| Workstream 2 | Phases B to E (D21 decided) |
 | Workstream 3 | Phase A (official ids) first; then B to F |
 | Workstream 4 | Phase A and B (game record, Cron Trigger, R2 binding), then C and D |
-| Workstream 5 | After D27; design in the private plan |
+| Workstream 5 | After the repository goes private (D27); design in the private plan |
 
 Two links cross lanes: the official ID file from Workstream 3 feeds the grade's foundations, and the richer ESPN capture feeds the weekly reconciliation. The grade publishes only after Site perf 5 keeps its parameters private.
 
 ### Turning this plan into issues
 
 1. This file is committed as `docs/BUILD_PLAN_ADDENDUM.md` on branch `docs/build-plan-addendum`, with a PR.
-2. Create labels once: `site-perf`, `analytics`, `sources`, `espn-live` (with `gh label create <name> --repo pipersandman/nfl-observatory --force`). The grade's label waits for D27.
+2. Create labels once: `site-perf`, `analytics`, `sources`, `espn-live` (with `gh label create <name> --repo pipersandman/nfl-observatory --force`). The grade's label waits until the repository is private (D27).
 3. In Claude Code, for one workstream phase at a time: have it read `docs/BUILD_PLAN_ADDENDUM.md`, draft that phase's issues in the same format as the site perf issue files (why, goal, depends on, every step, checks Ty can run), and show them before creating them.
 4. Record each phase's start and finish in the pinned progress log, issue #86.
-5. Order: the site perf issues and the three urgent decisions (D21, D24, D27) first, then continue #119 to #131 with Workstreams 2, 3 and 4 alongside, then the grade's foundations.
+5. Order: the site perf issues first (D21, D24 and D27 are decided), then continue #119 to #131 with Workstreams 2, 3 and 4 alongside, then the grade's foundations.

@@ -22,7 +22,7 @@ separate Cloudflare Worker serves live penalties for `/gameday/` from ESPN.
 | nflverse play-by-play | Every play 2015 to now; flags are rows with `penalty == 1` | `nfl.load_pbp(season)` per season |
 | nflverse schedules | Games, scores, spreads, weather, `referee` column | `nfl.load_schedules` |
 | nflverse officials | Seven officials per game (lags in season: in 2026 it only had Week 1) | `nfl.load_officials` |
-| Football Zebras | Crew chief assignments before kickoff (usually posted Tuesday ~9am PT) | `scripts/fetch_assignments.py` (RSS + one article per run). Exit 2 (#82) when the fetch or parse fails, the post has 0 games, or the week's first game kicks off with no post; "not posted yet" within 2 days of kickoff and partial parses are warnings (exit 0). Problems also show as `::warning::` on the Actions run page |
+| Football Zebras | Crew chief assignments before kickoff (usually posted Tuesday ~9am PT) | `scripts/fetch_assignments.py` (RSS + one article per run). Exit 2 (#82) when the fetch or parse fails, the post has 0 games, or the week's first game kicks off with no post; "not posted yet" within 2 days of kickoff and partial parses are warnings (exit 0). Problems also show as `::warning::` on the Actions run page. **Crew changes (#142):** while a complete week still has games to kick off, each run asks the WordPress API for the post's modified time (`/wp-json/wp/v2/posts?slug=…&_fields=modified_gmt`, ~170 bytes; not raw-captured) and refetches the article only when it's newer than `source.modified`. Changed crews are logged and kept in the file's `changes` list; a game that has kicked off never changes crew. The latest fetch's problems (fewer games than scheduled, with "kept from earlier fetch"; overrides no longer needed) are kept in `warnings`; `update_data.py` copies `warnings` and `changes` into `run_status.json` while the week has games to play. Marks beside names ("Alex Moore ⇅", `*`, "(sub)") are removed before matching |
 | Manual overrides | Corrections to assignments | `data/assignments_overrides.csv` |
 | ESPN site API (unofficial) | Live box scores and play text during games | Gameday Worker only |
 
@@ -84,7 +84,11 @@ before opening night). The `seasonsRange` label follows the current season.
 same rule for code that runs without nflreadpy. `nflverse_current_season()`
 matches `nfl.get_current_season()`; `schedule_seasons()` is the current season
 plus the calendar year when later. Users:
-- **Workflow gate** watches `play_by_play_<current season>.parquet`.
+- **Workflow gate** watches `play_by_play_<current season>.parquet`. A game-day
+  run that would skip also checks the Football Zebras posts of the two latest
+  assignment files and goes ahead if one was modified after its saved time
+  (#142). Two gated crew-check runs (Saturday 15:00 UTC, Sunday 12:00 UTC) use
+  the same rule, so Friday and Saturday crew swaps reach the site before Sunday.
 - **`fetch_assignments.py`** picks the next upcoming regular-season games across
   `schedule_seasons()` (January: Week 18 of the season in progress; August: next
   season's Week 1 once its schedule is out). Playoff games are never fetched.
@@ -157,7 +161,7 @@ by GitHub Actions. Free plan: 100,000 requests a day.
 
 | Workflow | Runs | Does |
 |---|---|---|
-| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; every push to `main` (except data-only changes); manual | Game-day runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
+| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; Saturday 15:00 and Sunday 12:00 UTC crew checks (#142); every push to `main` (except data-only changes); manual | Game-day and crew-check runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`) or a Football Zebras post in the two latest assignment files was modified after its saved time (#142); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues; a failed Football Zebras check never counts as a change. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | Installs the check tools and the runtime lock file (the tests import the pipeline, #89), then `python scripts/check.py`: Ruff, compile, JSON, Worker JS, no hard-coded years, and pytest. Job name `checks` |
 | `r2-access-check.yml` (#88) | Manual only | Proves the R2 token can write `nflobs-raw`, can't overwrite an object, and can't list or write `drsplus-tiles`; always deletes its `_checks/` test object |
 | `r2-rebuild-check.yml` (#88) | Manual only (input: a run id) | Rebuilds that "Update NFL Data" run's data from its raw files alone and compares it with what the run committed |

@@ -15,6 +15,10 @@ on:
     - cron: '0 15-23 * * 0'     # Sunday: international morning games through the late games
     - cron: '0 0-9 * * 1'       # Sunday night game
     - cron: '0 2-5,7-9 * * 2'   # Monday night game (06:00 Tuesday is the weekly run above)
+    # Crew-change checks (#142): go ahead only if the Football Zebras post (or play-by-play)
+    # changed, so Friday and Saturday crew swaps reach the site before Sunday's games.
+    - cron: '0 15 * * 6'        # Saturday morning ET
+    - cron: '0 12 * * 0'        # Sunday, before the international morning games
   workflow_dispatch:
     # Manual trigger option (no longer needs checkbox - always full)
   push:
@@ -46,6 +50,9 @@ jobs:
         # watched is nflverse's current season (scripts/seasons.py, same rule as update_data.py).
         # Until that season's file exists (opening week), game-day runs skip; weekly, manual and
         # push runs still go ahead, and update_data.py stops red if the file is still missing.
+        # A game-day run that would skip also checks the Football Zebras posts of the two
+        # latest assignment files (#142): a post modified after the saved time means a crew
+        # may have changed, so the run goes ahead (fetch_assignments.py refetches it).
         id: gate
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,10 +60,28 @@ jobs:
           SCHEDULE: ${{ github.event.schedule }}
         run: |
           python3 - <<'EOF'
-          import json, os, sys, urllib.request, datetime as dt
+          import glob, json, os, re, sys, urllib.request, datetime as dt
           sys.path.insert(0, 'scripts')
           from seasons import nflverse_current_season
-          GAMEDAY = {'0 3-9 * * 5', '0 15-23 * * 0', '0 0-9 * * 1', '0 2-5,7-9 * * 2'}
+          GAMEDAY = {'0 3-9 * * 5', '0 15-23 * * 0', '0 0-9 * * 1', '0 2-5,7-9 * * 2', '0 15 * * 6', '0 12 * * 0'}
+          FZ_API = 'https://www.footballzebras.com/wp-json/wp/v2/posts?slug={}&_fields=modified_gmt'
+          FZ_UA = 'NFLOfficiatingObservatory/1.0 (+https://nflobservatory.com; weekly crew-assignment check)'
+          def fz_updated():
+              """(file, saved, now) for the first of the two latest assignment files whose post
+              changed since it was saved, else None. A failed check never counts as a change."""
+              for path in sorted(glob.glob('frontend/data/assignments/*-week-*.json'))[-2:]:
+                  try:
+                      src = json.load(open(path, encoding='utf-8')).get('source') or {}
+                      saved, slug = src.get('modified'), (src.get('url') or '').rstrip('/').rsplit('/', 1)[-1]
+                      if not saved or not re.fullmatch(r'[a-z0-9-]{1,120}', slug):
+                          continue
+                      req = urllib.request.Request(FZ_API.format(slug), headers={'User-Agent': FZ_UA})
+                      mod = json.load(urllib.request.urlopen(req, timeout=15))[0]['modified_gmt'] + 'Z'
+                      if mod > saved:
+                          return os.path.basename(path), saved, mod
+                  except Exception as e:
+                      print(f'Could not check Football Zebras for {os.path.basename(path)} ({type(e).__name__}); not counted as a change')
+              return None
           now = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
           season = nflverse_current_season(now.date())
           stamp_path = 'frontend/data/source_stamp.json'
@@ -77,11 +102,17 @@ jobs:
           gameday = os.environ.get('EVENT') == 'schedule' and os.environ.get('SCHEDULE') in GAMEDAY
           unpublished = checked and new is None
           skip = checked and gameday and (new is None or new == old)
+          fz = fz_updated() if skip else None
+          if fz:
+              skip = False
           if unpublished:
-              why = 'not published yet, skipping' if skip else 'not published yet, updating anyway (not a game-day run)'
+              why = ('not published yet, skipping' if skip else 'not published yet' if fz
+                     else 'not published yet, updating anyway (not a game-day run)')
           else:
-              why = 'no new games, skipping' if skip else 'updating'
+              why = 'no new games, skipping' if skip else 'no new games' if fz else 'updating'
           print(f'play-by-play {season}: last used {old}, now {new} -> {why}')
+          if fz:
+              print(f'Football Zebras {fz[0]}: post modified {fz[2]}, saved {fz[1]} -> updating (crews may have changed)')
           if new:
               json.dump({'pbp': new, 'checkedAt': now.isoformat(timespec='seconds') + 'Z'}, open(stamp_path, 'w'))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:

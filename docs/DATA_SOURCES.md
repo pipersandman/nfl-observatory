@@ -66,7 +66,7 @@ justified) · **Avoid** (terms or quality make it unsuitable).
 | Source | Contents | Coverage | Access | License / terms | Status |
 |---|---|---|---|---|---|
 | **nflverse officials** (`load_officials`) | All **seven officials per game** with positions | Recent seasons | nflreadpy | CC BY 4.0 | **In use** for the referee; **P0** ingest all seven positions (Q0 item 2) |
-| **Football Zebras weekly assignments** | Crew chief per game, published before kickoff (usually Tuesday) | Current seasons | Website / RSS | Editorial site; light, polite fetching; attribute | **In use** |
+| **Football Zebras weekly assignments** | Crew chief per game, published before kickoff (usually Tuesday) | Current seasons | Website / RSS; WordPress API (`/wp-json/wp/v2/posts?slug=…&_fields=modified_gmt`) for the post's modified time, so crew changes are caught without refetching the page (#142) | Editorial site; light, polite fetching; attribute | **In use** |
 | **Football Zebras crew rosters** | Every crew's seven officials, years of experience, previous crew, college, occupation, replay staff, swing officials | Yearly (e.g. 2026: 121 officials, 17 crews, 2 swing officials) | Website, one page per season | Attribute; small yearly snapshot | **P0** (crew composition changes, experience) |
 | **Football Zebras news** | Crew swaps, injuries to officials, retirements, promotions, rule explainers | Ongoing | RSS | Attribute; link rather than copy | **P1** (event log; Claude extracts structured events) |
 | **NFL Football Operations** | Official roster announcements, officiating staff, promotions to referee, rule explanations | Yearly / ongoing | operations.nfl.com | NFL terms | **P1** (authoritative roster check) |

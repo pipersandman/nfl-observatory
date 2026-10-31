@@ -575,7 +575,9 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
                 }
             },
             onClick: (evt, elements) => {
-                if (elements.length) openRefereeModal(rows[elements[0].index].slug);
+                if (!elements.length) return;
+                track('chart_interact', { chart: canvasId });
+                openRefereeModal(rows[elements[0].index].slug);
             }
         }
     });
@@ -774,6 +776,7 @@ function openPreviewModal(gameId) {
     setProfileLink(null);
     const pv = (state.previews || []).find(w => w.games?.some(x => x.gameId === gameId));
     const g = pv?.games.find(x => x.gameId === gameId);
+    track('preview_view', { season: pv?.season ?? null, week: pv?.week ?? null, game_id: gameId });
     const modal = document.getElementById('modal');
     const body = document.getElementById('modalBody');
     if (!g || !modal || !body) return;
@@ -1311,6 +1314,7 @@ function seasonColor(season, seasons) {
     return SEASON_COLORS[past.indexOf(season) % SEASON_COLORS.length] || '#8B95A7';
 }
 function toggleWeekLayer(key) {
+    track('chart_interact', { chart: 'week-of-season' });
     if (!state.weekLayers) state.weekLayers = { avg: true, band: true, years: [] };
     const L = state.weekLayers;
     if (key === 'avg' || key === 'band') L[key] = !L[key];
@@ -1901,7 +1905,8 @@ function stylePeriods(cs) {
 function openStylePeriodMenu(btn) {
     const cs = state.crewStyles;
     const cur = state.styleScope || 'career';
-    showPopoverMenu(btn, stylePeriods(cs).map(it => ({ ...it, selected: it.value === cur })), setStyleScope);
+    showPopoverMenu(btn, stylePeriods(cs).map(it => ({ ...it, selected: it.value === cur })),
+        (v) => { track('chart_interact', { chart: 'crew-style-map' }); setStyleScope(v); });
 }
 
 function stylePeriodData(cs, key) {
@@ -1999,6 +2004,7 @@ function renderStyleMap() {
                 // phones: first tap shows the name (tooltip), second tap on the same dot opens the profile
                 if (window.innerWidth < 640 && state.styleTapped !== i) { state.styleTapped = i; return; }
                 state.styleTapped = null;
+                track('chart_interact', { chart: 'crew-style-map' });
                 openRefereeModal(pts[i].slug);
             },
             onHover: (evt, els) => { evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
@@ -2105,6 +2111,7 @@ function renderDivisionTeams() {
 
 async function openTeamModal(abbr) {
     setDeepLink('team', abbr);
+    track('team_open', { team: abbr });
     const modal = document.getElementById('modal');
     const body = document.getElementById('modalBody');
     if (!modal || !body) return;
@@ -2717,7 +2724,8 @@ function setQuarterType(t) { state.quarterType = t; renderQuarterChart(); }
 function openQuarterTypeMenu(btn) {
     const q = state.typeTrends.quarters[state.quarterScope || 'current'];
     const opts = ['All penalties', ...Object.keys(q.types)];
-    showPopoverMenu(btn, opts.map(o => ({ label: o, value: o, selected: (state.quarterType || 'All penalties') === o })), setQuarterType);
+    showPopoverMenu(btn, opts.map(o => ({ label: o, value: o, selected: (state.quarterType || 'All penalties') === o })),
+        (v) => { track('chart_interact', { chart: 'quarter-penalties' }); setQuarterType(v); });
 }
 function renderQuarterChart() {
     const ctx = document.getElementById('quarterChart')?.getContext('2d');
@@ -2783,6 +2791,7 @@ function renderDataTable() {
 
 async function openRefereeModal(slug) {
     setDeepLink('crew', slug);
+    track('referee_modal_open', { crew: slug });
     const modal = document.getElementById('modal');
     const modalBody = document.getElementById('modalBody');
 
@@ -3626,6 +3635,7 @@ async function copyModalLink() {
 function openExplainer(key) {
     const explainer = EXPLAINERS[key];
     if (!explainer) return;
+    track('explainer_open', { metric: key });
     
     document.getElementById('explainerTitle').textContent = explainer.title;
     document.getElementById('explainerContent').innerHTML = fillWindows(explainer.content);

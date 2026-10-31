@@ -789,7 +789,10 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
     quarterDistribution, tendencies) use the seasons before the current one; seasonStats
     and recentGames include the current season; playoff games are counted, not used.
     league_career_rate: the league's own regular-season rate over the career window
-    (season_comparison.json baselines.all), the benchmark for tendencies (C10)."""
+    (season_comparison.json baselines.all), the benchmark for tendencies (C10).
+
+    Returns {slug: the profile's penaltyTypes[0].type or None}, for referees.json's
+    top_penalty_type (the card footer, #148), so both files come from the same code."""
     print("\n📝 Generating referee profiles...")
     
     referee_dir = DATA_DIR / 'referee'
@@ -812,10 +815,11 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
     if league_career_rate is None and len(career_games_all):
         league_career_rate = career_games_all['total_penalties'].sum() / len(career_games_all)
     
+    top_types = {}
     for _, ref in ref_stats.iterrows():
         name = ref['name']
         slug = ref['slug']
-        
+
         # Get this referee's regular-season games (playoff games: counted in playoffGames only)
         games = reg_games_all[reg_games_all['referee'] == name].copy()
         
@@ -1013,8 +1017,10 @@ def generate_referee_profiles(ref_stats: pd.DataFrame, ref_games: pd.DataFrame,
         }
         
         save_json(profile, f"referee/{slug}.json", quiet=True)
-    
+        top_types[slug] = penalty_types[0]['type'] if penalty_types else None
+
     print(f"   ✓ Generated {len(ref_stats)} profiles")
+    return top_types
 
 
 # =============================================================================
@@ -1158,19 +1164,22 @@ def main():
     if season_comparison:
         save_json(season_comparison, 'season_comparison.json')
     
-    # Referees summary
+    # Individual profiles (with penalty type breakdown)
+    career_rate = (((season_comparison or {}).get('league') or {}).get('baselines') or {}).get('all', {}) or {}
+    top_types = generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'],
+                                          career_rate.get('perGame'))
+
+    # Referees summary. top_penalty_type is the profile's penaltyTypes[0].type, so the
+    # home page cards don't have to load every profile (#148).
     ref_summary = ref_stats[[
         'name', 'slug', 'games', 'total_penalties', 'avg_per_game',
         'min_penalties', 'max_penalties', 'std_dev', 'home_bias_pct',
         'consistency', 'first_season', 'last_season',
         'career_first_season', 'career_last_season', 'playoff_games'
     ]].to_dict('records')
+    for r in ref_summary:
+        r['top_penalty_type'] = top_types.get(r['slug'])
     save_json(ref_summary, 'referees.json')
-    
-    # Individual profiles (with penalty type breakdown)
-    career_rate = (((season_comparison or {}).get('league') or {}).get('baselines') or {}).get('all', {}) or {}
-    generate_referee_profiles(ref_stats, ref_games, data['penalties'], data['officials'],
-                              career_rate.get('perGame'))
 
     # Modules: each one runs even if an earlier one failed; failures are recorded,
     # not hidden. Order and arguments are unchanged.

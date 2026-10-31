@@ -751,14 +751,14 @@ below, M37–M45.
 | Kind | Raw count, plus a share (derived) |
 | Numerator | Penalties of one type in the crew chief's games |
 | Denominator | All penalties in the crew chief's games |
-| Population / Time window | As M25 (playoffs included, 2015 to now) |
+| Population / Time window | One crew chief; **regular season only**, over the **career window**: the seasons before the current one (#117). Playoff games are not included |
 | Inclusion rules | As in Terms; type = nflverse `penalty_type` |
 | Benchmark | None |
 | Calculation | `generate_referee_profiles()` `penaltyTypes[]`: the 10 most common types, `count` and `pct` = count ÷ all the crew's penalties. The card drops "Offensive ", "Defensive " and " (Offense)" from the name. |
 | Rounding | Share 1 decimal ("20.9%"); the plan default for a share above 10% is a whole number |
 | Provenance | As M25 |
 | Limitations | **Since #117:** `penaltyTypes` and `quarterDistribution` use the career window (regular season, seasons before the current one). Shares, not rates: a crew chief with more flags overall can have a lower share of a type and still call it more often per game. Dropping "Offensive" turns "Offensive Holding" into "Holding" (as M16). |
-| Where it appears | Home, Meet The Officials: card footer ("Most common"). Crew pop-up (inactive crew chiefs): "Penalty Type Breakdown" (top 8). JSON: `referee/<slug>.json` → `penaltyTypes[].type`, `.count`, `.pct`. **Full paths:** `referee/<slug>.json` → `penaltyTypes[].type`, `penaltyTypes[].count`, `penaltyTypes[].pct`; not displayed: `explanations.penaltyTypes`. |
+| Where it appears | Home, Meet The Officials: card footer ("Most common"). Crew pop-up (inactive crew chiefs): "Penalty Type Breakdown" (top 8). JSON: `referee/<slug>.json` → `penaltyTypes[].type`, `.count`, `.pct`; the card footer reads `referees.json` → `top_penalty_type` (#148), which is the same `penaltyTypes[0].type`, written by the same code. **Full paths:** `referee/<slug>.json` → `penaltyTypes[].type`, `penaltyTypes[].count`, `penaltyTypes[].pct`; `referees.json` → `[].top_penalty_type`; not displayed: `explanations.penaltyTypes`. |
 | Example | Vinovich: False Start, 20.9% of his penalties. Moore: Offensive Holding, 22.5%. |
 | Conflicts | [C1](audits/metric-conflicts-2026-10-28.md#c1-two-meanings-of-season) |
 

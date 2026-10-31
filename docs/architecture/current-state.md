@@ -137,7 +137,7 @@ plus the calendar year when later. Users:
 
 | Path | What |
 |---|---|
-| `frontend/index.html`, `js/app.js` (~3,900 lines), `css/styles.css` | The main single-page app; reads `data/*.json` with `fetch` |
+| `frontend/index.html`, `js/app.js` (~3,900 lines), `css/styles.css` | The main single-page app; reads `data/*.json` with `fetch`. A crew chief's `referee/<slug>.json` loads only when its pop-out opens; the cards' "Most common" comes from `referees.json` → `top_penalty_type` (#148) |
 | `frontend/js/livestrip.js` | Live strip on the home page |
 | `frontend/gameday/index.html`, `js/gameday.js`, `css/gameday.css` | Live Gameday page; reads the Worker |
 | `frontend/css/static.css` | Styles for the pre-rendered static pages |

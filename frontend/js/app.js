@@ -288,24 +288,11 @@ async function loadAllData() {
     state.referees = referees || [];
     state.trends = trends;
     state.insights = insights || [];
-    
-    // Pre-load all referee profiles for card previews
-    await preloadRefereeProfiles();
-    
+    // Referee profiles load when a card is opened (loadRefereeProfile); the cards read
+    // their top penalty type from referees.json (#148)
+
     console.log('✓ Data loaded');
     return { season, referees, trends, insights };
-}
-
-async function preloadRefereeProfiles() {
-    // Load profiles in parallel for card previews
-    const promises = state.referees.map(async (ref) => {
-        const profile = await fetchJSON(`referee/${ref.slug}.json`);
-        if (profile) {
-            state.refereeProfiles[ref.slug] = profile;
-        }
-    });
-    await Promise.all(promises);
-    console.log(`✓ Loaded ${Object.keys(state.refereeProfiles).length} referee profiles`);
 }
 
 async function loadRefereeProfile(slug) {
@@ -2603,10 +2590,9 @@ function renderRefereeCards() {
     const toggle = formerCards.length && activeCards.length
         ? `<div class="former-toggle"><button class="baseline-btn" onclick="toggleFormerCrews()">${state.showFormerCrews ? 'Hide' : 'Show'} former crew chiefs (${formerCards.length})</button></div>` : '';
     container.innerHTML = shown.map(({ ref, cmp }, index) => {
-        const profile = state.refereeProfiles[ref.slug];
-        const topPenalty = profile?.penaltyTypes?.[0];
-        const topPenaltyDisplay = topPenalty 
-            ? topPenalty.type.replace('Offensive ', '').replace('Defensive ', '').replace(' (Offense)', '')
+        const topPenalty = ref.top_penalty_type;   // referees.json (#148): the profile's penaltyTypes[0].type
+        const topPenaltyDisplay = topPenalty
+            ? topPenalty.replace('Offensive ', '').replace('Defensive ', '').replace(' (Offense)', '')
             : null;
 
         const cur = cmp?.current || null;

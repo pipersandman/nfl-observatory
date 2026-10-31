@@ -1,6 +1,6 @@
 /**
  * NFL Officiating Observatory - Main Application v2
- * With carousel, explainers, and enhanced referee profiles
+ * With explainers and enhanced referee profiles
  */
 
 // =============================================================================
@@ -223,10 +223,8 @@ let state = {
     seasonBaseline: null,
     referees: [],
     trends: null,
-    insights: [],
     currentReferee: null,
     charts: {},
-    carouselIndex: 0,
     refereeProfiles: {}  // Cache loaded profiles
 };
 
@@ -253,12 +251,11 @@ async function loadAllData() {
     console.log('📥 Loading data...');
     
     // Every file that doesn't depend on another loads at once (#147)
-    const [season, referees, trends, insights, teamsIndex, scorecard, scoreboard, typeTrends,
+    const [season, referees, trends, teamsIndex, scorecard, scoreboard, typeTrends,
            flagImpact, crewStyles, latest] = await Promise.all([
         fetchJSON('season_comparison.json'),
         fetchJSON('referees.json'),
         fetchJSON('trends.json'),
-        fetchJSON('insights.json'),
         fetchJSON('teams/index.json'),
         fetchJSON('scorecard/public.json'),
         fetchJSON('scoreboard.json'),
@@ -274,6 +271,8 @@ async function loadAllData() {
     if (ds) document.querySelectorAll('[data-window="dataStart"]').forEach(el => { el.textContent = `since ${ds}`; });
     const car = windows().career?.label;
     if (car) document.querySelectorAll('[data-window="career"]').forEach(el => { el.textContent = car; });
+    // Headings that name the season ("NFL Referee Stats 2026", #158): filled from the data
+    if (season?.currentSeason) document.querySelectorAll('[data-season]').forEach(el => { el.textContent = season.currentSeason; });
 
     state.teamsIndex = teamsIndex;
     state.scorecard = scorecard;
@@ -287,12 +286,11 @@ async function loadAllData() {
     state.previews = (await Promise.all(files.map(f => fetchJSON(f)))).filter(Boolean);
     state.referees = referees || [];
     state.trends = trends;
-    state.insights = insights || [];
     // Referee profiles load when a card is opened (loadRefereeProfile); the cards read
     // their top penalty type from referees.json (#148)
 
     console.log('✓ Data loaded');
-    return { season, referees, trends, insights };
+    return { season, referees, trends };
 }
 
 async function loadRefereeProfile(slug) {
@@ -403,7 +401,7 @@ function renderSeasonComparison() {
         state.seasonBaseline = d.defaultBaseline || d.baselines[0].key;
     }
 
-    document.getElementById('seasonTitle').textContent = `${d.currentSeason} Season`;
+    document.getElementById('seasonTitle').textContent = `NFL Penalties Per Game in ${d.currentSeason}`;
     document.getElementById('seasonTableTitle').textContent = `Crew Chiefs in ${d.currentSeason}`;
 
     // Toggle buttons (built from whatever baselines the pipeline produced)
@@ -584,148 +582,6 @@ function renderSeasonBarChart({ canvasId, existing, rows, field, unit, axisTitle
 }
 
 // =============================================================================
-// RENDERING - INSIGHTS CAROUSEL
-// =============================================================================
-
-function renderInsightsCarousel() {
-    const container = document.getElementById('insightsCarousel');
-    const dotsContainer = document.getElementById('carouselDots');
-    
-    if (!container) return;
-    
-    // Use loaded insights or generate from trends
-    let insights = state.insights;
-    
-    if (!insights.length && state.trends) {
-        insights = generateInsightsFromTrends();
-    }
-    
-    if (!insights.length) {
-        container.innerHTML = '<p>Loading insights...</p>';
-        return;
-    }
-    
-    container.innerHTML = insights.map((insight, i) => `
-        <div class="insight-card ${insight.isPositive === true ? 'positive' : insight.isPositive === false ? 'negative' : ''}" data-index="${i}">
-            ${['🏈', '⏱️'].includes(insight.icon) ? `<div class="insight-icon">${insight.icon}</div>` : ''}
-            <div class="insight-title">${insight.title}</div>
-            <div class="insight-value">${insight.value}</div>
-            <p class="insight-desc">${insight.description}</p>
-            <div class="insight-explainer">
-                <strong>What this means:</strong>
-                ${insight.explanation}
-            </div>
-        </div>
-    `).join('');
-    
-    // Render dots
-    if (dotsContainer) {
-        dotsContainer.innerHTML = insights.map((_, i) => 
-            `<div class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`
-        ).join('');
-    }
-}
-
-function generateInsightsFromTrends() {
-    const insights = [];
-    const trends = state.trends;
-    
-    // Season trend
-    const seasons = trends.bySeason || [];
-    if (seasons.length >= 2) {
-        const latest = seasons[seasons.length - 1];
-        const previous = seasons[seasons.length - 2];
-        const change = ((latest.avg_per_game - previous.avg_per_game) / previous.avg_per_game * 100).toFixed(0);
-        
-        insights.push({
-            icon: '',
-            title: `${latest.season} Penalty Trend`,
-            value: `${change > 0 ? '+' : ''}${change}%`,
-            description: `Penalties per game ${change > 0 ? 'jumped' : 'dropped'} from ${previous.avg_per_game} to ${latest.avg_per_game}`,
-            explanation: 'This measures the average number of accepted penalties per game compared to the previous season.',
-            isPositive: change < 0
-        });
-    }
-    
-    // Home bias
-    const homeAway = trends.homeVsAway || {};
-    if (homeAway.awayMorePct !== undefined && homeAway.awayMorePct !== null) {
-        insights.push({
-            icon: '',
-            title: 'Home Field Bias',
-            value: `${homeAway.awayMorePct > 0 ? '+' : ''}${homeAway.awayMorePct}%`,
-            description: `Away teams are penalized ${Math.abs(homeAway.awayMorePct)}% more than home teams`,
-            explanation: 'Positive means away teams get more flags. This reflects crowd influence on officials, not intentional bias.',
-            isPositive: Math.abs(homeAway.bias_pct) < 3
-        });
-    }
-    
-    // Add more insights...
-    if (state.referees.length) {
-        const maxAvg = Math.max(...state.referees.map(r => r.avg_per_game));
-        const minAvg = Math.min(...state.referees.map(r => r.avg_per_game));
-        
-        insights.push({
-            icon: '',
-            title: 'Crew Chief Spread',
-            value: `${minAvg.toFixed(1)} - ${maxAvg.toFixed(1)}`,
-            description: `Penalty rates range from ${minAvg.toFixed(1)} to ${maxAvg.toFixed(1)} per game depending on crew`,
-            explanation: 'This shows how much the referee assignment matters. Some crews call 3+ more penalties per game than others.',
-            isPositive: null
-        });
-    }
-    
-    // Top penalty
-    const types = trends.byType || [];
-    // All penalties: home + away counts every penalty, not just the top 10 types
-    const allPenalties = (homeAway.home || 0) + (homeAway.away || 0);
-    if (types.length && allPenalties) {
-        insights.push({
-            icon: '',
-            title: 'Most Common Call',
-            value: types[0].type.replace('Offensive ', '').replace('Defensive ', ''),
-            description: `${types[0].count.toLocaleString()} total calls (${(types[0].count / allPenalties * 100).toFixed(0)}% of all penalties)`,
-            explanation: 'Understanding which penalties dominate helps identify where teams lose yards and drives.',
-            isPositive: null
-        });
-    }
-    
-    return insights;
-}
-
-function moveCarousel(direction) {
-    const track = document.getElementById('insightsCarousel');
-    const cards = track.querySelectorAll('.insight-card');
-    
-    if (!cards.length) return;
-    
-    state.carouselIndex += direction;
-    
-    if (state.carouselIndex < 0) state.carouselIndex = cards.length - 1;
-    if (state.carouselIndex >= cards.length) state.carouselIndex = 0;
-    
-    goToSlide(state.carouselIndex);
-}
-
-function goToSlide(index) {
-    const track = document.getElementById('insightsCarousel');
-    const cards = track.querySelectorAll('.insight-card');
-    const dots = document.querySelectorAll('.carousel-dot');
-    
-    if (!cards.length) return;
-    
-    state.carouselIndex = index;
-    
-    // Scroll to card
-    cards[index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-    
-    // Update dots
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-    });
-}
-
-// =============================================================================
 // TEAM COLORS (preview split bars + quarter-by-quarter chart only)
 // Exact official team colors, never lightened. Home shows its signature color;
 // if the away team's is too similar, the away team switches to one of its own
@@ -883,6 +739,7 @@ function renderPreviews() {
     // The heading matches the menu ("Assignments & Projections", in index.html); the
     // weeks shown lead the subtitle (#153)
     const weekText = weeks.length > 1 ? `Week ${weeks[0].week} finale and Week ${full.week}` : `Week ${full.week}`;
+    document.getElementById('previewsTitle').textContent = `NFL Referee Assignments: Week ${full.week}`;
 
     const a = full.assignments || {};
     const crewNote = a.assigned >= a.games ? 'All crews assigned.'
@@ -1139,7 +996,7 @@ function renderTrackRecord() {
         </div>` : '';
     box.innerHTML = `
         <div class="tr-head">
-            <span class="tr-title">Track record</span>
+            <span class="tr-title">Projection Accuracy</span>
             <button class="info-trigger-inline" onclick="openScorecardModal()">See every game →</button>
         </div>
         <div class="tr-items">
@@ -1158,8 +1015,8 @@ function openScorecardModal() {
     setDeepLink('scorecard', 'all');
     if (state.charts.modal) { state.charts.modal.destroy(); state.charts.modal = null; }
     body.removeAttribute('style');
-    document.getElementById('modalTitle').textContent = 'Track Record';
-    document.getElementById('modalSubtitle').textContent = 'How close our flag projections land, graded after every game';
+    document.getElementById('modalTitle').textContent = 'Projection Accuracy';
+    document.getElementById('modalSubtitle').textContent = 'Projected vs actual flags, graded after every game';
 
     const tile = (label, v, sub) => `<div class="season-stat"><div class="season-stat-label">${label}</div>
         <div class="season-stat-value">${v}</div><div class="season-stat-compare">${sub}</div></div>`;
@@ -1382,7 +1239,7 @@ function renderScoreboard(animate = false) {
     box.innerHTML = `
         <div class="sb-head">
             <div>
-                <div class="sb-title">The Scoreboard</div>
+                <div class="sb-title">${state.season?.currentSeason ?? ''} Penalties Week by Week</div>
                 <div class="modal-actions block-actions">
                     <button class="modal-share" onclick="copyBlockLink('scoreboard', this)">Copy link</button>
                     <button class="modal-share" onclick="exportBlock('scoreboard', 'png', this)">Save PNG</button>
@@ -1420,9 +1277,9 @@ function renderScoreboard(animate = false) {
                 <div class="sb-sub"><strong>${fmtNum(f.mostCommon?.count)}</strong> calls · ${fmtNum(f.mostCommon?.pct, 0)}% of all flags</div></div>
             <div class="sb-cell"><div class="sb-label">Most flagged team</div><div class="sb-lead">${f.mostFlaggedTeam?.team ?? '—'}</div>
                 <div class="sb-sub"><strong>${fmtNum(f.mostFlaggedTeam?.perGame, 1)}</strong> flags per game</div></div>
-            <div class="sb-cell"><div class="sb-label">Cleanest team</div><div class="sb-lead">${f.cleanestTeam?.team ?? '—'}</div>
+            <div class="sb-cell"><div class="sb-label">Fewest flags per game (team)</div><div class="sb-lead">${f.cleanestTeam?.team ?? '—'}</div>
                 <div class="sb-sub"><strong>${fmtNum(f.cleanestTeam?.perGame, 1)}</strong> flags per game</div></div>
-            <div class="sb-cell"><div class="sb-label">Flag-heaviest crew</div><div class="sb-lead">${f.topCrew?.name ?? '—'}</div>
+            <div class="sb-cell"><div class="sb-label">Most flags per game (crew)</div><div class="sb-lead">${f.topCrew?.name ?? '—'}</div>
                 <div class="sb-sub"><strong>${fmtNum(f.topCrew?.perGame, 1)}</strong> flags per game${f.topCrew?.games ? ` · ${f.topCrew.games} game${f.topCrew.games === 1 ? '' : 's'}` : ''}</div></div>
         </div>
 
@@ -1693,7 +1550,7 @@ function renderTypeTrends() {
     box.innerHTML = `
         <div class="table-header tt-head">
             <div>
-                <div class="table-title">Which calls are rising?</div>
+                <div class="table-title">Penalties rising in ${last}</div>
                 <div class="modal-actions block-actions">
                     <button class="modal-share" onclick="copyBlockLink('typeTrends', this)">Copy link</button>
                     <button class="modal-share" onclick="exportBlock('typeTrends', 'png', this)">Save PNG</button>
@@ -3025,7 +2882,7 @@ async function openRefereeModal(slug) {
             <p class="modal-tendency-career"><strong>Career:</strong> ${profile.tendencies?.description || 'League-average officiating style'}</p>
         </div>` : `
         <div class="modal-tendency">
-            <h4>Tendencies</h4>
+            <h4>Calling style</h4>
             <p>${profile.tendencies?.description || 'League-average officiating style'}</p>
         </div>`}
 
@@ -3064,7 +2921,7 @@ async function openRefereeModal(slug) {
         </div>
 
         <div>
-            <h4 style="margin-bottom: 0.75rem;">Recent Games</h4>
+            <h4 style="margin-bottom: 0.75rem;">Recent games</h4>
             <div class="game-list">
                 ${renderRecentGames(profile.recentGames, cs)}
             </div>
@@ -3106,7 +2963,7 @@ function renderTypeComparison(types, cs, allLabel, small) {
     const rows = types.slice(0, 10);
     return `
         <div class="modal-section">
-            <h4>What's being called: ${cs} vs ${allLabel}</h4>
+            <h4>Penalty types: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(rows, cs, allLabel, small, r => r.type.replace('Offensive ', 'Off. ').replace('Defensive ', 'Def. '))}
             <p class="modal-footnote">Penalties per game of each type in this crew's regular-season games. Sorted by ${cs} rate, most first.</p>
@@ -3116,7 +2973,7 @@ function renderTypeComparison(types, cs, allLabel, small) {
 function renderQuarterComparison(quarters, cs, allLabel, small) {
     return `
         <div class="modal-section">
-            <h4>⏱️ When flags fly: ${cs} vs ${allLabel}</h4>
+            <h4>⏱️ Penalties by quarter: ${cs} vs ${allLabel}</h4>
             ${pairLegend(cs, allLabel)}
             ${renderPairedRows(quarters, cs, allLabel, small, q => `${qLabel(q.quarter)}`)}
         </div>`;
@@ -3131,7 +2988,7 @@ function renderPenaltyTypesBreakdown(penaltyTypes) {
     
     return `
         <div style="margin-bottom: 1.5rem;">
-            <h4 style="margin-bottom: 0.75rem;">Penalty Type Breakdown</h4>
+            <h4 style="margin-bottom: 0.75rem;">Penalty types</h4>
             <div class="penalty-types-list">
                 ${penaltyTypes.slice(0, 8).map(p => `
                     <div class="penalty-type-item">
@@ -3161,7 +3018,7 @@ function renderQuarterDistribution(quarterDist) {
     
     return `
         <div style="margin-bottom: 1.5rem;">
-            <h4 style="margin-bottom: 0.75rem;">⏱️ Penalties By Quarter</h4>
+            <h4 style="margin-bottom: 0.75rem;">⏱️ Penalties by quarter</h4>
             <div class="quarter-dist-grid">
                 ${quarterDist.map(q => `
                     <div class="quarter-dist-item">
@@ -3382,7 +3239,7 @@ function exportFileName(ext) {
     return `nfl-observatory-${safe}.${ext}`;
 }
 
-// Export any on-page panel (e.g. "Which calls are rising?") as a branded PNG / PDF,
+// Export any on-page panel (e.g. "Penalties rising in <season>") as a branded PNG / PDF,
 // same look as pop-up exports: buttons hidden, full width, footer with the link.
 async function renderBlockCanvas(el) {
     await loadScriptOnce(EXPORT_LIBS.html2canvas);
@@ -3815,7 +3672,6 @@ async function init() {
     renderFlagCost();
     renderStyleMap();
     renderDataTable();
-    renderInsightsCarousel();
     
     initScrollAnimations();
 
@@ -3889,5 +3745,3 @@ window.exportBlock = exportBlock;
 window.copyBlockLink = copyBlockLink;
 window.openExplainer = openExplainer;
 window.closeExplainer = closeExplainer;
-window.moveCarousel = moveCarousel;
-window.goToSlide = goToSlide;

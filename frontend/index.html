@@ -45,7 +45,7 @@
     <nav class="site-nav" id="siteNav" aria-label="Site" data-kickoffs="">
         <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
         <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span><span class="toggle-dot" aria-hidden="true"></span></button>
-        <div class="nav-links" id="navLinks"><a href="/" aria-current="page">Home</a><a href="/gameday/" class="nav-live"><span class="live-dot" aria-hidden="true"></span>Live Games<span class="sr-only live-sr" hidden>, games in progress</span></a><a href="/#previews">Assignments &amp; Projections</a><a href="/#referees">Crew chiefs</a><a href="/#teams">Team Stats</a><a href="/#trends">Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
+        <div class="nav-links" id="navLinks"><a href="/" aria-current="page">Home</a><a href="/gameday/" class="nav-live"><span class="live-dot" aria-hidden="true"></span>Live Games<span class="sr-only live-sr" hidden>, games in progress</span></a><a href="/#previews">Assignments &amp; Projections</a><a href="/#referees">Crew Chiefs</a><a href="/#teams">Team Stats</a><a href="/#trends">League Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
         <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X"><svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span></a>
     </nav>
     <script>(() => {
@@ -91,19 +91,18 @@
          assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
     <div class="container tldr-strip">
         <!-- Live flags strip: appears on game days, links to /gameday/ (js/livestrip.js) -->
-        <a class="live-strip" id="liveStrip" href="/gameday/" hidden aria-label="Live flags: open the Gameday scoreboard"></a>
+        <a class="live-strip" id="liveStrip" href="/gameday/" hidden aria-label="Open Live Games"></a>
         <!-- SEO:SUMMARY -->
         <p class="tldr-text"><strong>NFL referee and penalty statistics:</strong> penalties per game by crew chief and team, this week's referee assignments and penalty trends. Updated automatically during and after every game day. <a href="/guide/">FAQ and methodology</a></p>
         <!-- /SEO:SUMMARY -->
     </div>
-    <noscript><div class="container"><p>This dashboard needs JavaScript. Plain-text versions: <a href="/crew/">referee stats</a>, <a href="/team/">team penalty stats</a>, <a href="/assignments/">this week's assignments</a>, <a href="/trends/">penalty trends</a>, <a href="/guide/">guide and FAQ</a>, <a href="/dataset/">data downloads</a>.</p></div></noscript>
+    <noscript><div class="container"><p>This dashboard needs JavaScript. Plain-text versions: <a href="/assignments/">Assignments &amp; Projections</a>, <a href="/crew/">Crew Chiefs</a>, <a href="/team/">Team Stats</a>, <a href="/trends/">League Trends</a>, <a href="/guide/">guide and FAQ</a>, <a href="/dataset/">data downloads</a>.</p></div></noscript>
 
     <!-- This Season Section -->
     <section id="season">
         <div class="container">
             <div class="section-header">
-                <div class="section-number">01 / THIS SEASON</div>
-                <h2 class="section-title" id="seasonTitle">This Season vs Last</h2>
+                <h2 class="section-title" id="seasonTitle">NFL Penalties Per Game</h2>
                 <p class="section-subtitle" id="seasonSubtitle"><!-- SEO:SEASON_SUB -->Loading…<!-- /SEO:SEASON_SUB --></p>
                 <div class="baseline-toggle" id="baselineToggle" role="group" aria-label="Compare against"></div>
             </div>
@@ -120,7 +119,7 @@
                 <div class="charts-grid">
                     <div class="chart-container">
                         <div class="chart-header">
-                            <div class="chart-title">Penalties Per Game By Crew Chief</div>
+                            <div class="chart-title">Penalties per game by crew chief</div>
                             <button class="info-trigger-small" onclick="openExplainer('season-penalties')">?</button>
                         </div>
                         <div class="chart-wrapper season-chart-wrapper">
@@ -130,7 +129,7 @@
 
                     <div class="chart-container">
                         <div class="chart-header">
-                            <div class="chart-title">Penalty Yards Per Game By Crew Chief</div>
+                            <div class="chart-title">Penalty yards per game by crew chief</div>
                             <button class="info-trigger-small" onclick="openExplainer('season-yards')">?</button>
                         </div>
                         <div class="chart-wrapper season-chart-wrapper">
@@ -167,28 +166,11 @@
         </div>
     </section>
 
-    <!-- Teams Section -->
-    <section id="teams">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">02 / TEAM STATS</div>
-                <h2 class="section-title">Team Stats</h2>
-                <p class="section-subtitle" id="teamsSubtitle">Pick a division, then a team for its full penalty profile. Updated automatically during and after every game day.</p>
-            </div>
-            <div class="division-grid" id="divisionGrid">
-                <!-- SEO:DIVISIONS --><div class="loading"><div class="spinner"></div></div><!-- /SEO:DIVISIONS -->
-            </div>
-            <div class="division-teams" id="divisionTeams"></div>
-            <p class="see-all"><a href="/team/" aria-label="See all teams">See all →</a></p>
-        </div>
-    </section>
-
     <!-- Assignments & Projections Section (game previews) -->
     <section id="previews">
         <div class="container">
             <div class="section-header">
-                <div class="section-number">03 / ASSIGNMENTS &amp; PROJECTIONS</div>
-                <h2 class="section-title" id="previewsTitle">Assignments &amp; Projections</h2>
+                <h2 class="section-title" id="previewsTitle">NFL Referee Assignments</h2>
                 <p class="section-subtitle" id="previewsSubtitle">
                     Projected penalties for every upcoming game, ranked most flags first
                     <button class="info-trigger-inline" onclick="openExplainer('previews')">How projections work</button>
@@ -199,23 +181,85 @@
                 <!-- SEO:PREVIEWS --><div class="loading"><div class="spinner"></div></div><!-- /SEO:PREVIEWS -->
             </div>
             <p class="preview-credit" id="previewCredit"></p>
-            <p class="see-all"><a href="/assignments/" aria-label="See all of this week's games">See all →</a></p>
+            <p class="see-all"><a href="/assignments/">See all Assignments &amp; Projections →</a></p>
         </div>
     </section>
 
-    <!-- Trends Section -->
+    <!-- Crew Chiefs Section (with the full crew chief table) -->
+    <section id="referees">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">NFL Referee Stats <span data-season></span></h2>
+                <p class="section-subtitle">
+                    Penalties per game by crew chief: <span data-season>this season</span>, last season and career, most first. Pick a crew chief for the full profile.
+                    <button class="info-trigger-inline" onclick="openExplainer('crew-chief')">What's a crew chief?</button>
+                </p>
+            </div>
+            
+            <div class="referee-grid fade-in" id="refereeGrid">
+                <!-- SEO:REFEREES --><div class="loading"><div class="spinner"></div></div><!-- /SEO:REFEREES -->
+            </div>
+
+            <!-- All crew chiefs (was its own "Full Data" section; #158). id="data" keeps old /#data links working -->
+            <div class="crew-all" id="data">
+                <h3 class="crew-all-title">All Crew Chiefs <span data-window="dataStart">in the data</span></h3>
+                <p class="section-subtitle">Most games first</p>
+                <div class="table-container fade-in" id="dataTable">
+                    <div class="table-header">
+                        <div class="table-title">Crew Chief Career Statistics (regular season, <span data-window="career">seasons before this one</span>)</div>
+                        <div class="table-legend">
+                            <span class="legend-item"><span class="legend-dot high"></span> Home Bias above 5 pts</span>
+                            <span class="legend-item"><span class="legend-dot low"></span> Home Bias below 0</span>
+                        </div>
+                    </div>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Crew Chief</th>
+                                    <th>Games <button class="th-info" onclick="openExplainer('games')">?</button></th>
+                                    <th>Avg/Game <button class="th-info" onclick="openExplainer('avg-per-game')">?</button></th>
+                                    <th>Range</th>
+                                    <th>Home Bias <button class="th-info" onclick="openExplainer('home-bias')">?</button></th>
+                                    <th>Consistency <button class="th-info" onclick="openExplainer('consistency')">?</button></th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- SEO:DATA_TABLE --><!-- /SEO:DATA_TABLE --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <p class="see-all"><a href="/crew/">See all Crew Chiefs →</a></p>
+        </div>
+    </section>
+
+    <!-- Team Stats Section -->
+    <section id="teams">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">NFL Team Penalty Stats <span data-season></span></h2>
+                <p class="section-subtitle" id="teamsSubtitle">Penalties per game for all 32 teams. Pick a division, then a team.</p>
+            </div>
+            <div class="division-grid" id="divisionGrid">
+                <!-- SEO:DIVISIONS --><div class="loading"><div class="spinner"></div></div><!-- /SEO:DIVISIONS -->
+            </div>
+            <div class="division-teams" id="divisionTeams"></div>
+            <p class="see-all"><a href="/team/">See all Team Stats →</a></p>
+        </div>
+    </section>
+
+    <!-- League Trends Section -->
     <section id="trends">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">04 / LEAGUE TRENDS</div>
-                <h2 class="section-title">The Big Picture</h2>
-                <p class="section-subtitle">How officiating patterns have evolved across seasons</p>
+                <h2 class="section-title">NFL Penalty Trends</h2>
+                <p class="section-subtitle">Penalties per game by season, quarter, week and type <span data-window="dataStart">in the data</span></p>
             </div>
             
             <div class="charts-grid fade-in">
                 <div class="chart-container">
                     <div class="chart-header">
-                        <div class="chart-title">Penalties Per Game By Season</div>
+                        <div class="chart-title">Penalties per game by season</div>
                         <button class="info-trigger-small" onclick="openExplainer('season-trend')">?</button>
                     </div>
                     <p class="chart-sub" id="seasonChartSub"></p>
@@ -226,7 +270,7 @@
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <div class="chart-title">Penalties Per Game By Quarter</div>
+                        <div class="chart-title">Penalties per game by quarter</div>
                         <button class="info-trigger-small" onclick="openExplainer('quarter-penalties')">?</button>
                     </div>
                     <p class="chart-sub" id="quarterChartSub"></p>
@@ -238,7 +282,7 @@
 
                 <div class="chart-container chart-wide">
                     <div class="chart-header">
-                        <div class="chart-title">Penalties Per Game By Week Of Season</div>
+                        <div class="chart-title">Penalties per game by week</div>
                         <button class="info-trigger-small" onclick="openExplainer('week-of-season')">?</button>
                     </div>
                     <p class="week-takeaway" id="weekTakeaway"></p>
@@ -253,7 +297,7 @@
                 
                 <div class="chart-container chart-wide">
                     <div class="chart-header">
-                        <div class="chart-title">Share Of All Flags By Penalty Type</div>
+                        <div class="chart-title">Share of flags by penalty type</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalty-types')">?</button>
                     </div>
                     <p class="chart-sub" id="typeChartSub"></p>
@@ -265,7 +309,7 @@
                 
                 <div class="chart-container chart-wide">
                     <div class="chart-header">
-                        <div class="chart-title">Crew Chief Flag Rates</div>
+                        <div class="chart-title">Penalties per game by crew chief</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalties-by-ref')">?</button>
                     </div>
                     <p class="chart-sub" id="biasChartSub"></p>
@@ -283,7 +327,7 @@
             <div class="charts-grid style-map-grid">
                 <div class="chart-container chart-wide style-map">
                     <div class="chart-header">
-                        <div class="chart-title">Crew Chief Style Map</div>
+                        <div class="chart-title">Crew chief styles: flags per game vs yards per flag</div>
                         <button class="info-trigger-small" onclick="openExplainer('crew-style-map')">?</button>
                     </div>
                     <p class="chart-sub" id="styleMapSub"></p>
@@ -297,90 +341,7 @@
             <div class="table-container flag-cost" id="flagCost">
                 <div class="loading"><div class="spinner"></div></div>
             </div>
-            <p class="see-all"><a href="/trends/" aria-label="See all trends">See all →</a></p>
-        </div>
-    </section>
-
-    <!-- Referees Section -->
-    <section id="referees">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">05 / CREW CHIEF PROFILES</div>
-                <h2 class="section-title">Meet The Officials</h2>
-                <p class="section-subtitle">
-                    This season vs last season vs all years, ranked by this season's penalties per game. Click any crew chief for their full profile
-                    <button class="info-trigger-inline" onclick="openExplainer('crew-chief')">What's a crew chief?</button>
-                </p>
-            </div>
-            
-            <div class="referee-grid fade-in" id="refereeGrid">
-                <!-- SEO:REFEREES --><div class="loading"><div class="spinner"></div></div><!-- /SEO:REFEREES -->
-            </div>
-            <p class="see-all"><a href="/crew/" aria-label="See all crew chiefs">See all →</a></p>
-        </div>
-    </section>
-
-    <!-- Data Table Section -->
-    <section id="data">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">06 / FULL DATA</div>
-                <h2 class="section-title">Complete Crew Chief Stats</h2>
-                <p class="section-subtitle">Every crew chief <span data-window="dataStart">in the data</span>, most games first</p>
-            </div>
-
-            
-            <div class="table-container fade-in" id="dataTable">
-                <div class="table-header">
-                    <div class="table-title">Crew Chief Career Statistics (regular season, <span data-window="career">seasons before this one</span>)</div>
-                    <div class="table-legend">
-                        <span class="legend-item"><span class="legend-dot high"></span> Home Bias above 5 pts</span>
-                        <span class="legend-item"><span class="legend-dot low"></span> Home Bias below 0</span>
-                    </div>
-                </div>
-                <div class="table-scroll">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Crew Chief</th>
-                                <th>Games <button class="th-info" onclick="openExplainer('games')">?</button></th>
-                                <th>Avg/Game <button class="th-info" onclick="openExplainer('avg-per-game')">?</button></th>
-                                <th>Range</th>
-                                <th>Home Bias <button class="th-info" onclick="openExplainer('home-bias')">?</button></th>
-                                <th>Consistency <button class="th-info" onclick="openExplainer('consistency')">?</button></th>
-                            </tr>
-                        </thead>
-                        <tbody><!-- SEO:DATA_TABLE --><!-- /SEO:DATA_TABLE --></tbody>
-                    </table>
-                </div>
-            </div>
-            <p class="see-all"><a href="/crew/" aria-label="See all crew chief stats">See all →</a></p>
-        </div>
-    </section>
-
-    <!-- Key Insights Carousel -->
-    <section id="insights">
-        <div class="container">
-            <div class="section-header fade-in">
-                <div class="section-number">07 / KEY FINDINGS</div>
-                <h2 class="section-title">What The Data Shows</h2>
-                <p class="section-subtitle">Swipe through headline discoveries from five seasons of penalty data</p>
-            </div>
-            
-            <!-- Carousel -->
-            <div class="carousel-container fade-in">
-                <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">&lt;</button>
-                
-                <div class="carousel-track" id="insightsCarousel">
-                    <!-- Populated by JS -->
-                    <div class="loading"><div class="spinner"></div></div>
-                </div>
-                
-                <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">&gt;</button>
-            </div>
-            
-            <!-- Carousel dots -->
-            <div class="carousel-dots" id="carouselDots"></div>
+            <p class="see-all"><a href="/trends/">See all League Trends →</a></p>
         </div>
     </section>
 
@@ -395,9 +356,9 @@
                 <div class="footer-links">
                     <a href="/guide/#methodology">Methodology</a>
                     <a href="/guide/">FAQ</a>
-                    <a href="/crew/">Referee stats</a>
-                    <a href="/team/">Team stats</a>
-                    <a href="/assignments/">Assignments</a>
+                    <a href="/assignments/">Assignments &amp; Projections</a>
+                    <a href="/crew/">Crew Chiefs</a>
+                    <a href="/team/">Team Stats</a>
                     <a href="/dataset/">Data</a>
                     <a href="/guide/#about">About</a>
                 </div>

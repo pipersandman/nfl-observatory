@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parent.parent
 HOME = (ROOT / 'frontend' / 'index.html').read_text(encoding='utf-8')
 APP_JS = (ROOT / 'frontend' / 'js' / 'app.js').read_text(encoding='utf-8')
 
-LABELS = ['Home', 'Live Games', 'Assignments & Projections', 'Crew chiefs', 'Team Stats', 'Trends', 'Guide', 'Data']
-SECTION_ITEMS = {'Assignments & Projections': 'previews', 'Crew chiefs': 'referees', 'Team Stats': 'teams', 'Trends': 'trends'}
+LABELS = ['Home', 'Live Games', 'Assignments & Projections', 'Crew Chiefs', 'Team Stats', 'League Trends', 'Guide', 'Data']
+SECTION_ITEMS = {'Assignments & Projections': 'previews', 'Crew Chiefs': 'referees', 'Team Stats': 'teams', 'League Trends': 'trends'}
 PAGE_ITEMS = {'Home': '/', 'Live Games': '/gameday/', 'Guide': '/guide/', 'Data': '/dataset/'}
 
 
@@ -53,12 +53,12 @@ def test_topics_go_to_home_sections_and_the_rest_to_pages():
     ('/gameday/', [('Live Games', 'page')]),
     ('/guide/', [('Guide', 'page')]),
     ('/dataset/', [('Data', 'page')]),
-    ('/crew/', [('Crew chiefs', 'true')]),
-    ('/crew/bill-vinovich/', [('Crew chiefs', 'true')]),
+    ('/crew/', [('Crew Chiefs', 'true')]),
+    ('/crew/bill-vinovich/', [('Crew Chiefs', 'true')]),
     ('/team/', [('Team Stats', 'true')]),
     ('/team/MIA/', [('Team Stats', 'true')]),
     ('/assignments/', [('Assignments & Projections', 'true')]),
-    ('/trends/', [('Trends', 'true')]),
+    ('/trends/', [('League Trends', 'true')]),
 ])
 def test_highlight_rules(page, expected):
     assert [(label, cur) for _, cur, label in items(site_nav.nav_html(page)) if cur] == expected
@@ -95,7 +95,7 @@ def test_menus_match_fails_on_a_hand_edit_and_ignores_kickoffs(tmp_path, monkeyp
     real = sync_nav.PAGES['/'].read_text(encoding='utf-8')
     page = tmp_path / 'index.html'
     monkeypatch.setattr(sync_nav, 'PAGES', {'/': page})
-    page.write_text(real.replace('>Trends</a>', '>Penalty trends</a>', 1), encoding='utf-8')
+    page.write_text(real.replace('>League Trends</a>', '>Penalty trends</a>', 1), encoding='utf-8')
     assert check.check_menus()[0] is False
     page.write_text(sync_nav.expected('/', real, ['2026-11-01T17:00Z']), encoding='utf-8')   # a deploy copy
     assert check.check_menus()[0] is True
@@ -205,20 +205,11 @@ def test_script_lights_both_dots_from_the_same_rule():
 
 # ---- home sections, See all, pop-ups ---------------------------------------------------
 
-def test_home_sections_keep_their_ids_and_see_all_links():
-    for sid in ('season', 'teams', 'previews', 'trends', 'referees', 'data', 'insights'):
+def test_home_sections_keep_their_ids():
+    # #insights (Key Findings) was removed in #158; #data is now inside Crew Chiefs
+    for sid in ('season', 'previews', 'referees', 'data', 'teams', 'trends'):
         assert f'id="{sid}"' in HOME
-    see_all = re.findall(r'<p class="see-all"><a href="([^"]+)"', HOME)
-    # Data's table is "Complete Crew Chief Stats", so its full page is /crew/ (Ty, 2026-10-31)
-    assert see_all == ['/team/', '/assignments/', '/trends/', '/crew/', '/crew/']
-    assert 'section-tiles' not in HOME                                    # removed (hub model)
-
-
-def test_section_headings_match_the_menu():
-    assert '02 / TEAM STATS' in HOME and '<h2 class="section-title">Team Stats</h2>' in HOME
-    assert '03 / ASSIGNMENTS &amp; PROJECTIONS' in HOME
-    assert 'id="previewsTitle">Assignments &amp; Projections</h2>' in HOME
-    assert "previewsTitle').textContent" not in APP_JS                   # week text moved to the subtitle
+    assert 'id="insights"' not in HOME and 'section-tiles' not in HOME
 
 
 def function_body(name):

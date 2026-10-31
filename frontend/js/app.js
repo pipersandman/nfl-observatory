@@ -8,7 +8,7 @@
 // =============================================================================
 
 const CONFIG = {
-    dataPath: './data',
+    dataPath: '/data',   // absolute: app.js also runs on the full pages, e.g. /crew/ (#166)
     chartColors: {
         flag: '#ffc400',      // accent: "look here"
         data: '#f5f4f0',      // this season's numbers and bars

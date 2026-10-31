@@ -126,6 +126,32 @@ def check_menus():
     return not bad, f'{len(PAGES)} pages'
 
 
+def check_full_pages():
+    """Full pages are supersets of their home sections (#166): every "See all ->" goes to
+    a page in full_pages.FULL_PAGES, and a done page lists every block, chart and
+    explainer of its section. Pending pages are listed with the issue that builds them."""
+    sys.path.insert(0, str(ROOT / 'scripts'))
+    from full_pages import FULL_PAGES, section_problems, see_all_targets
+    home = (ROOT / 'frontend' / 'index.html').read_text(encoding='utf-8')
+    bad = [f'"See all" link to {t} is not in FULL_PAGES (scripts/full_pages.py)'
+           for t in see_all_targets(home) if t not in FULL_PAGES]
+    done, pending = [], []
+    for path, spec in FULL_PAGES.items():
+        if spec.get('pending'):
+            pending.append(f'{path} (#{spec["pending"]})')
+            continue
+        done.append(path)
+        try:
+            bad += section_problems(home, path, spec)
+        except ValueError as ex:
+            bad.append(f'{path}: {ex}')
+    for b in bad:
+        print('   ', b)
+    if pending:
+        print('    pending:', ', '.join(pending))
+    return not bad, f'{len(done)} done ({", ".join(done)}), {len(pending)} pending'
+
+
 def check_pytest():
     """Tests in tests/ (#89). No network: tests/conftest.py blocks it."""
     # -q comes from pyproject.toml; passing it again would hide the summary line
@@ -144,6 +170,7 @@ CHECKS = [
     ('Worker JS syntax', check_node),
     ('No hard-coded years or windows', check_literals),
     ('Menus match', check_menus),
+    ('Full pages', check_full_pages),
     ('pytest', check_pytest),
 ]
 

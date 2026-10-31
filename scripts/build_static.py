@@ -24,10 +24,12 @@ import html
 import json
 import os
 import re
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
 import weeks
+from full_pages import FULL_PAGES, SHELLS, element_by_id   # full pages = home section + more (#166)
 from site_analytics import analytics_html     # the one analytics snippet (#165)
 from site_nav import kickoffs_utc, nav_html   # the one site menu (#153)
 from weeks import HISTORICAL_START
@@ -51,6 +53,31 @@ TEAM_NAMES = {
 }
 
 e = lambda x: html.escape('' if x is None else str(x))
+
+
+def _home_template():
+    """frontend/index.html as committed: never the deploy's summary fill (home_prefill()
+    writes real numbers between its <!-- SEO:... --> markers). Falls back to the file."""
+    try:
+        r = subprocess.run(['git', 'show', 'HEAD:frontend/index.html'], capture_output=True,
+                           cwd=ROOT.parent, timeout=20)
+        if r.returncode == 0 and r.stdout:
+            return r.stdout.decode('utf-8').replace('\r\n', '\n')
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return (ROOT / 'index.html').read_text(encoding='utf-8')
+
+
+HOME_TEMPLATE = _home_template()
+# The chart library exactly as the home page loads it (pinned version, integrity hash)
+CHART_TAG = re.search(r'<script src="https://cdn\.jsdelivr\.net/npm/chart\.js@[^"]+"\s+integrity="[^"]+"\s+crossorigin="anonymous"></script>',
+                      HOME_TEMPLATE).group(0)
+BLOCKS_HERE = '<!-- full-page blocks -->'   # where a page's interactive blocks go in its body
+
+
+def home_block(element_id):
+    """A block of the home page (element and children), copied by id (#166)."""
+    return element_by_id(HOME_TEMPLATE, element_id)
 
 
 def load(name):
@@ -80,7 +107,17 @@ def team_name(a):
 # /gameday/ (#153).
 
 
-def page(path, title, description, body, schema=None, crumbs=None):
+def page(path, title, description, body, schema=None, crumbs=None, blocks=None):
+    """One pre-built page. blocks: home-page element ids to show, fully interactive (#166):
+    they go where the body has BLOCKS_HERE, and the page gets the chart library, the
+    pop-up shells and app.js, which draws them as on the home page."""
+    head_extra = tail = ''
+    if blocks:
+        if body.count(BLOCKS_HERE) != 1:
+            raise ValueError(f'{path}: blocks given but the body has no {BLOCKS_HERE}')
+        body = body.replace(BLOCKS_HERE, '<div class="st-app">\n' + '\n'.join(home_block(b) for b in blocks) + '\n        </div>')
+        head_extra = '\n    ' + CHART_TAG
+        tail = '\n'.join(['', *('    ' + home_block(s) for s in SHELLS), f'    <script src="/js/app.js?v={V}"></script>'])
     url = SITE + path
     blocks = list(schema or [])
     if crumbs:
@@ -114,7 +151,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css?v={V}">
-    <link rel="stylesheet" href="/css/static.css?v={V}">{ld}
+    <link rel="stylesheet" href="/css/static.css?v={V}">{ld}{head_extra}
 {analytics_html('    ', V)}
 </head>
 <body class="static-page">
@@ -132,7 +169,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
             </div>
             <p class="footer-copyright">NFL Officiating Observatory. Not affiliated with the NFL. For educational purposes only.</p>
         </div>
-    </footer>
+    </footer>{tail}
 </body>
 </html>
 """
@@ -282,17 +319,19 @@ def crew_pages():
                    + table(['Crew chief', 'Seasons in the data', 'Games', 'Flags / game'], former_rows)
                    + f'<p class="st-note">Flags per game are raw averages; league levels vary by season{league_levels()}.</p>') if former_rows else ''
     body = f"""<h1 class="section-title">NFL Referee Stats {SEASON}</h1>
-    <p class="section-subtitle">Penalties per game by crew chief, {SEASON} {thru_txt}</p>
+    <p class="section-subtitle">Penalties per game by crew chief, {SEASON} {thru_txt}
+        <button class="info-trigger-inline" onclick="openExplainer('crew-chief')">What's a crew chief?</button></p>
     {tldr(f"Through Week {THRU} of {SEASON}, NFL games average <strong>{f1(LG.get('perGame'))} accepted penalties</strong>. "
           + ("The most flags per game have come in games worked by " + ', '.join(f"{crew_link(c['name'])} ({f1(c['current']['perGame'])})" for c in top) + ". " if top else '')
           + "Each crew chief's page lists his season and career numbers, style and most common calls.")}
+    {BLOCKS_HERE}
+    <h2>{SEASON} Crew Chief Stats This Season</h2>
     {table(['Crew chief', f'{SEASON} games', f'{SEASON} flags / game', f'{CAREER} flags / game', 'Career style'], rows)}
     {former_html}
-    <p class="st-note">Accepted penalties in regular-season games each crew chief worked. Crew chiefs lead a seven-official crew; the data doesn't say which official threw each flag.</p>
-    {open_app('referees', 'See Crew Chiefs on the home page')}"""
+    <p class="st-note">Accepted penalties in regular-season games each crew chief worked. Crew chiefs lead a seven-official crew; the data doesn't say which official threw each flag.</p>"""
     page('/crew/', f'NFL Referee Stats {SEASON} | NFL Officiating Observatory',
          f'Every active NFL crew chief ranked by penalties per game in {SEASON} {thru_txt}, with career averages and calling style.',
-         body, crumbs=[('/', 'Home'), ('/crew/', 'Crew Chiefs')])
+         body, crumbs=[('/', 'Home'), ('/crew/', 'Crew Chiefs')], blocks=FULL_PAGES['/crew/']['blocks'])
 
     for c in sc.get('crewChiefs', []) + sc.get('inactiveCrewChiefs', []):
         name, slug = c['name'], c['slug']

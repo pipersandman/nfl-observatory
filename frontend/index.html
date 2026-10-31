@@ -42,10 +42,10 @@
 <body>
     <!-- Site menu: written by scripts/sync_nav.py from scripts/site_nav.py (#153); don't edit by hand -->
     <!-- nav:start -->
-    <nav class="site-nav" id="siteNav" aria-label="Site">
+    <nav class="site-nav" id="siteNav" aria-label="Site" data-kickoffs="">
         <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
         <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
-        <div class="nav-links" id="navLinks"><a href="/" aria-current="page">Home</a><a href="/gameday/">Gameday</a><a href="/assignments/">This week</a><a href="/crew/">Crew chiefs</a><a href="/team/">Teams</a><a href="/trends/">Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
+        <div class="nav-links" id="navLinks"><a href="/" aria-current="page">Home</a><a href="/gameday/" class="nav-live"><span class="live-dot" aria-hidden="true"></span>Live Games<span class="sr-only live-sr" hidden>, games in progress</span></a><a href="/#previews">Assignments &amp; Projections</a><a href="/#referees">Crew chiefs</a><a href="/#teams">Team Stats</a><a href="/#trends">Trends</a><a href="/guide/">Guide</a><a href="/dataset/">Data</a></div>
         <a class="nav-x" href="https://x.com/NFLObservatory" target="_blank" rel="noopener" aria-label="Follow @NFLObservatory on X" title="Follow @NFLObservatory on X"><svg class="x-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Follow</span></a>
     </nav>
     <script>(() => {
@@ -60,17 +60,28 @@
         nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
         document.addEventListener('click', (e) => { if (!nav.contains(e.target)) setOpen(false); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
-        window.addEventListener('resize', () => { if (window.innerWidth > 768) setOpen(false); });
+        window.addEventListener('resize', () => { if (window.innerWidth > 1240) setOpen(false); });
+
+        // Live dot: this week's kickoffs are written into the menu at deploy (no request)
+        function navLiveNow(kickoffs, now) {
+            return kickoffs.some(k => now >= k && now < k + 4 * 3600 * 1000);
+        }
+        const live = nav.querySelector('.nav-live');
+        const kickoffs = (nav.dataset.kickoffs || '').split(',').map(Date.parse).filter(Number.isFinite);
+        const update = () => {
+            const on = !!live && navLiveNow(kickoffs, Date.now());
+            if (!live) return;
+            live.classList.toggle('is-live', on);
+            live.querySelector('.live-sr').hidden = !on;
+        };
+        update();
+        if (kickoffs.length) setInterval(update, 60 * 1000);
     })();</script>
     <!-- nav:end -->
 
     <!-- This week in NFL officiating: plain text in the page source so search engines and AI
          assistants can read it without running JavaScript (refreshed on every deploy by build_static.py) -->
     <div class="container tldr-strip">
-        <!-- Section tiles (#153): jump to a section on this page. The site menu above goes to full pages. -->
-        <div class="section-tiles" role="navigation" aria-label="Sections on this page">
-            <a href="#season">This Season</a><a href="#insights">Findings</a><a href="#teams">Teams</a><a href="#previews">Upcoming Games</a><a href="#trends">Trends</a><a href="#referees">Crew Chiefs</a><a href="#data">Data</a>
-        </div>
         <!-- Live flags strip: appears on game days, links to /gameday/ (js/livestrip.js) -->
         <a class="live-strip" id="liveStrip" href="/gameday/" hidden aria-label="Live flags: open the Gameday scoreboard"></a>
         <!-- SEO:SUMMARY -->
@@ -152,8 +163,8 @@
     <section id="teams">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">02 / TEAMS</div>
-                <h2 class="section-title">Team Discipline</h2>
+                <div class="section-number">02 / TEAM STATS</div>
+                <h2 class="section-title">Team Stats</h2>
                 <p class="section-subtitle" id="teamsSubtitle">Pick a division, then a team for its full penalty profile. Updated automatically during and after every game day.</p>
             </div>
             <div class="division-grid" id="divisionGrid">
@@ -164,12 +175,12 @@
         </div>
     </section>
 
-    <!-- Game Previews Section -->
+    <!-- Assignments & Projections Section (game previews) -->
     <section id="previews">
         <div class="container">
             <div class="section-header">
-                <div class="section-number">03 / UPCOMING GAMES</div>
-                <h2 class="section-title" id="previewsTitle">Game Previews</h2>
+                <div class="section-number">03 / ASSIGNMENTS &amp; PROJECTIONS</div>
+                <h2 class="section-title" id="previewsTitle">Assignments &amp; Projections</h2>
                 <p class="section-subtitle" id="previewsSubtitle">
                     Projected penalties for every upcoming game, ranked most flags first
                     <button class="info-trigger-inline" onclick="openExplainer('previews')">How projections work</button>
@@ -402,6 +413,8 @@
                 <button class="modal-close" onclick="closeModal()">X</button>
                 <h2 class="modal-title" id="modalTitle">Crew Chief Name</h2>
                 <p class="modal-subtitle" id="modalSubtitle">X seasons - Y games</p>
+                <!-- Crew chief and team pop-ups link to their full page (#153); other pop-ups hide it -->
+                <a class="modal-profile-link" id="modalProfileLink" href="/" hidden>Full profile →</a>
                 <div class="modal-actions">
                     <button class="modal-share" id="modalShare" onclick="copyModalLink()">Copy link</button>
                     <button class="modal-share" id="modalExportPng" onclick="exportModal('png')">Save PNG</button>

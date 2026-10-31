@@ -17,15 +17,16 @@ ROOT = Path(__file__).resolve().parent.parent
 PAGES = {'/': ROOT / 'frontend' / 'index.html', '/gameday/': ROOT / 'frontend' / 'gameday' / 'index.html'}
 
 
-def expected(path: str, text: str) -> str:
+def expected(path: str, text: str, kickoffs: list[str] | None = None) -> str:
     """The page text with its menu block replaced by nav_html(path), keeping the indent
-    the block has in the page."""
+    the block has in the page. kickoffs: only at deploy (build_static.py); the committed
+    pages keep an empty list."""
     m = BLOCK_RE.search(text)
     if not m:
         raise ValueError(f'{path}: no <!-- nav:start --> ... <!-- nav:end --> block')
     line_start = text.rfind('\n', 0, m.start()) + 1
     indent = text[line_start:m.start()]
-    return text[:line_start] + nav_html(path, indent) + text[m.end():]
+    return text[:line_start] + nav_html(path, indent, kickoffs) + text[m.end():]
 
 
 def main() -> int:

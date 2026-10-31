@@ -107,10 +107,12 @@ def check_menus():
     """The home page and /gameday/ carry the shared site menu (#153): run
     scripts/sync_nav.py after changing NAV in scripts/site_nav.py."""
     sys.path.insert(0, str(ROOT / 'scripts'))
+    from site_nav import without_kickoffs
     from sync_nav import PAGES, expected
     bad = []
     for path, f in PAGES.items():
-        text = f.read_text(encoding='utf-8')
+        # The kickoff list for the live dot is filled at deploy; it isn't part of the match
+        text = without_kickoffs(f.read_text(encoding='utf-8'))
         try:
             if expected(path, text) != text:
                 bad.append(f'{f.relative_to(ROOT).as_posix()}: menu differs from scripts/site_nav.py (run scripts/sync_nav.py)')

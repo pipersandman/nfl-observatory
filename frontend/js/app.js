@@ -880,15 +880,16 @@ function renderPreviews() {
 
     const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     const full = weeks.find(w => !w.remainingOnly) || weeks[0];
-    document.getElementById('previewsTitle').textContent =
-        weeks.length > 1 ? `Week ${weeks[0].week} Finale & Week ${full.week} Previews` : `Week ${full.week} Previews`;
+    // The heading matches the menu ("Assignments & Projections", in index.html); the
+    // weeks shown lead the subtitle (#153)
+    const weekText = weeks.length > 1 ? `Week ${weeks[0].week} finale and Week ${full.week}` : `Week ${full.week}`;
 
     const a = full.assignments || {};
     const crewNote = a.assigned >= a.games ? 'All crews assigned.'
         : a.assigned ? `Week ${full.week} crews assigned for ${a.assigned} of ${a.games} games.`
         : `Week ${full.week} crew assignments usually post Tuesday — projections update automatically.`;
     document.getElementById('previewsSubtitle').firstChild.textContent =
-        `Projected penalties for every upcoming game, ranked most flags first. ${crewNote} `;
+        `${weekText}: projected penalties for every upcoming game, ranked most flags first. ${crewNote} `;
 
     // One shared scale for the range bars across all groups
     const maxTotal = Math.max(...weeks.flatMap(w => w.games.map(g => g.projection.range[1])), 1);
@@ -913,6 +914,7 @@ function renderPreviews() {
 
 function openPreviewModal(gameId) {
     setDeepLink('game', gameId);
+    setProfileLink(null);
     const pv = (state.previews || []).find(w => w.games?.some(x => x.gameId === gameId));
     const g = pv?.games.find(x => x.gameId === gameId);
     const modal = document.getElementById('modal');
@@ -1148,6 +1150,7 @@ function renderTrackRecord() {
 }
 
 function openScorecardModal() {
+    setProfileLink(null);
     const sc = state.scorecard;
     const modal = document.getElementById('modal');
     const body = document.getElementById('modalBody');
@@ -2311,6 +2314,7 @@ function renderTeamProfile(t) {
         ? `Next: ${t.nextGame.home ? 'vs' : '@'} ${t.nextGame.opponent}, Wk ${t.nextGame.week}` : '';
     document.getElementById('modalTitle').innerHTML =
         `<span class="team-title"><img src="${t.logo}" alt="" onerror="this.style.display='none'">${t.name}</span>`;
+    setProfileLink(`/team/${encodeURIComponent(t.abbr)}/`);
     document.getElementById('modalSubtitle').textContent =
         `${t.division || ''} · ${cs} record ${t.record}${nextTxt ? ` · ${nextTxt}` : ''}`;
 
@@ -2924,9 +2928,10 @@ async function openRefereeModal(slug) {
     setDeepLink('crew', slug);
     const modal = document.getElementById('modal');
     const modalBody = document.getElementById('modalBody');
-    
+
     if (!modal || !modalBody) return;
-    
+    setProfileLink(`/crew/${encodeURIComponent(slug)}/`);
+
     modal.classList.add('active');
     modalBody.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     
@@ -3272,6 +3277,16 @@ function closeModal() {
     document.getElementById('modal')?.classList.remove('active');
     state.currentReferee = null;
     clearDeepLink();
+    setProfileLink(null);
+}
+
+// "Full profile →" under the pop-up title (#153): crew chief and team pop-ups link to
+// their full page; every other pop-up hides it (href null).
+function setProfileLink(href) {
+    const a = document.getElementById('modalProfileLink');
+    if (!a) return;
+    a.hidden = !href;
+    if (href) a.href = href;
 }
 
 // =============================================================================
@@ -3519,7 +3534,29 @@ async function exportModal(format) {
 function slugify_(t) { return (t || 'chart').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 
 // The site menu and its phone open/close live in the shared menu markup
-// (scripts/site_nav.py, #153); the menu links to pages, not sections.
+// (scripts/site_nav.py, #153). Topic items go to home sections (/#teams ...); on the
+// home page, the item for the section you're scrolled to is highlighted.
+function initNavSections() {
+    const links = document.getElementById('navLinks');
+    if (!links || !('IntersectionObserver' in window)) return;
+    const map = new Map();
+    links.querySelectorAll('a[href^="/#"]').forEach(a => {
+        const sec = document.getElementById(a.getAttribute('href').slice(2));
+        if (sec) map.set(sec, a);
+    });
+    if (!map.size) return;
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+            if (en.isIntersecting) {
+                links.querySelectorAll('a.active').forEach(a => a.classList.remove('active'));
+                map.get(en.target)?.classList.add('active');
+            } else if (map.get(en.target)?.classList.contains('active')) {
+                map.get(en.target).classList.remove('active');
+            }
+        });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    map.forEach((_, sec) => io.observe(sec));
+}
 
 function addChartDownloadButtons() {
     document.querySelectorAll('main .chart-container, section .chart-container').forEach(box => {
@@ -3784,6 +3821,7 @@ async function init() {
 
     // PNG / PDF download buttons on every chart (charts exist by now)
     addChartDownloadButtons();
+    initNavSections();
 
     // Open a specific report if the URL asks for one (e.g. from a social post)
     handleDeepLink();

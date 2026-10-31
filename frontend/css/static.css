@@ -3,13 +3,9 @@
    /assignments/). Built on the site's own tokens in styles.css.
    ============================================================================= */
 .static-page { background: var(--bg-primary, #0c0d0f); }
-.st-header { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 0.75rem 1.5rem; padding: 0.9rem 2rem; background: rgba(12, 13, 15, 0.94); border-bottom: 1px solid var(--border-subtle);
-    backdrop-filter: blur(10px); }
-.st-header .logo { text-decoration: none; color: var(--text-primary); }
-.st-nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
-.st-nav a { font: 500 0.82rem var(--font-body); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); text-decoration: none; }
-.st-nav a:hover, .st-nav a[aria-current] { color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent); }
+/* The site menu (#153) is the home page's bar from styles.css; on these pages it sits in
+   the page flow instead of over the content */
+.static-page nav.site-nav { position: sticky; }
 .st-main { padding-top: var(--gap-lg, 2.5rem); padding-bottom: var(--gap-lg, 2.5rem); max-width: 1040px; }
 .st-main h1.section-title { text-align: left; margin: 0.3rem 0 1rem; font-size: clamp(2rem, 4.2vw, 3.1rem); line-height: 1.05; }
 .st-main .section-number { text-align: left; }
@@ -42,8 +38,6 @@
     font: 600 0.9rem var(--font-body); text-decoration: none; }
 .st-btn:hover { box-shadow: 0 6px 20px rgba(255, 196, 0, 0.25); }
 @media (max-width: 640px) {
-    .st-header { padding: 0.8rem 1rem; }
-    .st-nav { gap: 0.2rem 0.8rem; } .st-nav a { font-size: 0.72rem; }
     .st-tldr { grid-template-columns: 1fr; gap: 0.4rem; }
     .st-stats b { font-size: 1.6rem; }
 }

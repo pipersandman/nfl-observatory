@@ -28,6 +28,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import weeks
+from site_nav import kickoffs_utc, nav_html   # the one site menu (#153)
 from weeks import HISTORICAL_START
 
 ROOT = Path(__file__).resolve().parent.parent / 'frontend'
@@ -74,8 +75,8 @@ def team_name(a):
 
 # --------------------------------------------------------------------------- layout
 
-NAV = [('/', 'Home'), ('/gameday/', 'Gameday'), ('/assignments/', 'This week'), ('/crew/', 'Crew chiefs'), ('/team/', 'Teams'),
-       ('/trends/', 'Trends'), ('/guide/', 'Guide'), ('/dataset/', 'Data')]
+# The site menu (NAV) lives in scripts/site_nav.py, shared with the home page and
+# /gameday/ (#153).
 
 
 def page(path, title, description, body, schema=None, crumbs=None):
@@ -85,7 +86,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
         blocks.append({'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': SITE + u} for i, (u, n) in enumerate(crumbs)]})
     ld = ''.join(f'\n    <script type="application/ld+json">{json.dumps(b, ensure_ascii=False)}</script>' for b in blocks)
-    nav = ''.join(f'<a href="{u}"{" aria-current=page" if u == path else ""}>{n}</a>' for u, n in NAV)
+    nav = nav_html(path, kickoffs=KICKOFFS)
     crumb_html = '' if not crumbs else '<div class="st-crumbs" role="navigation" aria-label="Breadcrumb">' + ' / '.join(
         f'<a href="{u}">{e(n)}</a>' if i < len(crumbs) - 1 else f'<span>{e(n)}</span>' for i, (u, n) in enumerate(crumbs)) + '</div>'
     out = f"""<!DOCTYPE html>
@@ -115,10 +116,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
     <link rel="stylesheet" href="/css/static.css?v={V}">{ld}
 </head>
 <body class="static-page">
-    <header class="st-header">
-        <a class="logo" href="/"><img src="/favicon.svg" alt="" class="logo-mark">NFL Officiating Observatory</a>
-        <div class="st-nav" role="navigation" aria-label="Site">{nav}</div>
-    </header>
+{nav}
     <main class="container st-main">
         {crumb_html}
         {body}
@@ -182,6 +180,9 @@ fi = load('flag_impact.json') or {}
 card = load('scorecard/public.json') or {}
 prev_latest = load('previews/latest.json') or {}
 previews = load(prev_latest.get('file', '')) if prev_latest.get('file') else None
+# This week's kickoffs (UTC) for the menu's live dot on "Live Games" (#153). Written into
+# every page's menu at deploy, so the dot needs no request per page view.
+KICKOFFS = kickoffs_utc(DATA)
 
 SEASON = sc.get('currentSeason') or styles.get('season')
 THRU = sc.get('throughWeek')
@@ -421,6 +422,7 @@ def assignments_page():
     if not previews or not previews.get('games'):
         return
     wk = previews['week']
+    pv_season = previews.get('season') or SEASON   # the previews' own season (e.g. Week 1 before opening night)
     rows = []
     for g in previews['games']:
         c = g.get('crew') or {}
@@ -431,15 +433,16 @@ def assignments_page():
                      f1((g.get('projection') or {}).get('total'))])
     known = [g for g in previews['games'] if g.get('crew')]
     heavy = sorted(known, key=lambda g: -((g.get('projection') or {}).get('total') or 0))[:2]
-    body = f"""<p class="section-number">WEEK {wk} · {SEASON}</p>
-    <h1 class="section-title">NFL referee assignments, Week {wk} {SEASON}</h1>
+    body = f"""<p class="section-number">WEEK {wk} · {pv_season}</p>
+    <h1 class="section-title">NFL Referee Assignments: Week {wk}, {pv_season}</h1>
     {tldr(f"{len(known)} of {len(previews['games'])} Week {wk} games have a crew chief assigned. "
           + ('Projected most flags: ' + '; '.join(f"{e(g['awayTeam']['abbr'])} @ {e(g['homeTeam']['abbr'])} with {crew_link(g['crew']['name'])} ({f1(g['projection']['total'])})" for g in heavy) + '.' if heavy else ''))}
     {table(['Game', 'Date', 'TV', 'Crew chief', f'Crew {SEASON} flags / game', 'Crew career style', 'Projected flags'], rows)}
     <p class="st-note">Assignments as published before kickoff (Football Zebras). Projections are our model's expected accepted penalties for the game; see <a href="/guide/#projections">how projections work</a>.</p>
     {open_app('previews', 'See full game previews')}"""
-    page('/assignments/', f'NFL Referee Assignments Week {wk} {SEASON}: Crew Chief for Every Game',
-         f'Who is refereeing every NFL Week {wk} {SEASON} game, each crew chief\'s penalty rate and style, and projected flags.',
+    page('/assignments/', f'NFL Referee Assignments: Week {wk}, {pv_season}',
+         f'Who is refereeing every NFL Week {wk} {pv_season} game, each crew chief\'s penalty rate and style, and our projected '
+         f'flags for every game.',
          body, crumbs=[('/', 'Home'), ('/assignments/', f'Week {wk} assignments')])
 
 
@@ -644,6 +647,16 @@ def home_summary():
     idx.write_text(s[:i] + block + s[j:], encoding='utf-8')
 
 
+def menu_kickoffs():
+    """The deploy copies of the hand-written pages (home, /gameday/) get this week's
+    kickoffs in their menu, like every pre-rendered page. The committed files keep an
+    empty list ("Menus match" ignores it)."""
+    from sync_nav import expected
+    for path, f in (('/', ROOT / 'index.html'), ('/gameday/', ROOT / 'gameday' / 'index.html')):
+        s = f.read_text(encoding='utf-8')
+        f.write_text(expected(path, s, KICKOFFS), encoding='utf-8', newline='\n')
+
+
 def home_prefill():
     """Write real numbers into the home page sections the app fills with JavaScript, so the
     page source isn't 'Loading...' and empty tables. The app replaces each block on load."""
@@ -745,5 +758,7 @@ if __name__ == '__main__':
     guide_page()
     home_summary()
     home_prefill()
+    menu_kickoffs()
     sitemap_and_llms()
-    print(f'✓ static pages: {len(SITEMAP)} · sitemap.xml · llms.txt · data/exports/*.csv · home summary')
+    print(f'✓ static pages: {len(SITEMAP)} · sitemap.xml · llms.txt · data/exports/*.csv · home summary · '
+          f'{len(KICKOFFS)} kickoffs in the menu')

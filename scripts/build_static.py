@@ -411,11 +411,12 @@ def team_pages():
     {tldr(f"Most penalized per game in {SEASON} {thru_txt}: " + ', '.join(f"{e(team_name(t['abbr']))} ({f1(t['perGame'])})" for t in most)
           + ". Least: " + ', '.join(f"{e(team_name(t['abbr']))} ({f1(t['perGame'])})" for t in reversed(least)) + f". League average: {f1(teams_idx.get('leaguePerGame'))} per team per game.")}
     {table(['Rank', 'Team', 'Games', f'{SEASON} flags / game', f'{SEASON - 1} flags / game', 'Points given away / game'], rows)}
-    <p class="st-note">Accepted penalties on each team, regular season. "Points given away" is the expected-points cost of those flags (see the <a href="/guide/#flag-cost">guide</a>).</p>
-    {open_app('teams', 'See Team Stats on the home page')}"""
+    <h2>NFL Team Penalties by Division {SEASON}</h2>
+    {BLOCKS_HERE}
+    <p class="st-note">Accepted penalties on each team, regular season. "Points given away" is the expected-points cost of those flags (see the <a href="/guide/#flag-cost">guide</a>).</p>"""
     page('/team/', f'NFL Team Penalty Stats {SEASON} | NFL Officiating Observatory',
          f'All 32 NFL teams ranked by penalties per game in {SEASON} {thru_txt}, with last season and the points their flags cost.',
-         body, crumbs=[('/', 'Home'), ('/team/', 'Team Stats')])
+         body, crumbs=[('/', 'Home'), ('/team/', 'Team Stats')], blocks=FULL_PAGES['/team/']['blocks'])
 
     for t in teams:
         a = t['abbr']

@@ -216,6 +216,11 @@ for the bot to push as; tracked in #78.
 4. FTPS upload of `frontend/` to HostGator. No staging site.
 5. The Worker is deployed separately, by hand.
 
+**Compression (#146):** HostGator gzips HTML, CSS, JavaScript and XML by
+default. `frontend/.htaccess` adds JSON, SVG, the web manifest (also given its
+`application/manifest+json` type), CSV and plain text. `.htaccess` changes reach
+the server only through the deploy; the local server ignores them.
+
 ## Definitions worth knowing (checked in W1)
 
 - **Flag** = a play nflverse marks `penalty == 1`, counted once per play. In

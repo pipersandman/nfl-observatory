@@ -1006,16 +1006,16 @@ Record each decision here (and as an ADR in `docs/adr/` from W1).
 | D15 | R2 raw capture starts right after W1, in parallel with V2.0a | Decided (#88) | Oct 2026 |
 | D16 | Visual design: keep the Penalty Flag theme; audit's palette and typography not adopted | Decided | Oct 2026 |
 | D17 | Uptime monitoring: hosted free tier instead of self-hosted Uptime Kuma | Proposed | — |
-| D18 | Analytics: keep Cloudflare Web Analytics (Plausible optional later) | Proposed | — |
+| D18 | Analytics: keep Cloudflare Web Analytics (Plausible optional later) | Decided: keep Cloudflare Web Analytics for page views; Plausible not needed (D21) | Oct 2026 |
 | D19 | Where assignments and Gameday live in the six-section navigation | Open (V2.1) | — |
 | D20 | Raw capture design: boto3; tables as Parquet, pages as exact bytes; unchanged files not stored again, one manifest per run; conditional writes; failing over 24 hours turns the run red (ADR-0002) | Decided (#88) | Oct 2026 |
-| D21 | Analytics tool for events and campaigns: PostHog in cookieless mode recommended (would replace D18) (`docs/BUILD_PLAN_ADDENDUM.md`, Workstream 2) | Proposed | — |
+| D21 | Analytics tool for events and campaigns: PostHog, cookieless, events only, no session replay (`docs/BUILD_PLAN_ADDENDUM.md`, Workstream 2) | Decided | Oct 2026 |
 | D22 | Referee grade: penalty classes | Open | — |
 | D23 | Referee grade: name | Open | — |
-| D24 | Model fields in public files: Ty decides each field listed under Site perf 5 in `docs/BUILD_PLAN_ADDENDUM.md` (P5 to P7 evidence stays deployed) | Open | — |
+| D24 | Model fields in public files: remove every field marked "model internal" under Site perf 5 in `docs/BUILD_PLAN_ADDENDUM.md`; keep "published evidence" (`scorecard/live/`, `scorecard/backtest/`, `history/snapshots/`, per P5 to P7) and "shown on the page"; `wp_tables.json` stays until the gameday worker has another source | Decided | Oct 2026 |
 | D25 | Referee grade: which flags count | Open | — |
 | D26 | Referee grade: when to publish | Open | — |
-| D27 | Repository visibility: private before Site perf 5 and any grade code is pushed | Proposed | — |
+| D27 | Repository visibility: public for now; private before any grade code is pushed or the grade plan is committed | Decided | Oct 2026 |
 
 ## 34. Dependency map
 

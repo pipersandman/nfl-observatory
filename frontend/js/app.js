@@ -234,10 +234,13 @@ let state = {
 // DATA FETCHING
 // =============================================================================
 
+// Data files are cached for up to 5 minutes (.htaccess, #147). A reload (F5, or the
+// "New results are in" banner's Refresh) always checks the server, so it shows the latest data.
+const DATA_CACHE = performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload' ? 'no-cache' : 'default';
+
 async function fetchJSON(filename) {
     try {
-        // no-cache = always check the server for a newer copy (data changes weekly)
-        const response = await fetch(`${CONFIG.dataPath}/${filename}`, { cache: "no-cache" });
+        const response = await fetch(`${CONFIG.dataPath}/${filename}`, { cache: DATA_CACHE });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return await response.json();
     } catch (error) {
@@ -249,13 +252,22 @@ async function fetchJSON(filename) {
 async function loadAllData() {
     console.log('📥 Loading data...');
     
-    const [season, referees, trends, insights] = await Promise.all([
+    // Every file that doesn't depend on another loads at once (#147)
+    const [season, referees, trends, insights, teamsIndex, scorecard, scoreboard, typeTrends,
+           flagImpact, crewStyles, latest] = await Promise.all([
         fetchJSON('season_comparison.json'),
         fetchJSON('referees.json'),
         fetchJSON('trends.json'),
-        fetchJSON('insights.json')
+        fetchJSON('insights.json'),
+        fetchJSON('teams/index.json'),
+        fetchJSON('scorecard/public.json'),
+        fetchJSON('scoreboard.json'),
+        fetchJSON('type_trends.json'),
+        fetchJSON('flag_impact.json'),
+        fetchJSON('crew_styles.json'),
+        fetchJSON('previews/latest.json')   // points at the current week's preview files
     ]);
-    
+
     state.season = season;
     // Fixed page text that names a window: filled from the data (#116)
     const ds = windows().dataStart;
@@ -263,16 +275,14 @@ async function loadAllData() {
     const car = windows().career?.label;
     if (car) document.querySelectorAll('[data-window="career"]').forEach(el => { el.textContent = car; });
 
-    // Next week's previews (latest.json points at the current week's file)
-    state.teamsIndex = await fetchJSON('teams/index.json');
-    state.scorecard = await fetchJSON('scorecard/public.json');
-    state.scoreboard = await fetchJSON('scoreboard.json');
-    state.typeTrends = await fetchJSON('type_trends.json');
-    state.flagImpact = await fetchJSON('flag_impact.json');
-    state.crewStyles = await fetchJSON('crew_styles.json');
+    state.teamsIndex = teamsIndex;
+    state.scorecard = scorecard;
+    state.scoreboard = scoreboard;
+    state.typeTrends = typeTrends;
+    state.flagImpact = flagImpact;
+    state.crewStyles = crewStyles;
 
     // Previews: remaining games this week (e.g. Monday night) + next week
-    const latest = await fetchJSON('previews/latest.json');
     const files = latest?.weeks?.map(w => w.file) || (latest?.file ? [latest.file] : []);
     state.previews = (await Promise.all(files.map(f => fetchJSON(f)))).filter(Boolean);
     state.referees = referees || [];

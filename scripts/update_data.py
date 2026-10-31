@@ -141,6 +141,27 @@ def get_team_info(abbr: str) -> dict:
 # DATA LOADING
 # =============================================================================
 
+def assignment_notices(folder: Path, schedules: pd.DataFrame) -> list[dict]:
+    """run_status.json warnings from the crew assignment files (#142): the latest fetch's
+    warnings and every crew change, for weeks that still have games to play."""
+    out = []
+    reg = schedules[schedules['game_type'] == 'REG'] if 'game_type' in schedules.columns else schedules
+    open_weeks = set(zip(reg.loc[reg['result'].isna(), 'season'], reg.loc[reg['result'].isna(), 'week']))
+    for f in sorted(folder.glob('*-week-*.json')):
+        try:
+            d = json.loads(f.read_text(encoding='utf-8'))
+            if (d.get('season'), d.get('week')) not in open_weeks:
+                continue
+            for w in d.get('warnings', []):
+                out.append({'source': 'assignments', 'message': w})
+            for c in d.get('changes', []):
+                out.append({'source': 'assignments', 'message':
+                            f"Crew change {c['gameId']}: {c['from']} → {c['to']} ({c['source']}, found {c['foundAt']})"})
+        except Exception as e:
+            out.append({'source': 'assignments', 'file': f.name, 'error': short_error(e)})
+    return out
+
+
 def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None) -> dict:
     """Load all required data from nflreadpy.
 
@@ -176,6 +197,7 @@ def load_all_data(seasons: list[int], schedule_seasons: list[int] | None = None)
             data['warnings'].append({'source': 'schedules', 'message': f'{s} schedule not published yet'})
     data['schedules'] = schedules
     print(f"   ✓ {len(schedules)} games")
+    data['warnings'] += assignment_notices(DATA_DIR / 'assignments', schedules)
 
     # Create game ID mapping (old_game_id -> game_id)
     # Officials use old_game_id format, PBP uses game_id format

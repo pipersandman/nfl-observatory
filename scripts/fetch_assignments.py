@@ -10,7 +10,16 @@ Fetch upcoming crew chief assignments from Football Zebras.
 5. Write frontend/data/assignments/{season}-week-{NN}.json
 
 Polite by design: one feed request + one article request per run, an
-identifying User-Agent, and no refetch once every game in the week is assigned.
+identifying User-Agent, and no refetch of a complete week unless the post changed.
+
+Crew changes (#142): while any game of a complete week is still to kick off, each
+run asks the WordPress API for the post's modified time (~170 bytes) and refetches
+the article only when it's newer than the one saved in the file's source block.
+Changed crews are logged and kept in the file's "changes" list; a game that has
+kicked off never changes crew. Problems from the latest fetch (fewer games than
+scheduled, overrides no longer needed, ...) are kept in "warnings";
+update_data.py copies both into run_status.json while the week has games to play.
+Marks beside names ("Alex Moore ⇅", "*", "(sub)") are removed before matching.
 Only the game -> referee facts are published; no article text is published.
 Source credit/link is stored so the site can attribute Football Zebras.
 Raw capture (#88): the feed and the article page are kept exactly as received in
@@ -41,6 +50,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -56,6 +66,10 @@ OUT_DIR = PROJECT_DIR / 'frontend' / 'data' / 'assignments'
 OVERRIDES = PROJECT_DIR / 'data' / 'assignments_overrides.csv'
 
 FEED_URL = 'https://www.footballzebras.com/category/assignments/feed/'
+# WordPress API: one post's last-modified time in ~170 bytes (the page is ~200 KB), so a
+# complete week can be checked for crew changes every run without refetching the page (#142)
+WP_POSTS_API = 'https://www.footballzebras.com/wp-json/wp/v2/posts'
+SLUG_RE = re.compile(r'^[a-z0-9-]{1,120}$')
 USER_AGENT = 'NFLOfficiatingObservatory/1.0 (+https://nflobservatory.com; weekly crew-assignment check)'
 TIMEOUT = 20
 
@@ -81,6 +95,11 @@ MATCHUP_RE = re.compile(r'^\s*([A-Za-z0-9]+)\s+(at|vs\.?|@)\s+([A-Za-z0-9]+)\s*$
 NAME_RE = re.compile(r"^[A-Z][a-zA-Z'.\-]+(?:\s+[A-Z][a-zA-Z'.\-]+){1,2}$")
 SAFE_NETWORK_RE = re.compile(r"^[A-Za-z0-9 +&./'-]{1,40}$")
 TIME_RE = re.compile(r'^\d{1,2}(:\d{2})?\s*[ap]\.?m\.?$', re.IGNORECASE)
+# Marks Football Zebras puts beside a name that aren't part of it (#142): "Alex Moore ⇅"
+# (swapped crews), asterisks, daggers, "(sub)". Symbols (arrows etc.) are removed by
+# Unicode category in clean_name().
+MARK_WORDS_RE = re.compile(r'\((?:sub|substitute|replacement)\)', re.IGNORECASE)
+MARK_CHARS = set('*†‡§#')
 
 # "Not posted yet" becomes a warning this close to the week's first kickoff. Football
 # Zebras usually posts Tuesday ~9am PT; 2 days before a Thursday opener is Tuesday evening.
@@ -94,17 +113,67 @@ def problem(problems: list, kind: str, message: str) -> None:
         print(f'::warning title=Crew assignments::{message}')
 
 
-def first_kickoff(wk: pd.DataFrame):
-    """Earliest kickoff of the week, US Eastern (schedule gameday + gametime)."""
+def now_utc() -> datetime:
+    """The current time (one place, so tests can fix it)."""
+    return datetime.now(timezone.utc)
+
+
+def game_kickoff(row):
+    """A game's kickoff, US Eastern (schedule gameday + gametime), or None."""
     from zoneinfo import ZoneInfo
-    times = []
-    for _, r in wk.iterrows():
-        t = r.get('gametime') if isinstance(r.get('gametime'), str) and r.get('gametime') else '00:00'
-        try:
-            times.append(datetime.fromisoformat(f"{r['gameday']} {t}").replace(tzinfo=ZoneInfo('America/New_York')))
-        except (TypeError, ValueError):
-            continue
+    t = row.get('gametime') if isinstance(row.get('gametime'), str) and row.get('gametime') else '00:00'
+    try:
+        return datetime.fromisoformat(f"{row['gameday']} {t}").replace(tzinfo=ZoneInfo('America/New_York'))
+    except (TypeError, ValueError):
+        return None
+
+
+def first_kickoff(wk: pd.DataFrame):
+    """Earliest kickoff of the week, US Eastern."""
+    times = [k for k in (game_kickoff(r) for _, r in wk.iterrows()) if k]
     return min(times) if times else None
+
+
+def clean_name(line: str) -> str:
+    """A referee line without marks that aren't part of the name: "Alex Moore ⇅" ->
+    "Alex Moore". Removes symbols (arrows and the like), * † ‡ § #, "(sub)", and
+    extra or non-breaking spaces."""
+    s = MARK_WORDS_RE.sub(' ', line)
+    s = ''.join(' ' if c in MARK_CHARS or unicodedata.category(c) in ('So', 'Sm', 'Sk') else c for c in s)
+    return ' '.join(s.split())
+
+
+def utc_stamp(value) -> str | None:
+    """'2026-10-29T23:58:49' (WordPress GMT) or '2026-10-29T23:58:49+00:00' ->
+    '2026-10-29T23:58:49Z'. None if it can't be read."""
+    if not value:
+        return None
+    try:
+        t = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    t = t.replace(tzinfo=timezone.utc) if t.tzinfo is None else t.astimezone(timezone.utc)
+    return t.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def post_modified(url: str) -> str | None:
+    """The post's last-modified time (UTC, '...Z') from the WordPress API, or None if the
+    check fails. Not raw-captured: it only decides whether to refetch the page."""
+    slug = (url or '').rstrip('/').rsplit('/', 1)[-1]
+    if not SLUG_RE.match(slug):
+        return None
+    try:
+        reply = json.loads(http_get(f'{WP_POSTS_API}?slug={slug}&_fields=modified_gmt'))
+        return utc_stamp(reply[0]['modified_gmt']) if reply else None
+    except Exception as e:
+        print(f'   ⚠️  Modified-time check failed ({type(e).__name__})')
+        return None
+
+
+def page_modified(html: str) -> str | None:
+    """The article:modified_time meta tag of a fetched page (UTC, '...Z')."""
+    m = re.search(r'<meta[^>]+property="article:modified_time"[^>]+content="([^"]+)"', html or '')
+    return utc_stamp(m.group(1)) if m else None
 
 
 # -----------------------------------------------------------------------------
@@ -207,7 +276,8 @@ def parse_assignments(lines: list[str], known_refs: set[str]) -> list[dict]:
             j = i + 1
             while j < len(lines) and j <= i + 5 and not MATCHUP_RE.match(lines[j]):
                 ln = lines[j]
-                cand = NAME_FIXES.get(ln, ln)
+                name = clean_name(ln)
+                cand = NAME_FIXES.get(name, name)
                 if referee is None and (cand in known_refs or NAME_RE.match(cand)):
                     referee = cand
                 elif kickoff is None and TIME_RE.match(ln):
@@ -241,21 +311,50 @@ def load_overrides(season: int, week: int) -> dict:
 # Main
 # -----------------------------------------------------------------------------
 
+def note(problems: list, notes: list, kind: str, message: str) -> None:
+    """Print a problem, record it for the exit code, and keep it in the week file's
+    warnings (update_data.py copies those into run_status.json)."""
+    print(f'   ⚠️  {message}')
+    problem(problems, kind, message)
+    notes.append(message)
+
+
 def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set,
                  get_feed, html_override: str | None = None, force: bool = False) -> list:
     """Fetch, parse and save one week. Returns the problems found: [(kind, message)],
-    kind 'fail' (exit 2) or 'warn'."""
-    problems = []
+    kind 'fail' (exit 2) or 'warn'.
+
+    A complete week is checked again on every run while any of its games is still to
+    kick off: the post is refetched when its modified time is newer than the saved one
+    (#142). A game that has kicked off never changes crew here."""
+    problems, notes = [], []
     wk = schedule[(schedule['game_type'] == 'REG') & (schedule['week'] == week)].copy()
     out_path = OUT_DIR / f'{season}-week-{week:02d}.json'
     print(f'   Target: {season} Week {week} ({len(wk)} games)')
 
-    existing = json.loads(out_path.read_text()) if out_path.exists() else None
+    now = now_utc()
+    kicked_off = {r['game_id'] for _, r in wk.iterrows() if (k := game_kickoff(r)) and k <= now}
+    existing = json.loads(out_path.read_text(encoding='utf-8')) if out_path.exists() else None
+    prev_src = (existing or {}).get('source', {})
+    known_url = None    # refetch this post directly (no feed request)
+    modified = None     # the post's last-modified time, when known
     if existing and not force and not html_override:
         assigned = sum(1 for g in existing.get('games', []) if g.get('referee'))
         if assigned >= len(wk):
-            print(f'   ✓ Already have all {assigned} assignments — skipping fetch')
-            return problems
+            if len(kicked_off) >= len(wk):
+                print(f'   ✓ All {assigned} games assigned and kicked off — skipping fetch')
+                return problems
+            saved = prev_src.get('modified')
+            modified = post_modified(prev_src.get('url'))
+            if saved and not modified:
+                print(f'   ✓ All {assigned} games assigned; update check failed — skipping fetch this run')
+                return problems
+            if saved and modified <= saved:
+                print(f'   ✓ All {assigned} games assigned; post unchanged since {saved} — skipping fetch')
+                return problems
+            print(f'   ↻ Post modified {modified or "(unknown)"}, saved {saved or "(none)"} — refetching')
+            if (prev_src.get('url') or '').startswith('http'):
+                known_url = prev_src['url']
 
     source_url, published = None, None
     parsed = []
@@ -263,37 +362,33 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
         if html_override:
             html = Path(html_override).read_text(encoding='utf-8')
             source_url = html_override
+        elif known_url:
+            source_url, published = known_url, prev_src.get('published')
+            html = http_get(source_url, 'footballzebras-post', f'{season}-week-{week:02d}')
         else:
             source_url, published = find_post_url(get_feed(), week, season)
             if not source_url:
                 print(f'   … Week {week} assignments not posted yet (checked feed)')
                 html = None
                 # Judge "not posted yet" against the week's first kickoff
-                from zoneinfo import ZoneInfo
                 kick = first_kickoff(wk)
-                now = datetime.now(ZoneInfo('America/New_York'))
                 if kick and now >= kick:
-                    msg = (f'Week {week}: first game kicked off {kick:%a %Y-%m-%d %H:%M} ET '
-                           f'without published assignments')
-                    print(f'   ⚠️  {msg}')
-                    problem(problems, 'fail', msg)
+                    note(problems, notes, 'fail', f'Week {week}: first game kicked off {kick:%a %Y-%m-%d %H:%M} ET '
+                                                  f'without published assignments')
                 elif kick and kick - now <= WARN_BEFORE_KICKOFF:
-                    msg = f'Week {week} assignments not posted yet, first game {kick:%a %Y-%m-%d %H:%M} ET'
-                    print(f'   ⚠️  {msg}')
-                    problem(problems, 'warn', msg)
+                    note(problems, notes, 'warn',
+                         f'Week {week} assignments not posted yet, first game {kick:%a %Y-%m-%d %H:%M} ET')
             else:
                 print(f'   ✓ Found post: {source_url}')
                 html = http_get(source_url, 'footballzebras-post', f'{season}-week-{week:02d}')
         if html:
+            modified = page_modified(html) or modified
             parsed = parse_assignments(article_lines(html), known_refs)
             print(f'   ✓ Parsed {len(parsed)} games from article')
             if not parsed:
-                msg = f'Week {week}: found the post but parsed 0 games (page layout may have changed)'
-                print(f'   ⚠️  {msg}')
-                problem(problems, 'fail', msg)
+                note(problems, notes, 'fail', f'Week {week}: found the post but parsed 0 games (page layout may have changed)')
     except Exception as e:
-        print(f'   ⚠️  Fetch/parse failed: {type(e).__name__}: {e}')
-        problem(problems, 'fail', f'Week {week}: fetch/parse failed: {type(e).__name__}: {e}')
+        note(problems, notes, 'fail', f'Week {week}: fetch/parse failed: {type(e).__name__}: {e}')
 
     by_pair = {}
     for g in parsed:
@@ -301,26 +396,55 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
         by_pair.setdefault((g['home'], g['away']), g)
 
     overrides = load_overrides(season, week)
-    games = []
+    prev_games = {g['game_id']: g for g in (existing or {}).get('games', [])}
+    found_at = now.strftime('%Y-%m-%dT%H:%M:%SZ')
+    games, changes, missing, posted_by_game = [], [], [], {}
     for _, row in wk.sort_values(['gameday', 'gametime', 'game_id']).iterrows():
-        g = by_pair.get((row['away_team'], row['home_team']))
-        prev = next((x for x in (existing or {}).get('games', []) if x['game_id'] == row['game_id']), None)
-        ref = overrides.get(row['game_id']) or (g['referee'] if g else None) or (prev or {}).get('referee')
+        gid, away, home = row['game_id'], row['away_team'], row['home_team']
+        g = by_pair.get((away, home))
+        prev = prev_games.get(gid) or {}
+        posted = g['referee'] if g else None
+        posted_by_game[gid] = posted
+        if posted and gid in kicked_off and prev.get('referee') and posted != prev['referee'] and gid not in overrides:
+            note(problems, notes, 'warn', f"Week {week}: {away} @ {home} already kicked off; the post now lists "
+                                          f"{posted}, kept {prev['referee']}")
+            g, posted = None, None
+        ref = overrides.get(gid) or posted or prev.get('referee')
+        if parsed and not by_pair.get((away, home)):
+            missing.append(f'{away} @ {home}: ' + (f'override ({ref})' if gid in overrides else
+                                                   f'kept from earlier fetch ({ref})' if ref else 'no crew'))
+        if prev.get('referee') and ref and ref != prev['referee']:
+            how = 'override' if gid in overrides else 'footballzebras-update'
+            label = 'override' if how == 'override' else f'Football Zebras update, modified {modified or "unknown"}'
+            msg = f"Crew change: {away} @ {home}: {prev['referee']} → {ref} ({label})"
+            print(f'   ↻ {msg}')
+            problem(problems, 'warn', f'Week {week}: {msg}')
+            changes.append({'gameId': gid, 'from': prev['referee'], 'to': ref, 'source': how,
+                            'postModified': modified, 'foundAt': found_at})
         games.append({
-            'game_id': row['game_id'],
-            'away': row['away_team'],
-            'home': row['home_team'],
+            'game_id': gid,
+            'away': away,
+            'home': home,
             'referee': ref,
-            'source': 'override' if row['game_id'] in overrides else ('footballzebras' if g else (prev or {}).get('source')),
-            'kickoff': g.get('kickoff') if g else (prev or {}).get('kickoff'),
-            'network': g.get('network') if g else (prev or {}).get('network'),
+            'source': 'override' if gid in overrides else ('footballzebras' if g else prev.get('source')),
+            'kickoff': g.get('kickoff') if g else prev.get('kickoff'),
+            'network': g.get('network') if g else prev.get('network'),
         })
 
     assigned = sum(1 for g in games if g['referee'])
     scheduled_pairs = {(x['away'], x['home']) for x in games} | {(x['home'], x['away']) for x in games}
     unmatched = [f"{g['away']}@{g['home']}" for g in parsed if (g['away'], g['home']) not in scheduled_pairs]
+    if unmatched:
+        note(problems, notes, 'warn', f'Week {week}: parsed but not on schedule: {", ".join(unmatched)}')
+    if missing:
+        note(problems, notes, 'warn', f'Week {week}: the post lists {len(wk) - len(missing)} of {len(wk)} scheduled '
+                                      f'games; missing {"; ".join(missing)}')
+    if parsed:
+        for gid, oref in sorted(overrides.items()):
+            if posted_by_game.get(gid) == oref:
+                note(problems, notes, 'warn', f'Week {week}: override for {gid} ({oref}) is no longer needed: Football '
+                                              f'Zebras now lists the same crew; remove it from data/assignments_overrides.csv')
 
-    prev_src = (existing or {}).get('source', {})
     result = {
         'season': season,
         'week': week,
@@ -330,21 +454,17 @@ def process_week(season: int, week: int, schedule: pd.DataFrame, known_refs: set
             'name': 'Football Zebras',
             'url': source_url if source_url and source_url.startswith('http') else prev_src.get('url'),
             'published': published or prev_src.get('published'),
+            'modified': modified or prev_src.get('modified'),
         },
-        'fetchedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+        'fetchedAt': now.isoformat(timespec='seconds'),
         'games': games,
+        'warnings': notes,
+        'changes': (existing or {}).get('changes', []) + changes,
     }
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(result, indent=2, default=str))
+    out_path.write_text(json.dumps(result, indent=2, default=str), encoding='utf-8')
 
     print(f'   💾 {out_path.relative_to(PROJECT_DIR)}: {assigned}/{len(wk)} games assigned')
-    if unmatched:
-        print(f'   ⚠️  Parsed but not on schedule: {", ".join(unmatched)}')
-        problem(problems, 'warn', f'Week {week}: parsed but not on schedule: {", ".join(unmatched)}')
-    if parsed and assigned < len(wk):
-        missing = [f"{g['away']}@{g['home']}" for g in games if not g['referee']]
-        print(f'   ⚠️  Missing: {", ".join(missing)} (add to data/assignments_overrides.csv if needed)')
-        problem(problems, 'warn', f'Week {week}: missing crews for {", ".join(missing)}')
     return problems
 
 

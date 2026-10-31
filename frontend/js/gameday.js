@@ -223,6 +223,7 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
     }
     document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
     document.querySelectorAll('[data-sort]').forEach(b => b.addEventListener('click', () => {
+        window.track?.('table_sort', { table: 'gameday', column: b.dataset.sort });
         state.sort = b.dataset.sort; document.querySelectorAll('[data-sort]').forEach(x => x.classList.toggle('active', x === b)); render();
     }));
     document.querySelectorAll('[data-show]').forEach(b => b.addEventListener('click', () => {
@@ -234,6 +235,21 @@ const qLabel = q => (q == null || q === '') ? '' : +q >= 6 ? `${+q - 4}OT` : +q 
         d.open ? state.openLogs.add(d.dataset.log) : state.openLogs.delete(d.dataset.log);
     }, true);
     setInterval(setUpdated, 1000);
+
+    // Seconds the page was visible, sent each time the visitor switches away or leaves
+    // (#165). A visit's events add up to its total time on the page.
+    let shownAt = document.hidden ? null : Date.now();
+    const sendView = () => {
+        if (shownAt === null) return;
+        const seconds = Math.round((Date.now() - shownAt) / 1000);
+        shownAt = null;
+        if (seconds > 0) window.track?.('gameday_view', { seconds }, { beacon: true });
+    };
+    addEventListener('pagehide', sendView);
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) sendView();
+        else if (shownAt === null) shownAt = Date.now();
+    });
 
     // ------------------------------------------------------------------ demo slate
     const demo = (() => {

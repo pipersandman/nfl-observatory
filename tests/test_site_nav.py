@@ -82,7 +82,8 @@ def test_committed_pages_have_the_menu(path):
 
 def test_sync_is_idempotent(tmp_path, monkeypatch):
     page = tmp_path / 'index.html'
-    page.write_text('<body>\n    <!-- nav:start -->\n    <!-- nav:end -->\n    <main></main>\n</body>\n', encoding='utf-8')
+    page.write_text('<head>\n    <!-- analytics:start -->\n    <!-- analytics:end -->\n</head>\n'
+                    '<body>\n    <!-- nav:start -->\n    <!-- nav:end -->\n    <main></main>\n</body>\n', encoding='utf-8')
     monkeypatch.setattr(sync_nav, 'PAGES', {'/': page})
     sync_nav.main()
     once = page.read_text(encoding='utf-8')

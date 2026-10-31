@@ -28,6 +28,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import weeks
+from site_analytics import analytics_html     # the one analytics snippet (#165)
 from site_nav import kickoffs_utc, nav_html   # the one site menu (#153)
 from weeks import HISTORICAL_START
 
@@ -114,6 +115,7 @@ def page(path, title, description, body, schema=None, crumbs=None):
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css?v={V}">
     <link rel="stylesheet" href="/css/static.css?v={V}">{ld}
+{analytics_html('    ', V)}
 </head>
 <body class="static-page">
 {nav}
@@ -652,7 +654,7 @@ def menu_kickoffs():
     from sync_nav import expected
     for path, f in (('/', ROOT / 'index.html'), ('/gameday/', ROOT / 'gameday' / 'index.html')):
         s = f.read_text(encoding='utf-8')
-        f.write_text(expected(path, s, KICKOFFS), encoding='utf-8', newline='\n')
+        f.write_text(expected(path, s, KICKOFFS, V), encoding='utf-8', newline='\n')
 
 
 def home_prefill():

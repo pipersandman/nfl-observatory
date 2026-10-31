@@ -5,10 +5,10 @@
   "comparisons": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 7",
-      "short": "2025 Wk 1\u20137",
-      "games": 108,
-      "button": "2025 thru Wk 7"
+      "label": "2025 through Week 8",
+      "short": "2025 Wk 1\u20138",
+      "games": 121,
+      "button": "2025 thru Wk 8"
     },
     {
       "key": "lastSeason",
@@ -32,7 +32,7 @@
       "current": 3.24,
       "currentCount": 350,
       "compare": {
-        "sameWeeks": 2.8,
+        "sameWeeks": 2.75,
         "lastSeason": 2.47,
         "allPrior": 2.46
       },
@@ -92,7 +92,7 @@
       "current": 2.57,
       "currentCount": 278,
       "compare": {
-        "sameWeeks": 2.51,
+        "sameWeeks": 2.45,
         "lastSeason": 2.42,
         "allPrior": 2.2
       },
@@ -152,7 +152,7 @@
       "current": 1.17,
       "currentCount": 126,
       "compare": {
-        "sameWeeks": 1.18,
+        "sameWeeks": 1.16,
         "lastSeason": 1.03,
         "allPrior": 1.03
       },
@@ -212,7 +212,7 @@
       "current": 0.7,
       "currentCount": 76,
       "compare": {
-        "sameWeeks": 0.77,
+        "sameWeeks": 0.76,
         "lastSeason": 0.65,
         "allPrior": 0.76
       },
@@ -272,7 +272,7 @@
       "current": 0.64,
       "currentCount": 69,
       "compare": {
-        "sameWeeks": 0.75,
+        "sameWeeks": 0.74,
         "lastSeason": 0.64,
         "allPrior": 0.68
       },
@@ -392,7 +392,7 @@
       "current": 1.01,
       "currentCount": 109,
       "compare": {
-        "sameWeeks": 0.77,
+        "sameWeeks": 0.73,
         "lastSeason": 0.64,
         "allPrior": 0.55
       },
@@ -452,7 +452,7 @@
       "current": 0.4,
       "currentCount": 43,
       "compare": {
-        "sameWeeks": 0.25,
+        "sameWeeks": 0.26,
         "lastSeason": 0.28,
         "allPrior": 0.46
       },
@@ -512,7 +512,7 @@
       "current": 0.46,
       "currentCount": 50,
       "compare": {
-        "sameWeeks": 0.43,
+        "sameWeeks": 0.4,
         "lastSeason": 0.34,
         "allPrior": 0.41
       },
@@ -572,7 +572,7 @@
       "current": 0.31,
       "currentCount": 33,
       "compare": {
-        "sameWeeks": 0.22,
+        "sameWeeks": 0.21,
         "lastSeason": 0.19,
         "allPrior": 0.39
       },
@@ -632,7 +632,7 @@
       "current": 0.41,
       "currentCount": 44,
       "compare": {
-        "sameWeeks": 0.42,
+        "sameWeeks": 0.43,
         "lastSeason": 0.35,
         "allPrior": 0.32
       },
@@ -692,7 +692,7 @@
       "current": 0.25,
       "currentCount": 27,
       "compare": {
-        "sameWeeks": 0.24,
+        "sameWeeks": 0.26,
         "lastSeason": 0.26,
         "allPrior": 0.31
       },
@@ -752,7 +752,7 @@
       "current": 0.3,
       "currentCount": 32,
       "compare": {
-        "sameWeeks": 0.26,
+        "sameWeeks": 0.24,
         "lastSeason": 0.21,
         "allPrior": 0.29
       },
@@ -812,7 +812,7 @@
       "current": 0.4,
       "currentCount": 43,
       "compare": {
-        "sameWeeks": 0.46,
+        "sameWeeks": 0.47,
         "lastSeason": 0.41,
         "allPrior": 0.26
       },
@@ -872,7 +872,7 @@
       "current": 0.3,
       "currentCount": 32,
       "compare": {
-        "sameWeeks": 0.49,
+        "sameWeeks": 0.46,
         "lastSeason": 0.35,
         "allPrior": 0.21
       },
@@ -932,7 +932,7 @@
       "current": 0.11,
       "currentCount": 12,
       "compare": {
-        "sameWeeks": 0.09,
+        "sameWeeks": 0.1,
         "lastSeason": 0.13,
         "allPrior": 0.16
       },
@@ -992,7 +992,7 @@
       "current": 0.19,
       "currentCount": 20,
       "compare": {
-        "sameWeeks": 0.12,
+        "sameWeeks": 0.14,
         "lastSeason": 0.13,
         "allPrior": 0.15
       },
@@ -1052,7 +1052,7 @@
       "current": 0.16,
       "currentCount": 17,
       "compare": {
-        "sameWeeks": 0.22,
+        "sameWeeks": 0.21,
         "lastSeason": 0.17,
         "allPrior": 0.14
       },
@@ -2555,19 +2555,41 @@
         "games": 80
       }
     ],
-    "priorLabel": "2015\u201325 avg"
+    "priorLabel": "2015\u201325 avg",
+    "usual": {
+      "through": 7,
+      "label": "Weeks 1\u20137",
+      "seasons": "2015\u201325",
+      "current": {
+        "perGame": 14.67,
+        "games": 107
+      },
+      "prior": {
+        "perGame": 13.28,
+        "games": 1172
+      },
+      "diff": 1.39,
+      "pct": 10
+    }
   },
   "fadeWindows": {
     "early": {
       "from": 1,
       "to": 4,
-      "label": "Weeks 1\u20134"
+      "label": "Weeks 1\u20134",
+      "perGame": 13.55,
+      "games": 698
     },
     "late": {
       "from": 15,
       "to": 18,
-      "label": "Weeks 15\u201318"
-    }
+      "label": "Weeks 15\u201318",
+      "perGame": 11.31,
+      "games": 607
+    },
+    "seasons": "2015\u201325",
+    "fewer": 2.24,
+    "pctFewer": 17
   },
   "seasonCompare": [
     {
@@ -2942,5 +2964,5 @@
     "all": "Since 2015"
   },
   "notes": "Regular season. Accepted penalties per game, all teams combined.",
-  "generatedAt": "2026-10-30T14:42:03+00:00"
+  "generatedAt": "2026-10-31T01:11:15+00:00"
 }

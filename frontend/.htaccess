@@ -48,3 +48,13 @@ Options -Indexes
         Header set Cache-Control "public, max-age=604800"
     </FilesMatch>
 </IfModule>
+
+# Compression (#146). The host already gzips HTML, CSS, JS and XML; these types
+# were sent uncompressed (data JSON is most of each page load). The server adds
+# "Vary: Accept-Encoding" itself whenever it compresses.
+<IfModule mod_mime.c>
+    AddType application/manifest+json .webmanifest
+</IfModule>
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/json image/svg+xml application/manifest+json text/csv text/plain
+</IfModule>

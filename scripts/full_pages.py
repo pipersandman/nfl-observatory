@@ -20,7 +20,8 @@ FULL_PAGES = {
     '/crew/': {'section': 'referees', 'blocks': ['refereeGrid', 'data'], 'explainers': ['crew-chief']},
     '/assignments/': {'section': 'previews', 'pending': 167},
     '/team/': {'section': 'teams', 'blocks': ['divisionGrid', 'divisionTeams']},
-    '/trends/': {'section': 'trends', 'pending': 169},
+    '/trends/': {'section': 'trends', 'blocks': ['seasonChartBox', 'typeTrends', 'weekChartBox', 'quarterChartBox',
+                                                 'typeChartBox', 'biasChartBox', 'flagCost', 'styleMapBox']},
 }
 
 # The pop-up shells every interactive page needs (crew, team and game pop-outs; explainers)

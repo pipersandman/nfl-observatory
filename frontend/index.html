@@ -265,7 +265,7 @@
             </div>
             
             <div class="charts-grid fade-in">
-                <div class="chart-container">
+                <div class="chart-container" id="seasonChartBox">
                     <div class="chart-header">
                         <div class="chart-title">Penalties per game by season</div>
                         <button class="info-trigger-small" onclick="openExplainer('season-trend')">?</button>
@@ -276,7 +276,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container" id="quarterChartBox">
                     <div class="chart-header">
                         <div class="chart-title">Penalties per game by quarter</div>
                         <button class="info-trigger-small" onclick="openExplainer('quarter-penalties')">?</button>
@@ -288,7 +288,7 @@
                     </div>
                 </div>
 
-                <div class="chart-container chart-wide">
+                <div class="chart-container chart-wide" id="weekChartBox">
                     <div class="chart-header">
                         <div class="chart-title">Penalties per game by week</div>
                         <button class="info-trigger-small" onclick="openExplainer('week-of-season')">?</button>
@@ -303,7 +303,7 @@
                     </div>
                 </div>
                 
-                <div class="chart-container chart-wide">
+                <div class="chart-container chart-wide" id="typeChartBox">
                     <div class="chart-header">
                         <div class="chart-title">Share of flags by penalty type</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalty-types')">?</button>
@@ -315,7 +315,7 @@
                     </div>
                 </div>
                 
-                <div class="chart-container chart-wide">
+                <div class="chart-container chart-wide" id="biasChartBox">
                     <div class="chart-header">
                         <div class="chart-title">Penalties per game by crew chief</div>
                         <button class="info-trigger-small" onclick="openExplainer('penalties-by-ref')">?</button>
@@ -333,7 +333,7 @@
             </div>
 
             <div class="charts-grid style-map-grid">
-                <div class="chart-container chart-wide style-map">
+                <div class="chart-container chart-wide style-map" id="styleMapBox">
                     <div class="chart-header">
                         <div class="chart-title">Crew chief styles: flags per game vs yards per flag</div>
                         <button class="info-trigger-small" onclick="openExplainer('crew-style-map')">?</button>

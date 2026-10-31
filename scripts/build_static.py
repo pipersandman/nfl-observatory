@@ -505,7 +505,8 @@ def trends_page():
           f"About {f1(sea.get('pctPlays'))}% of plays draw a flag (one every {f1(sea.get('flagEveryPlays'))} plays). "
           + (f"The biggest increases vs {e(comp.get('label', 'last season'))}: " + ', '.join(f"{e(r['type'].lower())}" for r in rising[:3]) + '. ' if rising else '')
           + (f"Flags usually fade as the season goes on: {fade_sentence(fw)}" if fw else ''))}
-    <h2>Penalties per game by season</h2>
+    {BLOCKS_HERE}
+    <h2>NFL Penalties Per Game by Season, {START}–{SEASON}: Table</h2>
     {table(['Season', 'Games', 'Full season / game', f"{weeks.weeks_label(tt.get('throughWeek'))} / game"], rows)}
     <p class="st-note">Regular season. The early-weeks column compares every season over the same weeks as the current one, the fair comparison while a season is in progress.</p>
     <h2>Which penalties are increasing?</h2>
@@ -516,10 +517,10 @@ def trends_page():
     <p>In {SEASON}, {f1(100 - (sea.get('homeShare') or 50))}% of flags are on road teams and {f1(sea.get('homeShare'))}% on home teams ({CAREER} crews: {pct(styles.get('league', {}).get('homeShare'))} on the home team).</p>
     <h2>What penalties cost</h2>
     <p>League-wide, flags cost each team about {f2((cost.get('league') or {}).get('pointsCostPerTeamGame'))} expected points per game in {SEASON}. Most costly: {', '.join(f"{e(team_name(x['team']))} ({f2(x['pointsCostPerGame'])})" for x in cost.get('teams', [])[:3])}.</p>
-    {open_app('trends', 'See League Trends on the home page')}"""
+"""
     page('/trends/', f'NFL Penalty Trends {SEASON} | NFL Officiating Observatory',
          f'Are NFL penalties up in {SEASON}? Penalties per game by season and week, which penalties are rising, home vs road and what flags cost.',
-         body, crumbs=[('/', 'Home'), ('/trends/', 'League Trends')])
+         body, crumbs=[('/', 'Home'), ('/trends/', 'League Trends')], blocks=FULL_PAGES['/trends/']['blocks'])
 
 
 def dataset_page():

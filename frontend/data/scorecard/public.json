@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-01T22:04:58+00:00",
+  "generatedAt": "2026-11-02T01:05:12+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 53,
-      "avgMiss": 3.39,
-      "hitRate": 90.6,
-      "within3": 49.1,
-      "baselineAvgMiss": 3.49,
-      "skillPct": 2.8
+      "games": 56,
+      "avgMiss": 3.34,
+      "hitRate": 91.1,
+      "within3": 51.8,
+      "baselineAvgMiss": 3.43,
+      "skillPct": 2.5
     },
     "byWeek": [
       {
@@ -61,12 +61,12 @@
       {
         "season": 2026,
         "week": 8,
-        "games": 9,
-        "avgMiss": 2.94,
+        "games": 12,
+        "avgMiss": 2.83,
         "hitRate": 100.0,
-        "within3": 55.6,
-        "baselineAvgMiss": 2.92,
-        "skillPct": -0.8
+        "within3": 66.7,
+        "baselineAvgMiss": 2.79,
+        "skillPct": -1.5
       }
     ],
     "games": [
@@ -89,6 +89,26 @@
         "awayProjected": 7.3,
         "homeActual": 8,
         "awayActual": 10
+      },
+      {
+        "gameId": "2026_08_NE_MIA",
+        "season": 2026,
+        "week": 8,
+        "away": "NE",
+        "home": "MIA",
+        "crew": "Alex Moore",
+        "source": "live",
+        "projected": 15.7,
+        "low": 10,
+        "high": 22,
+        "actual": 13,
+        "miss": -2.7,
+        "inRange": true,
+        "baselineMiss": 1.2,
+        "homeProjected": 7.6,
+        "awayProjected": 8.1,
+        "homeActual": 6,
+        "awayActual": 7
       },
       {
         "gameId": "2026_08_MIN_DET",
@@ -129,6 +149,46 @@
         "awayProjected": 5.8,
         "homeActual": 6,
         "awayActual": 5
+      },
+      {
+        "gameId": "2026_08_LAC_LA",
+        "season": 2026,
+        "week": 8,
+        "away": "LAC",
+        "home": "LA",
+        "crew": "Brad Rogers",
+        "source": "live",
+        "projected": 13.5,
+        "low": 8,
+        "high": 19,
+        "actual": 11,
+        "miss": -2.5,
+        "inRange": true,
+        "baselineMiss": 3.2,
+        "homeProjected": 6.2,
+        "awayProjected": 7.3,
+        "homeActual": 8,
+        "awayActual": 3
+      },
+      {
+        "gameId": "2026_08_KC_DEN",
+        "season": 2026,
+        "week": 8,
+        "away": "KC",
+        "home": "DEN",
+        "crew": "Clete Blakeman",
+        "source": "live",
+        "projected": 14.7,
+        "low": 9,
+        "high": 21,
+        "actual": 17,
+        "miss": 2.3,
+        "inRange": true,
+        "baselineMiss": 2.8,
+        "homeProjected": 7.3,
+        "awayProjected": 7.3,
+        "homeActual": 6,
+        "awayActual": 11
       },
       {
         "gameId": "2026_08_IND_JAX",

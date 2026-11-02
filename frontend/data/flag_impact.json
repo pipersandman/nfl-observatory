@@ -4,14 +4,14 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 119,
-      "flags": 1735,
+      "games": 120,
+      "flags": 1750,
       "league": {
-        "pointsCostPerTeamGame": 6.44,
-        "keyFirstDownsGiven": 191,
-        "drivesKilled": 87,
+        "pointsCostPerTeamGame": 6.43,
+        "keyFirstDownsGiven": 192,
+        "drivesKilled": 91,
         "bigPlaysErased": 75,
-        "turnoversErased": 24,
+        "turnoversErased": 26,
         "tdsErased": 31,
         "tdsLostOffsetting": 2
       },
@@ -34,17 +34,17 @@
         },
         {
           "team": "WAS",
-          "games": 6,
-          "flags": 46,
-          "pointsCost": 51.6,
-          "pointsCostPerGame": 8.61,
-          "firstDownsGiven": 10,
-          "keyFirstDownsGiven": 5,
-          "drivesKilled": 5,
+          "games": 7,
+          "flags": 55,
+          "pointsCost": 59.0,
+          "pointsCostPerGame": 8.43,
+          "firstDownsGiven": 12,
+          "keyFirstDownsGiven": 6,
+          "drivesKilled": 7,
           "bigPlaysErased": 4,
-          "turnoversErased": 2,
+          "turnoversErased": 3,
           "tdsErased": 3,
-          "winsGivenAway": 1.5,
+          "winsGivenAway": 1.71,
           "tdsLostOffsetting": 0,
           "rank": 2
         },
@@ -337,22 +337,6 @@
           "rank": 20
         },
         {
-          "team": "PHI",
-          "games": 7,
-          "flags": 52,
-          "pointsCost": 41.6,
-          "pointsCostPerGame": 5.94,
-          "firstDownsGiven": 15,
-          "keyFirstDownsGiven": 8,
-          "drivesKilled": 2,
-          "bigPlaysErased": 4,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.04,
-          "tdsLostOffsetting": 0,
-          "rank": 21
-        },
-        {
           "team": "CHI",
           "games": 7,
           "flags": 53,
@@ -366,7 +350,7 @@
           "tdsErased": 0,
           "winsGivenAway": 0.95,
           "tdsLostOffsetting": 0,
-          "rank": 22
+          "rank": 21
         },
         {
           "team": "DET",
@@ -382,7 +366,7 @@
           "tdsErased": 0,
           "winsGivenAway": 1.05,
           "tdsLostOffsetting": 0,
-          "rank": 23
+          "rank": 22
         },
         {
           "team": "TEN",
@@ -397,6 +381,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.09,
+          "tdsLostOffsetting": 0,
+          "rank": 23
+        },
+        {
+          "team": "PHI",
+          "games": 8,
+          "flags": 58,
+          "pointsCost": 44.1,
+          "pointsCostPerGame": 5.51,
+          "firstDownsGiven": 15,
+          "keyFirstDownsGiven": 8,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 0,
+          "winsGivenAway": 1.17,
           "tdsLostOffsetting": 0,
           "rank": 24
         },
@@ -5944,24 +5944,27 @@
         ]
       },
       {
-        "gameId": "2026_06_WAS_SF",
-        "week": 6,
-        "away": "WAS",
-        "home": "SF",
+        "gameId": "2026_08_PHI_WAS",
+        "week": 8,
+        "away": "PHI",
+        "home": "WAS",
         "team": "WAS",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "B.Coleman",
+        "side": "defense",
+        "type": "Roughing the Passer",
+        "player": "K.Chaisson",
         "qtr": 3,
-        "time": "13:41",
-        "yards": 10,
-        "pointsCost": 1.46,
+        "time": "00:10",
+        "yards": 15,
+        "pointsCost": 2.21,
         "method": "play value",
-        "winProbCost": 0.8,
+        "winProbCost": 4.5,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
-        "labels": []
+        "labels": [
+          "Key first down given",
+          "Turnover erased"
+        ]
       }
     ]
   },
@@ -5978,5 +5981,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-02T02:05:45+00:00"
+  "generatedAt": "2026-11-02T05:41:21+00:00"
 }

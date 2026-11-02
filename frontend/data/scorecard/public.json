@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-02T02:06:00+00:00",
+  "generatedAt": "2026-11-02T05:41:27+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 56,
-      "avgMiss": 3.34,
-      "hitRate": 91.1,
-      "within3": 51.8,
-      "baselineAvgMiss": 3.43,
-      "skillPct": 2.5
+      "games": 57,
+      "avgMiss": 3.29,
+      "hitRate": 91.2,
+      "within3": 52.6,
+      "baselineAvgMiss": 3.38,
+      "skillPct": 2.9
     },
     "byWeek": [
       {
@@ -61,12 +61,12 @@
       {
         "season": 2026,
         "week": 8,
-        "games": 12,
-        "avgMiss": 2.83,
+        "games": 13,
+        "avgMiss": 2.62,
         "hitRate": 100.0,
-        "within3": 66.7,
-        "baselineAvgMiss": 2.79,
-        "skillPct": -1.5
+        "within3": 69.2,
+        "baselineAvgMiss": 2.64,
+        "skillPct": 0.6
       }
     ],
     "games": [
@@ -89,6 +89,26 @@
         "awayProjected": 7.3,
         "homeActual": 8,
         "awayActual": 10
+      },
+      {
+        "gameId": "2026_08_PHI_WAS",
+        "season": 2026,
+        "week": 8,
+        "away": "PHI",
+        "home": "WAS",
+        "crew": "Shawn Hochuli",
+        "source": "live",
+        "projected": 14.9,
+        "low": 9,
+        "high": 21,
+        "actual": 15,
+        "miss": 0.1,
+        "inRange": true,
+        "baselineMiss": 0.8,
+        "homeProjected": 7.3,
+        "awayProjected": 7.6,
+        "homeActual": 9,
+        "awayActual": 6
       },
       {
         "gameId": "2026_08_NE_MIA",

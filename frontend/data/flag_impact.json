@@ -4,11 +4,11 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 121,
-      "flags": 1765,
+      "games": 122,
+      "flags": 1776,
       "league": {
-        "pointsCostPerTeamGame": 6.42,
-        "keyFirstDownsGiven": 194,
+        "pointsCostPerTeamGame": 6.41,
+        "keyFirstDownsGiven": 196,
         "drivesKilled": 93,
         "bigPlaysErased": 75,
         "turnoversErased": 27,
@@ -16,22 +16,6 @@
         "tdsLostOffsetting": 2
       },
       "teams": [
-        {
-          "team": "JAX",
-          "games": 7,
-          "flags": 54,
-          "pointsCost": 63.1,
-          "pointsCostPerGame": 9.02,
-          "firstDownsGiven": 15,
-          "keyFirstDownsGiven": 8,
-          "drivesKilled": 5,
-          "bigPlaysErased": 4,
-          "turnoversErased": 1,
-          "tdsErased": 5,
-          "winsGivenAway": 1.81,
-          "tdsLostOffsetting": 1,
-          "rank": 1
-        },
         {
           "team": "WAS",
           "games": 7,
@@ -46,7 +30,7 @@
           "tdsErased": 3,
           "winsGivenAway": 1.71,
           "tdsLostOffsetting": 0,
-          "rank": 2
+          "rank": 1
         },
         {
           "team": "BUF",
@@ -62,6 +46,22 @@
           "tdsErased": 2,
           "winsGivenAway": 1.89,
           "tdsLostOffsetting": 0,
+          "rank": 2
+        },
+        {
+          "team": "JAX",
+          "games": 8,
+          "flags": 58,
+          "pointsCost": 65.7,
+          "pointsCostPerGame": 8.21,
+          "firstDownsGiven": 16,
+          "keyFirstDownsGiven": 9,
+          "drivesKilled": 5,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 5,
+          "winsGivenAway": 1.91,
+          "tdsLostOffsetting": 1,
           "rank": 3
         },
         {
@@ -178,17 +178,17 @@
         },
         {
           "team": "BAL",
-          "games": 8,
-          "flags": 67,
-          "pointsCost": 57.4,
+          "games": 9,
+          "flags": 74,
+          "pointsCost": 64.6,
           "pointsCostPerGame": 7.18,
-          "firstDownsGiven": 18,
-          "keyFirstDownsGiven": 6,
+          "firstDownsGiven": 19,
+          "keyFirstDownsGiven": 7,
           "drivesKilled": 1,
           "bigPlaysErased": 3,
           "turnoversErased": 0,
           "tdsErased": 2,
-          "winsGivenAway": 1.39,
+          "winsGivenAway": 1.58,
           "tdsLostOffsetting": 0,
           "rank": 11
         },
@@ -2628,6 +2628,28 @@
     ],
     "BAL": [
       {
+        "gameId": "2026_09_JAX_BAL",
+        "week": 9,
+        "away": "JAX",
+        "home": "BAL",
+        "team": "BAL",
+        "side": "defense",
+        "type": "Neutral Zone Infraction",
+        "player": "N.Madubuike",
+        "qtr": 1,
+        "time": "04:25",
+        "yards": 5,
+        "pointsCost": 3.27,
+        "method": "play value",
+        "winProbCost": 9.6,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
         "gameId": "2026_04_TEN_BAL",
         "week": 4,
         "away": "TEN",
@@ -2712,28 +2734,6 @@
         "twoPoint": false,
         "labels": [
           "Touchdown erased"
-        ]
-      },
-      {
-        "gameId": "2026_04_TEN_BAL",
-        "week": 4,
-        "away": "TEN",
-        "home": "BAL",
-        "team": "BAL",
-        "side": "defense",
-        "type": "Unnecessary Roughness",
-        "player": "K.Hamilton",
-        "qtr": 2,
-        "time": "10:48",
-        "yards": 15,
-        "pointsCost": 2.25,
-        "method": "play value",
-        "winProbCost": 6.3,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
         ]
       }
     ],
@@ -5980,5 +5980,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-06T03:02:30+00:00"
+  "generatedAt": "2026-11-06T06:02:54+00:00"
 }

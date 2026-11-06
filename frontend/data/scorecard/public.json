@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-06T03:02:45+00:00",
+  "generatedAt": "2026-11-06T06:03:01+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 58,
+      "games": 59,
       "avgMiss": 3.25,
-      "hitRate": 91.4,
-      "within3": 53.4,
+      "hitRate": 91.5,
+      "within3": 54.2,
       "baselineAvgMiss": 3.34,
-      "skillPct": 2.6
+      "skillPct": 2.7
     },
     "byWeek": [
       {
@@ -67,9 +67,39 @@
         "within3": 71.4,
         "baselineAvgMiss": 2.51,
         "skillPct": -0.6
+      },
+      {
+        "season": 2026,
+        "week": 9,
+        "games": 1,
+        "avgMiss": 2.9,
+        "hitRate": 100.0,
+        "within3": 100.0,
+        "baselineAvgMiss": 3.2,
+        "skillPct": 9.4
       }
     ],
     "games": [
+      {
+        "gameId": "2026_09_JAX_BAL",
+        "season": 2026,
+        "week": 9,
+        "away": "JAX",
+        "home": "BAL",
+        "crew": "Brad Allen",
+        "source": "live",
+        "projected": 13.9,
+        "low": 8,
+        "high": 20,
+        "actual": 11,
+        "miss": -2.9,
+        "inRange": true,
+        "baselineMiss": 3.2,
+        "homeProjected": 7.4,
+        "awayProjected": 6.5,
+        "homeActual": 7,
+        "awayActual": 4
+      },
       {
         "gameId": "2026_08_TEN_CIN",
         "season": 2026,

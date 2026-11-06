@@ -2,18 +2,24 @@
   "currentSeason": 2026,
   "previousSeason": 2025,
   "throughWeek": 8,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 9,
+    "games": 1
+  },
   "windows": {
     "season": 2026,
     "previous": 2025,
     "dataStart": 2015,
     "throughWeek": 8,
-    "partialWeek": null,
+    "partialWeek": {
+      "week": 9,
+      "games": 1
+    },
     "weeksLabel": "Weeks 1\u20138",
     "sameWeeks": {
-      "label": "2025 through Week 8",
-      "short": "2025 Wk 1\u20138",
-      "button": "2025 thru Wk 8"
+      "label": "2025 through Week 9",
+      "short": "2025 Wk 1\u20139",
+      "button": "2025 thru Wk 9"
     },
     "prior": {
       "seasons": [
@@ -42,12 +48,12 @@
   "baselines": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 8",
-      "short": "2025 Wk 1\u20138",
+      "label": "2025 through Week 9",
+      "short": "2025 Wk 1\u20139",
       "seasons": [
         2025
       ],
-      "button": "2025 thru Wk 8"
+      "button": "2025 thru Wk 9"
     },
     {
       "key": "lastSeason",
@@ -92,20 +98,20 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 121,
-      "penalties": 1765,
-      "yards": 14262,
-      "perGame": 14.59,
-      "yardsPerGame": 117.9,
+      "games": 122,
+      "penalties": 1776,
+      "yards": 14332,
+      "perGame": 14.56,
+      "yardsPerGame": 117.5,
       "yardsPerPenalty": 8.1
     },
     "baselines": {
       "sameWeeks": {
-        "games": 121,
-        "penalties": 1690,
-        "yards": 13465,
-        "perGame": 13.97,
-        "yardsPerGame": 111.3,
+        "games": 135,
+        "penalties": 1844,
+        "yards": 14693,
+        "perGame": 13.66,
+        "yardsPerGame": 108.8,
         "yardsPerPenalty": 8.0
       },
       "lastSeason": {
@@ -324,53 +330,6 @@
       }
     },
     {
-      "name": "Brad Allen",
-      "slug": "brad-allen",
-      "current": {
-        "games": 7,
-        "penalties": 109,
-        "yards": 812,
-        "perGame": 15.57,
-        "yardsPerGame": 116.0,
-        "yardsPerPenalty": 7.4
-      },
-      "throughWeek": 8,
-      "baselines": {
-        "sameWeeks": {
-          "games": 6,
-          "penalties": 71,
-          "yards": 559,
-          "perGame": 11.83,
-          "yardsPerGame": 93.2,
-          "yardsPerPenalty": 7.9
-        },
-        "lastSeason": {
-          "games": 15,
-          "penalties": 152,
-          "yards": 1188,
-          "perGame": 10.13,
-          "yardsPerGame": 79.2,
-          "yardsPerPenalty": 7.8
-        },
-        "last3": {
-          "games": 47,
-          "penalties": 514,
-          "yards": 3937,
-          "perGame": 10.94,
-          "yardsPerGame": 83.8,
-          "yardsPerPenalty": 7.7
-        },
-        "all": {
-          "games": 169,
-          "penalties": 2039,
-          "yards": 16722,
-          "perGame": 12.07,
-          "yardsPerGame": 98.9,
-          "yardsPerPenalty": 8.2
-        }
-      }
-    },
-    {
       "name": "Clete Blakeman",
       "slug": "clete-blakeman",
       "current": {
@@ -414,6 +373,53 @@
           "perGame": 12.94,
           "yardsPerGame": 106.8,
           "yardsPerPenalty": 8.3
+        }
+      }
+    },
+    {
+      "name": "Brad Allen",
+      "slug": "brad-allen",
+      "current": {
+        "games": 8,
+        "penalties": 120,
+        "yards": 882,
+        "perGame": 15.0,
+        "yardsPerGame": 110.2,
+        "yardsPerPenalty": 7.4
+      },
+      "throughWeek": 9,
+      "baselines": {
+        "sameWeeks": {
+          "games": 7,
+          "penalties": 78,
+          "yards": 614,
+          "perGame": 11.14,
+          "yardsPerGame": 87.7,
+          "yardsPerPenalty": 7.9
+        },
+        "lastSeason": {
+          "games": 15,
+          "penalties": 152,
+          "yards": 1188,
+          "perGame": 10.13,
+          "yardsPerGame": 79.2,
+          "yardsPerPenalty": 7.8
+        },
+        "last3": {
+          "games": 47,
+          "penalties": 514,
+          "yards": 3937,
+          "perGame": 10.94,
+          "yardsPerGame": 83.8,
+          "yardsPerPenalty": 7.7
+        },
+        "all": {
+          "games": 169,
+          "penalties": 2039,
+          "yards": 16722,
+          "perGame": 12.07,
+          "yardsPerGame": 98.9,
+          "yardsPerPenalty": 8.2
         }
       }
     },
@@ -1142,5 +1148,5 @@
       }
     }
   ],
-  "generatedAt": "2026-11-06T03:02:28.836007Z"
+  "generatedAt": "2026-11-06T06:02:53.678688Z"
 }

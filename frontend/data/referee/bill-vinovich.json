@@ -99,10 +99,10 @@
     },
     {
       "season": 2026,
-      "games": 6,
-      "penalties": 82,
-      "avg": 13.7,
-      "homeBias": 7.3
+      "games": 7,
+      "penalties": 97,
+      "avg": 13.9,
+      "homeBias": 9.3
     }
   ],
   "penaltyTypes": [
@@ -180,6 +180,32 @@
     }
   ],
   "recentGames": [
+    {
+      "gameId": "2026_09_NYG_PHI",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "homeTeam": {
+        "abbr": "PHI",
+        "name": "Philadelphia Eagles",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
+      },
+      "awayTeam": {
+        "abbr": "NYG",
+        "name": "New York Giants",
+        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png"
+      },
+      "homeScore": 11,
+      "awayScore": 19,
+      "penalties": 15,
+      "yards": 142,
+      "gameType": "REG",
+      "homePenalties": 6,
+      "awayPenalties": 9,
+      "stadium": "Lincoln Financial Field",
+      "weather": null,
+      "temp": null
+    },
     {
       "gameId": "2026_07_PIT_NO",
       "season": 2026,
@@ -673,36 +699,10 @@
       "stadium": "SoFi Stadium",
       "weather": null,
       "temp": null
-    },
-    {
-      "gameId": "2025_04_CAR_NE",
-      "season": 2025,
-      "week": 4,
-      "date": "2025-09-28",
-      "homeTeam": {
-        "abbr": "NE",
-        "name": "New England Patriots",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png"
-      },
-      "awayTeam": {
-        "abbr": "CAR",
-        "name": "Carolina Panthers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
-      },
-      "homeScore": 42,
-      "awayScore": 13,
-      "penalties": 12,
-      "yards": 83,
-      "gameType": "REG",
-      "homePenalties": 7,
-      "awayPenalties": 5,
-      "stadium": "Gillette Stadium",
-      "weather": null,
-      "temp": 76
     }
   ],
   "currentSeason": 2026,
-  "currentSeasonGames": 6,
+  "currentSeasonGames": 7,
   "priorSeasonGames": 171,
   "regularSeasonStats": [
     {
@@ -795,74 +795,74 @@
     },
     {
       "season": 2026,
-      "games": 6,
-      "penalties": 82,
-      "yards": 620,
-      "perGame": 13.67,
-      "yardsPerGame": 103.3
+      "games": 7,
+      "penalties": 97,
+      "yards": 762,
+      "perGame": 13.86,
+      "yardsPerGame": 108.9
     }
   ],
   "penaltyTypeComparison": [
     {
       "type": "Offensive Holding",
-      "currentCount": 18,
+      "currentCount": 21,
       "currentPerGame": 3.0,
       "priorCount": 299,
       "priorPerGame": 1.75
     },
     {
       "type": "False Start",
-      "currentCount": 14,
-      "currentPerGame": 2.33,
+      "currentCount": 17,
+      "currentPerGame": 2.43,
       "priorCount": 396,
       "priorPerGame": 2.32
     },
     {
-      "type": "Delay of Game",
-      "currentCount": 7,
-      "currentPerGame": 1.17,
-      "priorCount": 82,
-      "priorPerGame": 0.48
-    },
-    {
       "type": "Defensive Pass Interference",
-      "currentCount": 6,
+      "currentCount": 7,
       "currentPerGame": 1.0,
       "priorCount": 175,
       "priorPerGame": 1.02
     },
     {
+      "type": "Delay of Game",
+      "currentCount": 7,
+      "currentPerGame": 1.0,
+      "priorCount": 82,
+      "priorPerGame": 0.48
+    },
+    {
       "type": "Unnecessary Roughness",
-      "currentCount": 5,
-      "currentPerGame": 0.83,
+      "currentCount": 6,
+      "currentPerGame": 0.86,
       "priorCount": 103,
       "priorPerGame": 0.6
     },
     {
       "type": "Defensive Offside",
-      "currentCount": 4,
-      "currentPerGame": 0.67,
+      "currentCount": 5,
+      "currentPerGame": 0.71,
       "priorCount": 85,
       "priorPerGame": 0.5
     },
     {
       "type": "Illegal Formation",
       "currentCount": 4,
-      "currentPerGame": 0.67,
+      "currentPerGame": 0.57,
       "priorCount": 30,
       "priorPerGame": 0.18
     },
     {
       "type": "Defensive Holding",
       "currentCount": 3,
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.43,
       "priorCount": 100,
       "priorPerGame": 0.58
     },
     {
       "type": "Illegal Use of Hands",
       "currentCount": 3,
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.43,
       "priorCount": 51,
       "priorPerGame": 0.3
     },
@@ -877,22 +877,22 @@
   "quarterComparison": [
     {
       "quarter": 1,
-      "currentPerGame": 2.17,
+      "currentPerGame": 2.86,
       "priorPerGame": 2.51
     },
     {
       "quarter": 2,
-      "currentPerGame": 4.33,
+      "currentPerGame": 4.29,
       "priorPerGame": 3.19
     },
     {
       "quarter": 3,
-      "currentPerGame": 2.67,
+      "currentPerGame": 2.43,
       "priorPerGame": 2.53
     },
     {
       "quarter": 4,
-      "currentPerGame": 4.5,
+      "currentPerGame": 4.29,
       "priorPerGame": 2.75
     }
   ],
@@ -908,5 +908,5 @@
     "penaltyTypes": "Breakdown of the most common penalty types called in games this referee works.",
     "quarterDistribution": "When penalties occur during games \u2014 shows if ref is more active early or late."
   },
-  "generatedAt": "2026-11-08T16:04:41.099861Z"
+  "generatedAt": "2026-11-08T22:04:31.534052Z"
 }

@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-08T22:04:39+00:00",
+  "generatedAt": "2026-11-09T02:05:56+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 67,
-      "avgMiss": 3.4,
-      "hitRate": 88.1,
-      "within3": 52.2,
-      "baselineAvgMiss": 3.39,
-      "skillPct": -0.4
+      "games": 71,
+      "avgMiss": 3.39,
+      "hitRate": 88.7,
+      "within3": 52.1,
+      "baselineAvgMiss": 3.38,
+      "skillPct": -0.3
     },
     "byWeek": [
       {
@@ -71,12 +71,12 @@
       {
         "season": 2026,
         "week": 9,
-        "games": 9,
-        "avgMiss": 4.38,
-        "hitRate": 66.7,
-        "within3": 44.4,
-        "baselineAvgMiss": 3.71,
-        "skillPct": -18.0
+        "games": 13,
+        "avgMiss": 4.02,
+        "hitRate": 76.9,
+        "within3": 46.2,
+        "baselineAvgMiss": 3.57,
+        "skillPct": -12.5
       }
     ],
     "games": [
@@ -121,6 +121,26 @@
         "awayActual": 9
       },
       {
+        "gameId": "2026_09_LV_SF",
+        "season": 2026,
+        "week": 9,
+        "away": "LV",
+        "home": "SF",
+        "crew": "Scott Novak",
+        "source": "live",
+        "projected": 13.5,
+        "low": 8,
+        "high": 19,
+        "actual": 12,
+        "miss": -1.5,
+        "inRange": true,
+        "baselineMiss": 2.2,
+        "homeProjected": 7.0,
+        "awayProjected": 6.4,
+        "homeActual": 7,
+        "awayActual": 5
+      },
+      {
         "gameId": "2026_09_LA_WAS",
         "season": 2026,
         "week": 9,
@@ -159,6 +179,46 @@
         "awayProjected": 6.5,
         "homeActual": 7,
         "awayActual": 4
+      },
+      {
+        "gameId": "2026_09_HOU_LAC",
+        "season": 2026,
+        "week": 9,
+        "away": "HOU",
+        "home": "LAC",
+        "crew": "Alex Moore",
+        "source": "live",
+        "projected": 17.1,
+        "low": 11,
+        "high": 24,
+        "actual": 15,
+        "miss": -2.1,
+        "inRange": true,
+        "baselineMiss": 0.8,
+        "homeProjected": 8.0,
+        "awayProjected": 9.1,
+        "homeActual": 9,
+        "awayActual": 6
+      },
+      {
+        "gameId": "2026_09_GB_NE",
+        "season": 2026,
+        "week": 9,
+        "away": "GB",
+        "home": "NE",
+        "crew": "Alex Kemp",
+        "source": "live",
+        "projected": 13.9,
+        "low": 8,
+        "high": 20,
+        "actual": 8,
+        "miss": -5.9,
+        "inRange": true,
+        "baselineMiss": 6.2,
+        "homeProjected": 6.5,
+        "awayProjected": 7.4,
+        "homeActual": 5,
+        "awayActual": 3
       },
       {
         "gameId": "2026_09_DET_MIA",
@@ -259,6 +319,26 @@
         "awayProjected": 6.7,
         "homeActual": 12,
         "awayActual": 6
+      },
+      {
+        "gameId": "2026_09_ARI_SEA",
+        "season": 2026,
+        "week": 9,
+        "away": "ARI",
+        "home": "SEA",
+        "crew": "Clete Blakeman",
+        "source": "live",
+        "projected": 14.7,
+        "low": 9,
+        "high": 21,
+        "actual": 18,
+        "miss": 3.3,
+        "inRange": true,
+        "baselineMiss": 3.8,
+        "homeProjected": 6.4,
+        "awayProjected": 8.3,
+        "homeActual": 9,
+        "awayActual": 9
       },
       {
         "gameId": "2026_08_TEN_CIN",

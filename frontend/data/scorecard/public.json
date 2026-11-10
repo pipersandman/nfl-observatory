@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-10T02:15:03+00:00",
+  "generatedAt": "2026-11-10T06:18:48+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,11 +10,11 @@
   },
   "live": {
     "summary": {
-      "games": 72,
-      "avgMiss": 3.39,
-      "hitRate": 88.9,
-      "within3": 51.4,
-      "baselineAvgMiss": 3.37,
+      "games": 73,
+      "avgMiss": 3.38,
+      "hitRate": 89.0,
+      "within3": 52.1,
+      "baselineAvgMiss": 3.36,
       "skillPct": -0.6
     },
     "byWeek": [
@@ -71,12 +71,12 @@
       {
         "season": 2026,
         "week": 9,
-        "games": 14,
-        "avgMiss": 3.96,
-        "hitRate": 78.6,
-        "within3": 42.9,
-        "baselineAvgMiss": 3.5,
-        "skillPct": -13.3
+        "games": 15,
+        "avgMiss": 3.86,
+        "hitRate": 80.0,
+        "within3": 46.7,
+        "baselineAvgMiss": 3.43,
+        "skillPct": -12.6
       }
     ],
     "games": [
@@ -339,6 +339,26 @@
         "awayProjected": 6.7,
         "homeActual": 12,
         "awayActual": 6
+      },
+      {
+        "gameId": "2026_09_BUF_MIN",
+        "season": 2026,
+        "week": 9,
+        "away": "BUF",
+        "home": "MIN",
+        "crew": "Carl Cheffers",
+        "source": "live",
+        "projected": 14.4,
+        "low": 9,
+        "high": 20,
+        "actual": 12,
+        "miss": -2.4,
+        "inRange": true,
+        "baselineMiss": 2.4,
+        "homeProjected": 6.3,
+        "awayProjected": 8.1,
+        "homeActual": 4,
+        "awayActual": 8
       },
       {
         "gameId": "2026_09_ARI_SEA",
@@ -1526,12 +1546,12 @@
     "currentSeason": {
       "season": 2026,
       "summary": {
-        "games": 121,
-        "avgMiss": 3.41,
-        "hitRate": 87.6,
-        "within3": 54.5,
+        "games": 136,
+        "avgMiss": 3.46,
+        "hitRate": 86.8,
+        "within3": 53.7,
         "baselineAvgMiss": 3.47,
-        "skillPct": 1.7
+        "skillPct": 0.2
       },
       "byWeek": [
         {
@@ -1613,6 +1633,16 @@
           "within3": 71.4,
           "baselineAvgMiss": 2.5,
           "skillPct": -0.6
+        },
+        {
+          "season": 2026,
+          "week": 9,
+          "games": 15,
+          "avgMiss": 3.85,
+          "hitRate": 80.0,
+          "within3": 46.7,
+          "baselineAvgMiss": 3.43,
+          "skillPct": -12.5
         }
       ]
     },

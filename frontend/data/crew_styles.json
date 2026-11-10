@@ -14,14 +14,14 @@
     "homeShare": 0.486
   },
   "leagueCurrent": {
-    "perGame": 14.7,
-    "yardsPerFlag": 8.04,
+    "perGame": 14.68,
+    "yardsPerFlag": 8.03,
     "costPerFlag": 0.87,
-    "preSnapShare": 0.384,
-    "q4Share": 0.254,
-    "offenseShare": 0.583,
-    "homeShare": 0.497,
-    "games": 135
+    "preSnapShare": 0.387,
+    "q4Share": 0.252,
+    "offenseShare": 0.584,
+    "homeShare": 0.496,
+    "games": 136
   },
   "leagueBySeason": {
     "2015": {
@@ -135,14 +135,14 @@
       "games": 272
     },
     "2026": {
-      "perGame": 14.7,
-      "yardsPerFlag": 8.04,
+      "perGame": 14.68,
+      "yardsPerFlag": 8.03,
       "costPerFlag": 0.87,
-      "preSnapShare": 0.384,
-      "q4Share": 0.254,
-      "offenseShare": 0.583,
-      "homeShare": 0.497,
-      "games": 135
+      "preSnapShare": 0.387,
+      "q4Share": 0.252,
+      "offenseShare": 0.584,
+      "homeShare": 0.496,
+      "games": 136
     }
   },
   "weekly": {
@@ -908,9 +908,9 @@
       },
       "9": {
         "league": {
-          "games": 135,
-          "perGame": 14.7,
-          "yardsPerFlag": 8.04
+          "games": 136,
+          "perGame": 14.68,
+          "yardsPerFlag": 8.03
         },
         "crews": {
           "Adrian Hill": {
@@ -949,9 +949,9 @@
             "yardsPerFlag": 7.67
           },
           "Carl Cheffers": {
-            "games": 7,
-            "perGame": 13.43,
-            "yardsPerFlag": 7.98
+            "games": 8,
+            "perGame": 13.25,
+            "yardsPerFlag": 7.85
           },
           "Clay Martin": {
             "games": 9,
@@ -1681,9 +1681,9 @@
       },
       "9": {
         "league": {
-          "games": 14,
-          "perGame": 15.71,
-          "yardsPerFlag": 7.72
+          "games": 15,
+          "perGame": 15.47,
+          "yardsPerFlag": 7.67
         },
         "crews": {
           "Adrian Hill": {
@@ -1715,6 +1715,11 @@
             "games": 1,
             "perGame": 11.0,
             "yardsPerFlag": 6.36
+          },
+          "Carl Cheffers": {
+            "games": 1,
+            "perGame": 12.0,
+            "yardsPerFlag": 6.83
           },
           "Clay Martin": {
             "games": 1,
@@ -1768,7 +1773,7 @@
       "6": true,
       "7": true,
       "8": true,
-      "9": false
+      "9": true
     }
   },
   "types": [
@@ -2014,58 +2019,58 @@
           "offenseShare": 0.604,
           "homeShare": 0.44,
           "vsLeague": {
-            "perGamePct": 13.9,
-            "yardsPerFlagDiff": 0.4
+            "perGamePct": 14.1,
+            "yardsPerFlagDiff": 0.41
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.529,
-              "league": 3.141,
-              "diffPct": 12.0
+              "perGame": 3.513,
+              "league": 3.118,
+              "diffPct": 13.0
             },
             "False Start": {
-              "perGame": 2.708,
-              "league": 2.741,
-              "diffPct": -1.0
+              "perGame": 2.735,
+              "league": 2.779,
+              "diffPct": -2.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.05,
-              "league": 1.17,
+              "perGame": 1.049,
+              "league": 1.169,
               "diffPct": -10.0
             },
             "Defensive Holding": {
-              "perGame": 0.774,
-              "league": 0.733,
-              "diffPct": 6.0
+              "perGame": 0.775,
+              "league": 0.735,
+              "diffPct": 5.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.619,
-              "league": 0.667,
+              "perGame": 0.616,
+              "league": 0.662,
               "diffPct": -7.0
             },
             "Defensive Offside": {
-              "perGame": 0.71,
-              "league": 0.644,
+              "perGame": 0.712,
+              "league": 0.647,
               "diffPct": 10.0
             },
             "Delay of Game": {
-              "perGame": 0.84,
-              "league": 0.926,
+              "perGame": 0.835,
+              "league": 0.919,
               "diffPct": -9.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.393,
-              "league": 0.4,
+              "perGame": 0.391,
+              "league": 0.397,
               "diffPct": -2.0
             },
             "Roughing the Passer": {
-              "perGame": 0.537,
-              "league": 0.452,
+              "perGame": 0.535,
+              "league": 0.449,
               "diffPct": 19.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.288,
-              "league": 0.304,
+              "perGame": 0.287,
+              "league": 0.301,
               "diffPct": -5.0
             }
           },
@@ -2073,19 +2078,19 @@
             {
               "text": "Calls more roughing the passer: 19% above the league rate",
               "key": "t:Roughing the Passer",
-              "z": 1.48,
+              "z": 1.5,
               "direction": "up"
             },
             {
               "text": "More flags on road teams: 44% on home teams (league 50%)",
               "key": "homeShare",
-              "z": -1.33,
+              "z": -1.28,
               "direction": "down"
             },
             {
-              "text": "Fewer pre-snap fouls: 33% of flags (league 38%)",
+              "text": "Fewer pre-snap fouls: 33% of flags (league 39%)",
               "key": "preSnapShare",
-              "z": -1.32,
+              "z": -1.26,
               "direction": "down"
             },
             {
@@ -3022,62 +3027,68 @@
           "offenseShare": 0.513,
           "homeShare": 0.47,
           "vsLeague": {
-            "perGamePct": -2.2,
-            "yardsPerFlagDiff": -0.44
+            "perGamePct": -2.1,
+            "yardsPerFlagDiff": -0.43
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 2.922,
-              "league": 3.141,
+              "perGame": 2.905,
+              "league": 3.118,
               "diffPct": -7.0
             },
             "False Start": {
-              "perGame": 2.851,
-              "league": 2.741,
+              "perGame": 2.878,
+              "league": 2.779,
               "diffPct": 4.0
             },
             "Defensive Pass Interference": {
               "perGame": 1.157,
-              "league": 1.17,
+              "league": 1.169,
               "diffPct": -1.0
             },
             "Defensive Holding": {
-              "perGame": 0.702,
-              "league": 0.733,
+              "perGame": 0.704,
+              "league": 0.735,
               "diffPct": -4.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.69,
-              "league": 0.667,
+              "perGame": 0.687,
+              "league": 0.662,
               "diffPct": 4.0
             },
             "Defensive Offside": {
-              "perGame": 0.746,
-              "league": 0.644,
+              "perGame": 0.748,
+              "league": 0.647,
               "diffPct": 16.0
             },
             "Delay of Game": {
-              "perGame": 0.876,
-              "league": 0.926,
+              "perGame": 0.871,
+              "league": 0.919,
               "diffPct": -5.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.429,
-              "league": 0.4,
+              "perGame": 0.426,
+              "league": 0.397,
               "diffPct": 7.0
             },
             "Roughing the Passer": {
-              "perGame": 0.43,
-              "league": 0.452,
+              "perGame": 0.428,
+              "league": 0.449,
               "diffPct": -5.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.253,
-              "league": 0.304,
+              "perGame": 0.251,
+              "league": 0.301,
               "diffPct": -17.0
             }
           },
           "traits": [
+            {
+              "text": "More flags on defenses: 51% on offenses (league 58%)",
+              "key": "offenseShare",
+              "z": -1.57,
+              "direction": "down"
+            },
             {
               "text": "Calls more defensive offside: 16% above the league rate",
               "key": "t:Defensive Offside",
@@ -3085,22 +3096,10 @@
               "direction": "up"
             },
             {
-              "text": "More flags on defenses: 51% on offenses (league 58%)",
-              "key": "offenseShare",
-              "z": -1.51,
-              "direction": "down"
-            },
-            {
               "text": "Calls fewer illegal block above the waist: 17% below the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": -1.32,
+              "z": -1.33,
               "direction": "down"
-            },
-            {
-              "text": "More pre-snap fouls: 43% of flags (league 38%)",
-              "key": "preSnapShare",
-              "z": 1.08,
-              "direction": "up"
             }
           ],
           "archetype": {
@@ -3919,58 +3918,58 @@
           "offenseShare": 0.669,
           "homeShare": 0.508,
           "vsLeague": {
-            "perGamePct": 14.6,
+            "perGamePct": 14.8,
             "yardsPerFlagDiff": -0.8
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.104,
-              "league": 3.141,
+              "perGame": 3.087,
+              "league": 3.118,
               "diffPct": -1.0
             },
             "False Start": {
-              "perGame": 3.104,
-              "league": 2.741,
+              "perGame": 3.133,
+              "league": 2.779,
               "diffPct": 13.0
             },
             "Defensive Pass Interference": {
-              "perGame": 0.941,
-              "league": 1.17,
+              "perGame": 0.94,
+              "league": 1.169,
               "diffPct": -20.0
             },
             "Defensive Holding": {
-              "perGame": 0.691,
-              "league": 0.733,
+              "perGame": 0.693,
+              "league": 0.735,
               "diffPct": -6.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.642,
-              "league": 0.667,
+              "perGame": 0.638,
+              "league": 0.662,
               "diffPct": -4.0
             },
             "Defensive Offside": {
-              "perGame": 0.626,
-              "league": 0.644,
+              "perGame": 0.627,
+              "league": 0.647,
               "diffPct": -3.0
             },
             "Delay of Game": {
-              "perGame": 0.834,
-              "league": 0.926,
+              "perGame": 0.829,
+              "league": 0.919,
               "diffPct": -10.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.407,
-              "league": 0.4,
+              "perGame": 0.405,
+              "league": 0.397,
               "diffPct": 2.0
             },
             "Roughing the Passer": {
-              "perGame": 0.409,
-              "league": 0.452,
-              "diffPct": -10.0
+              "perGame": 0.406,
+              "league": 0.449,
+              "diffPct": -9.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.373,
-              "league": 0.304,
+              "perGame": 0.371,
+              "league": 0.301,
               "diffPct": 23.0
             }
           },
@@ -3978,19 +3977,19 @@
             {
               "text": "More flags on offenses: 67% (league 58%)",
               "key": "offenseShare",
-              "z": 1.91,
+              "z": 1.92,
               "direction": "up"
             },
             {
               "text": "Calls more illegal block above the waist: 23% above the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": 1.8,
+              "z": 1.84,
               "direction": "up"
             },
             {
               "text": "Cheaper flags: 0.77 points each (league 0.87)",
               "key": "costPerFlag",
-              "z": -1.71,
+              "z": -1.7,
               "direction": "down"
             },
             {
@@ -5209,81 +5208,87 @@
           "raw": null
         },
         "2026": {
-          "games": 7,
-          "perGame": 13.43,
-          "yardsPerFlag": 7.98,
-          "costPerFlag": 0.9,
-          "preSnapShare": 0.457,
-          "q4Share": 0.277,
-          "offenseShare": 0.543,
-          "homeShare": 0.468,
+          "games": 8,
+          "perGame": 13.25,
+          "yardsPerFlag": 7.85,
+          "costPerFlag": 0.88,
+          "preSnapShare": 0.491,
+          "q4Share": 0.245,
+          "offenseShare": 0.566,
+          "homeShare": 0.453,
           "vsLeague": {
-            "perGamePct": -8.7,
-            "yardsPerFlagDiff": -0.06
+            "perGamePct": -9.8,
+            "yardsPerFlagDiff": -0.18
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 2.697,
-              "league": 3.141,
-              "diffPct": -14.0
+              "perGame": 2.584,
+              "league": 3.118,
+              "diffPct": -17.0
             },
             "False Start": {
-              "perGame": 2.623,
-              "league": 2.741,
-              "diffPct": -4.0
+              "perGame": 2.842,
+              "league": 2.779,
+              "diffPct": 2.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.2,
-              "league": 1.17,
-              "diffPct": 3.0
+              "perGame": 1.192,
+              "league": 1.169,
+              "diffPct": 2.0
             },
             "Defensive Holding": {
-              "perGame": 0.691,
-              "league": 0.733,
-              "diffPct": -6.0
+              "perGame": 0.704,
+              "league": 0.735,
+              "diffPct": -4.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.679,
-              "league": 0.667,
-              "diffPct": 2.0
+              "perGame": 0.651,
+              "league": 0.662,
+              "diffPct": -2.0
             },
             "Defensive Offside": {
-              "perGame": 0.626,
-              "league": 0.644,
-              "diffPct": -3.0
-            },
-            "Delay of Game": {
-              "perGame": 1.167,
-              "league": 0.926,
-              "diffPct": 26.0
-            },
-            "Neutral Zone Infraction": {
-              "perGame": 0.407,
-              "league": 0.4,
-              "diffPct": 2.0
-            },
-            "Roughing the Passer": {
-              "perGame": 0.446,
-              "league": 0.452,
+              "perGame": 0.641,
+              "league": 0.647,
               "diffPct": -1.0
             },
+            "Delay of Game": {
+              "perGame": 1.121,
+              "league": 0.919,
+              "diffPct": 22.0
+            },
+            "Neutral Zone Infraction": {
+              "perGame": 0.391,
+              "league": 0.397,
+              "diffPct": -2.0
+            },
+            "Roughing the Passer": {
+              "perGame": 0.428,
+              "league": 0.449,
+              "diffPct": -5.0
+            },
             "Illegal Block Above the Waist": {
-              "perGame": 0.336,
-              "league": 0.304,
-              "diffPct": 11.0
+              "perGame": 0.322,
+              "league": 0.301,
+              "diffPct": 7.0
             }
           },
           "traits": [
             {
-              "text": "Calls more delay of game: 26% above the league rate",
+              "text": "Calls more delay of game: 22% above the league rate",
               "key": "t:Delay of Game",
-              "z": 2.57,
+              "z": 2.3,
               "direction": "up"
             },
             {
-              "text": "More pre-snap fouls: 46% of flags (league 38%)",
+              "text": "Calls fewer offensive holding: 17% below the league rate",
+              "key": "t:Offensive Holding",
+              "z": -2.12,
+              "direction": "down"
+            },
+            {
+              "text": "More pre-snap fouls: 49% of flags (league 39%)",
               "key": "preSnapShare",
-              "z": 1.59,
+              "z": 2.12,
               "direction": "up"
             }
           ],
@@ -5297,10 +5302,10 @@
         }
       },
       "current": {
-        "games": 7,
-        "perGame": 13.43,
-        "yardsPerFlag": 7.98,
-        "costPerFlag": 0.9
+        "games": 8,
+        "perGame": 13.25,
+        "yardsPerFlag": 7.85,
+        "costPerFlag": 0.88
       }
     },
     {
@@ -6190,84 +6195,84 @@
           "offenseShare": 0.575,
           "homeShare": 0.443,
           "vsLeague": {
-            "perGamePct": -9.9,
-            "yardsPerFlagDiff": -0.07
+            "perGamePct": -9.8,
+            "yardsPerFlagDiff": -0.06
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.029,
-              "league": 3.141,
-              "diffPct": -4.0
+              "perGame": 3.013,
+              "league": 3.118,
+              "diffPct": -3.0
             },
             "False Start": {
-              "perGame": 2.601,
-              "league": 2.741,
+              "perGame": 2.628,
+              "league": 2.779,
               "diffPct": -5.0
             },
             "Defensive Pass Interference": {
               "perGame": 1.157,
-              "league": 1.17,
+              "league": 1.169,
               "diffPct": -1.0
             },
             "Defensive Holding": {
-              "perGame": 0.667,
-              "league": 0.733,
+              "perGame": 0.668,
+              "league": 0.735,
               "diffPct": -9.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.583,
-              "league": 0.667,
-              "diffPct": -13.0
+              "perGame": 0.58,
+              "league": 0.662,
+              "diffPct": -12.0
             },
             "Defensive Offside": {
-              "perGame": 0.567,
-              "league": 0.644,
+              "perGame": 0.569,
+              "league": 0.647,
               "diffPct": -12.0
             },
             "Delay of Game": {
-              "perGame": 0.911,
-              "league": 0.926,
-              "diffPct": -2.0
+              "perGame": 0.907,
+              "league": 0.919,
+              "diffPct": -1.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.571,
-              "league": 0.4,
+              "perGame": 0.569,
+              "league": 0.397,
               "diffPct": 43.0
             },
             "Roughing the Passer": {
-              "perGame": 0.537,
-              "league": 0.452,
+              "perGame": 0.535,
+              "league": 0.449,
               "diffPct": 19.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.36,
-              "league": 0.304,
-              "diffPct": 18.0
+              "perGame": 0.358,
+              "league": 0.301,
+              "diffPct": 19.0
             }
           },
           "traits": [
             {
               "text": "Costlier flags: 1.02 points each (league 0.87)",
               "key": "costPerFlag",
-              "z": 2.39,
+              "z": 2.42,
               "direction": "up"
             },
             {
               "text": "Calls more neutral zone infraction: 43% above the league rate",
               "key": "t:Neutral Zone Infraction",
-              "z": 1.8,
+              "z": 1.81,
               "direction": "up"
             },
             {
               "text": "Calls more roughing the passer: 19% above the league rate",
               "key": "t:Roughing the Passer",
-              "z": 1.48,
+              "z": 1.5,
               "direction": "up"
             },
             {
-              "text": "Calls more illegal block above the waist: 18% above the league rate",
+              "text": "Calls more illegal block above the waist: 19% above the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": 1.46,
+              "z": 1.49,
               "direction": "up"
             }
           ],
@@ -7068,58 +7073,58 @@
           "offenseShare": 0.51,
           "homeShare": 0.51,
           "vsLeague": {
-            "perGamePct": -18.4,
+            "perGamePct": -18.3,
             "yardsPerFlagDiff": -0.37
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.101,
-              "league": 3.141,
+              "perGame": 3.084,
+              "league": 3.118,
               "diffPct": -1.0
             },
             "False Start": {
-              "perGame": 2.422,
-              "league": 2.741,
+              "perGame": 2.45,
+              "league": 2.779,
               "diffPct": -12.0
             },
             "Defensive Pass Interference": {
-              "perGame": 0.979,
-              "league": 1.17,
+              "perGame": 0.978,
+              "league": 1.169,
               "diffPct": -16.0
             },
             "Defensive Holding": {
-              "perGame": 0.881,
-              "league": 0.733,
+              "perGame": 0.882,
+              "league": 0.735,
               "diffPct": 20.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.69,
-              "league": 0.667,
+              "perGame": 0.687,
+              "league": 0.662,
               "diffPct": 4.0
             },
             "Defensive Offside": {
-              "perGame": 0.567,
-              "league": 0.644,
+              "perGame": 0.569,
+              "league": 0.647,
               "diffPct": -12.0
             },
             "Delay of Game": {
-              "perGame": 0.876,
-              "league": 0.926,
+              "perGame": 0.871,
+              "league": 0.919,
               "diffPct": -5.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.286,
-              "league": 0.4,
+              "perGame": 0.284,
+              "league": 0.397,
               "diffPct": -29.0
             },
             "Roughing the Passer": {
-              "perGame": 0.394,
-              "league": 0.452,
+              "perGame": 0.392,
+              "league": 0.449,
               "diffPct": -13.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.288,
-              "league": 0.304,
+              "perGame": 0.287,
+              "league": 0.301,
               "diffPct": -5.0
             }
           },
@@ -7131,21 +7136,21 @@
               "direction": "up"
             },
             {
+              "text": "More flags on defenses: 51% on offenses (league 58%)",
+              "key": "offenseShare",
+              "z": -1.63,
+              "direction": "down"
+            },
+            {
               "text": "Fewer flags: 12.0 per game (league 14.7)",
               "key": "perGame",
-              "z": -1.63,
+              "z": -1.61,
               "direction": "down"
             },
             {
               "text": "Cheaper flags: 0.78 points each (league 0.87)",
               "key": "costPerFlag",
-              "z": -1.59,
-              "direction": "down"
-            },
-            {
-              "text": "More flags on defenses: 51% on offenses (league 58%)",
-              "key": "offenseShare",
-              "z": -1.57,
+              "z": -1.58,
               "direction": "down"
             }
           ],
@@ -8283,58 +8288,58 @@
           "offenseShare": 0.54,
           "homeShare": 0.524,
           "vsLeague": {
-            "perGamePct": 7.1,
+            "perGamePct": 7.3,
             "yardsPerFlagDiff": -0.41
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 2.958,
-              "league": 3.141,
+              "perGame": 2.941,
+              "league": 3.118,
               "diffPct": -6.0
             },
             "False Start": {
-              "perGame": 2.993,
-              "league": 2.741,
+              "perGame": 3.021,
+              "league": 2.779,
               "diffPct": 9.0
             },
             "Defensive Pass Interference": {
               "perGame": 1.157,
-              "league": 1.17,
+              "league": 1.169,
               "diffPct": -1.0
             },
             "Defensive Holding": {
-              "perGame": 0.917,
-              "league": 0.733,
+              "perGame": 0.918,
+              "league": 0.735,
               "diffPct": 25.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.619,
-              "league": 0.667,
+              "perGame": 0.616,
+              "league": 0.662,
               "diffPct": -7.0
             },
             "Defensive Offside": {
-              "perGame": 0.675,
-              "league": 0.644,
+              "perGame": 0.676,
+              "league": 0.647,
               "diffPct": 5.0
             },
             "Delay of Game": {
-              "perGame": 0.876,
-              "league": 0.926,
+              "perGame": 0.871,
+              "league": 0.919,
               "diffPct": -5.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.357,
-              "league": 0.4,
+              "perGame": 0.355,
+              "league": 0.397,
               "diffPct": -11.0
             },
             "Roughing the Passer": {
-              "perGame": 0.537,
-              "league": 0.452,
+              "perGame": 0.535,
+              "league": 0.449,
               "diffPct": 19.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.324,
-              "league": 0.304,
+              "perGame": 0.322,
+              "league": 0.301,
               "diffPct": 7.0
             }
           },
@@ -8348,13 +8353,13 @@
             {
               "text": "Cheaper flags: 0.77 points each (league 0.87)",
               "key": "costPerFlag",
-              "z": -1.7,
+              "z": -1.69,
               "direction": "down"
             },
             {
               "text": "Calls more roughing the passer: 19% above the league rate",
               "key": "t:Roughing the Passer",
-              "z": 1.48,
+              "z": 1.5,
               "direction": "up"
             }
           ],
@@ -9093,58 +9098,58 @@
           "offenseShare": 0.596,
           "homeShare": 0.544,
           "vsLeague": {
-            "perGamePct": -3.1,
-            "yardsPerFlagDiff": 0.01
+            "perGamePct": -3.0,
+            "yardsPerFlagDiff": 0.02
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.315,
-              "league": 3.141,
+              "perGame": 3.298,
+              "league": 3.118,
               "diffPct": 6.0
             },
             "False Start": {
-              "perGame": 2.743,
-              "league": 2.741,
-              "diffPct": 0.0
+              "perGame": 2.771,
+              "league": 2.779,
+              "diffPct": -0.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.265,
-              "league": 1.17,
+              "perGame": 1.264,
+              "league": 1.169,
               "diffPct": 8.0
             },
             "Defensive Holding": {
-              "perGame": 0.774,
-              "league": 0.733,
-              "diffPct": 6.0
+              "perGame": 0.775,
+              "league": 0.735,
+              "diffPct": 5.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.619,
-              "league": 0.667,
+              "perGame": 0.616,
+              "league": 0.662,
               "diffPct": -7.0
             },
             "Defensive Offside": {
-              "perGame": 0.603,
-              "league": 0.644,
+              "perGame": 0.605,
+              "league": 0.647,
               "diffPct": -6.0
             },
             "Delay of Game": {
-              "perGame": 0.84,
-              "league": 0.926,
+              "perGame": 0.835,
+              "league": 0.919,
               "diffPct": -9.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.429,
-              "league": 0.4,
+              "perGame": 0.426,
+              "league": 0.397,
               "diffPct": 7.0
             },
             "Roughing the Passer": {
-              "perGame": 0.501,
-              "league": 0.452,
+              "perGame": 0.499,
+              "league": 0.449,
               "diffPct": 11.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.288,
-              "league": 0.304,
+              "perGame": 0.287,
+              "league": 0.301,
               "diffPct": -5.0
             }
           },
@@ -9152,7 +9157,7 @@
             {
               "text": "Quieter 4th quarters: 17% of flags (league 25%)",
               "key": "q4Share",
-              "z": -2.17,
+              "z": -2.14,
               "direction": "down"
             },
             {
@@ -10083,58 +10088,58 @@
           "offenseShare": 0.638,
           "homeShare": 0.495,
           "vsLeague": {
-            "perGamePct": -10.7,
-            "yardsPerFlagDiff": 0.37
+            "perGamePct": -10.6,
+            "yardsPerFlagDiff": 0.38
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.243,
-              "league": 3.141,
-              "diffPct": 3.0
+              "perGame": 3.227,
+              "league": 3.118,
+              "diffPct": 4.0
             },
             "False Start": {
-              "perGame": 2.708,
-              "league": 2.741,
-              "diffPct": -1.0
+              "perGame": 2.735,
+              "league": 2.779,
+              "diffPct": -2.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.122,
-              "league": 1.17,
+              "perGame": 1.121,
+              "league": 1.169,
               "diffPct": -4.0
             },
             "Defensive Holding": {
-              "perGame": 0.917,
-              "league": 0.733,
+              "perGame": 0.918,
+              "league": 0.735,
               "diffPct": 25.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.619,
-              "league": 0.667,
+              "perGame": 0.616,
+              "league": 0.662,
               "diffPct": -7.0
             },
             "Defensive Offside": {
-              "perGame": 0.603,
-              "league": 0.644,
+              "perGame": 0.605,
+              "league": 0.647,
               "diffPct": -6.0
             },
             "Delay of Game": {
-              "perGame": 0.983,
-              "league": 0.926,
+              "perGame": 0.978,
+              "league": 0.919,
               "diffPct": 6.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.286,
-              "league": 0.4,
+              "perGame": 0.284,
+              "league": 0.397,
               "diffPct": -29.0
             },
             "Roughing the Passer": {
-              "perGame": 0.43,
-              "league": 0.452,
+              "perGame": 0.428,
+              "league": 0.449,
               "diffPct": -5.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.288,
-              "league": 0.304,
+              "perGame": 0.287,
+              "league": 0.301,
               "diffPct": -5.0
             }
           },
@@ -10146,21 +10151,21 @@
               "direction": "up"
             },
             {
-              "text": "More flags on offenses: 64% (league 58%)",
-              "key": "offenseShare",
-              "z": 1.23,
+              "text": "Busier 4th quarters: 30% of flags (league 25%)",
+              "key": "q4Share",
+              "z": 1.25,
               "direction": "up"
             },
             {
-              "text": "Busier 4th quarters: 30% of flags (league 25%)",
-              "key": "q4Share",
-              "z": 1.2,
+              "text": "More flags on offenses: 64% (league 58%)",
+              "key": "offenseShare",
+              "z": 1.22,
               "direction": "up"
             },
             {
               "text": "Calls fewer neutral zone infraction: 29% below the league rate",
               "key": "t:Neutral Zone Infraction",
-              "z": -1.2,
+              "z": -1.19,
               "direction": "down"
             }
           ],
@@ -11271,58 +11276,58 @@
           "offenseShare": 0.607,
           "homeShare": 0.482,
           "vsLeague": {
-            "perGamePct": -4.8,
-            "yardsPerFlagDiff": 0.18
+            "perGamePct": -4.7,
+            "yardsPerFlagDiff": 0.19
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.029,
-              "league": 3.141,
-              "diffPct": -4.0
+              "perGame": 3.013,
+              "league": 3.118,
+              "diffPct": -3.0
             },
             "False Start": {
-              "perGame": 3.029,
-              "league": 2.741,
-              "diffPct": 11.0
+              "perGame": 3.057,
+              "league": 2.779,
+              "diffPct": 10.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.3,
-              "league": 1.17,
+              "perGame": 1.299,
+              "league": 1.169,
               "diffPct": 11.0
             },
             "Defensive Holding": {
-              "perGame": 0.774,
-              "league": 0.733,
-              "diffPct": 6.0
+              "perGame": 0.775,
+              "league": 0.735,
+              "diffPct": 5.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.583,
-              "league": 0.667,
-              "diffPct": -13.0
+              "perGame": 0.58,
+              "league": 0.662,
+              "diffPct": -12.0
             },
             "Defensive Offside": {
-              "perGame": 0.567,
-              "league": 0.644,
+              "perGame": 0.569,
+              "league": 0.647,
               "diffPct": -12.0
             },
             "Delay of Game": {
-              "perGame": 1.019,
-              "league": 0.926,
+              "perGame": 1.014,
+              "league": 0.919,
               "diffPct": 10.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.357,
-              "league": 0.4,
+              "perGame": 0.355,
+              "league": 0.397,
               "diffPct": -11.0
             },
             "Roughing the Passer": {
-              "perGame": 0.358,
-              "league": 0.452,
+              "perGame": 0.356,
+              "league": 0.449,
               "diffPct": -21.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.324,
-              "league": 0.304,
+              "perGame": 0.322,
+              "league": 0.301,
               "diffPct": 7.0
             }
           },
@@ -11330,7 +11335,7 @@
             {
               "text": "Calls fewer roughing the passer: 21% below the league rate",
               "key": "t:Roughing the Passer",
-              "z": -1.63,
+              "z": -1.6,
               "direction": "down"
             }
           ],
@@ -12522,84 +12527,84 @@
           "offenseShare": 0.58,
           "homeShare": 0.529,
           "vsLeague": {
-            "perGamePct": 17.3,
+            "perGamePct": 17.5,
             "yardsPerFlagDiff": 0.76
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.351,
-              "league": 3.141,
+              "perGame": 3.334,
+              "league": 3.118,
               "diffPct": 7.0
             },
             "False Start": {
-              "perGame": 2.601,
-              "league": 2.741,
+              "perGame": 2.628,
+              "league": 2.779,
               "diffPct": -5.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.55,
-              "league": 1.17,
-              "diffPct": 32.0
+              "perGame": 1.549,
+              "league": 1.169,
+              "diffPct": 33.0
             },
             "Defensive Holding": {
-              "perGame": 0.631,
-              "league": 0.733,
+              "perGame": 0.632,
+              "league": 0.735,
               "diffPct": -14.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.619,
-              "league": 0.667,
+              "perGame": 0.616,
+              "league": 0.662,
               "diffPct": -7.0
             },
             "Defensive Offside": {
-              "perGame": 0.567,
-              "league": 0.644,
+              "perGame": 0.569,
+              "league": 0.647,
               "diffPct": -12.0
             },
             "Delay of Game": {
-              "perGame": 0.983,
-              "league": 0.926,
+              "perGame": 0.978,
+              "league": 0.919,
               "diffPct": 6.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.643,
-              "league": 0.4,
+              "perGame": 0.641,
+              "league": 0.397,
               "diffPct": 61.0
             },
             "Roughing the Passer": {
-              "perGame": 0.501,
-              "league": 0.452,
+              "perGame": 0.499,
+              "league": 0.449,
               "diffPct": 11.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.288,
-              "league": 0.304,
+              "perGame": 0.287,
+              "league": 0.301,
               "diffPct": -5.0
             }
           },
           "traits": [
             {
-              "text": "Calls more defensive pass interference: 32% above the league rate",
+              "text": "Calls more defensive pass interference: 33% above the league rate",
               "key": "t:Defensive Pass Interference",
-              "z": 2.78,
+              "z": 2.79,
               "direction": "up"
             },
             {
               "text": "Calls more neutral zone infraction: 61% above the league rate",
               "key": "t:Neutral Zone Infraction",
-              "z": 2.55,
+              "z": 2.56,
               "direction": "up"
             },
             {
               "text": "Quieter 4th quarters: 18% of flags (league 25%)",
               "key": "q4Share",
-              "z": -1.82,
+              "z": -1.78,
               "direction": "down"
             },
             {
               "text": "Bigger calls: 8.8 yards per flag (league 8.0)",
               "key": "yardsPerFlag",
-              "z": 1.68,
+              "z": 1.69,
               "direction": "up"
             }
           ],
@@ -13512,58 +13517,58 @@
           "offenseShare": 0.636,
           "homeShare": 0.488,
           "vsLeague": {
-            "perGamePct": -8.6,
-            "yardsPerFlagDiff": -0.09
+            "perGamePct": -8.4,
+            "yardsPerFlagDiff": -0.08
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.166,
-              "league": 3.141,
+              "perGame": 3.15,
+              "league": 3.118,
               "diffPct": 1.0
             },
             "False Start": {
-              "perGame": 2.649,
-              "league": 2.741,
-              "diffPct": -3.0
+              "perGame": 2.675,
+              "league": 2.779,
+              "diffPct": -4.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.014,
-              "league": 1.17,
+              "perGame": 1.013,
+              "league": 1.169,
               "diffPct": -13.0
             },
             "Defensive Holding": {
-              "perGame": 0.713,
-              "league": 0.733,
+              "perGame": 0.714,
+              "league": 0.735,
               "diffPct": -3.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.701,
-              "league": 0.667,
+              "perGame": 0.698,
+              "league": 0.662,
               "diffPct": 5.0
             },
             "Defensive Offside": {
-              "perGame": 0.617,
-              "league": 0.644,
+              "perGame": 0.619,
+              "league": 0.647,
               "diffPct": -4.0
             },
             "Delay of Game": {
-              "perGame": 0.88,
-              "league": 0.926,
+              "perGame": 0.875,
+              "league": 0.919,
               "diffPct": -5.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.276,
-              "league": 0.4,
+              "perGame": 0.274,
+              "league": 0.397,
               "diffPct": -31.0
             },
             "Roughing the Passer": {
-              "perGame": 0.381,
-              "league": 0.452,
+              "perGame": 0.378,
+              "league": 0.449,
               "diffPct": -16.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.244,
-              "league": 0.304,
+              "perGame": 0.242,
+              "league": 0.301,
               "diffPct": -20.0
             }
           },
@@ -13571,26 +13576,26 @@
             {
               "text": "Calls fewer illegal block above the waist: 20% below the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": -1.56,
+              "z": -1.57,
               "direction": "down"
             },
             {
               "text": "Calls fewer neutral zone infraction: 31% below the league rate",
               "key": "t:Neutral Zone Infraction",
-              "z": -1.3,
-              "direction": "down"
-            },
-            {
-              "text": "Calls fewer roughing the passer: 16% below the league rate",
-              "key": "t:Roughing the Passer",
-              "z": -1.23,
+              "z": -1.29,
               "direction": "down"
             },
             {
               "text": "Busier 4th quarters: 31% of flags (league 25%)",
               "key": "q4Share",
-              "z": 1.23,
+              "z": 1.28,
               "direction": "up"
+            },
+            {
+              "text": "Calls fewer roughing the passer: 16% below the league rate",
+              "key": "t:Roughing the Passer",
+              "z": -1.22,
+              "direction": "down"
             }
           ],
           "archetype": {
@@ -14415,58 +14420,58 @@
           "offenseShare": 0.579,
           "homeShare": 0.439,
           "vsLeague": {
-            "perGamePct": 23.9,
+            "perGamePct": 24.1,
             "yardsPerFlagDiff": 0.97
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.649,
-              "league": 3.141,
-              "diffPct": 16.0
+              "perGame": 3.633,
+              "league": 3.118,
+              "diffPct": 17.0
             },
             "False Start": {
-              "perGame": 2.821,
-              "league": 2.741,
-              "diffPct": 3.0
+              "perGame": 2.848,
+              "league": 2.779,
+              "diffPct": 2.0
             },
             "Defensive Pass Interference": {
               "perGame": 1.186,
-              "league": 1.17,
+              "league": 1.169,
               "diffPct": 1.0
             },
             "Defensive Holding": {
-              "perGame": 0.678,
-              "league": 0.733,
+              "perGame": 0.68,
+              "league": 0.735,
               "diffPct": -8.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.874,
-              "league": 0.667,
+              "perGame": 0.87,
+              "league": 0.662,
               "diffPct": 31.0
             },
             "Defensive Offside": {
-              "perGame": 0.755,
-              "league": 0.644,
+              "perGame": 0.757,
+              "league": 0.647,
               "diffPct": 17.0
             },
             "Delay of Game": {
-              "perGame": 0.914,
-              "league": 0.926,
+              "perGame": 0.91,
+              "league": 0.919,
               "diffPct": -1.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.448,
-              "league": 0.4,
+              "perGame": 0.446,
+              "league": 0.397,
               "diffPct": 12.0
             },
             "Roughing the Passer": {
-              "perGame": 0.45,
-              "league": 0.452,
-              "diffPct": -1.0
+              "perGame": 0.447,
+              "league": 0.449,
+              "diffPct": -0.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.313,
-              "league": 0.304,
+              "perGame": 0.311,
+              "league": 0.301,
               "diffPct": 3.0
             }
           },
@@ -14474,25 +14479,25 @@
             {
               "text": "Calls more unnecessary roughness: 31% above the league rate",
               "key": "t:Unnecessary Roughness",
-              "z": 3.07,
+              "z": 3.09,
               "direction": "up"
             },
             {
               "text": "More flags: 18.2 per game (league 14.7)",
               "key": "perGame",
-              "z": 2.14,
-              "direction": "up"
-            },
-            {
-              "text": "Calls more offensive holding: 16% above the league rate",
-              "key": "t:Offensive Holding",
               "z": 2.13,
               "direction": "up"
             },
             {
               "text": "Bigger calls: 9.0 yards per flag (league 8.0)",
               "key": "yardsPerFlag",
-              "z": 2.12,
+              "z": 2.13,
+              "direction": "up"
+            },
+            {
+              "text": "Calls more offensive holding: 17% above the league rate",
+              "key": "t:Offensive Holding",
+              "z": 2.06,
               "direction": "up"
             }
           ],
@@ -15702,58 +15707,58 @@
           "offenseShare": 0.6,
           "homeShare": 0.542,
           "vsLeague": {
-            "perGamePct": 2.0,
-            "yardsPerFlagDiff": -0.69
+            "perGamePct": 2.2,
+            "yardsPerFlagDiff": -0.68
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.351,
-              "league": 3.141,
+              "perGame": 3.334,
+              "league": 3.118,
               "diffPct": 7.0
             },
             "False Start": {
-              "perGame": 2.851,
-              "league": 2.741,
+              "perGame": 2.878,
+              "league": 2.779,
               "diffPct": 4.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.229,
-              "league": 1.17,
+              "perGame": 1.228,
+              "league": 1.169,
               "diffPct": 5.0
             },
             "Defensive Holding": {
-              "perGame": 0.667,
-              "league": 0.733,
+              "perGame": 0.668,
+              "league": 0.735,
               "diffPct": -9.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.726,
-              "league": 0.667,
+              "perGame": 0.723,
+              "league": 0.662,
               "diffPct": 9.0
             },
             "Defensive Offside": {
-              "perGame": 0.71,
-              "league": 0.644,
+              "perGame": 0.712,
+              "league": 0.647,
               "diffPct": 10.0
             },
             "Delay of Game": {
-              "perGame": 0.769,
-              "league": 0.926,
+              "perGame": 0.764,
+              "league": 0.919,
               "diffPct": -17.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.464,
-              "league": 0.4,
+              "perGame": 0.462,
+              "league": 0.397,
               "diffPct": 16.0
             },
             "Roughing the Passer": {
-              "perGame": 0.466,
-              "league": 0.452,
+              "perGame": 0.463,
+              "league": 0.449,
               "diffPct": 3.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.253,
-              "league": 0.304,
+              "perGame": 0.251,
+              "league": 0.301,
               "diffPct": -17.0
             }
           },
@@ -15761,19 +15766,19 @@
             {
               "text": "Calls fewer delay of game: 17% below the league rate",
               "key": "t:Delay of Game",
-              "z": -1.68,
+              "z": -1.77,
               "direction": "down"
             },
             {
               "text": "Smaller calls: 7.3 yards per flag (league 8.0)",
               "key": "yardsPerFlag",
-              "z": -1.38,
+              "z": -1.36,
               "direction": "down"
             },
             {
               "text": "Calls fewer illegal block above the waist: 17% below the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": -1.32,
+              "z": -1.33,
               "direction": "down"
             },
             {
@@ -17001,66 +17006,66 @@
           "offenseShare": 0.577,
           "homeShare": 0.514,
           "vsLeague": {
-            "perGamePct": -5.6,
+            "perGamePct": -5.5,
             "yardsPerFlagDiff": -0.47
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 2.815,
-              "league": 3.141,
+              "perGame": 2.798,
+              "league": 3.118,
               "diffPct": -10.0
             },
             "False Start": {
-              "perGame": 2.815,
-              "league": 2.741,
-              "diffPct": 3.0
+              "perGame": 2.842,
+              "league": 2.779,
+              "diffPct": 2.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.193,
-              "league": 1.17,
+              "perGame": 1.192,
+              "league": 1.169,
               "diffPct": 2.0
             },
             "Defensive Holding": {
-              "perGame": 0.667,
-              "league": 0.733,
+              "perGame": 0.668,
+              "league": 0.735,
               "diffPct": -9.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.655,
-              "league": 0.667,
+              "perGame": 0.651,
+              "league": 0.662,
               "diffPct": -2.0
             },
             "Defensive Offside": {
-              "perGame": 0.746,
-              "league": 0.644,
+              "perGame": 0.748,
+              "league": 0.647,
               "diffPct": 16.0
             },
             "Delay of Game": {
-              "perGame": 1.019,
-              "league": 0.926,
+              "perGame": 1.014,
+              "league": 0.919,
               "diffPct": 10.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.393,
-              "league": 0.4,
+              "perGame": 0.391,
+              "league": 0.397,
               "diffPct": -2.0
             },
             "Roughing the Passer": {
-              "perGame": 0.43,
-              "league": 0.452,
+              "perGame": 0.428,
+              "league": 0.449,
               "diffPct": -5.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.36,
-              "league": 0.304,
-              "diffPct": 18.0
+              "perGame": 0.358,
+              "league": 0.301,
+              "diffPct": 19.0
             }
           },
           "traits": [
             {
-              "text": "More pre-snap fouls: 48% of flags (league 38%)",
+              "text": "More pre-snap fouls: 48% of flags (league 39%)",
               "key": "preSnapShare",
-              "z": 2.05,
+              "z": 1.85,
               "direction": "up"
             },
             {
@@ -17070,15 +17075,15 @@
               "direction": "up"
             },
             {
-              "text": "Calls more illegal block above the waist: 18% above the league rate",
+              "text": "Calls more illegal block above the waist: 19% above the league rate",
               "key": "t:Illegal Block Above the Waist",
-              "z": 1.46,
+              "z": 1.49,
               "direction": "up"
             },
             {
               "text": "Busier 4th quarters: 30% of flags (league 25%)",
               "key": "q4Share",
-              "z": 1.02,
+              "z": 1.07,
               "direction": "up"
             }
           ],
@@ -17520,58 +17525,58 @@
           "offenseShare": 0.509,
           "homeShare": 0.605,
           "vsLeague": {
-            "perGamePct": -3.1,
-            "yardsPerFlagDiff": 0.29
+            "perGamePct": -3.0,
+            "yardsPerFlagDiff": 0.3
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 2.993,
-              "league": 3.141,
+              "perGame": 2.977,
+              "league": 3.118,
               "diffPct": -5.0
             },
             "False Start": {
-              "perGame": 2.422,
-              "league": 2.741,
+              "perGame": 2.45,
+              "league": 2.779,
               "diffPct": -12.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.265,
-              "league": 1.17,
+              "perGame": 1.264,
+              "league": 1.169,
               "diffPct": 8.0
             },
             "Defensive Holding": {
-              "perGame": 0.667,
-              "league": 0.733,
+              "perGame": 0.668,
+              "league": 0.735,
               "diffPct": -9.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.69,
-              "league": 0.667,
+              "perGame": 0.687,
+              "league": 0.662,
               "diffPct": 4.0
             },
             "Defensive Offside": {
-              "perGame": 0.603,
-              "league": 0.644,
+              "perGame": 0.605,
+              "league": 0.647,
               "diffPct": -6.0
             },
             "Delay of Game": {
-              "perGame": 1.019,
-              "league": 0.926,
+              "perGame": 1.014,
+              "league": 0.919,
               "diffPct": 10.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.357,
-              "league": 0.4,
+              "perGame": 0.355,
+              "league": 0.397,
               "diffPct": -11.0
             },
             "Roughing the Passer": {
-              "perGame": 0.501,
-              "league": 0.452,
+              "perGame": 0.499,
+              "league": 0.449,
               "diffPct": 11.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.324,
-              "league": 0.304,
+              "perGame": 0.322,
+              "league": 0.301,
               "diffPct": 7.0
             }
           },
@@ -17579,13 +17584,13 @@
             {
               "text": "More flags on home teams: 61% (league 50%)",
               "key": "homeShare",
-              "z": 2.51,
+              "z": 2.49,
               "direction": "up"
             },
             {
               "text": "More flags on defenses: 51% on offenses (league 58%)",
               "key": "offenseShare",
-              "z": -1.61,
+              "z": -1.67,
               "direction": "down"
             }
           ],
@@ -18825,58 +18830,58 @@
           "offenseShare": 0.619,
           "homeShare": 0.454,
           "vsLeague": {
-            "perGamePct": -5.8,
+            "perGamePct": -5.6,
             "yardsPerFlagDiff": -0.18
           },
           "types": {
             "Offensive Holding": {
-              "perGame": 3.104,
-              "league": 3.141,
+              "perGame": 3.087,
+              "league": 3.118,
               "diffPct": -1.0
             },
             "False Start": {
-              "perGame": 2.66,
-              "league": 2.741,
+              "perGame": 2.688,
+              "league": 2.779,
               "diffPct": -3.0
             },
             "Defensive Pass Interference": {
-              "perGame": 1.126,
-              "league": 1.17,
+              "perGame": 1.125,
+              "league": 1.169,
               "diffPct": -4.0
             },
             "Defensive Holding": {
-              "perGame": 0.654,
-              "league": 0.733,
+              "perGame": 0.656,
+              "league": 0.735,
               "diffPct": -11.0
             },
             "Unnecessary Roughness": {
-              "perGame": 0.716,
-              "league": 0.667,
-              "diffPct": 7.0
+              "perGame": 0.712,
+              "league": 0.662,
+              "diffPct": 8.0
             },
             "Defensive Offside": {
-              "perGame": 0.663,
-              "league": 0.644,
+              "perGame": 0.664,
+              "league": 0.647,
               "diffPct": 3.0
             },
             "Delay of Game": {
-              "perGame": 0.945,
-              "league": 0.926,
+              "perGame": 0.94,
+              "league": 0.919,
               "diffPct": 2.0
             },
             "Neutral Zone Infraction": {
-              "perGame": 0.296,
-              "league": 0.4,
+              "perGame": 0.294,
+              "league": 0.397,
               "diffPct": -26.0
             },
             "Roughing the Passer": {
-              "perGame": 0.372,
-              "league": 0.452,
+              "perGame": 0.369,
+              "league": 0.449,
               "diffPct": -18.0
             },
             "Illegal Block Above the Waist": {
-              "perGame": 0.262,
-              "league": 0.304,
+              "perGame": 0.26,
+              "league": 0.301,
               "diffPct": -14.0
             }
           },
@@ -18884,25 +18889,19 @@
             {
               "text": "Calls fewer roughing the passer: 18% below the league rate",
               "key": "t:Roughing the Passer",
-              "z": -1.39,
+              "z": -1.38,
               "direction": "down"
             },
             {
               "text": "Busier 4th quarters: 31% of flags (league 25%)",
               "key": "q4Share",
-              "z": 1.31,
+              "z": 1.36,
               "direction": "up"
             },
             {
               "text": "Calls fewer neutral zone infraction: 26% below the league rate",
               "key": "t:Neutral Zone Infraction",
-              "z": -1.09,
-              "direction": "down"
-            },
-            {
-              "text": "More flags on road teams: 45% on home teams (league 50%)",
-              "key": "homeShare",
-              "z": -1.02,
+              "z": -1.08,
               "direction": "down"
             }
           ],
@@ -18924,5 +18923,5 @@
     }
   ],
   "notes": "Regular season. Career = seasons before the current one; per-type rates are shrunk toward the league rate. Crews change around the chief each year, so these are crew-chief-level styles. Patterns, not motives.",
-  "generatedAt": "2026-11-10T02:14:52+00:00"
+  "generatedAt": "2026-11-10T06:18:37+00:00"
 }

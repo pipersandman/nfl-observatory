@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-09T02:05:56+00:00",
+  "generatedAt": "2026-11-10T02:15:03+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 71,
+      "games": 72,
       "avgMiss": 3.39,
-      "hitRate": 88.7,
-      "within3": 52.1,
-      "baselineAvgMiss": 3.38,
-      "skillPct": -0.3
+      "hitRate": 88.9,
+      "within3": 51.4,
+      "baselineAvgMiss": 3.37,
+      "skillPct": -0.6
     },
     "byWeek": [
       {
@@ -71,15 +71,35 @@
       {
         "season": 2026,
         "week": 9,
-        "games": 13,
-        "avgMiss": 4.02,
-        "hitRate": 76.9,
-        "within3": 46.2,
-        "baselineAvgMiss": 3.57,
-        "skillPct": -12.5
+        "games": 14,
+        "avgMiss": 3.96,
+        "hitRate": 78.6,
+        "within3": 42.9,
+        "baselineAvgMiss": 3.5,
+        "skillPct": -13.3
       }
     ],
     "games": [
+      {
+        "gameId": "2026_09_TB_CHI",
+        "season": 2026,
+        "week": 9,
+        "away": "TB",
+        "home": "CHI",
+        "crew": "Ron Torbert",
+        "source": "live",
+        "projected": 13.7,
+        "low": 8,
+        "high": 20,
+        "actual": 17,
+        "miss": 3.3,
+        "inRange": true,
+        "baselineMiss": 2.6,
+        "homeProjected": 7.3,
+        "awayProjected": 6.3,
+        "homeActual": 9,
+        "awayActual": 8
+      },
       {
         "gameId": "2026_09_NYJ_KC",
         "season": 2026,

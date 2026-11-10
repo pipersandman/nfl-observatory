@@ -4,12 +4,12 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 134,
-      "flags": 1968,
+      "games": 135,
+      "flags": 1985,
       "league": {
         "pointsCostPerTeamGame": 6.42,
-        "keyFirstDownsGiven": 215,
-        "drivesKilled": 101,
+        "keyFirstDownsGiven": 216,
+        "drivesKilled": 102,
         "bigPlaysErased": 85,
         "turnoversErased": 29,
         "tdsErased": 32,
@@ -108,7 +108,7 @@
           "bigPlaysErased": 4,
           "turnoversErased": 3,
           "tdsErased": 2,
-          "winsGivenAway": 1.92,
+          "winsGivenAway": 1.93,
           "tdsLostOffsetting": 0,
           "rank": 6
         },
@@ -193,22 +193,6 @@
           "rank": 11
         },
         {
-          "team": "TB",
-          "games": 8,
-          "flags": 55,
-          "pointsCost": 54.7,
-          "pointsCostPerGame": 6.84,
-          "firstDownsGiven": 12,
-          "keyFirstDownsGiven": 3,
-          "drivesKilled": 4,
-          "bigPlaysErased": 3,
-          "turnoversErased": 0,
-          "tdsErased": 2,
-          "winsGivenAway": 1.51,
-          "tdsLostOffsetting": 0,
-          "rank": 12
-        },
-        {
           "team": "ARI",
           "games": 9,
           "flags": 68,
@@ -222,7 +206,7 @@
           "tdsErased": 0,
           "winsGivenAway": 1.65,
           "tdsLostOffsetting": 0,
-          "rank": 13
+          "rank": 12
         },
         {
           "team": "SF",
@@ -238,7 +222,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.12,
           "tdsLostOffsetting": 0,
-          "rank": 14
+          "rank": 13
         },
         {
           "team": "CIN",
@@ -254,7 +238,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.32,
           "tdsLostOffsetting": 0,
-          "rank": 15
+          "rank": 14
         },
         {
           "team": "SEA",
@@ -269,6 +253,22 @@
           "turnoversErased": 1,
           "tdsErased": 1,
           "winsGivenAway": 1.39,
+          "tdsLostOffsetting": 0,
+          "rank": 15
+        },
+        {
+          "team": "TB",
+          "games": 9,
+          "flags": 63,
+          "pointsCost": 58.9,
+          "pointsCostPerGame": 6.54,
+          "firstDownsGiven": 12,
+          "keyFirstDownsGiven": 3,
+          "drivesKilled": 4,
+          "bigPlaysErased": 3,
+          "turnoversErased": 0,
+          "tdsErased": 2,
+          "winsGivenAway": 1.62,
           "tdsLostOffsetting": 0,
           "rank": 16
         },
@@ -322,17 +322,17 @@
         },
         {
           "team": "CHI",
-          "games": 8,
-          "flags": 63,
-          "pointsCost": 48.1,
-          "pointsCostPerGame": 6.01,
-          "firstDownsGiven": 15,
-          "keyFirstDownsGiven": 4,
-          "drivesKilled": 3,
+          "games": 9,
+          "flags": 72,
+          "pointsCost": 54.9,
+          "pointsCostPerGame": 6.1,
+          "firstDownsGiven": 17,
+          "keyFirstDownsGiven": 5,
+          "drivesKilled": 4,
           "bigPlaysErased": 1,
           "turnoversErased": 1,
           "tdsErased": 0,
-          "winsGivenAway": 1.15,
+          "winsGivenAway": 1.31,
           "tdsLostOffsetting": 0,
           "rank": 20
         },
@@ -2985,6 +2985,28 @@
         ]
       },
       {
+        "gameId": "2026_09_TB_CHI",
+        "week": 9,
+        "away": "TB",
+        "home": "CHI",
+        "team": "CHI",
+        "side": "defense",
+        "type": "Face Mask",
+        "player": "A.Booker",
+        "qtr": 4,
+        "time": "07:19",
+        "yards": 15,
+        "pointsCost": 2.07,
+        "method": "play value",
+        "winProbCost": 4.3,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
         "gameId": "2026_06_CHI_ATL",
         "week": 6,
         "away": "CHI",
@@ -3007,6 +3029,26 @@
         ]
       },
       {
+        "gameId": "2026_09_TB_CHI",
+        "week": 9,
+        "away": "TB",
+        "home": "CHI",
+        "team": "CHI",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "S.Carlson",
+        "qtr": 3,
+        "time": "07:26",
+        "yards": 9,
+        "pointsCost": 1.67,
+        "method": "play value",
+        "winProbCost": 5.5,
+        "winProbMethod": "play value",
+        "gainErased": 4,
+        "twoPoint": false,
+        "labels": []
+      },
+      {
         "gameId": "2026_01_CHI_CAR",
         "week": 1,
         "away": "CHI",
@@ -3023,48 +3065,6 @@
         "winProbCost": 2.8,
         "winProbMethod": "play value",
         "gainErased": 9,
-        "twoPoint": false,
-        "labels": []
-      },
-      {
-        "gameId": "2026_08_CHI_SEA",
-        "week": 8,
-        "away": "CHI",
-        "home": "SEA",
-        "team": "CHI",
-        "side": "defense",
-        "type": "Defensive Holding",
-        "player": "K.Gordon",
-        "qtr": 3,
-        "time": "02:21",
-        "yards": 5,
-        "pointsCost": 1.5,
-        "method": "play value",
-        "winProbCost": 4.8,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
-      },
-      {
-        "gameId": "2026_02_MIN_CHI",
-        "week": 2,
-        "away": "MIN",
-        "home": "CHI",
-        "team": "CHI",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "B.Jones",
-        "qtr": 1,
-        "time": "07:00",
-        "yards": 10,
-        "pointsCost": 1.39,
-        "method": "play value",
-        "winProbCost": 3.2,
-        "winProbMethod": "play value",
-        "gainErased": 8,
         "twoPoint": false,
         "labels": []
       }
@@ -5983,5 +5983,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-09T02:05:43+00:00"
+  "generatedAt": "2026-11-10T02:14:47+00:00"
 }

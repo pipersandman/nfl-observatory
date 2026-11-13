@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-13T05:02:19+00:00",
+  "generatedAt": "2026-11-13T06:02:42+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 73,
-      "avgMiss": 3.38,
-      "hitRate": 89.0,
-      "within3": 52.1,
-      "baselineAvgMiss": 3.36,
-      "skillPct": -0.6
+      "games": 74,
+      "avgMiss": 3.4,
+      "hitRate": 89.2,
+      "within3": 51.4,
+      "baselineAvgMiss": 3.37,
+      "skillPct": -0.8
     },
     "byWeek": [
       {
@@ -77,9 +77,39 @@
         "within3": 46.7,
         "baselineAvgMiss": 3.43,
         "skillPct": -12.6
+      },
+      {
+        "season": 2026,
+        "week": 10,
+        "games": 1,
+        "avgMiss": 5.1,
+        "hitRate": 100.0,
+        "within3": 0.0,
+        "baselineAvgMiss": 4.4,
+        "skillPct": -15.9
       }
     ],
     "games": [
+      {
+        "gameId": "2026_10_WAS_NYG",
+        "season": 2026,
+        "week": 10,
+        "away": "WAS",
+        "home": "NYG",
+        "crew": "Brad Rogers",
+        "source": "live",
+        "projected": 15.1,
+        "low": 9,
+        "high": 21,
+        "actual": 10,
+        "miss": -5.1,
+        "inRange": true,
+        "baselineMiss": 4.4,
+        "homeProjected": 7.2,
+        "awayProjected": 7.9,
+        "homeActual": 6,
+        "awayActual": 4
+      },
       {
         "gameId": "2026_09_TB_CHI",
         "season": 2026,

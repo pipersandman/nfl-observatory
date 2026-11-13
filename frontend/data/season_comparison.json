@@ -2,18 +2,24 @@
   "currentSeason": 2026,
   "previousSeason": 2025,
   "throughWeek": 9,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 10,
+    "games": 1
+  },
   "windows": {
     "season": 2026,
     "previous": 2025,
     "dataStart": 2015,
     "throughWeek": 9,
-    "partialWeek": null,
+    "partialWeek": {
+      "week": 10,
+      "games": 1
+    },
     "weeksLabel": "Weeks 1\u20139",
     "sameWeeks": {
-      "label": "2025 through Week 9",
-      "short": "2025 Wk 1\u20139",
-      "button": "2025 thru Wk 9"
+      "label": "2025 through Week 10",
+      "short": "2025 Wk 1\u201310",
+      "button": "2025 thru Wk 10"
     },
     "prior": {
       "seasons": [
@@ -42,12 +48,12 @@
   "baselines": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 9",
-      "short": "2025 Wk 1\u20139",
+      "label": "2025 through Week 10",
+      "short": "2025 Wk 1\u201310",
       "seasons": [
         2025
       ],
-      "button": "2025 thru Wk 9"
+      "button": "2025 thru Wk 10"
     },
     {
       "key": "lastSeason",
@@ -92,20 +98,20 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 136,
-      "penalties": 1997,
-      "yards": 16042,
-      "perGame": 14.68,
-      "yardsPerGame": 118.0,
+      "games": 137,
+      "penalties": 2007,
+      "yards": 16121,
+      "perGame": 14.65,
+      "yardsPerGame": 117.7,
       "yardsPerPenalty": 8.0
     },
     "baselines": {
       "sameWeeks": {
-        "games": 135,
-        "penalties": 1844,
-        "yards": 14693,
-        "perGame": 13.66,
-        "yardsPerGame": 108.8,
+        "games": 149,
+        "penalties": 2022,
+        "yards": 16097,
+        "perGame": 13.57,
+        "yardsPerGame": 108.0,
         "yardsPerPenalty": 8.0
       },
       "lastSeason": {
@@ -891,22 +897,22 @@
       "name": "Brad Rogers",
       "slug": "brad-rogers",
       "current": {
-        "games": 8,
-        "penalties": 96,
-        "yards": 736,
-        "perGame": 12.0,
-        "yardsPerGame": 92.0,
+        "games": 9,
+        "penalties": 106,
+        "yards": 815,
+        "perGame": 11.78,
+        "yardsPerGame": 90.6,
         "yardsPerPenalty": 7.7
       },
-      "throughWeek": 9,
+      "throughWeek": 10,
       "baselines": {
         "sameWeeks": {
-          "games": 7,
-          "penalties": 88,
-          "yards": 668,
-          "perGame": 12.57,
-          "yardsPerGame": 95.4,
-          "yardsPerPenalty": 7.6
+          "games": 8,
+          "penalties": 100,
+          "yards": 752,
+          "perGame": 12.5,
+          "yardsPerGame": 94.0,
+          "yardsPerPenalty": 7.5
         },
         "lastSeason": {
           "games": 16,
@@ -1142,5 +1148,5 @@
       }
     }
   ],
-  "generatedAt": "2026-11-13T05:02:12.577789Z"
+  "generatedAt": "2026-11-13T06:02:25.132093Z"
 }

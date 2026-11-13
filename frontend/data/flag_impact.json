@@ -4,12 +4,12 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 136,
-      "flags": 1997,
+      "games": 137,
+      "flags": 2007,
       "league": {
-        "pointsCostPerTeamGame": 6.4,
+        "pointsCostPerTeamGame": 6.38,
         "keyFirstDownsGiven": 217,
-        "drivesKilled": 106,
+        "drivesKilled": 107,
         "bigPlaysErased": 85,
         "turnoversErased": 29,
         "tdsErased": 32,
@@ -81,22 +81,6 @@
           "rank": 4
         },
         {
-          "team": "WAS",
-          "games": 8,
-          "flags": 61,
-          "pointsCost": 63.2,
-          "pointsCostPerGame": 7.9,
-          "firstDownsGiven": 13,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 9,
-          "bigPlaysErased": 5,
-          "turnoversErased": 3,
-          "tdsErased": 3,
-          "winsGivenAway": 1.87,
-          "tdsLostOffsetting": 0,
-          "rank": 5
-        },
-        {
           "team": "NYJ",
           "games": 9,
           "flags": 73,
@@ -110,7 +94,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.93,
           "tdsLostOffsetting": 0,
-          "rank": 6
+          "rank": 5
         },
         {
           "team": "GB",
@@ -126,7 +110,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.61,
           "tdsLostOffsetting": 1,
-          "rank": 7
+          "rank": 6
         },
         {
           "team": "CLE",
@@ -141,6 +125,22 @@
           "turnoversErased": 1,
           "tdsErased": 0,
           "winsGivenAway": 1.63,
+          "tdsLostOffsetting": 0,
+          "rank": 7
+        },
+        {
+          "team": "WAS",
+          "games": 9,
+          "flags": 65,
+          "pointsCost": 65.2,
+          "pointsCostPerGame": 7.25,
+          "firstDownsGiven": 14,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 9,
+          "bigPlaysErased": 5,
+          "turnoversErased": 3,
+          "tdsErased": 3,
+          "winsGivenAway": 1.92,
           "tdsLostOffsetting": 0,
           "rank": 8
         },
@@ -289,22 +289,6 @@
           "rank": 17
         },
         {
-          "team": "NYG",
-          "games": 8,
-          "flags": 59,
-          "pointsCost": 50.4,
-          "pointsCostPerGame": 6.31,
-          "firstDownsGiven": 17,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 5,
-          "bigPlaysErased": 0,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.32,
-          "tdsLostOffsetting": 0,
-          "rank": 18
-        },
-        {
           "team": "NE",
           "games": 9,
           "flags": 66,
@@ -317,6 +301,22 @@
           "turnoversErased": 2,
           "tdsErased": 1,
           "winsGivenAway": 1.35,
+          "tdsLostOffsetting": 0,
+          "rank": 18
+        },
+        {
+          "team": "NYG",
+          "games": 9,
+          "flags": 65,
+          "pointsCost": 55.0,
+          "pointsCostPerGame": 6.11,
+          "firstDownsGiven": 19,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 6,
+          "bigPlaysErased": 0,
+          "turnoversErased": 0,
+          "tdsErased": 0,
+          "winsGivenAway": 1.74,
           "tdsLostOffsetting": 0,
           "rank": 19
         },
@@ -1145,7 +1145,7 @@
           "bigPlaysErased": 7,
           "turnoversErased": 0,
           "tdsErased": 4,
-          "winsGivenAway": 2.94,
+          "winsGivenAway": 2.93,
           "tdsLostOffsetting": 0,
           "rank": 10
         },
@@ -5981,5 +5981,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-13T05:02:13+00:00"
+  "generatedAt": "2026-11-13T06:02:27+00:00"
 }

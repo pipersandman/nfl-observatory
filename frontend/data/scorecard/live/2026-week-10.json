@@ -1686,67 +1686,74 @@
       8,
       19
     ],
-    "leagueAverage": 14.3,
+    "leagueAverage": 14.2,
     "byType": {
-      "False Start": 2.88,
-      "Offensive Holding": 2.87,
+      "Offensive Holding": 2.93,
+      "False Start": 2.87,
       "Defensive Pass Interference": 1.01,
-      "Defensive Offside": 0.68,
-      "Defensive Holding": 0.58,
+      "Defensive Offside": 0.67,
+      "Defensive Holding": 0.59,
       "Illegal Formation": 0.56,
       "Roughing the Passer": 0.55,
-      "Delay of Game": 0.45,
+      "Delay of Game": 0.46,
       "Face Mask": 0.34,
-      "Unnecessary Roughness": 0.32,
-      "Other": 2.76
+      "Unnecessary Roughness": 0.31,
+      "Other": 2.73
     },
     "byTypeTeams": {
+      "Offensive Holding": {
+        "home": 1.62,
+        "away": 1.31
+      },
       "False Start": {
         "home": 1.41,
         "away": 1.47
-      },
-      "Offensive Holding": {
-        "home": 1.59,
-        "away": 1.28
       },
       "Defensive Pass Interference": {
         "home": 0.58,
         "away": 0.43
       },
       "Defensive Offside": {
-        "home": 0.4,
+        "home": 0.39,
         "away": 0.28
       },
       "Defensive Holding": {
-        "home": 0.33,
-        "away": 0.26
+        "home": 0.34,
+        "away": 0.25
       },
       "Illegal Formation": {
-        "home": 0.17,
-        "away": 0.39
+        "home": 0.16,
+        "away": 0.4
       },
       "Roughing the Passer": {
         "home": 0.4,
         "away": 0.15
       },
       "Delay of Game": {
-        "home": 0.22,
+        "home": 0.23,
         "away": 0.23
       },
       "Face Mask": {
-        "home": 0.25,
+        "home": 0.24,
         "away": 0.1
       },
       "Unnecessary Roughness": {
-        "home": 0.16,
+        "home": 0.15,
         "away": 0.16
       },
       "Other": {
-        "home": 1.43,
-        "away": 1.32
+        "home": 1.4,
+        "away": 1.33
       }
     },
     "byTypeFactors": {
+      "Offensive Holding": {
+        "homeCommit": 0.97,
+        "awayCommit": 1.01,
+        "homeDraw": 0.99,
+        "awayDraw": 1.11,
+        "crew": 1.0
+      },
       "False Start": {
         "homeCommit": 1.27,
         "awayCommit": 1.29,
@@ -1754,32 +1761,25 @@
         "awayDraw": 0.9,
         "crew": 0.88
       },
-      "Offensive Holding": {
-        "homeCommit": 0.95,
-        "awayCommit": 1.0,
-        "homeDraw": 0.97,
-        "awayDraw": 1.1,
-        "crew": 0.99
-      },
       "Defensive Pass Interference": {
         "homeCommit": 1.19,
         "awayCommit": 0.89,
         "homeDraw": 0.84,
         "awayDraw": 0.87,
-        "crew": 0.97
+        "crew": 0.98
       },
       "Defensive Offside": {
-        "homeCommit": 0.92,
-        "awayCommit": 1.27,
-        "homeDraw": 0.71,
-        "awayDraw": 1.33,
-        "crew": 1.04
+        "homeCommit": 0.91,
+        "awayCommit": 1.26,
+        "homeDraw": 0.7,
+        "awayDraw": 1.31,
+        "crew": 1.03
       },
       "Defensive Holding": {
         "homeCommit": 1.07,
         "awayCommit": 0.97,
         "homeDraw": 0.71,
-        "awayDraw": 1.0,
+        "awayDraw": 1.01,
         "crew": 0.94
       },
       "Illegal Formation": {
@@ -1787,35 +1787,35 @@
         "awayCommit": 1.28,
         "homeDraw": 1.05,
         "awayDraw": 0.75,
-        "crew": 1.23
+        "crew": 1.24
       },
       "Roughing the Passer": {
         "homeCommit": 0.92,
         "awayCommit": 0.82,
-        "homeDraw": 0.84,
-        "awayDraw": 1.77,
-        "crew": 1.12
+        "homeDraw": 0.85,
+        "awayDraw": 1.78,
+        "crew": 1.13
       },
       "Delay of Game": {
-        "homeCommit": 1.05,
-        "awayCommit": 0.7,
-        "homeDraw": 0.91,
-        "awayDraw": 0.85,
-        "crew": 0.76
+        "homeCommit": 1.08,
+        "awayCommit": 0.71,
+        "homeDraw": 0.92,
+        "awayDraw": 0.87,
+        "crew": 0.77
       },
       "Face Mask": {
-        "homeCommit": 1.28,
-        "awayCommit": 1.08,
+        "homeCommit": 1.27,
+        "awayCommit": 1.07,
         "homeDraw": 0.7,
-        "awayDraw": 1.76,
+        "awayDraw": 1.74,
         "crew": 0.63
       },
       "Unnecessary Roughness": {
         "homeCommit": 0.5,
-        "awayCommit": 1.16,
+        "awayCommit": 1.15,
         "homeDraw": 0.5,
-        "awayDraw": 1.13,
-        "crew": 0.81
+        "awayDraw": 1.12,
+        "crew": 0.8
       },
       "Other": {
         "homeCommit": 1.03,
@@ -1827,9 +1827,9 @@
     },
     "byQuarter": [
       2.97,
-      4.11,
-      2.88,
-      3.04
+      4.1,
+      2.89,
+      3.05
     ],
     "homeRange": [
       3,
@@ -1840,20 +1840,20 @@
       10
     ],
     "yards": 103.0,
-    "probOver": 0.339,
+    "probOver": 0.342,
     "overThreshold": 14,
     "drivers": [
       {
         "label": "Crew chief",
-        "value": -0.9
+        "value": -0.86
       },
       {
         "label": "BAL discipline & what it draws",
-        "value": -0.42
+        "value": -0.38
       },
       {
         "label": "LAC discipline & what it draws",
-        "value": -0.02
+        "value": 0.02
       }
     ],
     "context": {
@@ -1878,7 +1878,7 @@
     "crewKnown": true,
     "modelVersion": "v1.0",
     "source": "live",
-    "frozenAt": "2026-11-15T22:04:43+00:00"
+    "frozenAt": "2026-11-16T01:06:54+00:00"
   },
   "2026_10_KC_ATL": {
     "gameId": "2026_10_KC_ATL",
@@ -2097,55 +2097,55 @@
     "home": "CIN",
     "gameday": "2026-11-15",
     "gametime": "20:20",
-    "total": 14.2,
+    "total": 14.3,
     "home_proj": 6.9,
     "away_proj": 7.3,
     "range": [
       9,
       20
     ],
-    "leagueAverage": 14.3,
+    "leagueAverage": 14.2,
     "byType": {
-      "False Start": 2.7,
-      "Offensive Holding": 2.39,
+      "False Start": 2.69,
+      "Offensive Holding": 2.44,
       "Defensive Pass Interference": 1.13,
-      "Defensive Offside": 1.12,
-      "Defensive Holding": 0.97,
-      "Delay of Game": 0.89,
+      "Defensive Offside": 1.1,
+      "Defensive Holding": 0.98,
+      "Delay of Game": 0.92,
       "Unnecessary Roughness": 0.71,
-      "Roughing the Passer": 0.39,
-      "Face Mask": 0.36,
+      "Roughing the Passer": 0.4,
+      "Face Mask": 0.35,
       "Illegal Formation": 0.22,
-      "Other": 3.34
+      "Other": 3.32
     },
     "byTypeTeams": {
       "False Start": {
         "home": 1.57,
-        "away": 1.12
-      },
-      "Offensive Holding": {
-        "home": 1.26,
         "away": 1.13
       },
+      "Offensive Holding": {
+        "home": 1.29,
+        "away": 1.15
+      },
       "Defensive Pass Interference": {
-        "home": 0.59,
+        "home": 0.6,
         "away": 0.54
       },
       "Defensive Offside": {
-        "home": 0.3,
-        "away": 0.83
+        "home": 0.29,
+        "away": 0.81
       },
       "Defensive Holding": {
-        "home": 0.52,
-        "away": 0.45
+        "home": 0.54,
+        "away": 0.44
       },
       "Delay of Game": {
-        "home": 0.49,
-        "away": 0.4
+        "home": 0.51,
+        "away": 0.41
       },
       "Unnecessary Roughness": {
-        "home": 0.24,
-        "away": 0.47
+        "home": 0.23,
+        "away": 0.48
       },
       "Roughing the Passer": {
         "home": 0.25,
@@ -2160,8 +2160,8 @@
         "away": 0.1
       },
       "Other": {
-        "home": 1.39,
-        "away": 1.95
+        "home": 1.36,
+        "away": 1.96
       }
     },
     "byTypeFactors": {
@@ -2173,11 +2173,11 @@
         "crew": 1.08
       },
       "Offensive Holding": {
-        "homeCommit": 0.85,
-        "awayCommit": 0.84,
-        "homeDraw": 1.05,
-        "awayDraw": 1.02,
-        "crew": 0.95
+        "homeCommit": 0.86,
+        "awayCommit": 0.85,
+        "homeDraw": 1.07,
+        "awayDraw": 1.03,
+        "crew": 0.96
       },
       "Defensive Pass Interference": {
         "homeCommit": 1.07,
@@ -2187,46 +2187,46 @@
         "crew": 0.97
       },
       "Defensive Offside": {
-        "homeCommit": 1.13,
-        "awayCommit": 1.51,
-        "homeDraw": 1.53,
-        "awayDraw": 0.71,
-        "crew": 1.19
+        "homeCommit": 1.12,
+        "awayCommit": 1.49,
+        "homeDraw": 1.52,
+        "awayDraw": 0.7,
+        "crew": 1.18
       },
       "Defensive Holding": {
-        "homeCommit": 1.13,
+        "homeCommit": 1.14,
         "awayCommit": 0.82,
         "homeDraw": 1.05,
-        "awayDraw": 1.08,
+        "awayDraw": 1.09,
         "crew": 1.31
       },
       "Delay of Game": {
-        "homeCommit": 1.22,
-        "awayCommit": 0.96,
-        "homeDraw": 0.96,
-        "awayDraw": 1.34,
-        "crew": 0.93
+        "homeCommit": 1.25,
+        "awayCommit": 0.97,
+        "homeDraw": 0.97,
+        "awayDraw": 1.36,
+        "crew": 0.95
       },
       "Unnecessary Roughness": {
-        "homeCommit": 0.52,
-        "awayCommit": 1.46,
+        "homeCommit": 0.51,
+        "awayCommit": 1.45,
         "homeDraw": 0.83,
-        "awayDraw": 1.18,
-        "crew": 1.14
+        "awayDraw": 1.17,
+        "crew": 1.13
       },
       "Roughing the Passer": {
         "homeCommit": 0.93,
         "awayCommit": 1.11,
-        "homeDraw": 0.69,
-        "awayDraw": 1.2,
-        "crew": 1.01
+        "homeDraw": 0.7,
+        "awayDraw": 1.21,
+        "crew": 1.02
       },
       "Face Mask": {
-        "homeCommit": 1.33,
-        "awayCommit": 1.06,
-        "homeDraw": 0.75,
+        "homeCommit": 1.32,
+        "awayCommit": 1.05,
+        "homeDraw": 0.74,
         "awayDraw": 0.84,
-        "crew": 1.0
+        "crew": 0.99
       },
       "Illegal Formation": {
         "homeCommit": 0.77,
@@ -2236,18 +2236,18 @@
         "crew": 0.95
       },
       "Other": {
-        "homeCommit": 0.73,
+        "homeCommit": 0.72,
         "awayCommit": 0.95,
         "homeDraw": 1.02,
         "awayDraw": 1.03,
-        "crew": 1.1
+        "crew": 1.09
       }
     },
     "byQuarter": [
       3.27,
-      3.93,
-      3.4,
-      3.64
+      3.91,
+      3.42,
+      3.66
     ],
     "homeRange": [
       3,
@@ -2257,21 +2257,21 @@
       3,
       12
     ],
-    "yards": 111.0,
-    "probOver": 0.449,
+    "yards": 112.0,
+    "probOver": 0.452,
     "overThreshold": 14,
     "drivers": [
       {
         "label": "Crew chief",
-        "value": 0.74
+        "value": 0.77
       },
       {
         "label": "CIN discipline & what it draws",
-        "value": -0.34
+        "value": -0.29
       },
       {
         "label": "PIT discipline & what it draws",
-        "value": -0.49
+        "value": -0.46
       }
     ],
     "context": {
@@ -2296,7 +2296,7 @@
     "crewKnown": true,
     "modelVersion": "v1.0",
     "source": "live",
-    "frozenAt": "2026-11-15T22:04:43+00:00"
+    "frozenAt": "2026-11-16T01:06:54+00:00"
   },
   "2026_10_NE_DET": {
     "gameId": "2026_10_NE_DET",

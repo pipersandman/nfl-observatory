@@ -4,11 +4,11 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 148,
-      "flags": 2149,
+      "games": 149,
+      "flags": 2161,
       "league": {
-        "pointsCostPerTeamGame": 6.35,
-        "keyFirstDownsGiven": 233,
+        "pointsCostPerTeamGame": 6.34,
+        "keyFirstDownsGiven": 234,
         "drivesKilled": 111,
         "bigPlaysErased": 94,
         "turnoversErased": 31,
@@ -209,22 +209,6 @@
           "rank": 12
         },
         {
-          "team": "CIN",
-          "games": 8,
-          "flags": 55,
-          "pointsCost": 54.1,
-          "pointsCostPerGame": 6.77,
-          "firstDownsGiven": 19,
-          "keyFirstDownsGiven": 8,
-          "drivesKilled": 1,
-          "bigPlaysErased": 3,
-          "turnoversErased": 1,
-          "tdsErased": 2,
-          "winsGivenAway": 1.32,
-          "tdsLostOffsetting": 0,
-          "rank": 13
-        },
-        {
           "team": "ARI",
           "games": 10,
           "flags": 72,
@@ -237,6 +221,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.79,
+          "tdsLostOffsetting": 0,
+          "rank": 13
+        },
+        {
+          "team": "CIN",
+          "games": 9,
+          "flags": 63,
+          "pointsCost": 59.8,
+          "pointsCostPerGame": 6.65,
+          "firstDownsGiven": 22,
+          "keyFirstDownsGiven": 9,
+          "drivesKilled": 1,
+          "bigPlaysErased": 3,
+          "turnoversErased": 1,
+          "tdsErased": 2,
+          "winsGivenAway": 1.36,
           "tdsLostOffsetting": 0,
           "rank": 14
         },
@@ -514,17 +514,17 @@
         },
         {
           "team": "PIT",
-          "games": 8,
-          "flags": 47,
-          "pointsCost": 35.4,
-          "pointsCostPerGame": 4.42,
-          "firstDownsGiven": 11,
+          "games": 9,
+          "flags": 51,
+          "pointsCost": 39.7,
+          "pointsCostPerGame": 4.41,
+          "firstDownsGiven": 12,
           "keyFirstDownsGiven": 3,
           "drivesKilled": 1,
           "bigPlaysErased": 3,
           "turnoversErased": 0,
           "tdsErased": 0,
-          "winsGivenAway": 0.91,
+          "winsGivenAway": 1.0,
           "tdsLostOffsetting": 0,
           "rank": 32
         }
@@ -5325,6 +5325,28 @@
         ]
       },
       {
+        "gameId": "2026_10_PIT_CIN",
+        "week": 10,
+        "away": "PIT",
+        "home": "CIN",
+        "team": "PIT",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "A.Samuel",
+        "qtr": 2,
+        "time": "15:00",
+        "yards": 26,
+        "pointsCost": 2.15,
+        "method": "play value",
+        "winProbCost": 5.7,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "First down given"
+        ]
+      },
+      {
         "gameId": "2026_06_PIT_TB",
         "week": 6,
         "away": "PIT",
@@ -5386,28 +5408,6 @@
         "twoPoint": false,
         "labels": [
           "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_01_ATL_PIT",
-        "week": 1,
-        "away": "ATL",
-        "home": "PIT",
-        "team": "PIT",
-        "side": "offense",
-        "type": "Offensive Pass Interference",
-        "player": "D.Metcalf",
-        "qtr": 2,
-        "time": "01:56",
-        "yards": 10,
-        "pointsCost": 1.03,
-        "method": "play value",
-        "winProbCost": 3.6,
-        "winProbMethod": "play value",
-        "gainErased": 19,
-        "twoPoint": false,
-        "labels": [
-          "Big play erased"
         ]
       }
     ],
@@ -5988,5 +5988,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-16T02:06:15+00:00"
+  "generatedAt": "2026-11-16T06:08:36+00:00"
 }

@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-16T02:06:23+00:00",
+  "generatedAt": "2026-11-16T06:08:50+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,11 +10,11 @@
   },
   "live": {
     "summary": {
-      "games": 85,
-      "avgMiss": 3.46,
-      "hitRate": 88.2,
-      "within3": 52.9,
-      "baselineAvgMiss": 3.39,
+      "games": 86,
+      "avgMiss": 3.44,
+      "hitRate": 88.4,
+      "within3": 53.5,
+      "baselineAvgMiss": 3.37,
       "skillPct": -2.1
     },
     "byWeek": [
@@ -81,12 +81,12 @@
       {
         "season": 2026,
         "week": 10,
-        "games": 12,
-        "avgMiss": 3.93,
-        "hitRate": 83.3,
-        "within3": 58.3,
-        "baselineAvgMiss": 3.56,
-        "skillPct": -10.5
+        "games": 13,
+        "avgMiss": 3.81,
+        "hitRate": 84.6,
+        "within3": 61.5,
+        "baselineAvgMiss": 3.45,
+        "skillPct": -10.2
       }
     ],
     "games": [
@@ -149,6 +149,26 @@
         "awayProjected": 7.1,
         "homeActual": 0,
         "awayActual": 2
+      },
+      {
+        "gameId": "2026_10_PIT_CIN",
+        "season": 2026,
+        "week": 10,
+        "away": "PIT",
+        "home": "CIN",
+        "crew": "Clete Blakeman",
+        "source": "live",
+        "projected": 14.3,
+        "low": 9,
+        "high": 20,
+        "actual": 12,
+        "miss": -2.3,
+        "inRange": true,
+        "baselineMiss": 2.2,
+        "homeProjected": 6.9,
+        "awayProjected": 7.3,
+        "homeActual": 8,
+        "awayActual": 4
       },
       {
         "gameId": "2026_10_NE_DET",

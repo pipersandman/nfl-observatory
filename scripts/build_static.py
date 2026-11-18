@@ -10,7 +10,7 @@ facts into plain HTML from the weekly data files:
   /team/                 all 32 teams
   /team/<abbr>/          one page per team         (WebPage about SportsTeam)
   /assignments/          this week's games and crew chiefs
-  /trends/               league trends in words and tables
+  /trends/               penalty trends in words and tables
   /dataset/              downloadable CSVs         (Dataset schema)
   /guide/                methodology, glossary, FAQ (FAQPage schema)
   sitemap.xml, llms.txt, data/exports/*.csv
@@ -416,7 +416,7 @@ def team_pages():
     <p class="st-note">Accepted penalties on each team, regular season. "Points given away" is the expected-points cost of those flags (see the <a href="/guide/#flag-cost">guide</a>).</p>"""
     page('/team/', f'NFL Team Penalty Stats {SEASON} | NFL Officiating Observatory',
          f'All 32 NFL teams ranked by penalties per game in {SEASON} {thru_txt}, with last season and the points their flags cost.',
-         body, crumbs=[('/', 'Home'), ('/team/', 'Team Stats')], blocks=FULL_PAGES['/team/']['blocks'])
+         body, crumbs=[('/', 'Home'), ('/team/', 'Team Penalty Stats')], blocks=FULL_PAGES['/team/']['blocks'])
 
     for t in teams:
         a = t['abbr']
@@ -458,7 +458,7 @@ def team_pages():
         {open_app(f'team={a}')}"""
         page(f'/team/{a}/', f'{name} Penalty Stats {SEASON}: Flags Per Game, Most Common Penalties',
              f"The {name} average {f1(cur.get('perGame'))} penalties per game in {SEASON}. Most common penalties, game log, crew chiefs and the points their flags cost.",
-             body, schema, crumbs=[('/', 'Home'), ('/team/', 'Team Stats'), (f'/team/{a}/', name)])
+             body, schema, crumbs=[('/', 'Home'), ('/team/', 'Team Penalty Stats'), (f'/team/{a}/', name)])
 
 
 def assignments_page():
@@ -520,7 +520,7 @@ def trends_page():
 """
     page('/trends/', f'NFL Penalty Trends {SEASON} | NFL Officiating Observatory',
          f'Are NFL penalties up in {SEASON}? Penalties per game by season and week, which penalties are rising, home vs road and what flags cost.',
-         body, crumbs=[('/', 'Home'), ('/trends/', 'League Trends')], blocks=FULL_PAGES['/trends/']['blocks'])
+         body, crumbs=[('/', 'Home'), ('/trends/', 'Penalty Trends')], blocks=FULL_PAGES['/trends/']['blocks'])
 
 
 def dataset_page():
@@ -610,7 +610,7 @@ def guide_page():
          + f" lead the league {thru_txt}. Fewest: " + ', '.join(f"<a href=\"/team/{t['abbr']}/\">{e(team_name(t['abbr']))}</a> ({f1(t['perGame'])})" for t in teams[-2:]) + '.</p>'),
         (f'Are NFL penalties up in {SEASON}?',
          f"<p>Yes. {SEASON} games average {season_vs_same_weeks()}. "
-         + ('The biggest increases are in ' + ', '.join(e(r['type'].lower()) for r in rising) + '. ' if rising else '') + '<a href="/trends/">League Trends</a>.</p>'),
+         + ('The biggest increases are in ' + ', '.join(e(r['type'].lower()) for r in rising) + '. ' if rising else '') + '<a href="/trends/">Penalty Trends</a>.</p>'),
         ('Do refs call more penalties early in the season?',
          (f"<p>Usually. In {fw['seasons']}, {fw['early']['label']} average {f1(fw['early']['perGame'])} flags per game and {fw['late']['label']} average "
           f"{f1(fw['late']['perGame'])}: {f1(fw['fewer'])} fewer, {fw['pctFewer']}% fewer. "
@@ -778,9 +778,9 @@ Current numbers: {SEASON} games average {season_vs_same_weeks()}. Most flags per
 
 ## Key pages
 - [Referee (crew chief) stats]({SITE}/crew/): every active crew chief, penalties per game, career and style
-- [Team penalty stats]({SITE}/team/): all 32 teams ranked by penalties per game
 - [Assignments & Projections]({SITE}/assignments/): crew chief for every game, with projections
-- [League penalty trends]({SITE}/trends/): by season, week, penalty type, home vs road, cost of penalties
+- [Penalty trends]({SITE}/trends/): by season, week, penalty type, home vs road, cost of penalties
+- [Team penalty stats]({SITE}/team/): all 32 teams ranked by penalties per game
 - [Guide and FAQ]({SITE}/guide/): methodology, glossary, common questions with live numbers
 - [Data downloads]({SITE}/dataset/): CSVs, free to use with credit
 

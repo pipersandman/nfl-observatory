@@ -18,15 +18,15 @@ from datetime import datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
 
-# (href, label, topic pages). Order as before; labels per Ty, 2026-10-31. A topic's own
+# (href, label, topic pages). Labels per Ty, 2026-10-31; Penalty Trends before Team Penalty Stats (#191). A topic's own
 # pages (e.g. /crew/ and /crew/<slug>/) mark its item aria-current="true".
 NAV = [
     ('/', 'Home', None),
     ('/gameday/', 'Live Games', None),
     ('/#previews', 'Assignments & Projections', '/assignments/'),
     ('/#referees', 'Crew Chiefs', '/crew/'),
-    ('/#teams', 'Team Stats', '/team/'),
-    ('/#trends', 'League Trends', '/trends/'),
+    ('/#trends', 'Penalty Trends', '/trends/'),
+    ('/#teams', 'Team Penalty Stats', '/team/'),
     ('/guide/', 'Guide', None),
     ('/dataset/', 'Data', None),
 ]

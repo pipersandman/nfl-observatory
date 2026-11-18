@@ -21,7 +21,7 @@ def home_section_order():
 
 
 def test_home_sections_follow_the_menu():
-    assert home_section_order() == ['season', 'previews', 'referees', 'teams', 'trends']
+    assert home_section_order() == ['season', 'previews', 'referees', 'trends', 'teams']      # trends first (#191)
     menu_topics = [h[2:] for h, _, topic in site_nav.NAV if topic]            # '/#previews' -> 'previews'
     assert [s for s in home_section_order() if s in menu_topics] == menu_topics
 
@@ -46,25 +46,34 @@ def test_key_findings_is_gone():
 
 def test_see_all_buttons_use_the_menu_names():
     labels = {topic: label for _, label, topic in site_nav.NAV if topic}
-    expect = {'/assignments/': labels['/assignments/'], '/crew/': labels['/crew/'], '/team/': labels['/team/'],
-              '/trends/': labels['/trends/']}
+    expect = {'/assignments/': labels['/assignments/'], '/crew/': labels['/crew/'], '/trends/': labels['/trends/'],
+              '/team/': labels['/team/']}
     found = re.findall(r'<p class="see-all"><a href="([^"]+)">See all (.+?) →</a></p>', HOME)
     assert [(h, n.replace('&amp;', '&')) for h, n in found] == list(expect.items())
 
 
 def test_menu_labels():
     assert [label for _, label, _ in site_nav.NAV] == [
-        'Home', 'Live Games', 'Assignments & Projections', 'Crew Chiefs', 'Team Stats', 'League Trends', 'Guide', 'Data']
+        'Home', 'Live Games', 'Assignments & Projections', 'Crew Chiefs', 'Penalty Trends', 'Team Penalty Stats', 'Guide', 'Data']
 
 
 def test_old_names_are_gone():
     for old in ('Meet The Officials', 'The Big Picture', 'Team Discipline', 'Flags as they happen',
                 'Full<br>scoreboard', 'Gameday scoreboard', '>Referee stats<', "This week\\'s referee assignments",
-                'Flag-heaviest crew', 'Cleanest team', 'The Scoreboard', 'Which calls are rising?'):
+                'Flag-heaviest crew', 'Cleanest team', 'The Scoreboard', 'Which calls are rising?',
+                'League Trends', 'Team Stats'):                                        # renamed in #191
         for name, text in (('index.html', HOME), ('gameday', GAMEDAY), ('app.js', APP_JS), ('livestrip.js', LIVESTRIP),
                            ('build_static.py', BUILD)):
             assert old not in text, (old, name)
 
+
+
+def test_footer_lists_the_topic_pages_in_menu_order():
+    footer = HOME.split('<div class="footer-links">')[1].split('</div>')[0]
+    pages = re.findall(r'<a href="(/(?:assignments|crew|trends|team)/)">(.+?)</a>', footer)
+    assert [(h, n.replace('&amp;', '&')) for h, n in pages] == [
+        ('/assignments/', 'Assignments & Projections'), ('/crew/', 'Crew Chiefs'),
+        ('/trends/', 'Penalty Trends'), ('/team/', 'Team Penalty Stats')]
 
 # ---- headings: what people search for, computed, and the page title follows -------------
 

@@ -127,7 +127,7 @@ def build_type_trends(data: dict) -> dict:
         fade['seasons'] = weeks.span_label(prior)
         fade['fewer'] = _r(e_x - l_x)
         fade['pctFewer'] = _whole_pct((1 - l_x / e_x) * 100)
-    # ---- Charts for League Trends (regular season only) ----
+    # ---- Charts for Penalty Trends (regular season only) ----
     # Full season vs the same early weeks for every season (fair comparison for a
     # season in progress)
     season_compare = []

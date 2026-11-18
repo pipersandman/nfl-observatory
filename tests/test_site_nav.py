@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parent.parent
 HOME = (ROOT / 'frontend' / 'index.html').read_text(encoding='utf-8')
 APP_JS = (ROOT / 'frontend' / 'js' / 'app.js').read_text(encoding='utf-8')
 
-LABELS = ['Home', 'Live Games', 'Assignments & Projections', 'Crew Chiefs', 'Team Stats', 'League Trends', 'Guide', 'Data']
-SECTION_ITEMS = {'Assignments & Projections': 'previews', 'Crew Chiefs': 'referees', 'Team Stats': 'teams', 'League Trends': 'trends'}
+LABELS = ['Home', 'Live Games', 'Assignments & Projections', 'Crew Chiefs', 'Penalty Trends', 'Team Penalty Stats', 'Guide', 'Data']
+SECTION_ITEMS = {'Assignments & Projections': 'previews', 'Crew Chiefs': 'referees', 'Penalty Trends': 'trends', 'Team Penalty Stats': 'teams'}
 PAGE_ITEMS = {'Home': '/', 'Live Games': '/gameday/', 'Guide': '/guide/', 'Data': '/dataset/'}
 
 
@@ -55,10 +55,10 @@ def test_topics_go_to_home_sections_and_the_rest_to_pages():
     ('/dataset/', [('Data', 'page')]),
     ('/crew/', [('Crew Chiefs', 'true')]),
     ('/crew/bill-vinovich/', [('Crew Chiefs', 'true')]),
-    ('/team/', [('Team Stats', 'true')]),
-    ('/team/MIA/', [('Team Stats', 'true')]),
+    ('/team/', [('Team Penalty Stats', 'true')]),
+    ('/team/MIA/', [('Team Penalty Stats', 'true')]),
     ('/assignments/', [('Assignments & Projections', 'true')]),
-    ('/trends/', [('League Trends', 'true')]),
+    ('/trends/', [('Penalty Trends', 'true')]),
 ])
 def test_highlight_rules(page, expected):
     assert [(label, cur) for _, cur, label in items(site_nav.nav_html(page)) if cur] == expected
@@ -96,7 +96,7 @@ def test_menus_match_fails_on_a_hand_edit_and_ignores_kickoffs(tmp_path, monkeyp
     real = sync_nav.PAGES['/'].read_text(encoding='utf-8')
     page = tmp_path / 'index.html'
     monkeypatch.setattr(sync_nav, 'PAGES', {'/': page})
-    page.write_text(real.replace('>League Trends</a>', '>Penalty trends</a>', 1), encoding='utf-8')
+    page.write_text(real.replace('>Penalty Trends</a>', '>Trends</a>', 1), encoding='utf-8')
     assert check.check_menus()[0] is False
     page.write_text(sync_nav.expected('/', real, ['2026-11-01T17:00Z']), encoding='utf-8')   # a deploy copy
     assert check.check_menus()[0] is True

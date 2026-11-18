@@ -1303,7 +1303,7 @@ function renderScoreboard(animate = false) {
 }
 
 // =============================================================================
-// FLAGS PER GAME BY WEEK OF SEASON (League Trends)
+// FLAGS PER GAME BY WEEK OF SEASON (Penalty Trends)
 // =============================================================================
 
 // Season chips: this season is always on; any past season can be added; the
@@ -1459,7 +1459,7 @@ function renderWeekChart() {
 }
 
 // =============================================================================
-// PENALTY TYPE TRENDS (League Trends): which calls are rising or falling
+// PENALTY TYPE TRENDS (Penalty Trends): which calls are rising or falling
 // =============================================================================
 
 function setTypeTrendsCompare(key) {
@@ -1583,7 +1583,7 @@ function renderTypeTrends() {
 }
 
 // =============================================================================
-// WHAT FLAGS COST (League Trends + team profiles)
+// WHAT FLAGS COST (Penalty Trends + team profiles)
 // =============================================================================
 
 function flagLabelsHtml(labels) {
@@ -1692,7 +1692,7 @@ function teamFlagCostHtml(abbr) {
 }
 
 // =============================================================================
-// CREW STYLES: fingerprint in crew profiles, style map in League Trends, game previews
+// CREW STYLES: fingerprint in crew profiles, style map in Penalty Trends, game previews
 // =============================================================================
 
 function crewStyleBySlug(slug) { return state.crewStyles?.crews?.find(c => c.slug === slug); }
@@ -1876,7 +1876,7 @@ function drawCrewTrajectory(c) {
     });
 }
 
-// League Trends: interactive Crew Chief Style Map (flags per game x yards per flag)
+// Penalty Trends: interactive Crew Chief Style Map (flags per game x yards per flag)
 // Style map periods: 'career', a season ('2024'), or this season week by week
 // ('through-5' = cumulative through Week 5, 'only-5' = Week 5's games alone)
 function setStyleScope(k) { state.styleScope = k; renderStyleMap(); }

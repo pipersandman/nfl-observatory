@@ -2,18 +2,24 @@
   "currentSeason": 2026,
   "previousSeason": 2025,
   "throughWeek": 10,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 11,
+    "games": 1
+  },
   "windows": {
     "season": 2026,
     "previous": 2025,
     "dataStart": 2015,
     "throughWeek": 10,
-    "partialWeek": null,
+    "partialWeek": {
+      "week": 11,
+      "games": 1
+    },
     "weeksLabel": "Weeks 1\u201310",
     "sameWeeks": {
-      "label": "2025 through Week 10",
-      "short": "2025 Wk 1\u201310",
-      "button": "2025 thru Wk 10"
+      "label": "2025 through Week 11",
+      "short": "2025 Wk 1\u201311",
+      "button": "2025 thru Wk 11"
     },
     "prior": {
       "seasons": [
@@ -42,12 +48,12 @@
   "baselines": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 10",
-      "short": "2025 Wk 1\u201310",
+      "label": "2025 through Week 11",
+      "short": "2025 Wk 1\u201311",
       "seasons": [
         2025
       ],
-      "button": "2025 thru Wk 10"
+      "button": "2025 thru Wk 11"
     },
     {
       "key": "lastSeason",
@@ -92,20 +98,20 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 150,
-      "penalties": 2171,
-      "yards": 17478,
-      "perGame": 14.47,
-      "yardsPerGame": 116.5,
-      "yardsPerPenalty": 8.1
+      "games": 151,
+      "penalties": 2177,
+      "yards": 17516,
+      "perGame": 14.42,
+      "yardsPerGame": 116.0,
+      "yardsPerPenalty": 8.0
     },
     "baselines": {
       "sameWeeks": {
-        "games": 149,
-        "penalties": 2022,
-        "yards": 16097,
-        "perGame": 13.57,
-        "yardsPerGame": 108.0,
+        "games": 164,
+        "penalties": 2204,
+        "yards": 17665,
+        "perGame": 13.44,
+        "yardsPerGame": 107.7,
         "yardsPerPenalty": 8.0
       },
       "lastSeason": {
@@ -559,53 +565,6 @@
       }
     },
     {
-      "name": "Shawn Smith",
-      "slug": "shawn-smith",
-      "current": {
-        "games": 9,
-        "penalties": 125,
-        "yards": 1081,
-        "perGame": 13.89,
-        "yardsPerGame": 120.1,
-        "yardsPerPenalty": 8.6
-      },
-      "throughWeek": 10,
-      "baselines": {
-        "sameWeeks": {
-          "games": 9,
-          "penalties": 120,
-          "yards": 940,
-          "perGame": 13.33,
-          "yardsPerGame": 104.4,
-          "yardsPerPenalty": 7.8
-        },
-        "lastSeason": {
-          "games": 16,
-          "penalties": 194,
-          "yards": 1503,
-          "perGame": 12.12,
-          "yardsPerGame": 93.9,
-          "yardsPerPenalty": 7.7
-        },
-        "last3": {
-          "games": 48,
-          "penalties": 596,
-          "yards": 4747,
-          "perGame": 12.42,
-          "yardsPerGame": 98.9,
-          "yardsPerPenalty": 8.0
-        },
-        "all": {
-          "games": 125,
-          "penalties": 1538,
-          "yards": 13123,
-          "perGame": 12.3,
-          "yardsPerGame": 105.0,
-          "yardsPerPenalty": 8.5
-        }
-      }
-    },
-    {
       "name": "Land Clark",
       "slug": "land-clark",
       "current": {
@@ -888,6 +847,53 @@
       }
     },
     {
+      "name": "Shawn Smith",
+      "slug": "shawn-smith",
+      "current": {
+        "games": 10,
+        "penalties": 131,
+        "yards": 1119,
+        "perGame": 13.1,
+        "yardsPerGame": 111.9,
+        "yardsPerPenalty": 8.5
+      },
+      "throughWeek": 11,
+      "baselines": {
+        "sameWeeks": {
+          "games": 10,
+          "penalties": 130,
+          "yards": 1010,
+          "perGame": 13.0,
+          "yardsPerGame": 101.0,
+          "yardsPerPenalty": 7.8
+        },
+        "lastSeason": {
+          "games": 16,
+          "penalties": 194,
+          "yards": 1503,
+          "perGame": 12.12,
+          "yardsPerGame": 93.9,
+          "yardsPerPenalty": 7.7
+        },
+        "last3": {
+          "games": 48,
+          "penalties": 596,
+          "yards": 4747,
+          "perGame": 12.42,
+          "yardsPerGame": 98.9,
+          "yardsPerPenalty": 8.0
+        },
+        "all": {
+          "games": 125,
+          "penalties": 1538,
+          "yards": 13123,
+          "perGame": 12.3,
+          "yardsPerGame": 105.0,
+          "yardsPerPenalty": 8.5
+        }
+      }
+    },
+    {
       "name": "Brad Rogers",
       "slug": "brad-rogers",
       "current": {
@@ -1142,5 +1148,5 @@
       }
     }
   ],
-  "generatedAt": "2026-11-20T03:02:20.590461Z"
+  "generatedAt": "2026-11-20T06:02:16.243647Z"
 }

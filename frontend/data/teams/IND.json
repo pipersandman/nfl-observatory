@@ -4,21 +4,21 @@
   "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
   "division": "AFC South",
   "season": 2026,
-  "record": "3-7",
-  "leaguePerGame": 7.24,
+  "record": "3-8",
+  "leaguePerGame": 7.21,
   "current": {
-    "games": 10,
-    "penalties": 67,
-    "yards": 475,
-    "perGame": 6.7,
-    "yardsPerGame": 47.5,
-    "offensePerGame": 3.8,
-    "defensePerGame": 2.9,
-    "drawnPerGame": 7.3,
-    "drawnYardsPerGame": 64.6,
-    "netPerGame": 0.6,
+    "games": 11,
+    "penalties": 69,
+    "yards": 490,
+    "perGame": 6.27,
+    "yardsPerGame": 44.5,
+    "offensePerGame": 3.55,
+    "defensePerGame": 2.73,
+    "drawnPerGame": 7.0,
+    "drawnYardsPerGame": 60.8,
+    "netPerGame": 0.73,
     "homePerGame": 7.4,
-    "awayPerGame": 6.0
+    "awayPerGame": 5.33
   },
   "lastSeason": {
     "games": 17,
@@ -48,12 +48,12 @@
     "homePerGame": 5.67,
     "awayPerGame": 5.91
   },
-  "throughWeek": 10,
+  "throughWeek": 11,
   "baselines": {
     "sameWeeks": {
-      "label": "2025 through Week 10",
-      "short": "2025 Wk 1\u201310",
-      "button": "2025 thru Wk 10",
+      "label": "2025 through Week 11",
+      "short": "2025 Wk 1\u201311",
+      "button": "2025 thru Wk 11",
       "games": 10,
       "penalties": 60,
       "yards": 512,
@@ -250,62 +250,62 @@
     2025
   ],
   "rank": {
-    "current": 25,
+    "current": 28,
     "lastSeason": 21,
     "of": 32
   },
   "committedTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 1.5,
-      "currentCount": 15,
+      "currentPerGame": 1.45,
+      "currentCount": 16,
       "priorPerGame": 1.21
     },
     {
       "type": "False Start",
-      "currentPerGame": 1.0,
+      "currentPerGame": 0.91,
       "currentCount": 10,
       "priorPerGame": 0.98
     },
     {
+      "type": "Defensive Holding",
+      "currentPerGame": 0.64,
+      "currentCount": 7,
+      "priorPerGame": 0.41
+    },
+    {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.6,
+      "currentPerGame": 0.55,
       "currentCount": 6,
       "priorPerGame": 0.51
     },
     {
-      "type": "Defensive Holding",
-      "currentPerGame": 0.6,
-      "currentCount": 6,
-      "priorPerGame": 0.41
-    },
-    {
       "type": "Delay of Game",
-      "currentPerGame": 0.5,
+      "currentPerGame": 0.45,
       "currentCount": 5,
       "priorPerGame": 0.24
     },
     {
       "type": "Defensive Offside",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.36,
       "currentCount": 4,
       "priorPerGame": 0.25
     },
     {
       "type": "Illegal Block Above the Waist",
-      "currentPerGame": 0.3,
+      "currentPerGame": 0.27,
       "currentCount": 3,
       "priorPerGame": 0.17
     },
     {
       "type": "Face Mask",
-      "currentPerGame": 0.3,
+      "currentPerGame": 0.27,
       "currentCount": 3,
       "priorPerGame": 0.11
     },
     {
       "type": "Unnecessary Roughness",
-      "currentPerGame": 0.1,
+      "currentPerGame": 0.09,
       "currentCount": 1,
       "priorPerGame": 0.3
     }
@@ -313,54 +313,54 @@
   "drawnTypes": [
     {
       "type": "Offensive Holding",
-      "currentPerGame": 2.2,
+      "currentPerGame": 2.0,
       "priorPerGame": 1.22
     },
     {
       "type": "False Start",
-      "currentPerGame": 1.2,
+      "currentPerGame": 1.27,
       "priorPerGame": 1.16
     },
     {
       "type": "Defensive Pass Interference",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.36,
       "priorPerGame": 0.57
     },
     {
       "type": "Offensive Pass Interference",
-      "currentPerGame": 0.4,
+      "currentPerGame": 0.36,
       "priorPerGame": 0.19
     },
     {
-      "type": "Delay of Game",
-      "currentPerGame": 0.3,
-      "priorPerGame": 0.18
+      "type": "Illegal Block Above the Waist",
+      "currentPerGame": 0.36,
+      "priorPerGame": 0.15
     },
     {
-      "type": "Illegal Block Above the Waist",
-      "currentPerGame": 0.3,
-      "priorPerGame": 0.15
+      "type": "Delay of Game",
+      "currentPerGame": 0.27,
+      "priorPerGame": 0.18
     }
   ],
   "quarters": [
     {
       "quarter": 1,
-      "currentPerGame": 1.3,
+      "currentPerGame": 1.36,
       "priorPerGame": 1.06
     },
     {
       "quarter": 2,
-      "currentPerGame": 2.4,
+      "currentPerGame": 2.18,
       "priorPerGame": 1.7
     },
     {
       "quarter": 3,
-      "currentPerGame": 1.1,
+      "currentPerGame": 1.0,
       "priorPerGame": 1.38
     },
     {
       "quarter": 4,
-      "currentPerGame": 1.8,
+      "currentPerGame": 1.64,
       "priorPerGame": 1.61
     }
   ],
@@ -404,24 +404,9 @@
       ]
     },
     {
-      "player": "A.Gardner",
-      "count": 4,
-      "yards": 32,
-      "types": [
-        {
-          "type": "Defensive Pass Interference",
-          "count": 2
-        },
-        {
-          "type": "Defensive Holding",
-          "count": 2
-        }
-      ]
-    },
-    {
       "player": "K.Harris",
-      "count": 4,
-      "yards": 23,
+      "count": 5,
+      "yards": 28,
       "types": [
         {
           "type": "Offensive Holding",
@@ -434,6 +419,21 @@
         {
           "type": "Defensive Pass Interference",
           "count": 1
+        }
+      ]
+    },
+    {
+      "player": "A.Gardner",
+      "count": 4,
+      "yards": 32,
+      "types": [
+        {
+          "type": "Defensive Pass Interference",
+          "count": 2
+        },
+        {
+          "type": "Defensive Holding",
+          "count": 2
         }
       ]
     },
@@ -664,14 +664,6 @@
       "lastSeason": 2017
     },
     {
-      "name": "Shawn Smith",
-      "slug": "shawn-smith",
-      "games": 9,
-      "perGame": 5.0,
-      "opponentPerGame": 4.22,
-      "lastSeason": 2026
-    },
-    {
       "name": "Tony Corrente",
       "slug": "tony-corrente",
       "games": 7,
@@ -693,6 +685,14 @@
       "games": 9,
       "perGame": 4.78,
       "opponentPerGame": 6.78,
+      "lastSeason": 2026
+    },
+    {
+      "name": "Shawn Smith",
+      "slug": "shawn-smith",
+      "games": 10,
+      "perGame": 4.7,
+      "opponentPerGame": 4.2,
       "lastSeason": 2026
     },
     {
@@ -803,14 +803,27 @@
     },
     {
       "season": 2026,
-      "games": 10,
-      "perGame": 6.7,
-      "yardsPerGame": 47.5,
-      "drawnPerGame": 7.3,
-      "rank": 25
+      "games": 11,
+      "perGame": 6.27,
+      "yardsPerGame": 44.5,
+      "drawnPerGame": 7.0,
+      "rank": 28
     }
   ],
   "games": [
+    {
+      "gameId": "2026_11_IND_HOU",
+      "week": 11,
+      "date": "2026-11-19",
+      "opponent": "HOU",
+      "home": false,
+      "score": "3-26",
+      "result": "L",
+      "flags": 2,
+      "yards": 15,
+      "opponentFlags": 4,
+      "crew": "Shawn Smith"
+    },
     {
       "gameId": "2026_10_MIA_IND",
       "week": 10,
@@ -1304,41 +1317,6 @@
       }
     },
     {
-      "opponent": "HOU",
-      "games": 23,
-      "seasons": [
-        2015,
-        2016,
-        2017,
-        2018,
-        2019,
-        2020,
-        2021,
-        2022,
-        2023,
-        2024,
-        2025,
-        2026
-      ],
-      "flagsPerGame": 6.0,
-      "oppFlagsPerGame": 6.48,
-      "yardsPerGame": 46.7,
-      "oppYardsPerGame": 49.7,
-      "netPerGame": 0.48,
-      "totalFlags": 138,
-      "totalOppFlags": 149,
-      "homeGames": 12,
-      "lastMet": {
-        "season": 2026,
-        "week": 3,
-        "home": true,
-        "score": "19-17",
-        "result": "W",
-        "flags": 6,
-        "oppFlags": 2
-      }
-    },
-    {
       "opponent": "ARI",
       "games": 3,
       "seasons": [
@@ -1388,6 +1366,41 @@
         "result": "L",
         "flags": 10,
         "oppFlags": 5
+      }
+    },
+    {
+      "opponent": "HOU",
+      "games": 24,
+      "seasons": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "flagsPerGame": 5.83,
+      "oppFlagsPerGame": 6.38,
+      "yardsPerGame": 45.3,
+      "oppYardsPerGame": 48.6,
+      "netPerGame": 0.54,
+      "totalFlags": 140,
+      "totalOppFlags": 153,
+      "homeGames": 12,
+      "lastMet": {
+        "season": 2026,
+        "week": 11,
+        "home": false,
+        "score": "3-26",
+        "result": "L",
+        "flags": 2,
+        "oppFlags": 4
       }
     },
     {
@@ -1818,8 +1831,8 @@
   "typeTrends": [
     {
       "type": "Offensive Holding",
-      "current": 1.5,
-      "currentCount": 15,
+      "current": 1.45,
+      "currentCount": 16,
       "bySeason": [
         {
           "season": 2015,
@@ -1867,13 +1880,13 @@
         },
         {
           "season": 2026,
-          "perGame": 1.5
+          "perGame": 1.45
         }
       ]
     },
     {
       "type": "False Start",
-      "current": 1.0,
+      "current": 0.91,
       "currentCount": 10,
       "bySeason": [
         {
@@ -1922,13 +1935,13 @@
         },
         {
           "season": 2026,
-          "perGame": 1.0
+          "perGame": 0.91
         }
       ]
     },
     {
       "type": "Defensive Pass Interference",
-      "current": 0.6,
+      "current": 0.55,
       "currentCount": 6,
       "bySeason": [
         {
@@ -1977,14 +1990,14 @@
         },
         {
           "season": 2026,
-          "perGame": 0.6
+          "perGame": 0.55
         }
       ]
     },
     {
       "type": "Defensive Holding",
-      "current": 0.6,
-      "currentCount": 6,
+      "current": 0.64,
+      "currentCount": 7,
       "bySeason": [
         {
           "season": 2015,
@@ -2032,13 +2045,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.6
+          "perGame": 0.64
         }
       ]
     },
     {
       "type": "Unnecessary Roughness",
-      "current": 0.1,
+      "current": 0.09,
       "currentCount": 1,
       "bySeason": [
         {
@@ -2087,13 +2100,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.1
+          "perGame": 0.09
         }
       ]
     },
     {
       "type": "Defensive Offside",
-      "current": 0.4,
+      "current": 0.36,
       "currentCount": 4,
       "bySeason": [
         {
@@ -2142,13 +2155,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.4
+          "perGame": 0.36
         }
       ]
     },
     {
       "type": "Delay of Game",
-      "current": 0.5,
+      "current": 0.45,
       "currentCount": 5,
       "bySeason": [
         {
@@ -2197,7 +2210,7 @@
         },
         {
           "season": 2026,
-          "perGame": 0.5
+          "perGame": 0.45
         }
       ]
     },
@@ -2313,7 +2326,7 @@
     },
     {
       "type": "Illegal Block Above the Waist",
-      "current": 0.3,
+      "current": 0.27,
       "currentCount": 3,
       "bySeason": [
         {
@@ -2362,13 +2375,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.3
+          "perGame": 0.27
         }
       ]
     },
     {
       "type": "Illegal Formation",
-      "current": 0.2,
+      "current": 0.18,
       "currentCount": 2,
       "bySeason": [
         {
@@ -2417,13 +2430,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.2
+          "perGame": 0.18
         }
       ]
     },
     {
       "type": "Offensive Pass Interference",
-      "current": 0.1,
+      "current": 0.09,
       "currentCount": 1,
       "bySeason": [
         {
@@ -2472,13 +2485,13 @@
         },
         {
           "season": 2026,
-          "perGame": 0.1
+          "perGame": 0.09
         }
       ]
     },
     {
       "type": "Face Mask",
-      "current": 0.3,
+      "current": 0.27,
       "currentCount": 3,
       "bySeason": [
         {
@@ -2527,16 +2540,16 @@
         },
         {
           "season": 2026,
-          "perGame": 0.3
+          "perGame": 0.27
         }
       ]
     }
   ],
   "nextGame": {
-    "gameId": "2026_11_IND_HOU",
-    "week": 11,
-    "date": "2026-11-19",
-    "opponent": "HOU",
-    "home": false
+    "gameId": "2026_12_NYG_IND",
+    "week": 12,
+    "date": "2026-11-29",
+    "opponent": "NYG",
+    "home": true
   }
 }

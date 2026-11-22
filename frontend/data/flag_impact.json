@@ -4,31 +4,31 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 151,
-      "flags": 2177,
+      "games": 158,
+      "flags": 2259,
       "league": {
-        "pointsCostPerTeamGame": 5.56,
-        "keyFirstDownsGiven": 235,
-        "drivesKilled": 112,
-        "bigPlaysErased": 94,
-        "turnoversErased": 31,
-        "tdsErased": 35,
+        "pointsCostPerTeamGame": 5.49,
+        "keyFirstDownsGiven": 239,
+        "drivesKilled": 116,
+        "bigPlaysErased": 95,
+        "turnoversErased": 32,
+        "tdsErased": 36,
         "tdsLostOffsetting": 2
       },
       "teams": [
         {
           "team": "CAR",
-          "games": 9,
-          "flags": 87,
-          "pointsCost": 74.2,
-          "pointsCostPerGame": 8.25,
-          "firstDownsGiven": 24,
-          "keyFirstDownsGiven": 7,
+          "games": 10,
+          "flags": 93,
+          "pointsCost": 77.9,
+          "pointsCostPerGame": 7.79,
+          "firstDownsGiven": 27,
+          "keyFirstDownsGiven": 8,
           "drivesKilled": 4,
           "bigPlaysErased": 8,
           "turnoversErased": 2,
           "tdsErased": 3,
-          "winsGivenAway": 2.45,
+          "winsGivenAway": 2.63,
           "tdsLostOffsetting": 0,
           "rank": 1
         },
@@ -49,20 +49,36 @@
           "rank": 2
         },
         {
+          "team": "DAL",
+          "games": 11,
+          "flags": 90,
+          "pointsCost": 75.6,
+          "pointsCostPerGame": 6.87,
+          "firstDownsGiven": 28,
+          "keyFirstDownsGiven": 11,
+          "drivesKilled": 2,
+          "bigPlaysErased": 6,
+          "turnoversErased": 1,
+          "tdsErased": 1,
+          "winsGivenAway": 2.54,
+          "tdsLostOffsetting": 0,
+          "rank": 3
+        },
+        {
           "team": "BUF",
-          "games": 9,
-          "flags": 75,
-          "pointsCost": 62.8,
-          "pointsCostPerGame": 6.97,
-          "firstDownsGiven": 24,
-          "keyFirstDownsGiven": 9,
+          "games": 10,
+          "flags": 82,
+          "pointsCost": 67.9,
+          "pointsCostPerGame": 6.79,
+          "firstDownsGiven": 25,
+          "keyFirstDownsGiven": 10,
           "drivesKilled": 3,
           "bigPlaysErased": 5,
           "turnoversErased": 1,
           "tdsErased": 2,
-          "winsGivenAway": 2.21,
+          "winsGivenAway": 2.29,
           "tdsLostOffsetting": 0,
-          "rank": 3
+          "rank": 4
         },
         {
           "team": "NYJ",
@@ -77,22 +93,6 @@
           "turnoversErased": 3,
           "tdsErased": 2,
           "winsGivenAway": 2.2,
-          "tdsLostOffsetting": 0,
-          "rank": 4
-        },
-        {
-          "team": "DAL",
-          "games": 10,
-          "flags": 79,
-          "pointsCost": 66.3,
-          "pointsCostPerGame": 6.63,
-          "firstDownsGiven": 26,
-          "keyFirstDownsGiven": 11,
-          "drivesKilled": 2,
-          "bigPlaysErased": 6,
-          "turnoversErased": 1,
-          "tdsErased": 1,
-          "winsGivenAway": 2.44,
           "tdsLostOffsetting": 0,
           "rank": 5
         },
@@ -113,18 +113,18 @@
           "rank": 6
         },
         {
-          "team": "BAL",
+          "team": "TB",
           "games": 10,
-          "flags": 80,
-          "pointsCost": 62.1,
-          "pointsCostPerGame": 6.21,
-          "firstDownsGiven": 20,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 1,
-          "bigPlaysErased": 3,
+          "flags": 71,
+          "pointsCost": 62.2,
+          "pointsCostPerGame": 6.22,
+          "firstDownsGiven": 14,
+          "keyFirstDownsGiven": 3,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
           "turnoversErased": 0,
-          "tdsErased": 2,
-          "winsGivenAway": 1.72,
+          "tdsErased": 3,
+          "winsGivenAway": 2.12,
           "tdsLostOffsetting": 0,
           "rank": 7
         },
@@ -236,9 +236,25 @@
           "bigPlaysErased": 4,
           "turnoversErased": 1,
           "tdsErased": 2,
-          "winsGivenAway": 1.7,
+          "winsGivenAway": 1.69,
           "tdsLostOffsetting": 0,
           "rank": 14
+        },
+        {
+          "team": "BAL",
+          "games": 11,
+          "flags": 85,
+          "pointsCost": 64.6,
+          "pointsCostPerGame": 5.88,
+          "firstDownsGiven": 22,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 1,
+          "bigPlaysErased": 3,
+          "turnoversErased": 0,
+          "tdsErased": 2,
+          "winsGivenAway": 1.84,
+          "tdsLostOffsetting": 0,
+          "rank": 15
         },
         {
           "team": "NE",
@@ -254,37 +270,21 @@
           "tdsErased": 2,
           "winsGivenAway": 1.47,
           "tdsLostOffsetting": 0,
-          "rank": 15
-        },
-        {
-          "team": "ARI",
-          "games": 10,
-          "flags": 72,
-          "pointsCost": 57.1,
-          "pointsCostPerGame": 5.71,
-          "firstDownsGiven": 24,
-          "keyFirstDownsGiven": 12,
-          "drivesKilled": 1,
-          "bigPlaysErased": 0,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.84,
-          "tdsLostOffsetting": 0,
           "rank": 16
         },
         {
-          "team": "TB",
-          "games": 9,
-          "flags": 63,
-          "pointsCost": 51.3,
-          "pointsCostPerGame": 5.7,
-          "firstDownsGiven": 12,
-          "keyFirstDownsGiven": 3,
+          "team": "ARI",
+          "games": 11,
+          "flags": 76,
+          "pointsCost": 59.3,
+          "pointsCostPerGame": 5.39,
+          "firstDownsGiven": 24,
+          "keyFirstDownsGiven": 12,
           "drivesKilled": 4,
-          "bigPlaysErased": 3,
+          "bigPlaysErased": 0,
           "turnoversErased": 0,
-          "tdsErased": 2,
-          "winsGivenAway": 1.64,
+          "tdsErased": 0,
+          "winsGivenAway": 1.85,
           "tdsLostOffsetting": 0,
           "rank": 17
         },
@@ -305,6 +305,22 @@
           "rank": 18
         },
         {
+          "team": "DET",
+          "games": 10,
+          "flags": 71,
+          "pointsCost": 53.0,
+          "pointsCostPerGame": 5.3,
+          "firstDownsGiven": 18,
+          "keyFirstDownsGiven": 6,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 0,
+          "winsGivenAway": 1.35,
+          "tdsLostOffsetting": 0,
+          "rank": 19
+        },
+        {
           "team": "NYG",
           "games": 9,
           "flags": 65,
@@ -318,39 +334,7 @@
           "tdsErased": 0,
           "winsGivenAway": 1.78,
           "tdsLostOffsetting": 0,
-          "rank": 19
-        },
-        {
-          "team": "DET",
-          "games": 9,
-          "flags": 63,
-          "pointsCost": 47.4,
-          "pointsCostPerGame": 5.27,
-          "firstDownsGiven": 16,
-          "keyFirstDownsGiven": 6,
-          "drivesKilled": 4,
-          "bigPlaysErased": 4,
-          "turnoversErased": 1,
-          "tdsErased": 0,
-          "winsGivenAway": 1.23,
-          "tdsLostOffsetting": 0,
           "rank": 20
-        },
-        {
-          "team": "CHI",
-          "games": 9,
-          "flags": 72,
-          "pointsCost": 47.3,
-          "pointsCostPerGame": 5.25,
-          "firstDownsGiven": 17,
-          "keyFirstDownsGiven": 5,
-          "drivesKilled": 4,
-          "bigPlaysErased": 1,
-          "turnoversErased": 1,
-          "tdsErased": 0,
-          "winsGivenAway": 1.36,
-          "tdsLostOffsetting": 0,
-          "rank": 21
         },
         {
           "team": "ATL",
@@ -366,14 +350,46 @@
           "tdsErased": 0,
           "winsGivenAway": 1.24,
           "tdsLostOffsetting": 0,
+          "rank": 21
+        },
+        {
+          "team": "CHI",
+          "games": 10,
+          "flags": 75,
+          "pointsCost": 48.8,
+          "pointsCostPerGame": 4.88,
+          "firstDownsGiven": 17,
+          "keyFirstDownsGiven": 5,
+          "drivesKilled": 5,
+          "bigPlaysErased": 1,
+          "turnoversErased": 1,
+          "tdsErased": 0,
+          "winsGivenAway": 1.39,
+          "tdsLostOffsetting": 0,
           "rank": 22
         },
         {
+          "team": "PHI",
+          "games": 10,
+          "flags": 68,
+          "pointsCost": 45.4,
+          "pointsCostPerGame": 4.54,
+          "firstDownsGiven": 17,
+          "keyFirstDownsGiven": 9,
+          "drivesKilled": 4,
+          "bigPlaysErased": 4,
+          "turnoversErased": 1,
+          "tdsErased": 0,
+          "winsGivenAway": 1.37,
+          "tdsLostOffsetting": 0,
+          "rank": 23
+        },
+        {
           "team": "KC",
-          "games": 9,
-          "flags": 62,
-          "pointsCost": 44.2,
-          "pointsCostPerGame": 4.91,
+          "games": 10,
+          "flags": 64,
+          "pointsCost": 45.1,
+          "pointsCostPerGame": 4.51,
           "firstDownsGiven": 21,
           "keyFirstDownsGiven": 8,
           "drivesKilled": 1,
@@ -382,55 +398,23 @@
           "tdsErased": 1,
           "winsGivenAway": 1.29,
           "tdsLostOffsetting": 0,
-          "rank": 23
-        },
-        {
-          "team": "MIA",
-          "games": 9,
-          "flags": 63,
-          "pointsCost": 42.5,
-          "pointsCostPerGame": 4.72,
-          "firstDownsGiven": 12,
-          "keyFirstDownsGiven": 5,
-          "drivesKilled": 5,
-          "bigPlaysErased": 3,
-          "turnoversErased": 1,
-          "tdsErased": 1,
-          "winsGivenAway": 1.24,
-          "tdsLostOffsetting": 0,
           "rank": 24
         },
         {
-          "team": "PHI",
-          "games": 9,
-          "flags": 64,
-          "pointsCost": 42.2,
-          "pointsCostPerGame": 4.69,
-          "firstDownsGiven": 16,
-          "keyFirstDownsGiven": 8,
-          "drivesKilled": 4,
-          "bigPlaysErased": 4,
-          "turnoversErased": 1,
-          "tdsErased": 0,
-          "winsGivenAway": 1.34,
-          "tdsLostOffsetting": 0,
-          "rank": 25
-        },
-        {
           "team": "TEN",
-          "games": 9,
-          "flags": 58,
-          "pointsCost": 40.7,
-          "pointsCostPerGame": 4.53,
-          "firstDownsGiven": 11,
+          "games": 10,
+          "flags": 66,
+          "pointsCost": 44.6,
+          "pointsCostPerGame": 4.46,
+          "firstDownsGiven": 13,
           "keyFirstDownsGiven": 7,
           "drivesKilled": 2,
           "bigPlaysErased": 3,
           "turnoversErased": 0,
           "tdsErased": 0,
-          "winsGivenAway": 1.24,
+          "winsGivenAway": 1.27,
           "tdsLostOffsetting": 0,
-          "rank": 26
+          "rank": 25
         },
         {
           "team": "DEN",
@@ -446,21 +430,37 @@
           "tdsErased": 0,
           "winsGivenAway": 1.37,
           "tdsLostOffsetting": 0,
+          "rank": 26
+        },
+        {
+          "team": "MIA",
+          "games": 10,
+          "flags": 66,
+          "pointsCost": 43.5,
+          "pointsCostPerGame": 4.35,
+          "firstDownsGiven": 13,
+          "keyFirstDownsGiven": 5,
+          "drivesKilled": 5,
+          "bigPlaysErased": 3,
+          "turnoversErased": 2,
+          "tdsErased": 1,
+          "winsGivenAway": 1.29,
+          "tdsLostOffsetting": 0,
           "rank": 27
         },
         {
           "team": "NO",
-          "games": 9,
-          "flags": 52,
-          "pointsCost": 37.9,
-          "pointsCostPerGame": 4.21,
-          "firstDownsGiven": 15,
-          "keyFirstDownsGiven": 7,
+          "games": 10,
+          "flags": 59,
+          "pointsCost": 41.7,
+          "pointsCostPerGame": 4.17,
+          "firstDownsGiven": 18,
+          "keyFirstDownsGiven": 8,
           "drivesKilled": 1,
           "bigPlaysErased": 1,
           "turnoversErased": 0,
           "tdsErased": 0,
-          "winsGivenAway": 1.22,
+          "winsGivenAway": 1.34,
           "tdsLostOffsetting": 0,
           "rank": 28
         },
@@ -481,22 +481,6 @@
           "rank": 29
         },
         {
-          "team": "PIT",
-          "games": 9,
-          "flags": 51,
-          "pointsCost": 35.3,
-          "pointsCostPerGame": 3.92,
-          "firstDownsGiven": 12,
-          "keyFirstDownsGiven": 3,
-          "drivesKilled": 1,
-          "bigPlaysErased": 3,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.06,
-          "tdsLostOffsetting": 0,
-          "rank": 30
-        },
-        {
           "team": "LV",
           "games": 10,
           "flags": 54,
@@ -510,7 +494,7 @@
           "tdsErased": 1,
           "winsGivenAway": 1.32,
           "tdsLostOffsetting": 0,
-          "rank": 31
+          "rank": 30
         },
         {
           "team": "MIN",
@@ -525,6 +509,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.18,
+          "tdsLostOffsetting": 0,
+          "rank": 31
+        },
+        {
+          "team": "PIT",
+          "games": 10,
+          "flags": 57,
+          "pointsCost": 38.7,
+          "pointsCostPerGame": 3.87,
+          "firstDownsGiven": 13,
+          "keyFirstDownsGiven": 3,
+          "drivesKilled": 1,
+          "bigPlaysErased": 3,
+          "turnoversErased": 0,
+          "tdsErased": 0,
+          "winsGivenAway": 1.14,
           "tdsLostOffsetting": 0,
           "rank": 32
         }
@@ -569,6 +569,28 @@
           "winProbCost": 33.4,
           "winProbMethod": "touchdown value",
           "gainErased": 85,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2026_11_TB_DET",
+          "week": 11,
+          "away": "TB",
+          "home": "DET",
+          "team": "TB",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "L.Goedeke",
+          "qtr": 3,
+          "time": "13:21",
+          "yards": 10,
+          "pointsCost": 7.32,
+          "method": "touchdown value",
+          "winProbCost": 31.1,
+          "winProbMethod": "touchdown value",
+          "gainErased": 80,
           "twoPoint": false,
           "labels": [
             "Touchdown erased"
@@ -727,28 +749,6 @@
           "labels": [
             "Touchdown erased"
           ]
-        },
-        {
-          "gameId": "2026_07_LA_LV",
-          "week": 7,
-          "away": "LA",
-          "home": "LV",
-          "team": "LA",
-          "side": "offense",
-          "type": "Face Mask",
-          "player": "S.Avila",
-          "qtr": 3,
-          "time": "04:18",
-          "yards": 15,
-          "pointsCost": 5.32,
-          "method": "touchdown value",
-          "winProbCost": 0.1,
-          "winProbMethod": "touchdown value",
-          "gainErased": 43,
-          "twoPoint": false,
-          "labels": [
-            "Touchdown erased"
-          ]
         }
       ],
       "costliestWinProb": [
@@ -769,6 +769,28 @@
           "winProbCost": 33.4,
           "winProbMethod": "touchdown value",
           "gainErased": 85,
+          "twoPoint": false,
+          "labels": [
+            "Touchdown erased"
+          ]
+        },
+        {
+          "gameId": "2026_11_TB_DET",
+          "week": 11,
+          "away": "TB",
+          "home": "DET",
+          "team": "TB",
+          "side": "offense",
+          "type": "Offensive Holding",
+          "player": "L.Goedeke",
+          "qtr": 3,
+          "time": "13:21",
+          "yards": 10,
+          "pointsCost": 7.32,
+          "method": "touchdown value",
+          "winProbCost": 31.1,
+          "winProbMethod": "touchdown value",
+          "gainErased": 80,
           "twoPoint": false,
           "labels": [
             "Touchdown erased"
@@ -951,28 +973,6 @@
           "labels": [
             "First down given"
           ]
-        },
-        {
-          "gameId": "2026_03_BAL_DAL",
-          "week": 3,
-          "away": "BAL",
-          "home": "DAL",
-          "team": "DAL",
-          "side": "defense",
-          "type": "Defensive Pass Interference",
-          "player": "M.Bell",
-          "qtr": 2,
-          "time": "11:37",
-          "yards": 49,
-          "pointsCost": 4.22,
-          "method": "play value",
-          "winProbCost": 19.0,
-          "winProbMethod": "play value",
-          "gainErased": null,
-          "twoPoint": false,
-          "labels": [
-            "Key first down given"
-          ]
         }
       ]
     },
@@ -1146,7 +1146,7 @@
           "bigPlaysErased": 4,
           "turnoversErased": 2,
           "tdsErased": 2,
-          "winsGivenAway": 2.73,
+          "winsGivenAway": 2.72,
           "tdsLostOffsetting": 0,
           "rank": 10
         },
@@ -1540,7 +1540,7 @@
           "yards": 10,
           "pointsCost": 7.88,
           "method": "touchdown value",
-          "winProbCost": 15.4,
+          "winProbCost": 15.3,
           "winProbMethod": "touchdown value",
           "gainErased": 72,
           "twoPoint": false,
@@ -2827,25 +2827,25 @@
         ]
       },
       {
-        "gameId": "2026_05_BUF_LA",
-        "week": 5,
-        "away": "BUF",
-        "home": "LA",
+        "gameId": "2026_11_MIA_BUF",
+        "week": 11,
+        "away": "MIA",
+        "home": "BUF",
         "team": "BUF",
         "side": "defense",
         "type": "Defensive Pass Interference",
-        "player": "C.Bishop",
-        "qtr": 3,
-        "time": "10:18",
-        "yards": 17,
-        "pointsCost": 1.74,
+        "player": "D.Igbinosun",
+        "qtr": 4,
+        "time": "12:05",
+        "yards": 3,
+        "pointsCost": 2.2,
         "method": "play value",
-        "winProbCost": 8.6,
+        "winProbCost": 1.7,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
         "labels": [
-          "First down given"
+          "Key first down given"
         ]
       }
     ],
@@ -3340,6 +3340,28 @@
         ]
       },
       {
+        "gameId": "2026_11_TEN_DAL",
+        "week": 11,
+        "away": "TEN",
+        "home": "DAL",
+        "team": "DAL",
+        "side": "defense",
+        "type": "Defensive Pass Interference",
+        "player": "C.Downs",
+        "qtr": 3,
+        "time": "13:18",
+        "yards": 38,
+        "pointsCost": 2.66,
+        "method": "play value",
+        "winProbCost": 3.4,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "First down given"
+        ]
+      },
+      {
         "gameId": "2026_06_DAL_GB",
         "week": 6,
         "away": "DAL",
@@ -3382,28 +3404,6 @@
         "labels": [
           "Key first down given",
           "Turnover erased"
-        ]
-      },
-      {
-        "gameId": "2026_05_TB_DAL",
-        "week": 5,
-        "away": "TB",
-        "home": "DAL",
-        "team": "DAL",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "S.Revel",
-        "qtr": 4,
-        "time": "15:00",
-        "yards": 7,
-        "pointsCost": 1.85,
-        "method": "play value",
-        "winProbCost": 1.4,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
         ]
       }
     ],
@@ -4878,6 +4878,28 @@
         ]
       },
       {
+        "gameId": "2026_11_NO_CHI",
+        "week": 11,
+        "away": "NO",
+        "home": "CHI",
+        "team": "NO",
+        "side": "defense",
+        "type": "Illegal Contact",
+        "player": "J.Sanker",
+        "qtr": 1,
+        "time": "03:42",
+        "yards": 5,
+        "pointsCost": 2.5,
+        "method": "play value",
+        "winProbCost": 9.2,
+        "winProbMethod": "play value",
+        "gainErased": null,
+        "twoPoint": false,
+        "labels": [
+          "Key first down given"
+        ]
+      },
+      {
         "gameId": "2026_07_PIT_NO",
         "week": 7,
         "away": "PIT",
@@ -4936,28 +4958,6 @@
         "pointsCost": 1.46,
         "method": "play value",
         "winProbCost": 3.1,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "First down given"
-        ]
-      },
-      {
-        "gameId": "2026_10_CAR_NO",
-        "week": 10,
-        "away": "CAR",
-        "home": "NO",
-        "team": "NO",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "K.McKinstry",
-        "qtr": 4,
-        "time": "00:28",
-        "yards": 30,
-        "pointsCost": 1.46,
-        "method": "play value",
-        "winProbCost": 19.5,
         "winProbMethod": "play value",
         "gainErased": null,
         "twoPoint": false,
@@ -5280,24 +5280,26 @@
         ]
       },
       {
-        "gameId": "2026_01_WAS_PHI",
-        "week": 1,
-        "away": "WAS",
+        "gameId": "2026_11_PIT_PHI",
+        "week": 11,
+        "away": "PIT",
         "home": "PHI",
         "team": "PHI",
-        "side": "offense",
-        "type": "Offensive Holding",
-        "player": "C.Jurgens",
-        "qtr": 1,
-        "time": "01:02",
-        "yards": 10,
-        "pointsCost": 1.23,
+        "side": "defense",
+        "type": "Illegal Contact",
+        "player": "Q.Mitchell",
+        "qtr": 2,
+        "time": "13:38",
+        "yards": 5,
+        "pointsCost": 1.3,
         "method": "play value",
-        "winProbCost": 2.2,
+        "winProbCost": 1.9,
         "winProbMethod": "play value",
-        "gainErased": 4,
+        "gainErased": null,
         "twoPoint": false,
-        "labels": []
+        "labels": [
+          "Key first down given"
+        ]
       }
     ],
     "PIT": [
@@ -5447,7 +5449,7 @@
         "yards": 5,
         "pointsCost": 4.14,
         "method": "touchdown value",
-        "winProbCost": 6.6,
+        "winProbCost": 6.5,
         "winProbMethod": "touchdown value",
         "gainErased": 7,
         "twoPoint": false,
@@ -5658,6 +5660,28 @@
         ]
       },
       {
+        "gameId": "2026_11_TB_DET",
+        "week": 11,
+        "away": "TB",
+        "home": "DET",
+        "team": "TB",
+        "side": "offense",
+        "type": "Offensive Holding",
+        "player": "L.Goedeke",
+        "qtr": 3,
+        "time": "13:21",
+        "yards": 10,
+        "pointsCost": 7.32,
+        "method": "touchdown value",
+        "winProbCost": 31.1,
+        "winProbMethod": "touchdown value",
+        "gainErased": 80,
+        "twoPoint": false,
+        "labels": [
+          "Touchdown erased"
+        ]
+      },
+      {
         "gameId": "2026_07_TB_CAR",
         "week": 7,
         "away": "TB",
@@ -5720,28 +5744,6 @@
         "gainErased": 4,
         "twoPoint": false,
         "labels": []
-      },
-      {
-        "gameId": "2026_06_PIT_TB",
-        "week": 6,
-        "away": "PIT",
-        "home": "TB",
-        "team": "TB",
-        "side": "defense",
-        "type": "Defensive Pass Interference",
-        "player": "J.Parrish",
-        "qtr": 4,
-        "time": "03:38",
-        "yards": 12,
-        "pointsCost": 1.24,
-        "method": "play value",
-        "winProbCost": 15.4,
-        "winProbMethod": "play value",
-        "gainErased": null,
-        "twoPoint": false,
-        "labels": [
-          "Key first down given"
-        ]
       }
     ],
     "TEN": [
@@ -5985,5 +5987,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-22T18:05:55+00:00"
+  "generatedAt": "2026-11-22T22:04:32+00:00"
 }

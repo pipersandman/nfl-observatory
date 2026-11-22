@@ -2,10 +2,10 @@
   "season": 2026,
   "week": 11,
   "remainingOnly": true,
-  "generatedAt": "2026-11-22T18:06:02+00:00",
+  "generatedAt": "2026-11-22T22:04:39+00:00",
   "assignments": {
-    "assigned": 12,
-    "games": 12,
+    "assigned": 5,
+    "games": 5,
     "source": {
       "name": "Football Zebras",
       "url": "https://www.footballzebras.com/2026/11/week-11-referee-assignments-2026/",
@@ -25,8 +25,8 @@
       "2025": 0.6,
       "2024": 0.3
     },
-    "leagueAveragePerGame": 14.2,
-    "dispersion": 1.44,
+    "leagueAveragePerGame": 14.1,
+    "dispersion": 1.45,
     "regularSeasonOnly": true
   },
   "contextReference": {
@@ -36,490 +36,6 @@
     "nonDivision": 13.3
   },
   "games": [
-    {
-      "gameId": "2026_11_TEN_DAL",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "DAL",
-        "name": "Dallas Cowboys",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png"
-      },
-      "awayTeam": {
-        "abbr": "TEN",
-        "name": "Tennessee Titans",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png"
-      },
-      "crew": {
-        "name": "Clete Blakeman",
-        "slug": "clete-blakeman",
-        "gamesInModel": 41,
-        "overallFactor": 1.049,
-        "typeTilts": [
-          {
-            "type": "Defensive Holding",
-            "factor": 1.27
-          },
-          {
-            "type": "Unnecessary Roughness",
-            "factor": 1.15
-          },
-          {
-            "type": "Defensive Offside",
-            "factor": 1.14
-          },
-          {
-            "type": "Illegal Formation",
-            "factor": 0.93
-          }
-        ],
-        "quarterTilt": [
-          1.04,
-          0.94,
-          1.03,
-          1.01
-        ]
-      },
-      "projection": {
-        "total": 18.0,
-        "home": 8.5,
-        "away": 9.5,
-        "range": [
-          12,
-          25
-        ],
-        "homeRange": [
-          4,
-          13
-        ],
-        "awayRange": [
-          5,
-          14
-        ],
-        "yards": 144.0,
-        "homeYards": 68.0,
-        "awayYards": 76.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 26.9,
-        "overThreshold": 14,
-        "probOver": 0.742,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.94,
-            "away": 2.18
-          },
-          {
-            "quarter": 2,
-            "home": 2.35,
-            "away": 2.61
-          },
-          {
-            "quarter": 3,
-            "home": 2.07,
-            "away": 2.24
-          },
-          {
-            "quarter": 4,
-            "home": 2.15,
-            "away": 2.44
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": 0.7
-          },
-          {
-            "label": "DAL discipline & what it draws",
-            "value": 2.57
-          },
-          {
-            "label": "TEN discipline & what it draws",
-            "value": 0.54
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "Offensive Holding",
-          "home": 2.04,
-          "away": 1.7,
-          "total": 3.75,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.23,
-            "awayCommit": 1.28,
-            "homeDraw": 1.05,
-            "awayDraw": 1.15,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "False Start",
-          "home": 1.44,
-          "away": 1.7,
-          "total": 3.14,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.88,
-            "awayCommit": 0.94,
-            "homeDraw": 1.28,
-            "awayDraw": 1.1,
-            "crew": 1.07
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.61,
-          "away": 0.8,
-          "total": 1.41,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 1.1,
-            "awayCommit": 0.82,
-            "homeDraw": 1.73,
-            "awayDraw": 1.01,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.46,
-          "away": 0.81,
-          "total": 1.27,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.42,
-            "awayCommit": 1.83,
-            "homeDraw": 1.3,
-            "awayDraw": 0.89,
-            "crew": 1.14
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.42,
-          "away": 0.49,
-          "total": 0.91,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 1.31,
-            "awayCommit": 0.85,
-            "homeDraw": 1.42,
-            "awayDraw": 0.83,
-            "crew": 1.15
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.35,
-          "away": 0.4,
-          "total": 0.75,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.87,
-            "awayCommit": 0.88,
-            "homeDraw": 1.04,
-            "awayDraw": 1.34,
-            "crew": 0.95
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.12,
-          "away": 0.54,
-          "total": 0.66,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.76,
-            "awayCommit": 1.69,
-            "homeDraw": 1.47,
-            "awayDraw": 0.88,
-            "crew": 0.93
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.33,
-          "away": 0.31,
-          "total": 0.64,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.0,
-            "awayCommit": 0.6,
-            "homeDraw": 1.04,
-            "awayDraw": 0.79,
-            "crew": 1.27
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.16,
-          "away": 0.29,
-          "total": 0.46,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 1.08,
-            "awayCommit": 1.34,
-            "homeDraw": 1.11,
-            "awayDraw": 0.92,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.11,
-          "away": 0.3,
-          "total": 0.41,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 0.92,
-            "awayCommit": 0.78,
-            "homeDraw": 1.97,
-            "awayDraw": 0.5,
-            "crew": 1.06
-          }
-        },
-        {
-          "type": "Other",
-          "home": 2.46,
-          "away": 2.13,
-          "total": 4.59,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 1.33,
-            "awayCommit": 1.01,
-            "homeDraw": 1.05,
-            "awayDraw": 1.03,
-            "crew": 1.09
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 10,
-          "perGame": 7.9,
-          "offensePerGame": 3.5,
-          "defensePerGame": 4.4,
-          "drawnPerGame": 9.6,
-          "yardsPerGame": 70.2,
-          "lastSeasonPerGame": 7.82,
-          "rank": 9,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "D.Bland",
-              "count": 6,
-              "yards": 75,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 4
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "B.Aubrey",
-              "count": 5,
-              "yards": 0,
-              "types": [
-                {
-                  "type": "Kickoff Short of Landing Zone",
-                  "count": 3
-                },
-                {
-                  "type": "Kickoff Out of Bounds",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "J.Porter",
-              "count": 4,
-              "yards": 52,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Illegal Use of Hands",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "T.Booker",
-              "count": 4,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Ineligible Downfield Pass",
-                  "count": 1
-                },
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 10
-        },
-        "away": {
-          "games": 9,
-          "perGame": 6.44,
-          "offensePerGame": 3.56,
-          "defensePerGame": 2.89,
-          "drawnPerGame": 7.67,
-          "yardsPerGame": 48.6,
-          "lastSeasonPerGame": 7.59,
-          "rank": 27,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "J.Latham",
-              "count": 7,
-              "yards": 50,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Illegal Formation",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "A.Schlottmann",
-              "count": 5,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "J.Martin",
-              "count": 4,
-              "yards": 20,
-              "types": [
-                {
-                  "type": "Defensive Offside",
-                  "count": 4
-                }
-              ]
-            },
-            {
-              "player": "Jo.Williams",
-              "count": 4,
-              "yards": 18,
-              "types": [
-                {
-                  "type": "Illegal Contact",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Offside",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2022_17_DAL_TEN",
-          "season": 2022,
-          "week": 17,
-          "home": "TEN",
-          "away": "DAL",
-          "homeScore": 13,
-          "awayScore": 27,
-          "flags": 13,
-          "homeFlags": 10,
-          "awayFlags": 3,
-          "crew": "Shawn Hochuli"
-        },
-        {
-          "gameId": "2018_09_TEN_DAL",
-          "season": 2018,
-          "week": 9,
-          "home": "DAL",
-          "away": "TEN",
-          "homeScore": 14,
-          "awayScore": 28,
-          "flags": 9,
-          "homeFlags": 6,
-          "awayFlags": 3,
-          "crew": "Clete Blakeman"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": null,
-        "surface": "matrixturf",
-        "temp": null,
-        "wind": null,
-        "homeRest": 7,
-        "awayRest": 7,
-        "spread": 7.5,
-        "total": 55.5,
-        "stadium": "AT&T Stadium",
-        "homeQB": "Dak Prescott",
-        "awayQB": "Cam Ward",
-        "homeCoach": "Brian Schottenheimer",
-        "awayCoach": "Robert Saleh"
-      }
-    },
     {
       "gameId": "2026_11_JAX_NYG",
       "season": 2026,
@@ -542,7 +58,7 @@
         "name": "Craig Wrolstad",
         "slug": "craig-wrolstad",
         "gamesInModel": 41,
-        "overallFactor": 1.05,
+        "overallFactor": 1.053,
         "typeTilts": [
           {
             "type": "Defensive Pass Interference",
@@ -587,10 +103,10 @@
         "yards": 137.0,
         "homeYards": 66.0,
         "awayYards": 72.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 14.8,
+        "leagueAverage": 14.1,
+        "vsLeaguePct": 15.8,
         "overThreshold": 14,
-        "probOver": 0.62,
+        "probOver": 0.623,
         "byQuarter": [
           {
             "quarter": 1,
@@ -599,57 +115,57 @@
           },
           {
             "quarter": 2,
-            "home": 2.41,
+            "home": 2.42,
             "away": 2.42
           },
           {
             "quarter": 3,
-            "home": 1.79,
+            "home": 1.8,
             "away": 1.8
           },
           {
             "quarter": 4,
-            "home": 2.05,
+            "home": 2.06,
             "away": 2.1
           }
         ],
         "drivers": [
           {
             "label": "Crew chief",
-            "value": 0.71
+            "value": 0.74
           },
           {
             "label": "NYG discipline & what it draws",
-            "value": 1.07
+            "value": 1.11
           },
           {
             "label": "JAX discipline & what it draws",
-            "value": 0.32
+            "value": 0.37
           }
         ]
       },
       "byType": [
         {
           "type": "Offensive Holding",
-          "home": 1.38,
+          "home": 1.39,
           "away": 1.51,
-          "total": 2.88,
-          "leagueTotal": 2.81,
+          "total": 2.9,
+          "leagueTotal": 2.78,
           "yardsEach": 9.6,
           "factors": {
-            "homeCommit": 0.82,
-            "awayCommit": 1.03,
-            "homeDraw": 1.07,
-            "awayDraw": 1.07,
-            "crew": 1.04
+            "homeCommit": 0.83,
+            "awayCommit": 1.04,
+            "homeDraw": 1.08,
+            "awayDraw": 1.08,
+            "crew": 1.05
           }
         },
         {
           "type": "False Start",
-          "home": 1.76,
+          "home": 1.75,
           "away": 1.11,
           "total": 2.86,
-          "leagueTotal": 2.71,
+          "leagueTotal": 2.69,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 1.29,
@@ -661,14 +177,14 @@
         },
         {
           "type": "Defensive Pass Interference",
-          "home": 0.93,
-          "away": 1.17,
-          "total": 2.1,
-          "leagueTotal": 1.15,
+          "home": 0.95,
+          "away": 1.16,
+          "total": 2.11,
+          "leagueTotal": 1.14,
           "yardsEach": 15.4,
           "factors": {
-            "homeCommit": 1.42,
-            "awayCommit": 1.23,
+            "homeCommit": 1.43,
+            "awayCommit": 1.24,
             "homeDraw": 1.21,
             "awayDraw": 0.86,
             "crew": 1.35
@@ -678,42 +194,42 @@
           "type": "Delay of Game",
           "home": 0.58,
           "away": 0.51,
-          "total": 1.08,
+          "total": 1.09,
           "leagueTotal": 0.77,
           "yardsEach": 4.9,
           "factors": {
-            "homeCommit": 1.56,
+            "homeCommit": 1.57,
             "awayCommit": 0.82,
-            "homeDraw": 1.16,
-            "awayDraw": 0.99,
+            "homeDraw": 1.17,
+            "awayDraw": 1.0,
             "crew": 1.17
           }
         },
         {
           "type": "Unnecessary Roughness",
-          "home": 0.29,
+          "home": 0.28,
           "away": 0.43,
-          "total": 0.72,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
+          "total": 0.71,
+          "leagueTotal": 0.7,
+          "yardsEach": 13.0,
           "factors": {
-            "homeCommit": 1.0,
-            "awayCommit": 1.1,
-            "homeDraw": 1.2,
-            "awayDraw": 0.94,
+            "homeCommit": 0.99,
+            "awayCommit": 1.09,
+            "homeDraw": 1.19,
+            "awayDraw": 0.93,
             "crew": 0.92
           }
         },
         {
           "type": "Defensive Holding",
           "home": 0.18,
-          "away": 0.4,
+          "away": 0.41,
           "total": 0.58,
-          "leagueTotal": 0.72,
+          "leagueTotal": 0.71,
           "yardsEach": 4.7,
           "factors": {
             "homeCommit": 1.03,
-            "awayCommit": 0.97,
+            "awayCommit": 0.98,
             "homeDraw": 1.23,
             "awayDraw": 0.63,
             "crew": 0.86
@@ -722,25 +238,25 @@
         {
           "type": "Defensive Offside",
           "home": 0.24,
-          "away": 0.28,
-          "total": 0.52,
+          "away": 0.27,
+          "total": 0.51,
           "leagueTotal": 0.62,
-          "yardsEach": 4.7,
+          "yardsEach": 4.8,
           "factors": {
-            "homeCommit": 0.99,
-            "awayCommit": 0.66,
-            "homeDraw": 1.54,
+            "homeCommit": 0.98,
+            "awayCommit": 0.65,
+            "homeDraw": 1.53,
             "awayDraw": 0.84,
-            "crew": 0.92
+            "crew": 0.91
           }
         },
         {
           "type": "Roughing the Passer",
           "home": 0.13,
-          "away": 0.3,
-          "total": 0.43,
+          "away": 0.31,
+          "total": 0.44,
           "leagueTotal": 0.4,
-          "yardsEach": 13.0,
+          "yardsEach": 13.1,
           "factors": {
             "homeCommit": 0.68,
             "awayCommit": 0.94,
@@ -751,17 +267,17 @@
         },
         {
           "type": "Face Mask",
-          "home": 0.16,
+          "home": 0.15,
           "away": 0.25,
-          "total": 0.41,
+          "total": 0.4,
           "leagueTotal": 0.38,
           "yardsEach": 13.2,
           "factors": {
             "homeCommit": 0.55,
             "awayCommit": 0.69,
-            "homeDraw": 1.68,
-            "awayDraw": 1.58,
-            "crew": 1.05
+            "homeDraw": 1.67,
+            "awayDraw": 1.56,
+            "crew": 1.04
           }
         },
         {
@@ -781,17 +297,17 @@
         },
         {
           "type": "Other",
-          "home": 2.33,
+          "home": 2.34,
           "away": 2.04,
-          "total": 4.36,
-          "leagueTotal": 3.49,
+          "total": 4.38,
+          "leagueTotal": 3.45,
           "yardsEach": 7.0,
           "factors": {
             "homeCommit": 1.07,
-            "awayCommit": 1.05,
+            "awayCommit": 1.06,
             "homeDraw": 0.93,
-            "awayDraw": 1.16,
-            "crew": 1.13
+            "awayDraw": 1.17,
+            "crew": 1.14
           }
         }
       ],
@@ -882,7 +398,7 @@
           "drawnPerGame": 8.33,
           "yardsPerGame": 55.4,
           "lastSeasonPerGame": 7.47,
-          "rank": 26,
+          "rank": 24,
           "mostCommon": "Offensive Holding",
           "watchlist": [
             {
@@ -1005,983 +521,6 @@
       }
     },
     {
-      "gameId": "2026_11_BAL_CAR",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "CAR",
-        "name": "Carolina Panthers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png"
-      },
-      "awayTeam": {
-        "abbr": "BAL",
-        "name": "Baltimore Ravens",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png"
-      },
-      "crew": {
-        "name": "Shawn Hochuli",
-        "slug": "shawn-hochuli",
-        "gamesInModel": 41,
-        "overallFactor": 1.05,
-        "typeTilts": [
-          {
-            "type": "Defensive Offside",
-            "factor": 1.29
-          },
-          {
-            "type": "Roughing the Passer",
-            "factor": 1.24
-          },
-          {
-            "type": "False Start",
-            "factor": 1.19
-          },
-          {
-            "type": "Unnecessary Roughness",
-            "factor": 1.18
-          }
-        ],
-        "quarterTilt": [
-          1.05,
-          1.01,
-          0.92,
-          1.02
-        ]
-      },
-      "projection": {
-        "total": 15.3,
-        "home": 7.0,
-        "away": 8.3,
-        "range": [
-          10,
-          22
-        ],
-        "homeRange": [
-          3,
-          11
-        ],
-        "awayRange": [
-          4,
-          13
-        ],
-        "yards": 121.0,
-        "homeYards": 57.0,
-        "awayYards": 64.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 8.2,
-        "overThreshold": 14,
-        "probOver": 0.544,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.61,
-            "away": 1.88
-          },
-          {
-            "quarter": 2,
-            "home": 2.08,
-            "away": 2.45
-          },
-          {
-            "quarter": 3,
-            "home": 1.52,
-            "away": 1.75
-          },
-          {
-            "quarter": 4,
-            "home": 1.84,
-            "away": 2.2
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": 0.71
-          },
-          {
-            "label": "CAR discipline & what it draws",
-            "value": 1.03
-          },
-          {
-            "label": "BAL discipline & what it draws",
-            "value": -0.58
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "False Start",
-          "home": 1.63,
-          "away": 1.92,
-          "total": 3.55,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.06,
-            "awayCommit": 1.25,
-            "homeDraw": 0.98,
-            "awayDraw": 0.93,
-            "crew": 1.19
-          }
-        },
-        {
-          "type": "Offensive Holding",
-          "home": 1.45,
-          "away": 1.39,
-          "total": 2.84,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.01,
-            "awayCommit": 0.98,
-            "homeDraw": 1.09,
-            "awayDraw": 0.96,
-            "crew": 1.0
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.66,
-          "away": 0.66,
-          "total": 1.33,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 1.33,
-            "awayCommit": 1.16,
-            "homeDraw": 0.91,
-            "awayDraw": 0.82,
-            "crew": 1.07
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.36,
-          "away": 0.68,
-          "total": 1.04,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.31,
-            "awayCommit": 1.13,
-            "homeDraw": 1.46,
-            "awayDraw": 0.97,
-            "crew": 0.9
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.26,
-          "away": 0.42,
-          "total": 0.68,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 1.16,
-            "awayCommit": 1.04,
-            "homeDraw": 1.78,
-            "awayDraw": 0.82,
-            "crew": 1.24
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.19,
-          "away": 0.4,
-          "total": 0.6,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.7,
-            "awayCommit": 0.99,
-            "homeDraw": 1.05,
-            "awayDraw": 0.67,
-            "crew": 1.29
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.27,
-          "away": 0.32,
-          "total": 0.59,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.21,
-            "awayCommit": 0.87,
-            "homeDraw": 1.43,
-            "awayDraw": 1.02,
-            "crew": 1.1
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.13,
-          "away": 0.43,
-          "total": 0.56,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.59,
-            "awayCommit": 1.04,
-            "homeDraw": 1.22,
-            "awayDraw": 0.77,
-            "crew": 0.87
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.32,
-          "away": 0.2,
-          "total": 0.52,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 1.43,
-            "awayCommit": 0.5,
-            "homeDraw": 0.96,
-            "awayDraw": 0.57,
-            "crew": 1.18
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.09,
-          "away": 0.18,
-          "total": 0.26,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.77,
-            "awayCommit": 1.23,
-            "homeDraw": 0.73,
-            "awayDraw": 0.68,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Other",
-          "home": 1.69,
-          "away": 1.67,
-          "total": 3.35,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 1.13,
-            "awayCommit": 1.0,
-            "homeDraw": 0.95,
-            "awayDraw": 0.94,
-            "crew": 0.96
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 9.67,
-          "offensePerGame": 5.44,
-          "defensePerGame": 4.22,
-          "drawnPerGame": 8.11,
-          "yardsPerGame": 87.4,
-          "lastSeasonPerGame": 5.59,
-          "rank": 1,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "R.Walker",
-              "count": 8,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 7
-                },
-                {
-                  "type": "Ineligible Downfield Pass",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "R.Hunt",
-              "count": 6,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 2
-                },
-                {
-                  "type": "Ineligible Downfield Pass",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "M.Freeling",
-              "count": 5,
-              "yards": 36,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "W.Lee",
-              "count": 4,
-              "yards": 67,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 3
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 10,
-          "perGame": 8.0,
-          "offensePerGame": 5.6,
-          "defensePerGame": 2.4,
-          "drawnPerGame": 5.3,
-          "yardsPerGame": 58.4,
-          "lastSeasonPerGame": 5.82,
-          "rank": 5,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "R.Stanley",
-              "count": 9,
-              "yards": 69,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 5
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "Chop Block",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "J.Simpson",
-              "count": 5,
-              "yards": 30,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "M.Andrews",
-              "count": 5,
-              "yards": 25,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 5
-                }
-              ]
-            },
-            {
-              "player": "T.Simpson",
-              "count": 3,
-              "yards": 38,
-              "types": [
-                {
-                  "type": "Face Mask",
-                  "count": 1
-                },
-                {
-                  "type": "Horse Collar Tackle",
-                  "count": 1
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 10
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2022_11_CAR_BAL",
-          "season": 2022,
-          "week": 11,
-          "home": "BAL",
-          "away": "CAR",
-          "homeScore": 13,
-          "awayScore": 3,
-          "flags": 19,
-          "homeFlags": 10,
-          "awayFlags": 9,
-          "crew": "Jerome Boger"
-        },
-        {
-          "gameId": "2018_08_BAL_CAR",
-          "season": 2018,
-          "week": 8,
-          "home": "CAR",
-          "away": "BAL",
-          "homeScore": 36,
-          "awayScore": 21,
-          "flags": 13,
-          "homeFlags": 4,
-          "awayFlags": 9,
-          "crew": "Peter Morelli"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": "outdoors",
-        "surface": "grass",
-        "temp": null,
-        "wind": null,
-        "homeRest": 7,
-        "awayRest": 6,
-        "spread": 2.5,
-        "total": 44.5,
-        "stadium": "Bank of America Stadium",
-        "homeQB": "Bryce Young",
-        "awayQB": "Tyler Huntley",
-        "homeCoach": "Dave Canales",
-        "awayCoach": "Jesse Minter"
-      }
-    },
-    {
-      "gameId": "2026_11_MIA_BUF",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "BUF",
-        "name": "Buffalo Bills",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png"
-      },
-      "awayTeam": {
-        "abbr": "MIA",
-        "name": "Miami Dolphins",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png"
-      },
-      "crew": {
-        "name": "Scott Novak",
-        "slug": "scott-novak",
-        "gamesInModel": 43,
-        "overallFactor": 1.046,
-        "typeTilts": [
-          {
-            "type": "Face Mask",
-            "factor": 0.72
-          },
-          {
-            "type": "Roughing the Passer",
-            "factor": 0.76
-          },
-          {
-            "type": "Offensive Holding",
-            "factor": 1.21
-          },
-          {
-            "type": "Defensive Holding",
-            "factor": 0.85
-          }
-        ],
-        "quarterTilt": [
-          1.03,
-          0.97,
-          1.02,
-          0.99
-        ]
-      },
-      "projection": {
-        "total": 14.9,
-        "home": 8.1,
-        "away": 6.7,
-        "range": [
-          9,
-          21
-        ],
-        "homeRange": [
-          4,
-          13
-        ],
-        "awayRange": [
-          3,
-          11
-        ],
-        "yards": 117.0,
-        "homeYards": 66.0,
-        "awayYards": 51.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 5.0,
-        "overThreshold": 14,
-        "probOver": 0.505,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.86,
-            "away": 1.52
-          },
-          {
-            "quarter": 2,
-            "home": 2.32,
-            "away": 1.93
-          },
-          {
-            "quarter": 3,
-            "home": 1.99,
-            "away": 1.63
-          },
-          {
-            "quarter": 4,
-            "home": 1.96,
-            "away": 1.66
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": 0.64
-          },
-          {
-            "label": "BUF discipline & what it draws",
-            "value": -0.22
-          },
-          {
-            "label": "MIA discipline & what it draws",
-            "value": 0.29
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "Offensive Holding",
-          "home": 2.33,
-          "away": 1.44,
-          "total": 3.77,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.19,
-            "awayCommit": 1.11,
-            "homeDraw": 0.82,
-            "awayDraw": 1.08,
-            "crew": 1.21
-          }
-        },
-        {
-          "type": "False Start",
-          "home": 1.73,
-          "away": 1.41,
-          "total": 3.14,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.08,
-            "awayCommit": 0.91,
-            "homeDraw": 1.21,
-            "awayDraw": 1.19,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.32,
-          "away": 0.66,
-          "total": 0.98,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.7,
-            "awayCommit": 1.0,
-            "homeDraw": 2.0,
-            "awayDraw": 0.69,
-            "crew": 0.85
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.6,
-          "away": 0.24,
-          "total": 0.84,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 1.12,
-            "awayCommit": 0.76,
-            "homeDraw": 0.81,
-            "awayDraw": 1.42,
-            "crew": 1.12
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.44,
-          "away": 0.37,
-          "total": 0.81,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 0.99,
-            "awayCommit": 0.72,
-            "homeDraw": 0.91,
-            "awayDraw": 0.83,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.4,
-          "away": 0.18,
-          "total": 0.58,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.7,
-            "awayCommit": 0.76,
-            "homeDraw": 0.68,
-            "awayDraw": 1.54,
-            "crew": 1.18
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.1,
-          "away": 0.24,
-          "total": 0.34,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.5,
-            "awayCommit": 0.92,
-            "homeDraw": 0.56,
-            "awayDraw": 0.64,
-            "crew": 1.01
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.1,
-          "away": 0.17,
-          "total": 0.28,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.78,
-            "awayCommit": 1.41,
-            "homeDraw": 0.54,
-            "awayDraw": 0.7,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.08,
-          "away": 0.16,
-          "total": 0.24,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.84,
-            "awayCommit": 0.76,
-            "homeDraw": 1.43,
-            "awayDraw": 0.74,
-            "crew": 0.72
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.13,
-          "away": 0.11,
-          "total": 0.23,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 0.83,
-            "awayCommit": 0.7,
-            "homeDraw": 1.08,
-            "awayDraw": 0.89,
-            "crew": 0.76
-          }
-        },
-        {
-          "type": "Other",
-          "home": 1.9,
-          "away": 1.76,
-          "total": 3.66,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 1.0,
-            "awayCommit": 1.09,
-            "homeDraw": 0.8,
-            "awayDraw": 1.05,
-            "crew": 1.09
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 8.33,
-          "offensePerGame": 4.89,
-          "defensePerGame": 3.44,
-          "drawnPerGame": 7.22,
-          "yardsPerGame": 68.7,
-          "lastSeasonPerGame": 5.94,
-          "rank": 3,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "J.Hawes",
-              "count": 6,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 4
-                },
-                {
-                  "type": "Offensive Pass Interference",
-                  "count": 1
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "A.Anderson",
-              "count": 5,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "D.Dawkins",
-              "count": 5,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "Illegal Use of Hands",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "D.Igbinosun",
-              "count": 4,
-              "yards": 31,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 2
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 9,
-          "perGame": 7.0,
-          "offensePerGame": 4.67,
-          "defensePerGame": 2.33,
-          "drawnPerGame": 7.89,
-          "yardsPerGame": 50.3,
-          "lastSeasonPerGame": 5.94,
-          "rank": 18,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "A.Jackson",
-              "count": 6,
-              "yards": 41,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Illegal Use of Hands",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "J.Brents",
-              "count": 5,
-              "yards": 36,
-              "types": [
-                {
-                  "type": "Illegal Contact",
-                  "count": 2
-                },
-                {
-                  "type": "Taunting",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "A.Brewer",
-              "count": 4,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 4
-                }
-              ]
-            },
-            {
-              "player": "J.Wood",
-              "count": 4,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "Illegal Block Above the Waist",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2025_10_BUF_MIA",
-          "season": 2025,
-          "week": 10,
-          "home": "MIA",
-          "away": "BUF",
-          "homeScore": 30,
-          "awayScore": 13,
-          "flags": 11,
-          "homeFlags": 5,
-          "awayFlags": 6,
-          "crew": "Ron Torbert"
-        },
-        {
-          "gameId": "2025_03_MIA_BUF",
-          "season": 2025,
-          "week": 3,
-          "home": "BUF",
-          "away": "MIA",
-          "homeScore": 31,
-          "awayScore": 21,
-          "flags": 9,
-          "homeFlags": 3,
-          "awayFlags": 6,
-          "crew": "Alan Eck"
-        },
-        {
-          "gameId": "2024_09_MIA_BUF",
-          "season": 2024,
-          "week": 9,
-          "home": "BUF",
-          "away": "MIA",
-          "homeScore": 30,
-          "awayScore": 27,
-          "flags": 12,
-          "homeFlags": 4,
-          "awayFlags": 8,
-          "crew": "Tra Blake"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": true,
-        "neutralSite": false,
-        "roof": "outdoors",
-        "surface": "a_turf",
-        "temp": null,
-        "wind": null,
-        "homeRest": 7,
-        "awayRest": 7,
-        "spread": 16.5,
-        "total": 45.5,
-        "stadium": "Highmark Stadium",
-        "homeQB": "Josh Allen",
-        "awayQB": "Kyle McCord",
-        "homeCoach": "Joe Brady",
-        "awayCoach": "Jeff Hafley"
-      }
-    },
-    {
       "gameId": "2026_11_LV_DEN",
       "season": 2026,
       "week": 11,
@@ -2003,11 +542,11 @@
         "name": "Carl Cheffers",
         "slug": "carl-cheffers",
         "gamesInModel": 41,
-        "overallFactor": 1.005,
+        "overallFactor": 1.008,
         "typeTilts": [
           {
             "type": "Face Mask",
-            "factor": 1.33
+            "factor": 1.32
           },
           {
             "type": "Roughing the Passer",
@@ -2018,8 +557,8 @@
             "factor": 1.27
           },
           {
-            "type": "Defensive Offside",
-            "factor": 1.21
+            "type": "Defensive Holding",
+            "factor": 1.2
           }
         ],
         "quarterTilt": [
@@ -2031,7 +570,7 @@
       },
       "projection": {
         "total": 14.9,
-        "home": 7.8,
+        "home": 7.9,
         "away": 7.0,
         "range": [
           9,
@@ -2048,10 +587,10 @@
         "yards": 127.0,
         "homeYards": 66.0,
         "awayYards": 61.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 4.9,
+        "leagueAverage": 14.1,
+        "vsLeaguePct": 5.8,
         "overThreshold": 14,
-        "probOver": 0.504,
+        "probOver": 0.506,
         "byQuarter": [
           {
             "quarter": 1,
@@ -2060,7 +599,7 @@
           },
           {
             "quarter": 2,
-            "home": 2.22,
+            "home": 2.23,
             "away": 1.98
           },
           {
@@ -2070,52 +609,52 @@
           },
           {
             "quarter": 4,
-            "home": 2.24,
+            "home": 2.26,
             "away": 2.01
           }
         ],
         "drivers": [
           {
             "label": "Crew chief",
-            "value": 0.08
+            "value": 0.11
           },
           {
             "label": "DEN discipline & what it draws",
-            "value": 0.97
+            "value": 1.0
           },
           {
             "label": "LV discipline & what it draws",
-            "value": -0.35
+            "value": -0.3
           }
         ]
       },
       "byType": [
         {
           "type": "Defensive Pass Interference",
-          "home": 1.29,
+          "home": 1.32,
           "away": 1.07,
-          "total": 2.37,
-          "leagueTotal": 1.15,
+          "total": 2.38,
+          "leagueTotal": 1.14,
           "yardsEach": 15.4,
           "factors": {
-            "homeCommit": 1.68,
-            "awayCommit": 1.25,
-            "homeDraw": 1.3,
+            "homeCommit": 1.69,
+            "awayCommit": 1.26,
+            "homeDraw": 1.31,
             "awayDraw": 1.2,
             "crew": 1.13
           }
         },
         {
           "type": "Offensive Holding",
-          "home": 1.2,
+          "home": 1.21,
           "away": 1.01,
-          "total": 2.21,
-          "leagueTotal": 2.81,
+          "total": 2.23,
+          "leagueTotal": 2.78,
           "yardsEach": 9.6,
           "factors": {
-            "homeCommit": 0.95,
-            "awayCommit": 0.83,
-            "homeDraw": 1.12,
+            "homeCommit": 0.96,
+            "awayCommit": 0.84,
+            "homeDraw": 1.13,
             "awayDraw": 1.02,
             "crew": 0.83
           }
@@ -2125,11 +664,11 @@
           "home": 1.22,
           "away": 0.91,
           "total": 2.13,
-          "leagueTotal": 2.71,
+          "leagueTotal": 2.69,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 0.81,
-            "awayCommit": 0.74,
+            "awayCommit": 0.75,
             "homeDraw": 0.88,
             "awayDraw": 1.03,
             "crew": 1.05
@@ -2143,71 +682,71 @@
           "leagueTotal": 0.77,
           "yardsEach": 4.9,
           "factors": {
-            "homeCommit": 1.56,
+            "homeCommit": 1.57,
             "awayCommit": 0.79,
-            "homeDraw": 1.31,
-            "awayDraw": 1.11,
+            "homeDraw": 1.32,
+            "awayDraw": 1.12,
             "crew": 1.27
           }
         },
         {
           "type": "Defensive Offside",
           "home": 0.45,
-          "away": 0.36,
-          "total": 0.81,
+          "away": 0.34,
+          "total": 0.8,
           "leagueTotal": 0.62,
-          "yardsEach": 4.7,
+          "yardsEach": 4.8,
           "factors": {
-            "homeCommit": 1.21,
+            "homeCommit": 1.2,
             "awayCommit": 0.77,
-            "homeDraw": 1.27,
-            "awayDraw": 0.98,
-            "crew": 1.21
+            "homeDraw": 1.26,
+            "awayDraw": 0.97,
+            "crew": 1.2
           }
         },
         {
           "type": "Unnecessary Roughness",
-          "home": 0.25,
+          "home": 0.24,
           "away": 0.45,
-          "total": 0.71,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
+          "total": 0.7,
+          "leagueTotal": 0.7,
+          "yardsEach": 13.0,
           "factors": {
-            "homeCommit": 0.96,
-            "awayCommit": 1.2,
-            "homeDraw": 1.17,
-            "awayDraw": 0.86,
-            "crew": 0.92
+            "homeCommit": 0.95,
+            "awayCommit": 1.19,
+            "homeDraw": 1.16,
+            "awayDraw": 0.85,
+            "crew": 0.91
           }
         },
         {
           "type": "Defensive Holding",
           "home": 0.4,
-          "away": 0.29,
+          "away": 0.3,
           "total": 0.69,
-          "leagueTotal": 0.72,
+          "leagueTotal": 0.71,
           "yardsEach": 4.7,
           "factors": {
             "homeCommit": 1.02,
             "awayCommit": 0.88,
             "homeDraw": 0.72,
-            "awayDraw": 1.0,
+            "awayDraw": 1.01,
             "crew": 1.2
           }
         },
         {
           "type": "Face Mask",
-          "home": 0.19,
+          "home": 0.18,
           "away": 0.36,
-          "total": 0.55,
+          "total": 0.54,
           "leagueTotal": 0.38,
           "yardsEach": 13.2,
           "factors": {
-            "homeCommit": 1.02,
-            "awayCommit": 0.81,
-            "homeDraw": 1.62,
-            "awayDraw": 0.82,
-            "crew": 1.33
+            "homeCommit": 1.01,
+            "awayCommit": 0.8,
+            "homeDraw": 1.61,
+            "awayDraw": 0.81,
+            "crew": 1.32
           }
         },
         {
@@ -2220,7 +759,7 @@
           "factors": {
             "homeCommit": 0.82,
             "awayCommit": 0.73,
-            "homeDraw": 1.14,
+            "homeDraw": 1.13,
             "awayDraw": 1.1,
             "crew": 1.0
           }
@@ -2231,7 +770,7 @@
           "away": 0.05,
           "total": 0.19,
           "leagueTotal": 0.4,
-          "yardsEach": 13.0,
+          "yardsEach": 13.1,
           "factors": {
             "homeCommit": 1.06,
             "awayCommit": 0.75,
@@ -2242,16 +781,16 @@
         },
         {
           "type": "Other",
-          "home": 1.83,
-          "away": 1.71,
-          "total": 3.55,
-          "leagueTotal": 3.49,
+          "home": 1.84,
+          "away": 1.72,
+          "total": 3.56,
+          "leagueTotal": 3.45,
           "yardsEach": 7.0,
           "factors": {
             "homeCommit": 1.06,
             "awayCommit": 0.99,
             "homeDraw": 1.0,
-            "awayDraw": 1.1,
+            "awayDraw": 1.11,
             "crew": 0.95
           }
         }
@@ -2265,7 +804,7 @@
           "drawnPerGame": 8.11,
           "yardsPerGame": 53.1,
           "lastSeasonPerGame": 7.24,
-          "rank": 11,
+          "rank": 10,
           "mostCommon": "Offensive Holding",
           "watchlist": [
             {
@@ -2461,502 +1000,13 @@
         "wind": null,
         "homeRest": 14,
         "awayRest": 7,
-        "spread": 10.5,
-        "total": 40.5,
+        "spread": 11.5,
+        "total": 41.5,
         "stadium": "Empower Field at Mile High",
         "homeQB": "Bo Nix",
         "awayQB": "Fernando Mendoza",
         "homeCoach": "Sean Payton",
         "awayCoach": "Klint Kubiak"
-      }
-    },
-    {
-      "gameId": "2026_11_NO_CHI",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "CHI",
-        "name": "Chicago Bears",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png"
-      },
-      "awayTeam": {
-        "abbr": "NO",
-        "name": "New Orleans Saints",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png"
-      },
-      "crew": {
-        "name": "Brad Rogers",
-        "slug": "brad-rogers",
-        "gamesInModel": 41,
-        "overallFactor": 0.97,
-        "typeTilts": [
-          {
-            "type": "Roughing the Passer",
-            "factor": 0.76
-          },
-          {
-            "type": "Defensive Holding",
-            "factor": 1.29
-          },
-          {
-            "type": "Defensive Offside",
-            "factor": 0.8
-          },
-          {
-            "type": "Defensive Pass Interference",
-            "factor": 0.89
-          }
-        ],
-        "quarterTilt": [
-          0.93,
-          1.0,
-          1.09,
-          0.98
-        ]
-      },
-      "projection": {
-        "total": 14.6,
-        "home": 7.8,
-        "away": 6.8,
-        "range": [
-          9,
-          21
-        ],
-        "homeRange": [
-          4,
-          12
-        ],
-        "awayRange": [
-          3,
-          11
-        ],
-        "yards": 111.0,
-        "homeYards": 61.0,
-        "awayYards": 49.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 2.8,
-        "overThreshold": 14,
-        "probOver": 0.477,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.58,
-            "away": 1.37
-          },
-          {
-            "quarter": 2,
-            "home": 2.27,
-            "away": 1.98
-          },
-          {
-            "quarter": 3,
-            "home": 2.0,
-            "away": 1.7
-          },
-          {
-            "quarter": 4,
-            "home": 1.96,
-            "away": 1.7
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": -0.42
-          },
-          {
-            "label": "CHI discipline & what it draws",
-            "value": 0.39
-          },
-          {
-            "label": "NO discipline & what it draws",
-            "value": 0.43
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "False Start",
-          "home": 1.48,
-          "away": 1.32,
-          "total": 2.8,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.11,
-            "awayCommit": 1.04,
-            "homeDraw": 1.0,
-            "awayDraw": 1.0,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Offensive Holding",
-          "home": 1.69,
-          "away": 0.87,
-          "total": 2.56,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.14,
-            "awayCommit": 0.92,
-            "homeDraw": 0.74,
-            "awayDraw": 1.03,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.34,
-          "away": 0.83,
-          "total": 1.17,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.0,
-            "awayCommit": 1.17,
-            "homeDraw": 1.41,
-            "awayDraw": 0.8,
-            "crew": 1.29
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.5,
-          "away": 0.45,
-          "total": 0.95,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.18,
-            "awayCommit": 0.89,
-            "homeDraw": 1.03,
-            "awayDraw": 1.25,
-            "crew": 1.07
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.44,
-          "away": 0.34,
-          "total": 0.78,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 0.74,
-            "awayCommit": 0.98,
-            "homeDraw": 0.91,
-            "awayDraw": 1.63,
-            "crew": 1.09
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.4,
-          "away": 0.23,
-          "total": 0.63,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 0.8,
-            "awayCommit": 0.89,
-            "homeDraw": 0.5,
-            "awayDraw": 0.99,
-            "crew": 0.89
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.27,
-          "away": 0.2,
-          "total": 0.47,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.14,
-            "awayCommit": 0.85,
-            "homeDraw": 0.94,
-            "awayDraw": 1.18,
-            "crew": 1.04
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.3,
-          "away": 0.17,
-          "total": 0.47,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 1.55,
-            "awayCommit": 0.93,
-            "homeDraw": 1.27,
-            "awayDraw": 1.15,
-            "crew": 0.76
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.14,
-          "away": 0.22,
-          "total": 0.36,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.87,
-            "awayCommit": 1.13,
-            "homeDraw": 0.81,
-            "awayDraw": 0.66,
-            "crew": 0.8
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.08,
-          "away": 0.17,
-          "total": 0.26,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.9,
-            "awayCommit": 0.94,
-            "homeDraw": 0.91,
-            "awayDraw": 0.56,
-            "crew": 0.99
-          }
-        },
-        {
-          "type": "Other",
-          "home": 2.15,
-          "away": 1.95,
-          "total": 4.11,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 1.12,
-            "awayCommit": 0.94,
-            "homeDraw": 1.21,
-            "awayDraw": 1.24,
-            "crew": 0.94
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 8.0,
-          "offensePerGame": 4.89,
-          "defensePerGame": 3.11,
-          "drawnPerGame": 7.44,
-          "yardsPerGame": 63.3,
-          "lastSeasonPerGame": 7.06,
-          "rank": 5,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "G.Bradbury",
-              "count": 5,
-              "yards": 39,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "J.Johnson",
-              "count": 4,
-              "yards": 39,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "C.Santos",
-              "count": 4,
-              "yards": 0,
-              "types": [
-                {
-                  "type": "Kickoff Short of Landing Zone",
-                  "count": 4
-                }
-              ]
-            },
-            {
-              "player": "Z.Thomas",
-              "count": 3,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 9,
-          "perGame": 5.78,
-          "offensePerGame": 3.44,
-          "defensePerGame": 2.33,
-          "drawnPerGame": 8.33,
-          "yardsPerGame": 41.8,
-          "lastSeasonPerGame": 6.94,
-          "rank": 29,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "A.Richards",
-              "count": 4,
-              "yards": 29,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "K.McKinstry",
-              "count": 3,
-              "yards": 39,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "Illegal Contact",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "Q.Riley",
-              "count": 3,
-              "yards": 24,
-              "types": [
-                {
-                  "type": "Low Block",
-                  "count": 1
-                },
-                {
-                  "type": "Illegal Contact",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "N.Fant",
-              "count": 3,
-              "yards": 20,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2025_07_NO_CHI",
-          "season": 2025,
-          "week": 7,
-          "home": "CHI",
-          "away": "NO",
-          "homeScore": 26,
-          "awayScore": 14,
-          "flags": 15,
-          "homeFlags": 10,
-          "awayFlags": 5,
-          "crew": "Scott Novak"
-        },
-        {
-          "gameId": "2023_09_CHI_NO",
-          "season": 2023,
-          "week": 9,
-          "home": "NO",
-          "away": "CHI",
-          "homeScore": 24,
-          "awayScore": 17,
-          "flags": 9,
-          "homeFlags": 1,
-          "awayFlags": 8,
-          "crew": "Ron Torbert"
-        },
-        {
-          "gameId": "2020_08_NO_CHI",
-          "season": 2020,
-          "week": 8,
-          "home": "CHI",
-          "away": "NO",
-          "homeScore": 23,
-          "awayScore": 26,
-          "flags": 12,
-          "homeFlags": 7,
-          "awayFlags": 5,
-          "crew": "Tony Corrente"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": "outdoors",
-        "surface": "grass",
-        "temp": null,
-        "wind": null,
-        "homeRest": 14,
-        "awayRest": 7,
-        "spread": 11.5,
-        "total": 47.5,
-        "stadium": "Soldier Field",
-        "homeQB": "Caleb Williams",
-        "awayQB": "Tyler Shough",
-        "homeCoach": "Ben Johnson",
-        "awayCoach": "Kellen Moore"
       }
     },
     {
@@ -2981,7 +1031,7 @@
         "name": "Alex Moore",
         "slug": "alex-moore",
         "gamesInModel": 25,
-        "overallFactor": 1.111,
+        "overallFactor": 1.114,
         "typeTilts": [
           {
             "type": "Roughing the Passer",
@@ -2989,7 +1039,7 @@
           },
           {
             "type": "Face Mask",
-            "factor": 1.66
+            "factor": 1.65
           },
           {
             "type": "Defensive Pass Interference",
@@ -2997,7 +1047,7 @@
           },
           {
             "type": "Defensive Offside",
-            "factor": 1.25
+            "factor": 1.24
           }
         ],
         "quarterTilt": [
@@ -3023,23 +1073,23 @@
           3,
           11
         ],
-        "yards": 113.0,
+        "yards": 114.0,
         "homeYards": 60.0,
         "awayYards": 54.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 2.3,
+        "leagueAverage": 14.1,
+        "vsLeaguePct": 3.1,
         "overThreshold": 14,
-        "probOver": 0.471,
+        "probOver": 0.473,
         "byQuarter": [
           {
             "quarter": 1,
             "home": 1.63,
-            "away": 1.47
+            "away": 1.46
           },
           {
             "quarter": 2,
-            "home": 2.34,
-            "away": 2.1
+            "home": 2.35,
+            "away": 2.11
           },
           {
             "quarter": 3,
@@ -3049,46 +1099,46 @@
           {
             "quarter": 4,
             "home": 1.86,
-            "away": 1.72
+            "away": 1.73
           }
         ],
         "drivers": [
           {
             "label": "Crew chief",
-            "value": 1.57
+            "value": 1.61
           },
           {
             "label": "SF discipline & what it draws",
-            "value": -1.32
+            "value": -1.29
           },
           {
             "label": "MIN discipline & what it draws",
-            "value": 0.08
+            "value": 0.11
           }
         ]
       },
       "byType": [
         {
           "type": "Offensive Holding",
-          "home": 1.76,
-          "away": 1.48,
-          "total": 3.24,
-          "leagueTotal": 2.81,
+          "home": 1.78,
+          "away": 1.5,
+          "total": 3.27,
+          "leagueTotal": 2.78,
           "yardsEach": 9.6,
           "factors": {
-            "homeCommit": 0.86,
+            "homeCommit": 0.87,
             "awayCommit": 0.9,
-            "homeDraw": 1.05,
+            "homeDraw": 1.06,
             "awayDraw": 1.13,
-            "crew": 1.2
+            "crew": 1.21
           }
         },
         {
           "type": "False Start",
           "home": 1.6,
-          "away": 1.18,
-          "total": 2.78,
-          "leagueTotal": 2.71,
+          "away": 1.19,
+          "total": 2.79,
+          "leagueTotal": 2.69,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 0.84,
@@ -3101,16 +1151,16 @@
         {
           "type": "Defensive Offside",
           "home": 0.53,
-          "away": 0.32,
-          "total": 0.85,
+          "away": 0.31,
+          "total": 0.84,
           "leagueTotal": 0.62,
-          "yardsEach": 4.7,
+          "yardsEach": 4.8,
           "factors": {
-            "homeCommit": 1.17,
+            "homeCommit": 1.16,
             "awayCommit": 1.01,
-            "homeDraw": 0.84,
-            "awayDraw": 1.15,
-            "crew": 1.25
+            "homeDraw": 0.83,
+            "awayDraw": 1.14,
+            "crew": 1.24
           }
         },
         {
@@ -3118,44 +1168,44 @@
           "home": 0.46,
           "away": 0.25,
           "total": 0.71,
-          "leagueTotal": 0.72,
+          "leagueTotal": 0.71,
           "yardsEach": 4.7,
           "factors": {
-            "homeCommit": 0.86,
+            "homeCommit": 0.87,
             "awayCommit": 0.5,
             "homeDraw": 1.18,
-            "awayDraw": 1.53,
-            "crew": 1.07
+            "awayDraw": 1.54,
+            "crew": 1.08
           }
         },
         {
           "type": "Roughing the Passer",
-          "home": 0.3,
-          "away": 0.38,
+          "home": 0.29,
+          "away": 0.39,
           "total": 0.68,
           "leagueTotal": 0.4,
-          "yardsEach": 13.0,
+          "yardsEach": 13.1,
           "factors": {
             "homeCommit": 0.91,
             "awayCommit": 1.34,
             "homeDraw": 0.87,
-            "awayDraw": 0.83,
+            "awayDraw": 0.84,
             "crew": 1.78
           }
         },
         {
           "type": "Unnecessary Roughness",
-          "home": 0.43,
+          "home": 0.42,
           "away": 0.21,
-          "total": 0.65,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
+          "total": 0.63,
+          "leagueTotal": 0.7,
+          "yardsEach": 13.0,
           "factors": {
-            "homeCommit": 1.26,
-            "awayCommit": 0.87,
-            "homeDraw": 0.68,
-            "awayDraw": 1.0,
-            "crew": 1.03
+            "homeCommit": 1.25,
+            "awayCommit": 0.86,
+            "homeDraw": 0.67,
+            "awayDraw": 0.99,
+            "crew": 1.02
           }
         },
         {
@@ -3166,41 +1216,41 @@
           "leagueTotal": 0.43,
           "yardsEach": 4.9,
           "factors": {
-            "homeCommit": 0.9,
+            "homeCommit": 0.89,
             "awayCommit": 1.8,
             "homeDraw": 0.94,
-            "awayDraw": 1.5,
+            "awayDraw": 1.49,
             "crew": 0.96
           }
         },
         {
           "type": "Defensive Pass Interference",
-          "home": 0.35,
+          "home": 0.36,
           "away": 0.16,
-          "total": 0.51,
-          "leagueTotal": 1.15,
+          "total": 0.52,
+          "leagueTotal": 1.14,
           "yardsEach": 15.4,
           "factors": {
             "homeCommit": 0.9,
             "awayCommit": 0.53,
             "homeDraw": 0.66,
-            "awayDraw": 0.88,
+            "awayDraw": 0.89,
             "crew": 0.78
           }
         },
         {
           "type": "Face Mask",
-          "home": 0.16,
-          "away": 0.34,
+          "home": 0.15,
+          "away": 0.33,
           "total": 0.49,
           "leagueTotal": 0.38,
           "yardsEach": 13.2,
           "factors": {
             "homeCommit": 1.01,
-            "awayCommit": 0.9,
+            "awayCommit": 0.89,
             "homeDraw": 1.09,
             "awayDraw": 0.54,
-            "crew": 1.66
+            "crew": 1.65
           }
         },
         {
@@ -3220,16 +1270,16 @@
         },
         {
           "type": "Other",
-          "home": 1.59,
-          "away": 1.87,
-          "total": 3.46,
-          "leagueTotal": 3.49,
+          "home": 1.6,
+          "away": 1.88,
+          "total": 3.48,
+          "leagueTotal": 3.45,
           "yardsEach": 7.0,
           "factors": {
-            "homeCommit": 0.96,
+            "homeCommit": 0.97,
             "awayCommit": 0.94,
-            "homeDraw": 0.98,
-            "awayDraw": 0.9,
+            "homeDraw": 0.99,
+            "awayDraw": 0.91,
             "crew": 1.11
           }
         }
@@ -3243,7 +1293,7 @@
           "drawnPerGame": 6.11,
           "yardsPerGame": 60.6,
           "lastSeasonPerGame": 4.88,
-          "rank": 24,
+          "rank": 22,
           "mostCommon": "Offensive Holding",
           "watchlist": [
             {
@@ -3474,7 +1524,7 @@
         "name": "Bill Vinovich",
         "slug": "bill-vinovich",
         "gamesInModel": 41,
-        "overallFactor": 1.0,
+        "overallFactor": 1.002,
         "typeTilts": [
           {
             "type": "Defensive Holding",
@@ -3517,12 +1567,12 @@
           11
         ],
         "yards": 110.0,
-        "homeYards": 59.0,
+        "homeYards": 60.0,
         "awayYards": 51.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": 0.4,
+        "leagueAverage": 14.1,
+        "vsLeaguePct": 1.1,
         "overThreshold": 14,
-        "probOver": 0.447,
+        "probOver": 0.449,
         "byQuarter": [
           {
             "quarter": 1,
@@ -3532,7 +1582,7 @@
           {
             "quarter": 2,
             "home": 2.29,
-            "away": 1.98
+            "away": 1.99
           },
           {
             "quarter": 3,
@@ -3541,22 +1591,22 @@
           },
           {
             "quarter": 4,
-            "home": 1.92,
-            "away": 1.75
+            "home": 1.93,
+            "away": 1.76
           }
         ],
         "drivers": [
           {
             "label": "Crew chief",
-            "value": -0.0
+            "value": 0.03
           },
           {
             "label": "WAS discipline & what it draws",
-            "value": 0.2
+            "value": 0.23
           },
           {
             "label": "CIN discipline & what it draws",
-            "value": -0.14
+            "value": -0.1
           }
         ]
       },
@@ -3565,8 +1615,8 @@
           "type": "False Start",
           "home": 2.28,
           "away": 1.41,
-          "total": 3.68,
-          "leagueTotal": 2.71,
+          "total": 3.69,
+          "leagueTotal": 2.69,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 1.34,
@@ -3578,13 +1628,13 @@
         },
         {
           "type": "Offensive Holding",
-          "home": 1.19,
+          "home": 1.2,
           "away": 0.85,
-          "total": 2.04,
-          "leagueTotal": 2.81,
+          "total": 2.06,
+          "leagueTotal": 2.78,
           "yardsEach": 9.6,
           "factors": {
-            "homeCommit": 0.81,
+            "homeCommit": 0.82,
             "awayCommit": 0.88,
             "homeDraw": 0.8,
             "awayDraw": 1.06,
@@ -3593,23 +1643,23 @@
         },
         {
           "type": "Defensive Pass Interference",
-          "home": 0.8,
+          "home": 0.82,
           "away": 0.63,
-          "total": 1.43,
-          "leagueTotal": 1.15,
+          "total": 1.44,
+          "leagueTotal": 1.14,
           "yardsEach": 15.4,
           "factors": {
             "homeCommit": 1.07,
             "awayCommit": 1.04,
             "homeDraw": 1.0,
             "awayDraw": 1.27,
-            "crew": 1.04
+            "crew": 1.05
           }
         },
         {
           "type": "Delay of Game",
           "home": 0.27,
-          "away": 0.7,
+          "away": 0.71,
           "total": 0.98,
           "leagueTotal": 0.77,
           "yardsEach": 4.9,
@@ -3617,66 +1667,66 @@
             "homeCommit": 0.97,
             "awayCommit": 1.3,
             "homeDraw": 1.24,
-            "awayDraw": 0.92,
+            "awayDraw": 0.93,
             "crew": 0.96
           }
         },
         {
           "type": "Defensive Holding",
           "home": 0.28,
-          "away": 0.49,
-          "total": 0.77,
-          "leagueTotal": 0.72,
+          "away": 0.5,
+          "total": 0.78,
+          "leagueTotal": 0.71,
           "yardsEach": 4.7,
           "factors": {
             "homeCommit": 1.0,
-            "awayCommit": 1.11,
-            "homeDraw": 1.32,
+            "awayCommit": 1.12,
+            "homeDraw": 1.33,
             "awayDraw": 1.01,
             "crew": 0.86
           }
         },
         {
           "type": "Defensive Offside",
-          "home": 0.39,
-          "away": 0.33,
-          "total": 0.73,
+          "home": 0.4,
+          "away": 0.32,
+          "total": 0.72,
           "leagueTotal": 0.62,
-          "yardsEach": 4.7,
+          "yardsEach": 4.8,
           "factors": {
-            "homeCommit": 0.89,
+            "homeCommit": 0.88,
             "awayCommit": 1.08,
             "homeDraw": 1.07,
-            "awayDraw": 1.46,
-            "crew": 0.96
+            "awayDraw": 1.45,
+            "crew": 0.95
           }
         },
         {
           "type": "Unnecessary Roughness",
           "home": 0.29,
           "away": 0.22,
-          "total": 0.52,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
+          "total": 0.51,
+          "leagueTotal": 0.7,
+          "yardsEach": 13.0,
           "factors": {
-            "homeCommit": 1.06,
-            "awayCommit": 0.6,
-            "homeDraw": 1.02,
-            "awayDraw": 0.8,
-            "crew": 1.04
+            "homeCommit": 1.05,
+            "awayCommit": 0.59,
+            "homeDraw": 1.01,
+            "awayDraw": 0.79,
+            "crew": 1.03
           }
         },
         {
           "type": "Face Mask",
-          "home": 0.14,
+          "home": 0.13,
           "away": 0.3,
-          "total": 0.44,
+          "total": 0.43,
           "leagueTotal": 0.38,
           "yardsEach": 13.2,
           "factors": {
             "homeCommit": 1.03,
-            "awayCommit": 1.28,
-            "homeDraw": 1.06,
+            "awayCommit": 1.27,
+            "homeDraw": 1.05,
             "awayDraw": 0.72,
             "crew": 1.08
           }
@@ -3684,14 +1734,14 @@
         {
           "type": "Illegal Formation",
           "home": 0.09,
-          "away": 0.23,
-          "total": 0.32,
+          "away": 0.22,
+          "total": 0.31,
           "leagueTotal": 0.43,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 0.94,
             "awayCommit": 0.75,
-            "homeDraw": 1.35,
+            "homeDraw": 1.34,
             "awayDraw": 0.5,
             "crew": 0.96
           }
@@ -3702,7 +1752,7 @@
           "away": 0.13,
           "total": 0.25,
           "leagueTotal": 0.4,
-          "yardsEach": 13.0,
+          "yardsEach": 13.1,
           "factors": {
             "homeCommit": 0.98,
             "awayCommit": 1.06,
@@ -3713,16 +1763,16 @@
         },
         {
           "type": "Other",
-          "home": 1.71,
+          "home": 1.72,
           "away": 1.34,
-          "total": 3.05,
-          "leagueTotal": 3.49,
+          "total": 3.06,
+          "leagueTotal": 3.45,
           "yardsEach": 7.0,
           "factors": {
-            "homeCommit": 0.99,
-            "awayCommit": 0.74,
+            "homeCommit": 1.0,
+            "awayCommit": 0.75,
             "homeDraw": 0.95,
-            "awayDraw": 1.0,
+            "awayDraw": 1.01,
             "crew": 1.04
           }
         }
@@ -3954,495 +2004,6 @@
       }
     },
     {
-      "gameId": "2026_11_TB_DET",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "DET",
-        "name": "Detroit Lions",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png"
-      },
-      "awayTeam": {
-        "abbr": "TB",
-        "name": "Tampa Bay Buccaneers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png"
-      },
-      "crew": {
-        "name": "Adrian Hill",
-        "slug": "adrian-hill",
-        "gamesInModel": 38,
-        "overallFactor": 1.072,
-        "typeTilts": [
-          {
-            "type": "Unnecessary Roughness",
-            "factor": 0.76
-          },
-          {
-            "type": "Face Mask",
-            "factor": 1.26
-          },
-          {
-            "type": "Defensive Offside",
-            "factor": 0.83
-          },
-          {
-            "type": "Defensive Holding",
-            "factor": 0.87
-          }
-        ],
-        "quarterTilt": [
-          1.0,
-          0.98,
-          1.02,
-          1.01
-        ]
-      },
-      "projection": {
-        "total": 14.1,
-        "home": 7.3,
-        "away": 6.8,
-        "range": [
-          9,
-          20
-        ],
-        "homeRange": [
-          3,
-          12
-        ],
-        "awayRange": [
-          3,
-          11
-        ],
-        "yards": 113.0,
-        "homeYards": 60.0,
-        "awayYards": 52.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": -0.2,
-        "overThreshold": 14,
-        "probOver": 0.44,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.59,
-            "away": 1.49
-          },
-          {
-            "quarter": 2,
-            "home": 2.1,
-            "away": 1.96
-          },
-          {
-            "quarter": 3,
-            "home": 1.75,
-            "away": 1.64
-          },
-          {
-            "quarter": 4,
-            "home": 1.87,
-            "away": 1.73
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": 1.03
-          },
-          {
-            "label": "DET discipline & what it draws",
-            "value": -0.71
-          },
-          {
-            "label": "TB discipline & what it draws",
-            "value": -0.35
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "Offensive Holding",
-          "home": 1.37,
-          "away": 1.79,
-          "total": 3.16,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 0.85,
-            "awayCommit": 1.18,
-            "homeDraw": 1.07,
-            "awayDraw": 1.0,
-            "crew": 1.09
-          }
-        },
-        {
-          "type": "False Start",
-          "home": 1.4,
-          "away": 1.53,
-          "total": 2.92,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.01,
-            "awayCommit": 1.15,
-            "homeDraw": 0.88,
-            "awayDraw": 0.87,
-            "crew": 1.15
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.74,
-          "away": 0.22,
-          "total": 0.97,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 1.27,
-            "awayCommit": 0.67,
-            "homeDraw": 0.61,
-            "awayDraw": 1.1,
-            "crew": 0.93
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.21,
-          "away": 0.49,
-          "total": 0.71,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.75,
-            "awayCommit": 1.08,
-            "homeDraw": 1.13,
-            "awayDraw": 1.0,
-            "crew": 0.89
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.4,
-          "away": 0.17,
-          "total": 0.57,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.58,
-            "awayCommit": 0.81,
-            "homeDraw": 0.63,
-            "awayDraw": 0.89,
-            "crew": 0.87
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.34,
-          "away": 0.17,
-          "total": 0.51,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.9,
-            "awayCommit": 0.72,
-            "homeDraw": 0.89,
-            "awayDraw": 1.78,
-            "crew": 1.26
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.19,
-          "away": 0.26,
-          "total": 0.45,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 0.88,
-            "awayCommit": 1.25,
-            "homeDraw": 1.22,
-            "awayDraw": 1.04,
-            "crew": 0.94
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.25,
-          "away": 0.19,
-          "total": 0.43,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.98,
-            "awayCommit": 1.2,
-            "homeDraw": 0.62,
-            "awayDraw": 0.96,
-            "crew": 0.83
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.2,
-          "away": 0.12,
-          "total": 0.32,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 0.86,
-            "awayCommit": 0.78,
-            "homeDraw": 0.59,
-            "awayDraw": 0.9,
-            "crew": 0.76
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.16,
-          "away": 0.12,
-          "total": 0.28,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.17,
-            "awayCommit": 0.77,
-            "homeDraw": 0.67,
-            "awayDraw": 0.7,
-            "crew": 1.0
-          }
-        },
-        {
-          "type": "Other",
-          "home": 2.05,
-          "away": 1.76,
-          "total": 3.81,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 0.89,
-            "awayCommit": 0.71,
-            "homeDraw": 1.09,
-            "awayDraw": 1.12,
-            "crew": 1.24
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 7.0,
-          "offensePerGame": 4.44,
-          "defensePerGame": 2.56,
-          "drawnPerGame": 6.56,
-          "yardsPerGame": 58.0,
-          "lastSeasonPerGame": 6.12,
-          "rank": 18,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "B.Miller",
-              "count": 7,
-              "yards": 40,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 5
-                },
-                {
-                  "type": "Ineligible Downfield Pass",
-                  "count": 1
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "P.Sewell",
-              "count": 6,
-              "yards": 39,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 4
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "D.Reed",
-              "count": 3,
-              "yards": 44,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 2
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "R.Ya-Sin",
-              "count": 3,
-              "yards": 31,
-              "types": [
-                {
-                  "type": "Illegal Contact",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Offside",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 9,
-          "perGame": 7.0,
-          "offensePerGame": 4.78,
-          "defensePerGame": 2.22,
-          "drawnPerGame": 6.67,
-          "yardsPerGame": 49.9,
-          "lastSeasonPerGame": 5.59,
-          "rank": 18,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "G.Barton",
-              "count": 6,
-              "yards": 50,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 4
-                },
-                {
-                  "type": "False Start",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "L.Goedeke",
-              "count": 6,
-              "yards": 37,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 4
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                }
-              ]
-            },
-            {
-              "player": "T.Wirfs",
-              "count": 5,
-              "yards": 25,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 5
-                }
-              ]
-            },
-            {
-              "player": "B.Bredeson",
-              "count": 4,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2025_07_TB_DET",
-          "season": 2025,
-          "week": 7,
-          "home": "DET",
-          "away": "TB",
-          "homeScore": 24,
-          "awayScore": 9,
-          "flags": 12,
-          "homeFlags": 6,
-          "awayFlags": 6,
-          "crew": "John Hussey"
-        },
-        {
-          "gameId": "2024_02_TB_DET",
-          "season": 2024,
-          "week": 2,
-          "home": "DET",
-          "away": "TB",
-          "homeScore": 16,
-          "awayScore": 20,
-          "flags": 8,
-          "homeFlags": 4,
-          "awayFlags": 4,
-          "crew": "Clay Martin"
-        },
-        {
-          "gameId": "2023_06_DET_TB",
-          "season": 2023,
-          "week": 6,
-          "home": "TB",
-          "away": "DET",
-          "homeScore": 6,
-          "awayScore": 20,
-          "flags": 10,
-          "homeFlags": 5,
-          "awayFlags": 5,
-          "crew": "Clay Martin"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": "dome",
-        "surface": "fieldturf",
-        "temp": null,
-        "wind": null,
-        "homeRest": 7,
-        "awayRest": 14,
-        "spread": 3.5,
-        "total": 48.5,
-        "stadium": "Ford Field",
-        "homeQB": "Jared Goff",
-        "awayQB": "Baker Mayfield",
-        "homeCoach": "Dan Campbell",
-        "awayCoach": "Todd Bowles"
-      }
-    },
-    {
       "gameId": "2026_11_NYJ_LAC",
       "season": 2026,
       "week": 11,
@@ -4464,7 +2025,7 @@
         "name": "Alex Kemp",
         "slug": "alex-kemp",
         "gamesInModel": 40,
-        "overallFactor": 0.992,
+        "overallFactor": 0.994,
         "typeTilts": [
           {
             "type": "Illegal Formation",
@@ -4491,7 +2052,7 @@
         ]
       },
       "projection": {
-        "total": 13.8,
+        "total": 13.9,
         "home": 6.0,
         "away": 7.8,
         "range": [
@@ -4509,72 +2070,72 @@
         "yards": 117.0,
         "homeYards": 51.0,
         "awayYards": 66.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": -2.4,
+        "leagueAverage": 14.1,
+        "vsLeaguePct": -1.6,
         "overThreshold": 14,
-        "probOver": 0.413,
+        "probOver": 0.415,
         "byQuarter": [
           {
             "quarter": 1,
-            "home": 1.29,
+            "home": 1.28,
             "away": 1.62
           },
           {
             "quarter": 2,
             "home": 1.77,
-            "away": 2.28
+            "away": 2.29
           },
           {
             "quarter": 3,
-            "home": 1.52,
-            "away": 1.92
+            "home": 1.53,
+            "away": 1.93
           },
           {
             "quarter": 4,
             "home": 1.45,
-            "away": 1.98
+            "away": 1.99
           }
         ],
         "drivers": [
           {
             "label": "Crew chief",
-            "value": -0.12
+            "value": -0.08
           },
           {
             "label": "LAC discipline & what it draws",
-            "value": -0.04
+            "value": 0.0
           },
           {
             "label": "NYJ discipline & what it draws",
-            "value": -0.18
+            "value": -0.14
           }
         ]
       },
       "byType": [
         {
           "type": "Offensive Holding",
-          "home": 1.77,
+          "home": 1.79,
           "away": 1.42,
-          "total": 3.19,
-          "leagueTotal": 2.81,
+          "total": 3.21,
+          "leagueTotal": 2.78,
           "yardsEach": 9.6,
           "factors": {
             "homeCommit": 0.98,
-            "awayCommit": 0.89,
-            "homeDraw": 1.12,
-            "awayDraw": 1.12,
+            "awayCommit": 0.9,
+            "homeDraw": 1.13,
+            "awayDraw": 1.13,
             "crew": 1.08
           }
         },
         {
           "type": "False Start",
           "home": 1.15,
-          "away": 1.14,
+          "away": 1.15,
           "total": 2.3,
-          "leagueTotal": 2.71,
+          "leagueTotal": 2.69,
           "yardsEach": 4.9,
           "factors": {
-            "homeCommit": 1.25,
+            "homeCommit": 1.26,
             "awayCommit": 1.06,
             "homeDraw": 0.9,
             "awayDraw": 0.73,
@@ -4583,75 +2144,75 @@
         },
         {
           "type": "Defensive Pass Interference",
-          "home": 0.4,
+          "home": 0.41,
           "away": 0.57,
           "total": 0.97,
-          "leagueTotal": 1.15,
+          "leagueTotal": 1.14,
           "yardsEach": 15.4,
           "factors": {
-            "homeCommit": 0.86,
-            "awayCommit": 1.21,
-            "homeDraw": 0.84,
-            "awayDraw": 0.85,
+            "homeCommit": 0.87,
+            "awayCommit": 1.22,
+            "homeDraw": 0.85,
+            "awayDraw": 0.86,
             "crew": 0.96
           }
         },
         {
           "type": "Delay of Game",
           "home": 0.25,
-          "away": 0.63,
-          "total": 0.88,
+          "away": 0.64,
+          "total": 0.89,
           "leagueTotal": 0.77,
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 0.77,
-            "awayCommit": 1.32,
+            "awayCommit": 1.33,
             "homeDraw": 0.93,
-            "awayDraw": 0.91,
+            "awayDraw": 0.92,
             "crew": 1.13
           }
         },
         {
           "type": "Unnecessary Roughness",
-          "home": 0.47,
+          "home": 0.46,
           "away": 0.4,
-          "total": 0.87,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
+          "total": 0.86,
+          "leagueTotal": 0.7,
+          "yardsEach": 13.0,
           "factors": {
-            "homeCommit": 1.21,
-            "awayCommit": 1.15,
-            "homeDraw": 1.09,
-            "awayDraw": 1.28,
-            "crew": 0.91
+            "homeCommit": 1.19,
+            "awayCommit": 1.14,
+            "homeDraw": 1.08,
+            "awayDraw": 1.27,
+            "crew": 0.9
           }
         },
         {
           "type": "Defensive Holding",
           "home": 0.19,
-          "away": 0.53,
-          "total": 0.73,
-          "leagueTotal": 0.72,
+          "away": 0.54,
+          "total": 0.74,
+          "leagueTotal": 0.71,
           "yardsEach": 4.7,
           "factors": {
             "homeCommit": 1.03,
-            "awayCommit": 1.42,
-            "homeDraw": 0.98,
-            "awayDraw": 0.59,
-            "crew": 0.98
+            "awayCommit": 1.43,
+            "homeDraw": 0.99,
+            "awayDraw": 0.6,
+            "crew": 0.99
           }
         },
         {
           "type": "Roughing the Passer",
-          "home": 0.24,
-          "away": 0.49,
-          "total": 0.73,
+          "home": 0.23,
+          "away": 0.5,
+          "total": 0.74,
           "leagueTotal": 0.4,
-          "yardsEach": 13.0,
+          "yardsEach": 13.1,
           "factors": {
             "homeCommit": 0.8,
             "awayCommit": 1.03,
-            "homeDraw": 1.85,
+            "homeDraw": 1.86,
             "awayDraw": 0.97,
             "crew": 1.4
           }
@@ -4664,25 +2225,25 @@
           "leagueTotal": 0.38,
           "yardsEach": 13.2,
           "factors": {
-            "homeCommit": 1.04,
-            "awayCommit": 1.29,
-            "homeDraw": 1.69,
+            "homeCommit": 1.03,
+            "awayCommit": 1.28,
+            "homeDraw": 1.68,
             "awayDraw": 0.5,
-            "crew": 1.11
+            "crew": 1.1
           }
         },
         {
           "type": "Defensive Offside",
           "home": 0.21,
           "away": 0.23,
-          "total": 0.45,
+          "total": 0.44,
           "leagueTotal": 0.62,
-          "yardsEach": 4.7,
+          "yardsEach": 4.8,
           "factors": {
-            "homeCommit": 1.22,
+            "homeCommit": 1.21,
             "awayCommit": 0.74,
-            "homeDraw": 1.38,
-            "awayDraw": 0.73,
+            "homeDraw": 1.37,
+            "awayDraw": 0.72,
             "crew": 0.76
           }
         },
@@ -4695,8 +2256,8 @@
           "yardsEach": 4.9,
           "factors": {
             "homeCommit": 1.25,
-            "awayCommit": 0.69,
-            "homeDraw": 0.74,
+            "awayCommit": 0.68,
+            "homeDraw": 0.73,
             "awayDraw": 0.93,
             "crew": 0.69
           }
@@ -4705,12 +2266,12 @@
           "type": "Other",
           "home": 1.08,
           "away": 1.8,
-          "total": 2.88,
-          "leagueTotal": 3.49,
+          "total": 2.89,
+          "leagueTotal": 3.45,
           "yardsEach": 7.0,
           "factors": {
-            "homeCommit": 0.79,
-            "awayCommit": 1.16,
+            "homeCommit": 0.8,
+            "awayCommit": 1.17,
             "homeDraw": 0.84,
             "awayDraw": 0.82,
             "crew": 1.01
@@ -4726,7 +2287,7 @@
           "drawnPerGame": 8.11,
           "yardsPerGame": 63.3,
           "lastSeasonPerGame": 6.12,
-          "rank": 10,
+          "rank": 8,
           "mostCommon": "False Start",
           "watchlist": [
             {
@@ -4812,7 +2373,7 @@
           "drawnPerGame": 5.7,
           "yardsPerGame": 62.5,
           "lastSeasonPerGame": 6.47,
-          "rank": 5,
+          "rank": 6,
           "mostCommon": "False Start",
           "watchlist": [
             {
@@ -4949,995 +2510,6 @@
         "awayQB": "Geno Smith",
         "homeCoach": "Jim Harbaugh",
         "awayCoach": "Aaron Glenn"
-      }
-    },
-    {
-      "gameId": "2026_11_PIT_PHI",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "PHI",
-        "name": "Philadelphia Eagles",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png"
-      },
-      "awayTeam": {
-        "abbr": "PIT",
-        "name": "Pittsburgh Steelers",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png"
-      },
-      "crew": {
-        "name": "Land Clark",
-        "slug": "land-clark",
-        "gamesInModel": 41,
-        "overallFactor": 0.933,
-        "typeTilts": [
-          {
-            "type": "Face Mask",
-            "factor": 0.61
-          },
-          {
-            "type": "Unnecessary Roughness",
-            "factor": 0.82
-          },
-          {
-            "type": "Delay of Game",
-            "factor": 0.82
-          },
-          {
-            "type": "Illegal Formation",
-            "factor": 1.21
-          }
-        ],
-        "quarterTilt": [
-          1.04,
-          1.09,
-          0.94,
-          0.92
-        ]
-      },
-      "projection": {
-        "total": 12.9,
-        "home": 7.0,
-        "away": 5.9,
-        "range": [
-          8,
-          19
-        ],
-        "homeRange": [
-          3,
-          11
-        ],
-        "awayRange": [
-          2,
-          10
-        ],
-        "yards": 106.0,
-        "homeYards": 57.0,
-        "awayYards": 49.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": -9.0,
-        "overThreshold": 14,
-        "probOver": 0.332,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.57,
-            "away": 1.35
-          },
-          {
-            "quarter": 2,
-            "home": 2.22,
-            "away": 1.87
-          },
-          {
-            "quarter": 3,
-            "home": 1.54,
-            "away": 1.27
-          },
-          {
-            "quarter": 4,
-            "home": 1.66,
-            "away": 1.42
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": -0.94
-          },
-          {
-            "label": "PHI discipline & what it draws",
-            "value": -0.07
-          },
-          {
-            "label": "PIT discipline & what it draws",
-            "value": -0.25
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "Offensive Holding",
-          "home": 1.6,
-          "away": 1.07,
-          "total": 2.67,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.03,
-            "awayCommit": 0.85,
-            "homeDraw": 0.97,
-            "awayDraw": 1.04,
-            "crew": 0.99
-          }
-        },
-        {
-          "type": "False Start",
-          "home": 1.25,
-          "away": 0.78,
-          "total": 2.03,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.99,
-            "awayCommit": 0.68,
-            "homeDraw": 1.01,
-            "awayDraw": 1.05,
-            "crew": 0.87
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.57,
-          "away": 0.51,
-          "total": 1.09,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 1.09,
-            "awayCommit": 0.8,
-            "homeDraw": 1.16,
-            "awayDraw": 0.97,
-            "crew": 0.95
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.48,
-          "away": 0.43,
-          "total": 0.9,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.29,
-            "awayCommit": 0.92,
-            "homeDraw": 1.24,
-            "awayDraw": 1.41,
-            "crew": 0.82
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.3,
-          "away": 0.48,
-          "total": 0.78,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 0.89,
-            "awayCommit": 1.4,
-            "homeDraw": 1.19,
-            "awayDraw": 1.23,
-            "crew": 0.82
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.14,
-          "away": 0.49,
-          "total": 0.63,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.63,
-            "awayCommit": 1.44,
-            "homeDraw": 1.08,
-            "awayDraw": 0.68,
-            "crew": 1.05
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.39,
-          "away": 0.22,
-          "total": 0.6,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 1.15,
-            "awayCommit": 1.08,
-            "homeDraw": 0.94,
-            "awayDraw": 1.32,
-            "crew": 1.16
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.32,
-          "away": 0.19,
-          "total": 0.51,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 0.97,
-            "awayCommit": 0.79,
-            "homeDraw": 0.63,
-            "awayDraw": 1.06,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.23,
-          "away": 0.15,
-          "total": 0.38,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.22,
-            "awayCommit": 0.9,
-            "homeDraw": 0.61,
-            "awayDraw": 0.8,
-            "crew": 1.21
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.04,
-          "away": 0.06,
-          "total": 0.11,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.5,
-            "awayCommit": 1.02,
-            "homeDraw": 0.5,
-            "awayDraw": 0.81,
-            "crew": 0.61
-          }
-        },
-        {
-          "type": "Other",
-          "home": 1.67,
-          "away": 1.52,
-          "total": 3.19,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 1.05,
-            "awayCommit": 0.94,
-            "homeDraw": 0.95,
-            "awayDraw": 1.04,
-            "crew": 0.93
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 7.11,
-          "offensePerGame": 4.22,
-          "defensePerGame": 2.89,
-          "drawnPerGame": 8.67,
-          "yardsPerGame": 50.1,
-          "lastSeasonPerGame": 6.88,
-          "rank": 17,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "T.Woolen",
-              "count": 6,
-              "yards": 31,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Illegal Contact",
-                  "count": 2
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "C.DeJean",
-              "count": 4,
-              "yards": 42,
-              "types": [
-                {
-                  "type": "Illegal Contact",
-                  "count": 2
-                },
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "C.Jurgens",
-              "count": 4,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "J.Mailata",
-              "count": 4,
-              "yards": 20,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Illegal Formation",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 9,
-          "perGame": 5.67,
-          "offensePerGame": 3.44,
-          "defensePerGame": 2.22,
-          "drawnPerGame": 7.78,
-          "yardsPerGame": 51.1,
-          "lastSeasonPerGame": 5.94,
-          "rank": 30,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "D.Metcalf",
-              "count": 6,
-              "yards": 57,
-              "types": [
-                {
-                  "type": "Offensive Pass Interference",
-                  "count": 2
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Taunting",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "M.Pittman",
-              "count": 4,
-              "yards": 20,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 3
-                },
-                {
-                  "type": "Illegal Shift",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "A.Samuel",
-              "count": 3,
-              "yards": 46,
-              "types": [
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "T.Fautanu",
-              "count": 3,
-              "yards": 20,
-              "types": [
-                {
-                  "type": "Ineligible Downfield Pass",
-                  "count": 1
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "False Start",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2024_15_PIT_PHI",
-          "season": 2024,
-          "week": 15,
-          "home": "PHI",
-          "away": "PIT",
-          "homeScore": 27,
-          "awayScore": 13,
-          "flags": 12,
-          "homeFlags": 7,
-          "awayFlags": 5,
-          "crew": "Alan Eck"
-        },
-        {
-          "gameId": "2022_08_PIT_PHI",
-          "season": 2022,
-          "week": 8,
-          "home": "PHI",
-          "away": "PIT",
-          "homeScore": 35,
-          "awayScore": 13,
-          "flags": 17,
-          "homeFlags": 8,
-          "awayFlags": 9,
-          "crew": "Clete Blakeman"
-        },
-        {
-          "gameId": "2020_05_PHI_PIT",
-          "season": 2020,
-          "week": 5,
-          "home": "PIT",
-          "away": "PHI",
-          "homeScore": 38,
-          "awayScore": 29,
-          "flags": 17,
-          "homeFlags": 8,
-          "awayFlags": 9,
-          "crew": "Ron Torbert"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": "outdoors",
-        "surface": "grass",
-        "temp": null,
-        "wind": null,
-        "homeRest": 14,
-        "awayRest": 7,
-        "spread": -3.5,
-        "total": 37.5,
-        "stadium": "Lincoln Financial Field",
-        "homeQB": "Joe Milton III",
-        "awayQB": "Aaron Rodgers",
-        "homeCoach": "Nick Sirianni",
-        "awayCoach": "Mike McCarthy"
-      }
-    },
-    {
-      "gameId": "2026_11_ARI_KC",
-      "season": 2026,
-      "week": 11,
-      "gameday": "2026-11-22",
-      "gametime": "13:00",
-      "weekday": "Sunday",
-      "network": null,
-      "homeTeam": {
-        "abbr": "KC",
-        "name": "Kansas City Chiefs",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png"
-      },
-      "awayTeam": {
-        "abbr": "ARI",
-        "name": "Arizona Cardinals",
-        "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png"
-      },
-      "crew": {
-        "name": "Brad Allen",
-        "slug": "brad-allen",
-        "gamesInModel": 40,
-        "overallFactor": 0.922,
-        "typeTilts": [
-          {
-            "type": "Face Mask",
-            "factor": 0.7
-          },
-          {
-            "type": "Illegal Formation",
-            "factor": 0.76
-          },
-          {
-            "type": "Defensive Holding",
-            "factor": 0.82
-          },
-          {
-            "type": "Delay of Game",
-            "factor": 0.86
-          }
-        ],
-        "quarterTilt": [
-          0.95,
-          1.0,
-          1.0,
-          1.04
-        ]
-      },
-      "projection": {
-        "total": 12.4,
-        "home": 6.1,
-        "away": 6.3,
-        "range": [
-          7,
-          18
-        ],
-        "homeRange": [
-          3,
-          10
-        ],
-        "awayRange": [
-          3,
-          10
-        ],
-        "yards": 102.0,
-        "homeYards": 52.0,
-        "awayYards": 50.0,
-        "leagueAverage": 14.2,
-        "vsLeaguePct": -12.7,
-        "overThreshold": 14,
-        "probOver": 0.287,
-        "byQuarter": [
-          {
-            "quarter": 1,
-            "home": 1.27,
-            "away": 1.29
-          },
-          {
-            "quarter": 2,
-            "home": 1.78,
-            "away": 1.84
-          },
-          {
-            "quarter": 3,
-            "home": 1.43,
-            "away": 1.47
-          },
-          {
-            "quarter": 4,
-            "home": 1.6,
-            "away": 1.68
-          }
-        ],
-        "drivers": [
-          {
-            "label": "Crew chief",
-            "value": -1.11
-          },
-          {
-            "label": "KC discipline & what it draws",
-            "value": -0.12
-          },
-          {
-            "label": "ARI discipline & what it draws",
-            "value": -0.58
-          }
-        ]
-      },
-      "byType": [
-        {
-          "type": "Offensive Holding",
-          "home": 1.54,
-          "away": 1.17,
-          "total": 2.71,
-          "leagueTotal": 2.81,
-          "yardsEach": 9.6,
-          "factors": {
-            "homeCommit": 1.22,
-            "awayCommit": 0.99,
-            "homeDraw": 0.97,
-            "awayDraw": 0.9,
-            "crew": 0.94
-          }
-        },
-        {
-          "type": "False Start",
-          "home": 0.84,
-          "away": 1.23,
-          "total": 2.07,
-          "leagueTotal": 2.71,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.73,
-            "awayCommit": 0.94,
-            "homeDraw": 1.04,
-            "awayDraw": 0.87,
-            "crew": 0.96
-          }
-        },
-        {
-          "type": "Defensive Pass Interference",
-          "home": 0.71,
-          "away": 0.4,
-          "total": 1.1,
-          "leagueTotal": 1.15,
-          "yardsEach": 15.4,
-          "factors": {
-            "homeCommit": 1.02,
-            "awayCommit": 1.1,
-            "homeDraw": 0.62,
-            "awayDraw": 1.23,
-            "crew": 0.99
-          }
-        },
-        {
-          "type": "Defensive Offside",
-          "home": 0.46,
-          "away": 0.25,
-          "total": 0.71,
-          "leagueTotal": 0.62,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.34,
-            "awayCommit": 0.83,
-            "homeDraw": 0.95,
-            "awayDraw": 1.03,
-            "crew": 1.06
-          }
-        },
-        {
-          "type": "Unnecessary Roughness",
-          "home": 0.33,
-          "away": 0.21,
-          "total": 0.55,
-          "leagueTotal": 0.69,
-          "yardsEach": 13.1,
-          "factors": {
-            "homeCommit": 1.13,
-            "awayCommit": 0.92,
-            "homeDraw": 0.68,
-            "awayDraw": 0.91,
-            "crew": 0.97
-          }
-        },
-        {
-          "type": "Delay of Game",
-          "home": 0.08,
-          "away": 0.46,
-          "total": 0.53,
-          "leagueTotal": 0.77,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 0.53,
-            "awayCommit": 0.69,
-            "homeDraw": 1.69,
-            "awayDraw": 0.52,
-            "crew": 0.86
-          }
-        },
-        {
-          "type": "Defensive Holding",
-          "home": 0.27,
-          "away": 0.26,
-          "total": 0.53,
-          "leagueTotal": 0.72,
-          "yardsEach": 4.7,
-          "factors": {
-            "homeCommit": 1.15,
-            "awayCommit": 1.24,
-            "homeDraw": 0.66,
-            "awayDraw": 0.87,
-            "crew": 0.82
-          }
-        },
-        {
-          "type": "Roughing the Passer",
-          "home": 0.26,
-          "away": 0.16,
-          "total": 0.42,
-          "leagueTotal": 0.4,
-          "yardsEach": 13.0,
-          "factors": {
-            "homeCommit": 1.27,
-            "awayCommit": 0.67,
-            "homeDraw": 1.15,
-            "awayDraw": 0.86,
-            "crew": 1.1
-          }
-        },
-        {
-          "type": "Illegal Formation",
-          "home": 0.33,
-          "away": 0.08,
-          "total": 0.41,
-          "leagueTotal": 0.43,
-          "yardsEach": 4.9,
-          "factors": {
-            "homeCommit": 1.49,
-            "awayCommit": 0.62,
-            "homeDraw": 0.74,
-            "awayDraw": 1.49,
-            "crew": 0.76
-          }
-        },
-        {
-          "type": "Face Mask",
-          "home": 0.09,
-          "away": 0.31,
-          "total": 0.4,
-          "leagueTotal": 0.38,
-          "yardsEach": 13.2,
-          "factors": {
-            "homeCommit": 0.95,
-            "awayCommit": 1.59,
-            "homeDraw": 1.34,
-            "awayDraw": 0.81,
-            "crew": 0.7
-          }
-        },
-        {
-          "type": "Other",
-          "home": 1.17,
-          "away": 1.76,
-          "total": 2.93,
-          "leagueTotal": 3.49,
-          "yardsEach": 7.0,
-          "factors": {
-            "homeCommit": 0.91,
-            "awayCommit": 1.08,
-            "homeDraw": 1.0,
-            "awayDraw": 0.88,
-            "crew": 0.89
-          }
-        }
-      ],
-      "teams": {
-        "home": {
-          "games": 9,
-          "perGame": 6.89,
-          "offensePerGame": 2.89,
-          "defensePerGame": 4.0,
-          "drawnPerGame": 6.78,
-          "yardsPerGame": 60.6,
-          "lastSeasonPerGame": 7.0,
-          "rank": 23,
-          "mostCommon": "Offensive Holding",
-          "watchlist": [
-            {
-              "player": "K.Fulton",
-              "count": 5,
-              "yards": 87,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 4
-                },
-                {
-                  "type": "Illegal Block Above the Waist",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "N.Williams",
-              "count": 4,
-              "yards": 28,
-              "types": [
-                {
-                  "type": "Illegal Use of Hands",
-                  "count": 1
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "L.Sneed",
-              "count": 4,
-              "yards": 26,
-              "types": [
-                {
-                  "type": "Defensive Holding",
-                  "count": 2
-                },
-                {
-                  "type": "Defensive Offside",
-                  "count": 1
-                },
-                {
-                  "type": "Unnecessary Roughness",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "K.Suamataia",
-              "count": 3,
-              "yards": 30,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 9
-        },
-        "away": {
-          "games": 10,
-          "perGame": 7.2,
-          "offensePerGame": 3.3,
-          "defensePerGame": 3.9,
-          "drawnPerGame": 6.3,
-          "yardsPerGame": 64.9,
-          "lastSeasonPerGame": 6.76,
-          "rank": 16,
-          "mostCommon": "False Start",
-          "watchlist": [
-            {
-              "player": "D.Burke",
-              "count": 7,
-              "yards": 98,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 5
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                },
-                {
-                  "type": "Illegal Contact",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "I.Seumalo",
-              "count": 5,
-              "yards": 29,
-              "types": [
-                {
-                  "type": "False Start",
-                  "count": 4
-                },
-                {
-                  "type": "Offensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "M.Melton",
-              "count": 4,
-              "yards": 87,
-              "types": [
-                {
-                  "type": "Defensive Pass Interference",
-                  "count": 2
-                },
-                {
-                  "type": "Illegal Touch Kick",
-                  "count": 1
-                },
-                {
-                  "type": "Defensive Holding",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "player": "H.Froholdt",
-              "count": 4,
-              "yards": 35,
-              "types": [
-                {
-                  "type": "Offensive Holding",
-                  "count": 3
-                },
-                {
-                  "type": "False Start",
-                  "count": 1
-                }
-              ]
-            }
-          ],
-          "gamesInModel": 10
-        }
-      },
-      "headToHead": [
-        {
-          "gameId": "2022_01_KC_ARI",
-          "season": 2022,
-          "week": 1,
-          "home": "ARI",
-          "away": "KC",
-          "homeScore": 21,
-          "awayScore": 44,
-          "flags": 8,
-          "homeFlags": 5,
-          "awayFlags": 3,
-          "crew": "Shawn Smith"
-        },
-        {
-          "gameId": "2018_10_ARI_KC",
-          "season": 2018,
-          "week": 10,
-          "home": "KC",
-          "away": "ARI",
-          "homeScore": 26,
-          "awayScore": 14,
-          "flags": 11,
-          "homeFlags": 8,
-          "awayFlags": 3,
-          "crew": "Carl Cheffers"
-        }
-      ],
-      "context": {
-        "primetime": false,
-        "divisionGame": false,
-        "neutralSite": false,
-        "roof": "outdoors",
-        "surface": "grass",
-        "temp": null,
-        "wind": null,
-        "homeRest": 7,
-        "awayRest": 7,
-        "spread": 15.5,
-        "total": 40.5,
-        "stadium": "GEHA Field at Arrowhead Stadium",
-        "homeQB": "Patrick Mahomes",
-        "awayQB": "Josh Johnson",
-        "homeCoach": "Andy Reid",
-        "awayCoach": "Mike LaFleur"
       }
     }
   ],

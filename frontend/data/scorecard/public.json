@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-23T01:04:39+00:00",
+  "generatedAt": "2026-11-23T03:05:19+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 97,
+      "games": 98,
       "avgMiss": 3.51,
-      "hitRate": 87.6,
-      "within3": 51.5,
-      "baselineAvgMiss": 3.51,
-      "skillPct": -0.1
+      "hitRate": 87.8,
+      "within3": 52.0,
+      "baselineAvgMiss": 3.52,
+      "skillPct": 0.5
     },
     "byWeek": [
       {
@@ -91,12 +91,12 @@
       {
         "season": 2026,
         "week": 11,
-        "games": 10,
-        "avgMiss": 4.19,
-        "hitRate": 80.0,
-        "within3": 30.0,
-        "baselineAvgMiss": 4.62,
-        "skillPct": 9.3
+        "games": 11,
+        "avgMiss": 4.05,
+        "hitRate": 81.8,
+        "within3": 36.4,
+        "baselineAvgMiss": 4.64,
+        "skillPct": 12.5
       }
     ],
     "games": [
@@ -239,6 +239,26 @@
         "awayProjected": 7.0,
         "homeActual": 2,
         "awayActual": 9
+      },
+      {
+        "gameId": "2026_11_JAX_NYG",
+        "season": 2026,
+        "week": 11,
+        "away": "JAX",
+        "home": "NYG",
+        "crew": "Craig Wrolstad",
+        "source": "live",
+        "projected": 16.3,
+        "low": 10,
+        "high": 23,
+        "actual": 19,
+        "miss": 2.7,
+        "inRange": true,
+        "baselineMiss": 4.8,
+        "homeProjected": 8.1,
+        "awayProjected": 8.2,
+        "homeActual": 6,
+        "awayActual": 13
       },
       {
         "gameId": "2026_11_IND_HOU",

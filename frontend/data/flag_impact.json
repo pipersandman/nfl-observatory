@@ -4,13 +4,13 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 160,
-      "flags": 2280,
+      "games": 161,
+      "flags": 2299,
       "league": {
         "pointsCostPerTeamGame": 5.49,
-        "keyFirstDownsGiven": 242,
+        "keyFirstDownsGiven": 243,
         "drivesKilled": 116,
-        "bigPlaysErased": 97,
+        "bigPlaysErased": 99,
         "turnoversErased": 32,
         "tdsErased": 38,
         "tdsLostOffsetting": 2
@@ -34,17 +34,17 @@
         },
         {
           "team": "JAX",
-          "games": 9,
-          "flags": 60,
-          "pointsCost": 63.8,
-          "pointsCostPerGame": 7.09,
-          "firstDownsGiven": 17,
-          "keyFirstDownsGiven": 9,
+          "games": 10,
+          "flags": 73,
+          "pointsCost": 72.1,
+          "pointsCostPerGame": 7.21,
+          "firstDownsGiven": 20,
+          "keyFirstDownsGiven": 10,
           "drivesKilled": 5,
-          "bigPlaysErased": 4,
+          "bigPlaysErased": 5,
           "turnoversErased": 1,
           "tdsErased": 5,
-          "winsGivenAway": 2.0,
+          "winsGivenAway": 2.21,
           "tdsLostOffsetting": 1,
           "rank": 2
         },
@@ -305,22 +305,6 @@
           "rank": 18
         },
         {
-          "team": "NYG",
-          "games": 9,
-          "flags": 65,
-          "pointsCost": 47.7,
-          "pointsCostPerGame": 5.3,
-          "firstDownsGiven": 19,
-          "keyFirstDownsGiven": 7,
-          "drivesKilled": 6,
-          "bigPlaysErased": 0,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.78,
-          "tdsLostOffsetting": 0,
-          "rank": 19
-        },
-        {
           "team": "LAC",
           "games": 10,
           "flags": 76,
@@ -333,6 +317,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.34,
+          "tdsLostOffsetting": 0,
+          "rank": 19
+        },
+        {
+          "team": "NYG",
+          "games": 10,
+          "flags": 71,
+          "pointsCost": 51.3,
+          "pointsCostPerGame": 5.13,
+          "firstDownsGiven": 19,
+          "keyFirstDownsGiven": 7,
+          "drivesKilled": 6,
+          "bigPlaysErased": 1,
+          "turnoversErased": 0,
+          "tdsErased": 0,
+          "winsGivenAway": 1.85,
           "tdsLostOffsetting": 0,
           "rank": 20
         },
@@ -1540,7 +1540,7 @@
           "yards": 10,
           "pointsCost": 7.88,
           "method": "touchdown value",
-          "winProbCost": 15.3,
+          "winProbCost": 15.4,
           "winProbMethod": "touchdown value",
           "gainErased": 72,
           "twoPoint": false,
@@ -5987,5 +5987,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-23T01:04:24+00:00"
+  "generatedAt": "2026-11-23T03:05:05+00:00"
 }

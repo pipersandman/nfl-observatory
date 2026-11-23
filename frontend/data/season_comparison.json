@@ -4,7 +4,7 @@
   "throughWeek": 10,
   "partialWeek": {
     "week": 11,
-    "games": 10
+    "games": 11
   },
   "windows": {
     "season": 2026,
@@ -13,7 +13,7 @@
     "throughWeek": 10,
     "partialWeek": {
       "week": 11,
-      "games": 10
+      "games": 11
     },
     "weeksLabel": "Weeks 1\u201310",
     "sameWeeks": {
@@ -98,11 +98,11 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 160,
-      "penalties": 2280,
-      "yards": 18302,
-      "perGame": 14.25,
-      "yardsPerGame": 114.4,
+      "games": 161,
+      "penalties": 2299,
+      "yards": 18455,
+      "perGame": 14.28,
+      "yardsPerGame": 114.6,
       "yardsPerPenalty": 8.0
     },
     "baselines": {
@@ -141,6 +141,53 @@
     }
   },
   "crewChiefs": [
+    {
+      "name": "Craig Wrolstad",
+      "slug": "craig-wrolstad",
+      "current": {
+        "games": 9,
+        "penalties": 157,
+        "yards": 1367,
+        "perGame": 17.44,
+        "yardsPerGame": 151.9,
+        "yardsPerPenalty": 8.7
+      },
+      "throughWeek": 11,
+      "baselines": {
+        "sameWeeks": {
+          "games": 10,
+          "penalties": 117,
+          "yards": 941,
+          "perGame": 11.7,
+          "yardsPerGame": 94.1,
+          "yardsPerPenalty": 8.0
+        },
+        "lastSeason": {
+          "games": 17,
+          "penalties": 199,
+          "yards": 1583,
+          "perGame": 11.71,
+          "yardsPerGame": 93.1,
+          "yardsPerPenalty": 8.0
+        },
+        "last3": {
+          "games": 49,
+          "penalties": 598,
+          "yards": 4959,
+          "perGame": 12.2,
+          "yardsPerGame": 101.2,
+          "yardsPerPenalty": 8.3
+        },
+        "all": {
+          "games": 172,
+          "penalties": 2119,
+          "yards": 18174,
+          "perGame": 12.32,
+          "yardsPerGame": 105.7,
+          "yardsPerPenalty": 8.6
+        }
+      }
+    },
     {
       "name": "Scott Novak",
       "slug": "scott-novak",
@@ -185,53 +232,6 @@
           "perGame": 11.69,
           "yardsPerGame": 93.3,
           "yardsPerPenalty": 8.0
-        }
-      }
-    },
-    {
-      "name": "Craig Wrolstad",
-      "slug": "craig-wrolstad",
-      "current": {
-        "games": 8,
-        "penalties": 138,
-        "yards": 1214,
-        "perGame": 17.25,
-        "yardsPerGame": 151.8,
-        "yardsPerPenalty": 8.8
-      },
-      "throughWeek": 10,
-      "baselines": {
-        "sameWeeks": {
-          "games": 9,
-          "penalties": 111,
-          "yards": 865,
-          "perGame": 12.33,
-          "yardsPerGame": 96.1,
-          "yardsPerPenalty": 7.8
-        },
-        "lastSeason": {
-          "games": 17,
-          "penalties": 199,
-          "yards": 1583,
-          "perGame": 11.71,
-          "yardsPerGame": 93.1,
-          "yardsPerPenalty": 8.0
-        },
-        "last3": {
-          "games": 49,
-          "penalties": 598,
-          "yards": 4959,
-          "perGame": 12.2,
-          "yardsPerGame": 101.2,
-          "yardsPerPenalty": 8.3
-        },
-        "all": {
-          "games": 172,
-          "penalties": 2119,
-          "yards": 18174,
-          "perGame": 12.32,
-          "yardsPerGame": 105.7,
-          "yardsPerPenalty": 8.6
         }
       }
     },
@@ -1148,5 +1148,5 @@
       }
     }
   ],
-  "generatedAt": "2026-11-23T01:04:22.512027Z"
+  "generatedAt": "2026-11-23T03:05:03.990343Z"
 }

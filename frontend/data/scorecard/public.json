@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-23T03:05:19+00:00",
+  "generatedAt": "2026-11-23T06:09:03+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 98,
-      "avgMiss": 3.51,
-      "hitRate": 87.8,
-      "within3": 52.0,
-      "baselineAvgMiss": 3.52,
-      "skillPct": 0.5
+      "games": 99,
+      "avgMiss": 3.53,
+      "hitRate": 87.9,
+      "within3": 51.5,
+      "baselineAvgMiss": 3.54,
+      "skillPct": 0.3
     },
     "byWeek": [
       {
@@ -91,12 +91,12 @@
       {
         "season": 2026,
         "week": 11,
-        "games": 11,
-        "avgMiss": 4.05,
-        "hitRate": 81.8,
-        "within3": 36.4,
-        "baselineAvgMiss": 4.64,
-        "skillPct": 12.5
+        "games": 12,
+        "avgMiss": 4.17,
+        "hitRate": 83.3,
+        "within3": 33.3,
+        "baselineAvgMiss": 4.67,
+        "skillPct": 10.5
       }
     ],
     "games": [
@@ -199,6 +199,26 @@
         "awayProjected": 6.8,
         "homeActual": 3,
         "awayActual": 7
+      },
+      {
+        "gameId": "2026_11_MIN_SF",
+        "season": 2026,
+        "week": 11,
+        "away": "MIN",
+        "home": "SF",
+        "crew": "Alex Moore",
+        "source": "live",
+        "projected": 14.5,
+        "low": 9,
+        "high": 21,
+        "actual": 9,
+        "miss": -5.5,
+        "inRange": true,
+        "baselineMiss": 5.0,
+        "homeProjected": 7.6,
+        "awayProjected": 6.9,
+        "homeActual": 6,
+        "awayActual": 3
       },
       {
         "gameId": "2026_11_MIA_BUF",

@@ -4,11 +4,11 @@
   "scopes": {
     "current": {
       "season": 2026,
-      "games": 161,
-      "flags": 2299,
+      "games": 162,
+      "flags": 2308,
       "league": {
-        "pointsCostPerTeamGame": 5.49,
-        "keyFirstDownsGiven": 243,
+        "pointsCostPerTeamGame": 5.48,
+        "keyFirstDownsGiven": 244,
         "drivesKilled": 116,
         "bigPlaysErased": 99,
         "turnoversErased": 32,
@@ -129,22 +129,6 @@
           "rank": 7
         },
         {
-          "team": "SF",
-          "games": 9,
-          "flags": 61,
-          "pointsCost": 55.8,
-          "pointsCostPerGame": 6.2,
-          "firstDownsGiven": 20,
-          "keyFirstDownsGiven": 11,
-          "drivesKilled": 3,
-          "bigPlaysErased": 3,
-          "turnoversErased": 0,
-          "tdsErased": 1,
-          "winsGivenAway": 1.31,
-          "tdsLostOffsetting": 0,
-          "rank": 8
-        },
-        {
           "team": "GB",
           "games": 10,
           "flags": 80,
@@ -158,7 +142,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.7,
           "tdsLostOffsetting": 1,
-          "rank": 9
+          "rank": 8
         },
         {
           "team": "HOU",
@@ -174,7 +158,7 @@
           "tdsErased": 1,
           "winsGivenAway": 2.26,
           "tdsLostOffsetting": 0,
-          "rank": 10
+          "rank": 9
         },
         {
           "team": "CIN",
@@ -190,7 +174,7 @@
           "tdsErased": 2,
           "winsGivenAway": 1.4,
           "tdsLostOffsetting": 0,
-          "rank": 11
+          "rank": 10
         },
         {
           "team": "CLE",
@@ -206,7 +190,7 @@
           "tdsErased": 0,
           "winsGivenAway": 1.93,
           "tdsLostOffsetting": 0,
-          "rank": 12
+          "rank": 11
         },
         {
           "team": "LA",
@@ -221,6 +205,22 @@
           "turnoversErased": 1,
           "tdsErased": 2,
           "winsGivenAway": 2.05,
+          "tdsLostOffsetting": 0,
+          "rank": 12
+        },
+        {
+          "team": "SF",
+          "games": 10,
+          "flags": 67,
+          "pointsCost": 59.9,
+          "pointsCostPerGame": 5.99,
+          "firstDownsGiven": 21,
+          "keyFirstDownsGiven": 11,
+          "drivesKilled": 3,
+          "bigPlaysErased": 3,
+          "turnoversErased": 0,
+          "tdsErased": 1,
+          "winsGivenAway": 1.37,
           "tdsLostOffsetting": 0,
           "rank": 13
         },
@@ -497,22 +497,6 @@
           "rank": 30
         },
         {
-          "team": "MIN",
-          "games": 9,
-          "flags": 50,
-          "pointsCost": 34.9,
-          "pointsCostPerGame": 3.88,
-          "firstDownsGiven": 8,
-          "keyFirstDownsGiven": 3,
-          "drivesKilled": 6,
-          "bigPlaysErased": 3,
-          "turnoversErased": 0,
-          "tdsErased": 0,
-          "winsGivenAway": 1.18,
-          "tdsLostOffsetting": 0,
-          "rank": 31
-        },
-        {
           "team": "PIT",
           "games": 10,
           "flags": 57,
@@ -525,6 +509,22 @@
           "turnoversErased": 0,
           "tdsErased": 0,
           "winsGivenAway": 1.14,
+          "tdsLostOffsetting": 0,
+          "rank": 31
+        },
+        {
+          "team": "MIN",
+          "games": 10,
+          "flags": 53,
+          "pointsCost": 37.1,
+          "pointsCostPerGame": 3.71,
+          "firstDownsGiven": 9,
+          "keyFirstDownsGiven": 4,
+          "drivesKilled": 6,
+          "bigPlaysErased": 3,
+          "turnoversErased": 0,
+          "tdsErased": 0,
+          "winsGivenAway": 1.23,
           "tdsLostOffsetting": 0,
           "rank": 32
         }
@@ -1696,7 +1696,7 @@
           "yards": 10,
           "pointsCost": 6.13,
           "method": "touchdown value",
-          "winProbCost": 15.5,
+          "winProbCost": 15.6,
           "winProbMethod": "touchdown value",
           "gainErased": 39,
           "twoPoint": false,
@@ -5987,5 +5987,5 @@
     "turnoversErased": "Defensive flags that wiped out their own interception or fumble recovery"
   },
   "notes": "Regular season, accepted penalties. Points and win chances are estimates from nflverse's expected-points and win-probability models and league rates since 2015.",
-  "generatedAt": "2026-11-23T03:05:05+00:00"
+  "generatedAt": "2026-11-23T06:08:47+00:00"
 }

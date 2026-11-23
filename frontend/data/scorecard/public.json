@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-22T22:04:41+00:00",
+  "generatedAt": "2026-11-23T01:04:39+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,10 +10,10 @@
   },
   "live": {
     "summary": {
-      "games": 95,
+      "games": 97,
       "avgMiss": 3.51,
-      "hitRate": 87.4,
-      "within3": 52.6,
+      "hitRate": 87.6,
+      "within3": 51.5,
       "baselineAvgMiss": 3.51,
       "skillPct": -0.1
     },
@@ -91,12 +91,12 @@
       {
         "season": 2026,
         "week": 11,
-        "games": 8,
-        "avgMiss": 4.28,
-        "hitRate": 75.0,
-        "within3": 37.5,
-        "baselineAvgMiss": 4.85,
-        "skillPct": 11.9
+        "games": 10,
+        "avgMiss": 4.19,
+        "hitRate": 80.0,
+        "within3": 30.0,
+        "baselineAvgMiss": 4.62,
+        "skillPct": 9.3
       }
     ],
     "games": [
@@ -161,6 +161,26 @@
         "awayActual": 6
       },
       {
+        "gameId": "2026_11_NYJ_LAC",
+        "season": 2026,
+        "week": 11,
+        "away": "NYJ",
+        "home": "LAC",
+        "crew": "Alex Kemp",
+        "source": "live",
+        "projected": 13.8,
+        "low": 8,
+        "high": 20,
+        "actual": 10,
+        "miss": -3.8,
+        "inRange": true,
+        "baselineMiss": 4.2,
+        "homeProjected": 6.0,
+        "awayProjected": 7.8,
+        "homeActual": 6,
+        "awayActual": 4
+      },
+      {
         "gameId": "2026_11_NO_CHI",
         "season": 2026,
         "week": 11,
@@ -199,6 +219,26 @@
         "awayProjected": 6.7,
         "homeActual": 7,
         "awayActual": 3
+      },
+      {
+        "gameId": "2026_11_LV_DEN",
+        "season": 2026,
+        "week": 11,
+        "away": "LV",
+        "home": "DEN",
+        "crew": "Carl Cheffers",
+        "source": "live",
+        "projected": 14.9,
+        "low": 9,
+        "high": 21,
+        "actual": 11,
+        "miss": -3.9,
+        "inRange": true,
+        "baselineMiss": 3.2,
+        "homeProjected": 7.8,
+        "awayProjected": 7.0,
+        "homeActual": 2,
+        "awayActual": 9
       },
       {
         "gameId": "2026_11_IND_HOU",

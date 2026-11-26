@@ -21,6 +21,11 @@ on:
     - cron: '0 12 * * 0'        # Sunday, before the international morning games
   workflow_dispatch:
     # Manual trigger option (no longer needs checkbox - always full)
+    inputs:
+      week:
+        description: 'Gameday archive (#193): save this week by hand (only while /live still shows it). Leave empty for a normal run.'
+        required: false
+        default: ''
   push:
     # Deploy automatically whenever code is merged to main.
     # Data-only commits (including the bot's weekly commit) don't retrigger.
@@ -136,7 +141,7 @@ jobs:
         # Never blocks the update: previews just show "Crew TBA" if this fails
         continue-on-error: true
         env:
-          # Raw capture to R2 (#88). Only these two steps get the R2 secrets.
+          # Raw capture to R2 (#88). Only this step, the data update and the gameday archive get the R2 secrets.
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
@@ -150,11 +155,24 @@ jobs:
         # Exit 1 = a source failed to load (nothing written) or a core file failed:
         # this step fails, so commit, build and deploy are all skipped.
         env:
-          # Raw capture to R2 (#88). Only these two steps get the R2 secrets.
+          # Raw capture to R2 (#88). Only this step, fetch assignments and the gameday archive get the R2 secrets.
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: python scripts/update_data.py --full || [ $? -eq 3 ]
+
+      - name: Save gameday archive (once each week's games are all final)
+        if: steps.gate.outputs.skip != 'true'
+        # #193: when every game of /live's week is final and that week isn't saved yet, writes
+        # the full /live response to R2 (nflobs-raw/espn/gameday/, never overwritten) and our own
+        # summary to frontend/data/gameday/, which the next step commits. Never blocks the update.
+        continue-on-error: true
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          WEEK: ${{ inputs.week }}
+        run: python scripts/gameday_archive.py ${WEEK:+--week "$WEEK"}
 
       - name: Commit and push if changes
         if: steps.gate.outputs.skip != 'true'

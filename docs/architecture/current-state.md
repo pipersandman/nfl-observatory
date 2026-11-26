@@ -160,11 +160,34 @@ seconds, combined with the site's `data/previews/latest.json` and
 `node bundle.mjs`) into the Cloudflare dashboard, or with Wrangler. Not deployed
 by GitHub Actions. Free plan: 100,000 requests a day.
 
+### Gameday archive (#193)
+
+The worker keeps nothing, so the data workflow saves each week once it's over
+(`scripts/gameday_archive.py`, step "Save gameday archive", after the data update
+and before the commit; `continue-on-error`). It fetches `/live` once; when every
+game of that week is final (state `post`, none postponed or canceled), the games
+match the nflverse schedule's regular-season games for that season and week
+(teams and Eastern date), and `frontend/data/gameday/<season>-week-NN.json`
+doesn't exist yet, it writes:
+
+- the full `/live` response to R2, `nflobs-raw/espn/gameday/<season>/week-NN.json`,
+  conditional write (never overwritten; if it already exists, the published file
+  is built from the stored copy);
+- then our own summary to `frontend/data/gameday/<season>-week-NN.json`, committed
+  with the data (M101). About 33 KB a week.
+
+Nothing is written if R2 fails, so the next run retries. A manual run
+(`workflow_dispatch` input `week`) saves a week by hand while `/live` still shows
+it, with a postponed game marked `postponed`. Playoff weeks aren't saved yet
+(logged "postseason not supported yet"). If `/live` already shows the next week
+before the last one was saved, the run logs a warning (`Week NN missed`). Log
+line when saved: `Gameday archive: Week NN saved`.
+
 ## Workflows
 
 | Workflow | Runs | Does |
 |---|---|---|
-| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; Saturday 15:00 and Sunday 12:00 UTC crew checks (#142); every push to `main` (except data-only changes); manual | Game-day and crew-check runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`) or a Football Zebras post in the two latest assignment files was modified after its saved time (#142); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues; a failed Football Zebras check never counts as a change. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
+| `update-data.yml` | Tuesday 06:00 UTC weekly; Tuesday and Wednesday for assignments; hourly during game windows; Saturday 15:00 and Sunday 12:00 UTC crew checks (#142); every push to `main` (except data-only changes); manual | Game-day and crew-check runs skip unless nflverse play-by-play for the current season (#84) changed (checks `source_stamp.json`) or a Football Zebras post in the two latest assignment files was modified after its saved time (#142); they also skip while that season's file isn't published yet (opening week), while weekly, manual and push runs go ahead and stop red at data loading if it's still missing. If the nflverse check itself fails, every run continues; a failed Football Zebras check never counts as a change. Then: install, fetch assignments (allowed to fail: `continue-on-error`, so its exit 2 shows on the step without skipping anything), `update_data.py --full` (exit 3, module failures, still publishes; exit 1 stops the run), save the gameday archive once the week is final (#193, allowed to fail; manual input `week`), commit `frontend/data/` and `reports/miner/` to `main` as `github-actions[bot]`, build static pages, cache-bust CSS/JS URLs, FTPS deploy to HostGator, then "Fail if any module failed" turns the run red if `run_status.json` says `ok: false` |
 | `checks.yml` (W1) | Every pull request; manual | Installs the check tools and the runtime lock file (the tests import the pipeline, #89), then `python scripts/check.py`: Ruff, compile, JSON, Worker JS, no hard-coded years, and pytest. Job name `checks` |
 | `r2-access-check.yml` (#88) | Manual only | Proves the R2 token can write `nflobs-raw`, can't overwrite an object, and can't list or write `drsplus-tiles`; always deletes its `_checks/` test object |
 | `r2-rebuild-check.yml` (#88) | Manual only (input: a run id) | Rebuilds that "Update NFL Data" run's data from its raw files alone and compares it with what the run committed |

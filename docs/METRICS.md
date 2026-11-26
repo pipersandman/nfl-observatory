@@ -2417,6 +2417,25 @@ decisions on them (keep, stop deploying, remove) are P5–P9 in the
 | Example | `scorecard/live/2026-week-07.json`: 14 records, each with the frozen projection and `frozenAt` (C9). `history/snapshots/`: 2026 Weeks 4–7. |
 | Conflicts | [C9](audits/metric-conflicts-2026-10-28.md#c9-scorecard-which-projection-is-graded), [Published but not displayed](audits/metric-conflicts-2026-10-28.md#published-but-not-displayed) |
 
+### M101. Gameday archive (not displayed yet)
+
+| Field | Value |
+|---|---|
+| Label on site | None yet: #194 adds the week picker on `/gameday/` that shows it |
+| Kind | Raw counts (observed): final score, flags and penalty yards per team, accepted flags by type per team; one text line per flag |
+| Numerator / Denominator | Counts only; no rates |
+| Population | Regular-season games of one week (the week's games in the gameday feed must match the nflverse schedule's regular-season games, by teams and Eastern date). Playoff weeks aren't saved yet |
+| Time window | One week, saved once when every game is final (Week 12 of 2026 onward). A postponed game holds the week open; a manual run saves the final games and marks it `postponed` |
+| Inclusion rules | Team `flags` and `yards`: accepted penalties from ESPN's box score (as M98). `acceptedByType`: accepted flags only; `typeNotIdentified`: box-score flags with no type. `flagLines`: every flag, declined and offsetting included and labeled |
+| Benchmark | None |
+| Calculation | `gameday_archive.py` `build_public()` from the gameday worker's final `/live` response (the same response is kept whole in private R2, `nflobs-raw/espn/gameday/<season>/week-NN.json`, never overwritten). Each flag line is built from parsed facts: `Q<quarter> <clock> · <team> · <foul> · <player> · <yards> yds` (`OT` for overtime; no player part when none is named; `declined` or `offsetting` in place of yards). ESPN's play text and win probability are never copied |
+| Rounding | Whole numbers |
+| Provenance | ESPN's live game feed via the gameday worker (terms-restricted: we publish only these derived facts, `docs/DATA_SOURCES.md` section 10); the data workflow's "Save gameday archive" step |
+| Limitations | Not the record: nflverse play-by-play is. `acceptedByType` and `flagLines` come from parsing ESPN's play text, team totals from ESPN's box score, so they can differ by a flag (2026 Week 12, CHI at DET: box score 4 for CHI, 3 parsed). `typeNotIdentified` on each team counts accepted box-score flags with no type (box score minus `acceptedByType`), so the two add up to `flags`; it's left out when there's no gap. If the play text ever shows more accepted flags than the box score, there's no gap field and `acceptedByType` sums to more than `flags`. At most 100 flags per game (the worker's limit). A week is lost if `/live` moves to the next week before a run saves it |
+| Where it appears | Not displayed. `gameday/<season>-week-NN.json` → `season`, `week`, `savedAt`, `feedUpdatedAt`, `source`, `games[].{id,start,status,flagLines[]}`, `games[].away.{abbr,score,flags,yards,typeNotIdentified}`, `games[].home.{abbr,score,flags,yards,typeNotIdentified}`, `games[].acceptedByType.<team>.<type>` |
+| Example | `gameday/2026-week-12.json` (first week saved): about 33 KB for 16 games |
+| Conflicts | None |
+
 ---
 
 ## Where it appears (index)

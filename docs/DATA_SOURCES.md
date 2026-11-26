@@ -140,6 +140,7 @@ Only if a specific product need or research result justifies the cost.
 2. **CC BY 4.0 sources** (nflverse core, Open-Meteo data): free to publish derived data with attribution. Our public `/dataset/` (CC BY 4.0) may include these.
 3. **CC BY-SA 4.0 sources** (FTN charting, 2023+ participation): anything *derived from them* that we publish must also be CC BY-SA and credit "FTN Data via nflverse". **Keep FTN-derived columns out of the CC BY exports**, or publish them as a separate CC BY-SA file.
 4. **Terms-restricted sources** (NFL gamebooks, ESPN, Football Zebras, odds APIs): use internally for analysis; publish our *own derived statistics*, never the raw data or documents; attribute where facts come from.
+   - **ESPN gameday archive (#193):** the full final `/live` response of each week is kept private in R2 (`nflobs-raw/espn/gameday/<season>/week-NN.json`, written once). The published `frontend/data/gameday/<season>-week-NN.json` holds only our derived facts: teams, final score, flags and yards per team, accepted flags by type, and one line of our own per flag (quarter, clock, team, foul, player, yards). ESPN's play text and win probabilities are never published (metric M101).
 5. **Odds data:** most odds APIs prohibit redistributing raw odds. Keep raw lines private; publish only our derived findings.
 6. **Open-Meteo:** the free API is for non-commercial use. If the site ever becomes commercial (ads, subscriptions), switch to a paid Open-Meteo plan.
 7. **Don't scrape sites whose terms forbid it** (Sports Reference). Buy data instead.

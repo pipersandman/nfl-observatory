@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-25T15:09:37+00:00",
+  "generatedAt": "2026-11-26T23:53:50+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,11 +10,11 @@
   },
   "live": {
     "summary": {
-      "games": 100,
-      "avgMiss": 3.53,
-      "hitRate": 88.0,
-      "within3": 51.0,
-      "baselineAvgMiss": 3.54,
+      "games": 102,
+      "avgMiss": 3.48,
+      "hitRate": 88.2,
+      "within3": 52.0,
+      "baselineAvgMiss": 3.49,
       "skillPct": 0.3
     },
     "byWeek": [
@@ -97,9 +97,59 @@
         "within3": 30.8,
         "baselineAvgMiss": 4.62,
         "skillPct": 9.5
+      },
+      {
+        "season": 2026,
+        "week": 12,
+        "games": 2,
+        "avgMiss": 1.0,
+        "hitRate": 100.0,
+        "within3": 100.0,
+        "baselineAvgMiss": 1.0,
+        "skillPct": 0.0
       }
     ],
     "games": [
+      {
+        "gameId": "2026_12_GB_LA",
+        "season": 2026,
+        "week": 12,
+        "away": "GB",
+        "home": "LA",
+        "crew": "Alan Eck",
+        "source": "live",
+        "projected": 12.2,
+        "low": 7,
+        "high": 18,
+        "actual": 13,
+        "miss": 0.8,
+        "inRange": true,
+        "baselineMiss": 1.0,
+        "homeProjected": 5.6,
+        "awayProjected": 6.7,
+        "homeActual": 5,
+        "awayActual": 8
+      },
+      {
+        "gameId": "2026_12_CHI_DET",
+        "season": 2026,
+        "week": 12,
+        "away": "CHI",
+        "home": "DET",
+        "crew": "Shawn Hochuli",
+        "source": "live",
+        "projected": 14.2,
+        "low": 9,
+        "high": 20,
+        "actual": 13,
+        "miss": -1.2,
+        "inRange": true,
+        "baselineMiss": 1.0,
+        "homeProjected": 6.8,
+        "awayProjected": 7.4,
+        "homeActual": 9,
+        "awayActual": 4
+      },
       {
         "gameId": "2026_11_TEN_DAL",
         "season": 2026,

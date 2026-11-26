@@ -2,18 +2,24 @@
   "currentSeason": 2026,
   "previousSeason": 2025,
   "throughWeek": 11,
-  "partialWeek": null,
+  "partialWeek": {
+    "week": 12,
+    "games": 2
+  },
   "windows": {
     "season": 2026,
     "previous": 2025,
     "dataStart": 2015,
     "throughWeek": 11,
-    "partialWeek": null,
+    "partialWeek": {
+      "week": 12,
+      "games": 2
+    },
     "weeksLabel": "Weeks 1\u201311",
     "sameWeeks": {
-      "label": "2025 through Week 11",
-      "short": "2025 Wk 1\u201311",
-      "button": "2025 thru Wk 11"
+      "label": "2025 through Week 12",
+      "short": "2025 Wk 1\u201312",
+      "button": "2025 thru Wk 12"
     },
     "prior": {
       "seasons": [
@@ -42,12 +48,12 @@
   "baselines": [
     {
       "key": "sameWeeks",
-      "label": "2025 through Week 11",
-      "short": "2025 Wk 1\u201311",
+      "label": "2025 through Week 12",
+      "short": "2025 Wk 1\u201312",
       "seasons": [
         2025
       ],
-      "button": "2025 thru Wk 11"
+      "button": "2025 thru Wk 12"
     },
     {
       "key": "lastSeason",
@@ -92,20 +98,20 @@
   "defaultBaseline": "sameWeeks",
   "league": {
     "current": {
-      "games": 163,
-      "penalties": 2318,
-      "yards": 18606,
-      "perGame": 14.22,
-      "yardsPerGame": 114.1,
+      "games": 165,
+      "penalties": 2344,
+      "yards": 18814,
+      "perGame": 14.21,
+      "yardsPerGame": 114.0,
       "yardsPerPenalty": 8.0
     },
     "baselines": {
       "sameWeeks": {
-        "games": 164,
-        "penalties": 2204,
-        "yards": 17665,
-        "perGame": 13.44,
-        "yardsPerGame": 107.7,
+        "games": 178,
+        "penalties": 2390,
+        "yards": 19222,
+        "perGame": 13.43,
+        "yardsPerGame": 108.0,
         "yardsPerPenalty": 8.0
       },
       "lastSeason": {
@@ -374,14 +380,14 @@
       "name": "Alan Eck",
       "slug": "alan-eck",
       "current": {
-        "games": 9,
-        "penalties": 129,
-        "yards": 1109,
-        "perGame": 14.33,
-        "yardsPerGame": 123.2,
+        "games": 10,
+        "penalties": 142,
+        "yards": 1222,
+        "perGame": 14.2,
+        "yardsPerGame": 122.2,
         "yardsPerPenalty": 8.6
       },
-      "throughWeek": 11,
+      "throughWeek": 12,
       "baselines": {
         "sameWeeks": {
           "games": 10,
@@ -421,22 +427,22 @@
       "name": "Shawn Hochuli",
       "slug": "shawn-hochuli",
       "current": {
-        "games": 10,
-        "penalties": 142,
-        "yards": 1095,
-        "perGame": 14.2,
-        "yardsPerGame": 109.5,
+        "games": 11,
+        "penalties": 155,
+        "yards": 1190,
+        "perGame": 14.09,
+        "yardsPerGame": 108.2,
         "yardsPerPenalty": 7.7
       },
-      "throughWeek": 11,
+      "throughWeek": 12,
       "baselines": {
         "sameWeeks": {
-          "games": 10,
-          "penalties": 151,
-          "yards": 1258,
-          "perGame": 15.1,
-          "yardsPerGame": 125.8,
-          "yardsPerPenalty": 8.3
+          "games": 11,
+          "penalties": 172,
+          "yards": 1444,
+          "perGame": 15.64,
+          "yardsPerGame": 131.3,
+          "yardsPerPenalty": 8.4
         },
         "lastSeason": {
           "games": 16,
@@ -1142,5 +1148,5 @@
       }
     }
   ],
-  "generatedAt": "2026-11-25T15:09:19.051481Z"
+  "generatedAt": "2026-11-26T23:53:39.311189Z"
 }

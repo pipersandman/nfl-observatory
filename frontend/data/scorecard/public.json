@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-27T02:26:20+00:00",
+  "generatedAt": "2026-11-27T06:02:53+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 102,
-      "avgMiss": 3.48,
-      "hitRate": 88.2,
-      "within3": 52.0,
-      "baselineAvgMiss": 3.49,
-      "skillPct": 0.3
+      "games": 104,
+      "avgMiss": 3.45,
+      "hitRate": 88.5,
+      "within3": 52.9,
+      "baselineAvgMiss": 3.5,
+      "skillPct": 1.5
     },
     "byWeek": [
       {
@@ -101,15 +101,55 @@
       {
         "season": 2026,
         "week": 12,
-        "games": 2,
-        "avgMiss": 1.0,
+        "games": 4,
+        "avgMiss": 1.37,
         "hitRate": 100.0,
         "within3": 100.0,
-        "baselineAvgMiss": 1.0,
-        "skillPct": 0.0
+        "baselineAvgMiss": 2.5,
+        "skillPct": 45.0
       }
     ],
     "games": [
+      {
+        "gameId": "2026_12_PHI_DAL",
+        "season": 2026,
+        "week": 12,
+        "away": "PHI",
+        "home": "DAL",
+        "crew": "Adrian Hill",
+        "source": "live",
+        "projected": 17.6,
+        "low": 11,
+        "high": 24,
+        "actual": 19,
+        "miss": 1.4,
+        "inRange": true,
+        "baselineMiss": 5.0,
+        "homeProjected": 8.4,
+        "awayProjected": 9.2,
+        "homeActual": 11,
+        "awayActual": 8
+      },
+      {
+        "gameId": "2026_12_KC_BUF",
+        "season": 2026,
+        "week": 12,
+        "away": "KC",
+        "home": "BUF",
+        "crew": "Alex Kemp",
+        "source": "live",
+        "projected": 13.1,
+        "low": 8,
+        "high": 19,
+        "actual": 11,
+        "miss": -2.1,
+        "inRange": true,
+        "baselineMiss": 3.0,
+        "homeProjected": 6.7,
+        "awayProjected": 6.3,
+        "homeActual": 3,
+        "awayActual": 8
+      },
       {
         "gameId": "2026_12_GB_LA",
         "season": 2026,

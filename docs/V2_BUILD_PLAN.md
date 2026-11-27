@@ -810,9 +810,11 @@ Ranked by plausibility. Each becomes a pre-registered test in Q2.
    approve it.
 4. **Checks decide, not confidence.** A step is done when its "Done when" check
    passes, CI is green and you've read the diff.
-5. **No home lab, no extra agents.** Everything runs on the laptop, GitHub
-   Actions or hosted services. Dagster runs on the laptop while building and in
-   the cloud in production.
+5. **No home lab. Agents only as set up in the repo.** Everything runs on the
+   laptop, GitHub Actions or hosted services. Claude Code may use the planner,
+   builder and reviewer agents in `.claude/agents/` (run with `/run-step`); you
+   approve every plan and merge every PR. No other agents. Dagster runs on the
+   laptop while building and in the cloud in production.
 6. **Slow is fine.** A session is 1–2 hours. Stop at a clean point: committed,
    pushed, or explicitly parked with a note in the issue.
 

@@ -48,6 +48,9 @@ LIVE_URL = 'https://nflobs-gameday.tfostery.workers.dev/live'
 USER_AGENT = 'nflobservatory.com gameday archive'
 R2_KEY = 'espn/gameday/{season}/week-{week:02d}.json'
 NOT_PLAYED = re.compile(r'postpon|cancel|suspend', re.I)
+# Feed team codes -> ours. Mirrors ALIAS in worker/gameday/parse.js, plus ARZ (#206: ESPN's
+# play text codes Arizona as ARZ). A safety net: kept even once the worker maps them all.
+FEED_TEAM = {'ARZ': 'ARI', 'WSH': 'WAS', 'LAR': 'LA', 'JAC': 'JAX', 'OAK': 'LV', 'SD': 'LAC', 'STL': 'LA'}
 SOURCE_NOTE = ("NFL Officiating Observatory summary of ESPN's live game feed: scores, flags and yards "
                "per team, and one line per flag. ESPN's play text is not included.")
 
@@ -147,7 +150,11 @@ def build_public(live: dict, saved_at: str) -> dict:
     else in the feed (play text, win probability, wall clock) can reach it."""
     games = []
     for g in sorted(live.get('games') or [], key=lambda g: (g.get('start') or '', str(g.get('id')))):
-        log_ = list(reversed(g.get('log') or []))          # the feed is newest first
+        # the feed is newest first; copies, so the feed (and the R2 copy) keep their codes
+        log_ = [dict(f, team=FEED_TEAM.get(f.get('team'), f.get('team'))) for f in reversed(g.get('log') or [])]
+        away, home = (g.get('away') or {}).get('abbr'), (g.get('home') or {}).get('abbr')
+        for code in sorted({f.get('team') for f in log_} - {away, home}, key=str):
+            warn(f'{away} @ {home} has a flag under unknown team code {code}')
         by_type = {}
         for f in log_:
             if f.get('status') == 'accepted':

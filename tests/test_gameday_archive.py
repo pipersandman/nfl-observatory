@@ -197,6 +197,46 @@ def test_type_not_identified_chi_at_det():
     assert sum(out['acceptedByType']['DET'].values()) == out['home']['flags']
 
 
+def test_arz_flags_filed_under_ari(capsys):
+    """#206, 2026 Week 1, ARI at LAC: the play text codes Arizona as ARZ; box score ARI 8."""
+    g = game('9', 'ARI', 'LAC', '2026-09-13T20:05Z',
+             log=[flag(team='ARZ', type_='False Start', yards=5),
+                  flag(team='ARZ', type_='Offensive Holding', yards=10),
+                  flag(team='ARZ', type_='Offensive Holding', yards=10),
+                  flag(team='ARZ', status='declined', yards=0),
+                  flag(team='LAC', type_='Face Mask', yards=15)])
+    g['away'].update(flags=8, yards=60)
+    g['home'].update(flags=1, yards=15)
+    feed = live([g], week=1)
+    out = ga.build_public(feed, 'x')
+    assert 'ARZ' not in json.dumps(out)
+    gm = out['games'][0]
+    assert set(gm['acceptedByType']) == {'ARI', 'LAC'}
+    assert gm['acceptedByType']['ARI'] == {'Offensive Holding': 2, 'False Start': 1}
+    assert sum(' · ARI · ' in line for line in gm['flagLines']) == 4
+    assert gm['away']['typeNotIdentified'] == 8 - 3
+    assert all(f['team'] == 'ARZ' for f in feed['games'][0]['log'][:4])   # the feed is untouched
+    assert 'unknown team code' not in capsys.readouterr().out
+
+
+def test_feed_codes_map_like_the_worker():
+    g = game('9', 'WAS', 'LA', '2026-11-29T21:25Z',
+             log=[flag(team='WSH', type_='False Start', yards=5), flag(team='LAR', type_='Face Mask', yards=15)])
+    gm = ga.build_public(live([g]), 'x')['games'][0]
+    assert set(gm['acceptedByType']) == {'WAS', 'LA'}
+
+
+def test_unknown_flag_team_warns_and_still_saves(out_dir, store, capsys, monkeypatch):
+    monkeypatch.setattr(raw_capture, 'in_actions', lambda: True)
+    games = [dict(g) for g in WEEK12]
+    games[1] = game('2', 'CHI', 'DET', '2026-11-26T18:00Z', log=[flag(team='XYZ')])
+    assert run(live(games), store=store) == 0
+    text = capsys.readouterr().out
+    assert 'Gameday archive: CHI @ DET has a flag under unknown team code XYZ' in text
+    assert '::warning title=Gameday archive::CHI @ DET has a flag under unknown team code XYZ' in text
+    assert ga.public_path(SEASON, 12).exists()
+
+
 # ---- saving -------------------------------------------------------------------------------
 
 def test_complete_week_saves_both_files(out_dir, store, capsys):

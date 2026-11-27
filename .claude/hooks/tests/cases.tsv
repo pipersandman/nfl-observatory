@@ -1,0 +1,128 @@
+# --- planner / reviewer: allowed
+0	planner	command	gh issue view 208 --comments
+0	planner	command	git log --oneline -5
+0	planner	command	git branch
+0	planner	command	gh api repos/a/b/pulls/1/comments --paginate
+0	planner	command	gh issue comment 5 --body-file - <<'PLAN_EOF'<NL>## Plan<NL>$(rm -rf /) ; ok<NL>PLAN_EOF
+0	reviewer	command	gh pr diff 12
+0	reviewer	command	gh pr checks 12
+0	reviewer	command	gh pr comment 12 --body-file - <<'REVIEW_EOF'<NL>PASS<NL>REVIEW_EOF
+# --- planner / reviewer: blocked
+2	planner	command	git branch -D foo
+2	planner	command	gh issue view 1; rm x
+2	planner	command	gh issue view 1 | tee x
+2	planner	command	git diff --output=x
+2	planner	command	git diff -o x
+2	planner	command	gh pr view 5 --web
+2	planner	command	gh issue close 5
+2	planner	command	rm x
+2	planner	command	gh api -X POST repos/a/b/issues
+2	planner	command	gh api repos/a/b/issues -XPOST
+2	planner	command	gh api --method=DELETE repos/a/b/labels/x
+2	planner	command	gh api -f title=x repos/a/b/issues
+2	planner	command	gh apix foo
+2	planner	command	gh pr comment 5 --body-file - <<'PLAN_EOF'<NL>x<NL>PLAN_EOF
+2	planner	command	gh issue comment 5 --body-file - <<'PLAN_EOF'<NL>a<NL>PLAN_EOF<NL>rm x<NL>PLAN_EOF
+2	reviewer	command	gh issue comment 12 --body-file - <<'REVIEW_EOF'<NL>x<NL>REVIEW_EOF
+2	reviewer	command	gh api graphql -F q=x
+2	bogus	command	ls
+# --- builder files: .claude and CLAUDE.md blocked
+2	builder-files	file_path	C:\Users\tfost\nfl-observatory\.claude\settings.json
+2	builder-files	file_path	C:/Users/tfost/nfl-observatory/.claude/agents/builder.md
+2	builder-files	file_path	.claude/hooks/agent-guard.mjs
+2	builder-files	file_path	C:\Users\tfost\nfl-observatory\.CLAUDE\skills\x\SKILL.md
+2	builder-files	file_path	C:\Users\tfost\.claude\projects\x\memory\MEMORY.md
+2	builder-files	notebook_path	x/.claude/n.ipynb
+2	builder-files	file_path	C:\Users\tfost\nfl-observatory\CLAUDE.md
+2	builder-files	file_path	C:/Users/tfost/nfl-observatory/claude.md
+2	builder-files	file_path	CLAUDE.local.md
+2	builder-files	file_path
+# --- builder files: allowed
+0	builder-files	file_path	C:\Users\tfost\nfl-observatory\scripts\update_data.py
+0	builder-files	file_path	C:\Users\tfost\nfl-observatory\docs\claude-notes.md
+0	builder-files	file_path	C:\Users\tfost\nfl-observatory\docs\METRICS.md
+# --- builder Bash: normal build work allowed
+0	builder	command	venv/Scripts/python scripts/check.py
+0	builder	command	venv/Scripts/python scripts/update_data.py
+0	builder	command	venv/Scripts/python -m pytest scripts/tests -q
+0	builder	command	node worker/gameday/test-local.mjs
+0	builder	command	git status
+0	builder	command	git diff --stat
+0	builder	command	git switch main
+0	builder	command	git pull
+0	builder	command	git switch -c step/208-backfill
+0	builder	command	git add scripts/update_data.py docs/METRICS.md
+0	builder	command	git restore frontend/data reports/miner
+0	builder	command	git commit -F C:/tmp/msg.txt
+0	builder	command	git push
+0	builder	command	git push -u origin HEAD
+0	builder	command	gh issue view 208 --comments
+0	builder	command	gh pr create --title "x (#208)" --body-file C:/tmp/pr.md
+0	builder	command	gh pr checks 210
+0	builder	command	gh api repos/a/b/pulls/1/comments
+0	builder	command	grep -rn claude docs
+# --- builder Bash: .claude and CLAUDE.md blocked
+2	builder	command	sed -i s/a/b/ .claude/settings.json
+2	builder	command	echo x > .claude/agents/x.md
+2	builder	command	rm .claude/hooks/agent-guard.mjs
+2	builder	command	git restore .claude
+2	builder	command	git checkout main -- .claude/settings.json
+2	builder	command	cd .claude && ls
+2	builder	command	cp x C:/Users/tfost/nfl-observatory/.claude/x
+2	builder	command	cat ~/.claude/settings.json
+2	builder	command	sed -i s/a/b/ CLAUDE.md
+2	builder	command	echo x >> ./CLAUDE.md
+# --- builder Bash: staging by named path only
+2	builder	command	git add -A
+2	builder	command	git add .
+2	builder	command	git add --all
+2	builder	command	git add -u
+2	builder	command	git add ./
+2	builder	command	git add :/
+2	builder	command	git add scripts/*.py
+2	builder	command	git add scripts/x.py && git add .
+2	builder	command	git commit -a -m x
+2	builder	command	git commit -am x
+2	builder	command	git commit --all -m x
+2	builder	command	git checkout main -- .
+2	builder	command	git restore .
+# --- builder Bash: earlier main/merge blocks
+2	builder	command	git push origin main
+2	builder	command	git push origin HEAD:main
+2	builder	command	git push origin HEAD:refs/heads/main
+2	builder	command	git push --force
+2	builder	command	git push --mirror
+2	builder	command	git push origin step/x
+2	builder	command	git switch main && git commit -m x
+2	builder	command	git -C . status
+2	builder	command	git -c push.default=upstream push
+2	builder	command	gh pr merge 5
+# --- builder Bash: point B gaps, now blocked
+2	builder	command	git config push.default upstream
+2	builder	command	git config remote.origin.push HEAD:refs/heads/main
+2	builder	command	git branch -u origin/main
+2	builder	command	git branch --set-upstream-to=origin/main
+2	builder	command	git remote set-url origin x
+2	builder	command	git config alias.p push
+2	builder	command	git p origin HEAD:main
+2	builder	command	git --git-dir=x push
+2	builder	command	gh api -X PUT repos/a/b/contents/x
+2	builder	command	gh api --method PATCH repos/a/b/git/refs/heads/main
+2	builder	command	gh api repos/a/b/merges -f base=main -f head=x
+2	builder	command	gh api graphql -f query=mutation
+2	builder	command	gh pr ready 5
+2	builder	command	gh pr merge --auto 5
+2	builder	command	gh workflow run update-data.yml
+2	builder	command	gh run rerun 123
+2	builder	command	gh repo edit --default-branch x
+2	builder	command	gh release create v1
+2	builder	command	gh secret list
+2	builder	command	node -e "require('child_process').execSync('git push origin HEAD:main')"
+2	builder	command	python -c "import os; os.system('git push')"
+2	builder	command	venv/Scripts/python -c "print(1)"
+2	builder	command	bash -c 'git push origin HEAD:main'
+2	builder	command	sh -c x
+2	builder	command	pwsh -Command x
+2	builder	command	python - <<'EOF'<NL>import os<NL>EOF
+2	builder	command	eval "git push"
+2	builder	command	echo push | xargs git

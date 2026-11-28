@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-28T01:23:42+00:00",
+  "generatedAt": "2026-11-28T02:13:09+00:00",
   "definitions": {
     "avgMiss": "Average gap between projected and actual accepted penalties per game",
     "hitRate": "Share of games where the actual count landed inside the projected likely range (target ~80%)",
@@ -10,12 +10,12 @@
   },
   "live": {
     "summary": {
-      "games": 104,
-      "avgMiss": 3.45,
-      "hitRate": 88.5,
-      "within3": 52.9,
-      "baselineAvgMiss": 3.5,
-      "skillPct": 1.5
+      "games": 105,
+      "avgMiss": 3.46,
+      "hitRate": 88.6,
+      "within3": 52.4,
+      "baselineAvgMiss": 3.53,
+      "skillPct": 1.7
     },
     "byWeek": [
       {
@@ -101,12 +101,12 @@
       {
         "season": 2026,
         "week": 12,
-        "games": 4,
-        "avgMiss": 1.37,
+        "games": 5,
+        "avgMiss": 2.1,
         "hitRate": 100.0,
-        "within3": 100.0,
-        "baselineAvgMiss": 2.5,
-        "skillPct": 45.0
+        "within3": 80.0,
+        "baselineAvgMiss": 3.2,
+        "skillPct": 34.4
       }
     ],
     "games": [
@@ -169,6 +169,26 @@
         "awayProjected": 6.7,
         "homeActual": 5,
         "awayActual": 8
+      },
+      {
+        "gameId": "2026_12_DEN_PIT",
+        "season": 2026,
+        "week": 12,
+        "away": "DEN",
+        "home": "PIT",
+        "crew": "Brad Allen",
+        "source": "live",
+        "projected": 13.0,
+        "low": 8,
+        "high": 19,
+        "actual": 8,
+        "miss": -5.0,
+        "inRange": true,
+        "baselineMiss": 6.0,
+        "homeProjected": 6.1,
+        "awayProjected": 7.0,
+        "homeActual": 2,
+        "awayActual": 6
       },
       {
         "gameId": "2026_12_CHI_DET",

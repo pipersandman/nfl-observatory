@@ -2,6 +2,7 @@
 workflow file, run with a faked date, a stubbed nflverse releases API and a
 temporary GITHUB_OUTPUT. The 11 cases from PR #87."""
 
+import ast
 import json
 import os
 import shutil
@@ -161,7 +162,72 @@ def test_new_crew_check_runs_are_game_day_runs():
     assert "'0 15 * * 6'" in GATE and "'0 12 * * 0'" in GATE
 
 
-@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY])
+# ---- Saturday game-day windows (#160) ---------------------------------------------
+
+SAT_DAY = '0 18-23 * * 6'
+SAT_NIGHT = '0 0-9 * * 0'
+WORKFLOW = ROOT / '.github' / 'workflows' / 'update-data.yml'
+
+
+def workflow_crons():
+    crons = []
+    for line in WORKFLOW.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if line.startswith('- cron:'):
+            crons.append(line.split(':', 1)[1].split('#', 1)[0].strip().strip("'\""))
+    return crons
+
+
+def gate_gameday_set():
+    line = next(x.strip() for x in GATE.splitlines() if x.strip().startswith('GAMEDAY = '))
+    return ast.literal_eval(line.split('=', 1)[1].strip())
+
+
+def test_saturday_crons_are_game_day_runs():
+    gameday = gate_gameday_set()
+    assert SAT_DAY in gameday and SAT_NIGHT in gameday
+    crons = workflow_crons()
+    assert SAT_DAY in crons and SAT_NIGHT in crons
+
+
+@pytest.mark.parametrize('schedule', [SAT_DAY, SAT_NIGHT])
+@pytest.mark.parametrize('today', ['2026-12-19', '2026-12-20'])
+@pytest.mark.parametrize('reply, skip, why', [
+    (api({2026: 'T1'}), 'true', 'T1 -> no new games, skipping'),
+    (api({2026: 'T2'}), 'false', 'T2 -> updating'),
+], ids=['unchanged', 'new'])
+def test_saturday_runs_use_the_gate(tmp_path, schedule, today, reply, skip, why):
+    r, output, _ = run_gate(tmp_path, today, 'schedule', schedule, reply)
+    assert r.returncode == 0, r.stderr
+    assert f'play-by-play 2026: last used T1, now {why}' in r.stdout.splitlines()
+    assert output == f'skip={skip}\n'
+
+
+def expand(field, top):
+    values = set()
+    for part in field.split(','):
+        if part == '*':
+            values.update(range(top))
+        elif '-' in part:
+            lo, hi = part.split('-')
+            values.update(range(int(lo), int(hi) + 1))
+        else:
+            values.add(int(part))
+    return values
+
+
+def test_no_scheduled_hour_fires_twice():
+    seen = {}
+    for cron in workflow_crons():
+        minute, hour, dom, month, dow = cron.split()
+        assert minute == '0' and dom == '*' and month == '*', cron
+        for day in expand(dow, 7):
+            for h in expand(hour, 24):
+                assert (day, h) not in seen, f'{cron} and {seen[(day, h)]} both fire on day {day} at {h}:00'
+                seen[(day, h)] = cron
+
+
+@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT])
 def test_updated_post_lets_the_run_go_ahead(tmp_path, schedule):
     r, output, _ = run_gate(tmp_path, '2026-10-31', 'schedule', schedule, api({2026: 'T1'}),
                             fz_reply=fz('2026-10-29T23:58:49'), assignments=week(8))
@@ -174,7 +240,7 @@ def test_updated_post_lets_the_run_go_ahead(tmp_path, schedule):
         'https://www.footballzebras.com/wp-json/wp/v2/posts?slug=week-8-referee-assignments-2026&_fields=modified_gmt']
 
 
-@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY])
+@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT])
 def test_unchanged_post_still_skips(tmp_path, schedule):
     r, output, _ = run_gate(tmp_path, '2026-10-31', 'schedule', schedule, api({2026: 'T1'}),
                             fz_reply=fz('2026-10-27T16:19:15'), assignments=week(8))

@@ -169,3 +169,12 @@
 2	builder	command	python - <<'EOF'<NL>import os<NL>EOF
 2	builder	command	eval "git push"
 2	builder	command	echo push | xargs git
+# --- builder Bash: commit and push blocked on main and on a detached HEAD (#219)
+#@ branch=main
+2	builder	command	git commit -F C:/tmp/msg.txt
+2	builder	command	git push
+2	builder	command	git push -u origin HEAD
+#@ branch=detached
+2	builder	command	git commit -F C:/tmp/msg.txt
+2	builder	command	git push
+2	builder	command	git push -u origin HEAD

@@ -4,16 +4,18 @@
     python scripts/check.py                  (GitHub Actions)
 
 Needs the tools in scripts/requirements-dev.txt, the runtime packages in
-scripts/requirements.txt (the tests import the pipeline) and Node. No network,
+scripts/requirements.txt (the tests import the pipeline), Node and git. No network,
 no secrets. Exit code 0 means every check passed.
 """
 
 import compileall
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -152,6 +154,60 @@ def check_full_pages():
     return not bad, f'{len(done)} done ({", ".join(done)}), {len(pending)} pending'
 
 
+GUARD = ROOT / '.claude' / 'hooks' / 'agent-guard.mjs'
+GUARD_CASES = ROOT / '.claude' / 'hooks' / 'tests' / 'cases.tsv'
+GUARD_BRANCH = 'step/guard-test'  # the branch the cases run on unless a `#@ branch=` line says otherwise
+
+
+def _git_repo_on(repo, branch, env):
+    """Put the throwaway repo on `branch` (a name, or 'detached')."""
+    args = ['switch', '-q', '--detach', 'main'] if branch == 'detached' else ['switch', '-q', '-C', branch, 'main']
+    subprocess.run(['git', *args], cwd=repo, env=env, check=True)
+
+
+def check_agent_guard():
+    """The agent-guard tests (#219): every case in .claude/hooks/tests/cases.tsv against
+    .claude/hooks/agent-guard.mjs, the same as `bash .claude/hooks/tests/run.sh`.
+    The guard reads the current branch, so it runs inside a throwaway git repo on the
+    branch each case needs; the result doesn't depend on the branch checked out here."""
+    node, git = shutil.which('node'), shutil.which('git')
+    if not node or not git:
+        print('    node and git are both needed')
+        return False, ''
+    env = {**os.environ,
+           'GIT_AUTHOR_NAME': 'guard-test', 'GIT_AUTHOR_EMAIL': 'guard-test@example.invalid',
+           'GIT_COMMITTER_NAME': 'guard-test', 'GIT_COMMITTER_EMAIL': 'guard-test@example.invalid'}
+    failed, n = [], 0
+    with tempfile.TemporaryDirectory() as repo:
+        subprocess.run(['git', 'init', '-q', '-b', 'main'], cwd=repo, env=env, check=True)
+        subprocess.run(['git', 'commit', '-q', '--allow-empty', '-m', 'init'], cwd=repo, env=env, check=True)
+        _git_repo_on(repo, GUARD_BRANCH, env)
+        branch = GUARD_BRANCH
+        for line in GUARD_CASES.read_text(encoding='utf-8').splitlines():
+            if not line.strip():
+                continue
+            if line.startswith('#@ branch='):
+                branch = line[len('#@ branch='):].strip()
+                _git_repo_on(repo, branch, env)
+                continue
+            if line.startswith('#'):
+                continue
+            # value and tool-name may be missing (e.g. the "no file path" case)
+            expected, mode, key, value, tool = (line.split('\t') + ['', ''])[:5]
+            hook_input = {'tool_input': {key: value.replace('<NL>', '\n')}}
+            if tool:
+                hook_input['tool_name'] = tool
+            r = subprocess.run([node, str(GUARD), mode], cwd=repo, input=json.dumps(hook_input),
+                               capture_output=True, text=True, encoding='utf-8')
+            n += 1
+            if str(r.returncode) != expected:
+                failed.append(f'exp={expected} got={r.returncode}  {mode:<14} {tool:<5} '
+                              f'{value[:90]}  (branch {branch})')
+    for f in failed:
+        print('    FAIL', f)
+    return not failed, f'{n} cases' + (f', {len(failed)} failed' if failed else '')
+
+
 def check_pytest():
     """Tests in tests/ (#89). No network: tests/conftest.py blocks it."""
     # -q comes from pyproject.toml; passing it again would hide the summary line
@@ -171,6 +227,7 @@ CHECKS = [
     ('No hard-coded years or windows', check_literals),
     ('Menus match', check_menus),
     ('Full pages', check_full_pages),
+    ('Agent guard', check_agent_guard),
     ('pytest', check_pytest),
 ]
 

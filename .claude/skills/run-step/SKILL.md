@@ -91,8 +91,8 @@ Check live state first (`gh pr view <pr>`, `gh pr checks <pr>`), then give:
   Ty" the reviewer raised.
 - **What changed:** 3–6 lines.
 - **Checks Ty runs:** the plan's "Checks Ty runs", copied in full with each
-  **Pass:** line, plus the merge itself (GitHub → the PR → **Merge pull
-  request** → **Confirm merge** → **Delete branch**), outside game windows if
+  **Pass:** line, plus the merge itself (GitHub → the PR → **Squash and
+  merge** → **Confirm squash and merge** → **Delete branch**), outside game windows if
   the merge starts a data run (R64).
 - **After merge:** the post-merge checks to record on the PR (R28).
 

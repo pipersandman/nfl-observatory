@@ -7,7 +7,7 @@ user-invocable: false
 # Observatory standing rules
 
 Each rule has an ID (cite it in plans and reviews as `R<n>`) and its source.
-IDs never change once given; rules confirmed later (R67, R68, R69, R71) sit
+IDs never change once given; rules confirmed later (R67, R68, R69, R71, R72) sit
 in their topic's section, so IDs aren't always in order.
 "#86 (date)" means a comment on the pinned issue #86 "V2 progress log" on that
 date (UTC). CLAUDE.md and `docs/V2_BUILD_PLAN.md` still apply in full; where a
@@ -30,6 +30,7 @@ breach of one under "Questions for Ty" but never as a required change.
 - **R9** Ask before changing `CLAUDE.md`, the plan's routine or `.claude/settings.json`. *#134; CLAUDE.md.*
 - **R10** Interim work must not turn into the V2.1 build (Astro, six-section navigation, full on-demand loading). Stop if it starts to. *#148, #153, #166.*
 - **R67** A scope change agreed with Ty mid-issue is recorded as an issue comment headed "Scope note", with the options and the choice. *#102, #166; confirmed by Ty 2026-11-26.*
+- **R72** During a `/run-step` run, each of Ty's decisions (plan approval and wording, option choices, scope changes, answers to the reviewer) is posted straight away, without asking, as a comment headed "Decisions from Ty (<date>)" on the issue, or on the PR once one exists, from a scratchpad file with `--body-file`, before the next delegation. Only Ty's decisions; other comments still need his OK. *#215; confirmed by Ty 2026-11-27.*
 - **R11** Report PR, issue and run status from live GitHub (`gh pr view`, `gh issue view`, `gh run view`), never from earlier notes. *Ty's instruction (2026-10-27; confirmed 2026-11-26).*
 
 ## B. Git, branches and PRs
@@ -109,7 +110,7 @@ breach of one under "Questions for Ty" but never as a required change.
 
 ## I. Session handoff
 
-- **R63** End every working session with one comment on #86, drafted and shown to Ty before posting. Heading `## Handoff <date> (<part of day>): <summary>`; sections **Done**, **Open right now**, **Next steps** (full steps, exact clicks and commands, an **Expected:** line each, never "see the earlier handoff"), **Things to check next session** (exact `gh` commands, **Expected:** each), **Open decisions or questions**. Every fact from live GitHub; every open item has an issue number. *#86 body and comments (2026-10-27 on); latest format 2026-11-27.*
+- **R63** End every working session with one comment on #86, drafted and shown to Ty before posting. Heading `## Handoff <date> (<part of day>): <summary>`; sections **Done**, **Open right now**, **Next steps** (full steps, exact clicks and commands, an **Expected:** line each, never "see the earlier handoff"), **Things to check next session** (exact `gh` commands, **Expected:** each), **Open decisions or questions**. Every fact from live GitHub; every open item has an issue number. Every open item from the previous handoff is carried forward unless it is closed (checked on live GitHub); a closed one is listed once under **Done**. *#86 body and comments (2026-10-27 on); latest format 2026-11-27; carry-forward #215.*
 
 ## J. Merges and deploys
 

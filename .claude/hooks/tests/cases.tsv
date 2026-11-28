@@ -3,10 +3,12 @@
 0	planner	command	git log --oneline -5
 0	planner	command	git branch
 0	planner	command	gh api repos/a/b/pulls/1/comments --paginate
-0	planner	command	gh issue comment 5 --body-file - <<'PLAN_EOF'<NL>## Plan<NL>$(rm -rf /) ; ok<NL>PLAN_EOF
+0	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md
+0	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5-r2.md
+0	planner	command	gh issue comment 5 --body-file /c/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md
 0	reviewer	command	gh pr diff 12
 0	reviewer	command	gh pr checks 12
-0	reviewer	command	gh pr comment 12 --body-file - <<'REVIEW_EOF'<NL>PASS<NL>REVIEW_EOF
+0	reviewer	command	gh pr comment 12 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/review-12-r1.md
 # --- planner / reviewer: blocked
 2	planner	command	git branch -D foo
 2	planner	command	gh issue view 1; rm x
@@ -21,11 +23,52 @@
 2	planner	command	gh api --method=DELETE repos/a/b/labels/x
 2	planner	command	gh api -f title=x repos/a/b/issues
 2	planner	command	gh apix foo
-2	planner	command	gh pr comment 5 --body-file - <<'PLAN_EOF'<NL>x<NL>PLAN_EOF
-2	planner	command	gh issue comment 5 --body-file - <<'PLAN_EOF'<NL>a<NL>PLAN_EOF<NL>rm x<NL>PLAN_EOF
-2	reviewer	command	gh issue comment 12 --body-file - <<'REVIEW_EOF'<NL>x<NL>REVIEW_EOF
 2	reviewer	command	gh api graphql -F q=x
 2	bogus	command	ls
+# --- planner / reviewer comments: blocked (#215)
+2	planner	command	gh issue comment 5 --body-file - <<'PLAN_EOF'<NL>## Plan<NL>PLAN_EOF
+2	reviewer	command	gh pr comment 12 --body-file - <<'REVIEW_EOF'<NL>PASS<NL>REVIEW_EOF
+2	planner	command	gh issue comment 5 --body "plan"
+2	planner	command	gh issue comment 5 -b plan
+2	reviewer	command	gh pr comment 12 --body PASS
+2	reviewer	command	gh pr comment 12 -b PASS
+2	planner	command	gh issue comment 5 --body-file -
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/nfl-observatory/scripts/x.py
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/plan-5.md
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/../../../../../.env
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/notes.md
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md && rm x
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md; rm x
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md --repo x/y
+2	planner	command	gh pr comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-5.md
+2	planner	command	gh issue comment 5 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/review-5-r1.md
+2	reviewer	command	gh issue comment 12 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/review-12-r1.md
+2	reviewer	command	gh pr comment 12 --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/plan-12.md
+2	reviewer	command	gh pr comment 12 --edit-last --body-file C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/review-12-r1.md
+# --- planner / reviewer files: Write allowed only for the own comment file in the scratchpad (#215)
+0	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-5.md	Write
+0	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-5-r2.md	Write
+0	reviewer-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\review-12-r1.md	Write
+0	reviewer-files	file_path	C:/Users/tfost/AppData/Local/Temp/claude/abc123/0f1e2d3c/scratchpad/review-12-r2.md	Write
+2	planner-files	file_path	C:\Users\tfost\nfl-observatory\scripts\x.py	Write
+2	planner-files	file_path	C:\Users\tfost\nfl-observatory\.claude\agents\reviewer.md	Write
+2	planner-files	file_path	scripts/x.py	Write
+2	reviewer-files	file_path	C:\Users\tfost\nfl-observatory\scripts\x.py	Write
+2	reviewer-files	file_path	C:\Users\tfost\nfl-observatory\.claude\agents\reviewer.md	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\..\..\..\..\..\..\nfl-observatory\scripts\plan-5.md	Write
+2	reviewer-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\..\scratchpad\review-12-r1.md	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\plan-5.md	Write
+2	reviewer-files	file_path	C:\Users\tfost\AppData\Local\Temp\other\review-12-r1.md	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\sub\plan-5.md	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\run.sh	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\review-5-r1.md	Write
+2	reviewer-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-12.md	Write
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-5.md	Edit
+2	reviewer-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\review-12-r1.md	Edit
+2	planner-files	file_path	C:\Users\tfost\nfl-observatory\scripts\x.py	Edit
+2	reviewer-files	file_path	C:\Users\tfost\nfl-observatory\.claude\agents\reviewer.md	Edit
+2	planner-files	notebook_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-5.md	NotebookEdit
+2	planner-files	file_path	C:\Users\tfost\AppData\Local\Temp\claude\abc123\0f1e2d3c\scratchpad\plan-5.md
 # --- builder files: .claude and CLAUDE.md blocked
 2	builder-files	file_path	C:\Users\tfost\nfl-observatory\.claude\settings.json
 2	builder-files	file_path	C:/Users/tfost/nfl-observatory/.claude/agents/builder.md

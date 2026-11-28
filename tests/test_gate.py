@@ -227,7 +227,43 @@ def test_no_scheduled_hour_fires_twice():
                 seen[(day, h)] = cron
 
 
-@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT])
+# ---- Wednesday, Thanksgiving-afternoon and Friday windows (#217) ----------------
+
+WED_NIGHT = '0 0-9 * * 4'
+THU_DAY = '0 18-23 * * 4'
+THU_LATE = '0 0-2 * * 5'
+FRI_DAY = '0 18-23 * * 5'
+FRI_NIGHT = '0 0-9 * * 6'
+UNUSUAL_DAYS = [WED_NIGHT, THU_DAY, THU_LATE, FRI_DAY, FRI_NIGHT]
+
+
+def test_unusual_day_crons_are_game_day_runs():
+    gameday = gate_gameday_set()
+    crons = workflow_crons()
+    for cron in UNUSUAL_DAYS:
+        assert cron in gameday, cron
+        assert cron in crons, cron
+
+
+@pytest.mark.parametrize('schedule, today', [
+    (WED_NIGHT, '2026-11-26'),
+    (THU_DAY, '2026-11-26'),
+    (THU_LATE, '2026-11-27'),
+    (FRI_DAY, '2026-12-25'),
+    (FRI_NIGHT, '2026-12-26'),
+], ids=['WED_NIGHT', 'THU_DAY', 'THU_LATE', 'FRI_DAY', 'FRI_NIGHT'])
+@pytest.mark.parametrize('reply, skip, why', [
+    (api({2026: 'T1'}), 'true', 'T1 -> no new games, skipping'),
+    (api({2026: 'T2'}), 'false', 'T2 -> updating'),
+], ids=['unchanged', 'new'])
+def test_unusual_day_runs_use_the_gate(tmp_path, schedule, today, reply, skip, why):
+    r, output, _ = run_gate(tmp_path, today, 'schedule', schedule, reply)
+    assert r.returncode == 0, r.stderr
+    assert f'play-by-play 2026: last used T1, now {why}' in r.stdout.splitlines()
+    assert output == f'skip={skip}\n'
+
+
+@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT, *UNUSUAL_DAYS])
 def test_updated_post_lets_the_run_go_ahead(tmp_path, schedule):
     r, output, _ = run_gate(tmp_path, '2026-10-31', 'schedule', schedule, api({2026: 'T1'}),
                             fz_reply=fz('2026-10-29T23:58:49'), assignments=week(8))
@@ -240,7 +276,7 @@ def test_updated_post_lets_the_run_go_ahead(tmp_path, schedule):
         'https://www.footballzebras.com/wp-json/wp/v2/posts?slug=week-8-referee-assignments-2026&_fields=modified_gmt']
 
 
-@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT])
+@pytest.mark.parametrize('schedule', [GAMEDAY, SATURDAY, SUNDAY_EARLY, SAT_DAY, SAT_NIGHT, *UNUSUAL_DAYS])
 def test_unchanged_post_still_skips(tmp_path, schedule):
     r, output, _ = run_gate(tmp_path, '2026-10-31', 'schedule', schedule, api({2026: 'T1'}),
                             fz_reply=fz('2026-10-27T16:19:15'), assignments=week(8))

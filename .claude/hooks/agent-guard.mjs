@@ -6,7 +6,11 @@
 //
 // planner, reviewer (Bash): read-only git and gh commands only, plus one
 //   comment (planner: `gh issue comment <n>`, reviewer: `gh pr comment <n>`),
-//   posted as `--body-file -` with a quoted heredoc so the body is never run.
+//   posted as `--body-file <file>` where the file is the agent's own comment
+//   file in the Claude scratchpad. No heredoc, no inline --body / -b (#215).
+// planner-files, reviewer-files (Write/Edit/NotebookEdit): the Write tool
+//   only, and only the agent's own comment file in the Claude scratchpad
+//   (planner: plan-<n>[-r<k>].md, reviewer: review-<pr>-r<r>.md).
 // builder (Bash): only the git and gh subcommands a build needs (no git
 //   config/remote/aliases, no gh writes besides `gh pr create`), no inline
 //   interpreter code, no merges, no pushes to main, no force pushes, no
@@ -30,8 +34,11 @@ function block(msg) {
 let input = '';
 for await (const chunk of process.stdin) input += chunk;
 let toolInput;
+let toolName = '';
 try {
-  toolInput = JSON.parse(input).tool_input ?? {};
+  const parsed = JSON.parse(input);
+  toolInput = parsed.tool_input ?? {};
+  toolName = String(parsed.tool_name ?? '');
 } catch {
   block('could not read the hook input');
 }
@@ -56,6 +63,37 @@ if (mode === 'builder-files') {
   process.exit(0);
 }
 
+// ---------- planner / reviewer: comment files ----------
+
+// Each read-only agent may write one kind of file: its comment body.
+const COMMENT_FILE = {
+  planner: /^plan-\d+(-r\d+)?\.md$/,
+  reviewer: /^review-\d+-r\d+\.md$/,
+};
+
+// True when `p` is a file directly inside a Claude scratchpad folder
+// (…/Users/<you>/AppData/Local/Temp/claude/…/scratchpad/<name>) and <name> is
+// this agent's comment file. Accepts C:\…, C:/… and Git Bash /c/… forms.
+function isOwnCommentFile(agent, p) {
+  const s = p.replace(/\\/g, '/');
+  if (s.split('/').includes('..')) return false;
+  const m = s.match(
+    /^(?:[A-Za-z]:|\/[A-Za-z])\/Users\/[A-Za-z0-9._-]+\/AppData\/Local\/Temp\/claude\/(?:[A-Za-z0-9._-]+\/)+scratchpad\/([A-Za-z0-9._-]+)$/i,
+  );
+  return Boolean(m) && COMMENT_FILE[agent].test(m[1]);
+}
+
+if (mode === 'planner-files' || mode === 'reviewer-files') {
+  const agent = mode.replace('-files', '');
+  if (toolName !== 'Write') block(`the ${agent} may use Write only (got ${toolName || 'no tool name'}).`);
+  const p = String(toolInput.file_path ?? '');
+  if (!isOwnCommentFile(agent, p)) {
+    const name = agent === 'planner' ? 'plan-<n>.md or plan-<n>-r<k>.md' : 'review-<pr>-r<r>.md';
+    block(`the ${agent} writes only ${name} directly inside its Claude scratchpad folder (got ${p || 'no path'}).`);
+  }
+  process.exit(0);
+}
+
 // ---------- read-only agents ----------
 
 const SHELL_META = /[;&|`<>]|\$\(|\r|\n/;
@@ -73,27 +111,18 @@ const READ_ONLY = [
 // Flags that would let a "read" command write a file or open a program.
 const WRITE_FLAGS = /(^| )(--output|-o|--ext-diff|--web|-w)( |=|$)/;
 
-// `gh issue comment 123 --body-file - <<'EOF'` ... `EOF`, nothing else.
-function isHeredocComment(kind) {
-  const lines = cmd.split(/\r?\n/);
-  const first = lines[0].match(
-    new RegExp(`^gh ${kind} comment \\d+ --body-file - <<'([A-Z_]+)'$`),
-  );
-  if (!first) return false;
-  const end = first[1];
-  if (lines.length < 3 || lines[lines.length - 1] !== end) return false;
-  // The terminator must not appear earlier (that would end the body early).
-  return lines.slice(1, -1).every((l) => l !== end);
-}
-
 if (mode === 'planner' || mode === 'reviewer') {
   const kind = mode === 'planner' ? 'issue' : 'pr';
-  if (isHeredocComment(kind)) process.exit(0);
+  const howTo = `gh ${kind} comment <n> --body-file <your comment file in the scratchpad, forward slashes>`;
   if (SHELL_META.test(cmd)) {
-    block(
-      'one plain command per call: no ; & | > < ` $( or newlines. ' +
-        `Comments go as: gh ${kind} comment <n> --body-file - <<'EOF' ... EOF`,
-    );
+    block(`one plain command per call: no ; & | > < \` $( or newlines. Comments go as: ${howTo}`);
+  }
+  // `gh issue comment <n> --body-file <file>` (planner) or
+  // `gh pr comment <n> --body-file <file>` (reviewer), exactly; nothing else.
+  if (/^gh (issue|pr) comment( |$)/.test(cmd)) {
+    const m = cmd.match(new RegExp(`^gh ${kind} comment \\d+ --body-file ([A-Za-z0-9._/:-]+)$`));
+    if (m && isOwnCommentFile(mode, m[1])) process.exit(0);
+    block(`comments go only as: ${howTo}`);
   }
   if (WRITE_FLAGS.test(cmd)) block('--output, --ext-diff and --web are not allowed');
   if (/^gh api/.test(cmd) && GH_API_WRITE.test(cmd)) block('gh api is GET only.');
@@ -101,7 +130,7 @@ if (mode === 'planner' || mode === 'reviewer') {
   block(
     'read-only agent. Allowed: git status/log/diff/show/rev-parse/ls-files/' +
       'merge-base/blame/branch (list only), gh issue view/list, gh pr view/list/' +
-      `diff/checks, gh run list/view, gh label list, gh api (GET), and gh ${kind} comment.`,
+      `diff/checks, gh run list/view, gh label list, gh api (GET), and ${howTo}.`,
   );
 }
 
@@ -196,4 +225,4 @@ if (mode === 'builder') {
   process.exit(0);
 }
 
-block('unknown mode; expected planner, reviewer, builder or builder-files.');
+block('unknown mode; expected planner, reviewer, planner-files, reviewer-files, builder or builder-files.');
